@@ -62,6 +62,7 @@ function Dashboard() {
         </SoftBox>
         <SoftBox mb={3}>
           <Grid container spacing={3}>
+
             <Grid item xs={12} lg={8}>
               <ReportsBarChart
                 // description={<>{/* (<strong>+23%</strong>) than last week */}</>}
@@ -99,9 +100,9 @@ function Dashboard() {
             <Projects />
           </Grid>
         </Grid>
-      </SoftBox>
+      </SoftBox >
       <Footer />
-    </DashboardLayout>
+    </DashboardLayout >
   );
 }
 

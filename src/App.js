@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 
 // react-router components
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation, redirect } from "react-router-dom";
 
 // @mui material components
 import { ThemeProvider } from "@mui/material/styles";
@@ -21,15 +21,18 @@ import themeRTL from "assets/theme/theme-rtl";
 import routes from "routes";
 
 // NextWork  Dashboard React contexts
-import { useSoftUIController, setMiniSidenav, setOpenConfigurator } from "context";
+import { useSoftUIController, setUser, setMiniSidenav, setOpenConfigurator } from "context";
 
 // Images
 import brand from "assets/images/logo-ct.png";
-import Configurator from "examples/Configurator";
+import UserModel from "Models/User";
+import SignIn from "layouts/authentication/sign-in";
+import SignUp from "layouts/authentication/sign-up";
+import Dashboard from "layouts/dashboard";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
-  const { miniSidenav, direction, layout, openConfigurator, sidenavColor } = controller;
+  const { miniSidenav, direction, layout, openConfigurator, sidenavColor, user } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const { pathname } = useLocation();
 
@@ -49,27 +52,38 @@ export default function App() {
     }
   };
 
+  // Api
+  async function getUserById() {
+    let data = new UserModel(response.data);
+    setUser(dispatch, data);
+  }
+  // getUserById();
+
   // Change the openConfigurator state
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
 
   // Setting page scroll to 0 when changing the route
+  const getRoutes = (allRoutes) =>
+    allRoutes.map((route) => {
+
+      if (route.collapse) {
+        getRoutes();
+      }
+
+      if (!user || user.userId === undefined || user.userId === null) {
+        if (route.auth === user.type || route.auth === "any") {
+          return <Route exact path={route.route} element={route.component} key={route.key} />;
+        }
+
+      }
+
+      return null;
+    });
   useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
 
-  const getRoutes = (allRoutes) =>
-    allRoutes.map((route) => {
-      if (route.collapse) {
-        return getRoutes(route.collapse);
-      }
-
-      if (route.route) {
-        return <Route exact path={route.route} element={route.component} key={route.key} />;
-      }
-
-      return null;
-    });
 
   const configsButton = (
     <SoftBox
@@ -94,7 +108,7 @@ export default function App() {
       </Icon>
     </SoftBox>
   );
-
+  console.log(user);
   return (
     <ThemeProvider theme={themeRTL}>
       <CssBaseline />
@@ -107,14 +121,15 @@ export default function App() {
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
           />
-          <Configurator />
+          {/* <Configurator /> */}
           {configsButton}
         </>
       )}
-      {/* {layout === "vr" && <Configurator />} */}
       <Routes>
+        {<Route exact path="/" element={!user.id ? <SignIn /> : <Dashboard />} />}
         {getRoutes(routes)}
-        <Route path="*" element={<Navigate to="/dashboard" />} />
+        {!user.id ? <Route path="/sign-up" element={<SignUp />} /> : null}
+
       </Routes>
     </ThemeProvider>
   );

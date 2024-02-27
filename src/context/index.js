@@ -2,6 +2,7 @@ import { createContext, useContext, useReducer, useMemo } from "react";
 
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
+import UserModel from "Models/User";
 
 // The Next Work Dashboard PRO Material main context
 const SoftUI = createContext(null);
@@ -36,6 +37,9 @@ function reducer(state, action) {
     case "LAYOUT": {
       return { ...state, layout: action.value };
     }
+    case "user": {
+      return { ...state, user: action.value };
+    }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
@@ -53,6 +57,7 @@ function NextworkControllerProvider({ children }) {
     openConfigurator: false,
     direction: "ltr",
     layout: "dashboard",
+    user: new UserModel()
   };
 
   const [controller, dispatch] = useReducer(reducer, initialState);
@@ -87,6 +92,7 @@ const setFixedNavbar = (dispatch, value) => dispatch({ type: "FIXED_NAVBAR", val
 const setOpenConfigurator = (dispatch, value) => dispatch({ type: "OPEN_CONFIGURATOR", value });
 const setDirection = (dispatch, value) => dispatch({ type: "DIRECTION", value });
 const setLayout = (dispatch, value) => dispatch({ type: "LAYOUT", value });
+const setUser = (dispatch, value) => dispatch({ type: "user", value });
 
 export {
   NextworkControllerProvider,
@@ -99,4 +105,5 @@ export {
   setOpenConfigurator,
   setDirection,
   setLayout,
+  setUser,
 };

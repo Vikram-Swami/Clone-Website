@@ -20,6 +20,7 @@ const routes = [
     type: "collapse",
     name: "Dashboard",
     key: "dashboard",
+    auth: "user",
     route: "/dashboard",
     icon: <Shop size="12px" />,
     component: <Dashboard />,
@@ -29,7 +30,8 @@ const routes = [
   {
     type: "collapse",
     name: "Create Members",
-    key: "team",
+    key: "members",
+    auth: "user",
     route: "/sign-up",
     icon: <Office size="12px" />,
     component: <SignUp />,
@@ -38,6 +40,8 @@ const routes = [
   {
     type: "collapse",
     name: "Team",
+    auth: "user",
+
     key: "team",
     route: "/my-team",
     icon: <Office size="12px" />,
@@ -47,16 +51,20 @@ const routes = [
   {
     type: "collapse",
     name: "My Connections",
-    key: "team",
+    key: "connections",
     route: "/connections",
     icon: <Office size="12px" />,
     component: <Connections />,
+    auth: "any",
+
     noCollapse: true,
   },
   {
     type: "collapse",
     name: "Income",
-    key: "team",
+    key: "income",
+    auth: "any",
+
     route: "/income",
     icon: <Office size="12px" />,
     component: <Income />,
@@ -65,7 +73,9 @@ const routes = [
   {
     type: "collapse",
     name: "Rents",
-    key: "team",
+    key: "rent",
+    auth: "any",
+
     route: "/rents",
     icon: <Office size="12px" />,
     component: <Rents />,
@@ -83,8 +93,10 @@ const routes = [
   {
     type: "collapse",
     name: "Account",
-    key: "connection",
-    route: "/billings",
+    key: "account",
+    route: "/account",
+    auth: "any",
+
     icon: <CreditCard size="12px" />,
     component: <Billing />,
     noCollapse: true,
@@ -96,6 +108,8 @@ const routes = [
     name: "Profile",
     key: "profile",
     route: "/profile",
+    auth: "any",
+
     icon: <CustomerSupport size="12px" />,
     component: <Profile />,
     noCollapse: true,
@@ -103,7 +117,9 @@ const routes = [
   {
     type: "collapse",
     name: "Refer Link",
-    key: "profile",
+    auth: "user",
+
+    key: "",
     // route: "/profile",
     icon: <CustomerSupport size="12px" />,
     // component: <Profile />,
