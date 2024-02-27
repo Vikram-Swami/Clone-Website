@@ -25,10 +25,7 @@ import { useSoftUIController, setMiniSidenav, setOpenConfigurator } from "contex
 
 // Images
 import brand from "assets/images/logo-ct.png";
-<<<<<<< HEAD
-=======
 import Configurator from "examples/Configurator";
->>>>>>> 80d90a86078b06ad0af06ab2d9df97664ed05719
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
@@ -110,11 +107,7 @@ export default function App() {
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
           />
-<<<<<<< HEAD
-          {/* <Configurator /> */}
-=======
           <Configurator />
->>>>>>> 80d90a86078b06ad0af06ab2d9df97664ed05719
           {configsButton}
         </>
       )}

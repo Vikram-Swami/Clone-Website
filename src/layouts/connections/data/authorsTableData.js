@@ -3,6 +3,7 @@ import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import SoftAvatar from "components/SoftAvatar";
 import SoftBadge from "components/SoftBadge";
+import PropTypes from "prop-types";
 import axios from "axios";
 
 // Define your API endpoint
@@ -61,5 +62,17 @@ function generateAuthorsTableData() {
 
   return { columns, rows: authors };
 }
+
+Author.defaultProps = {
+  fullName: "author",
+  email: "",
+  phone: "",
+};
+
+Author.propTypes = {
+  fullName: PropTypes.string,
+  email: PropTypes.string,
+  phone: PropTypes.string,
+};
 
 export default generateAuthorsTableData;
