@@ -1,4 +1,5 @@
 import { createUser } from "Models/endpointes";
+import { createKyc } from "Models/endpointes";
 import { createAddress } from "Models/endpointes";
 import { loginUser } from "Models/endpointes";
 import axios from "axios";
@@ -26,16 +27,7 @@ class UserController {
   async registerUser(data) {
     try {
       // console.log(user);
-      const { fullName, initial, phone, email, password, sponsorId, placementId } = data;
-      const response = await axios.post(API_BASE_URL + createUser, {
-        fullName: fullName,
-        initial: initial,
-        phone: phone,
-        email: email,
-        password: password,
-        sponsorId: sponsorId,
-        placementId: placementId,
-      });
+      const response = await axios.post(API_BASE_URL + createUser, data);
       return response?.data;
     } catch (error) {
       throw error;
@@ -43,15 +35,16 @@ class UserController {
   }
   async createAddress(data) {
     try {
-      const { street1, street2, city, state, country, postalCode } = data;
-      const response = await axios.post(API_BASE_URL + createAddress, {
-        street1: street1,
-        street2: street2,
-        city: city,
-        state: state,
-        country: country,
-        postalCode: postalCode,
-      });
+      const response = await axios.post(API_BASE_URL + createAddress, data);
+      console.log(response);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+  async createKycDetails(data) {
+    try {
+      const response = await axios.post(API_BASE_URL + createKyc, data);
       console.log(response);
       return response.data;
     } catch (error) {

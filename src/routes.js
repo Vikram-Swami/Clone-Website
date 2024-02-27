@@ -3,21 +3,14 @@ import Dashboard from "layouts/dashboard";
 import Tables from "layouts/tables";
 import Connections from "layouts/connections";
 import Billing from "layouts/billing";
-// import VirtualReality from "layouts/virtual-reality";
-import RTL from "layouts/rtl";
 import Profile from "layouts/profile";
-import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 
 // NextWork Dashboard React icons
 import Shop from "examples/Icons/Shop";
 import Office from "examples/Icons/Office";
-import Settings from "examples/Icons/Settings";
-import Document from "examples/Icons/Document";
-import SpaceShip from "examples/Icons/SpaceShip";
 import CustomerSupport from "examples/Icons/CustomerSupport";
 import CreditCard from "examples/Icons/CreditCard";
-import Cube from "examples/Icons/Cube";
 import Income from "layouts/Income/income";
 import Rents from "layouts/Rents";
 
