@@ -42,58 +42,56 @@ function SignIn() {
       description="Enter your email and password to sign in"
       image={curved9}
     >
-      <form ref={form}>
-        <SoftBox component="form" role="form">
-          <SoftBox mb={2}>
-            <SoftBox mb={1} ml={0.5}>
-              <SoftTypography component="label" variant="caption" fontWeight="bold">
-                Email
-              </SoftTypography>
-            </SoftBox>
-            <SoftInput
-              type="text"
-              placeholder="user-Id"
-              onChange={(e) => {
-                form.userId = e.target.value;
-              }}
-            />
-          </SoftBox>
-          <SoftBox mb={2}>
-            <SoftBox mb={1} ml={0.5}>
-              <SoftTypography component="label" variant="caption" fontWeight="bold">
-                Password
-              </SoftTypography>
-            </SoftBox>
-            <SoftInput
-              type="password"
-              placeholder="Password"
-              onChange={(e) => {
-                form.password = e.target.value;
-              }}
-            />
-          </SoftBox>
-          <SoftBox mt={4} mb={1}>
-            <SoftButton variant="gradient" color="info" fullWidth onClick={handleLogin}>
-              sign in
-            </SoftButton>
-          </SoftBox>
-          <SoftBox mt={3} textAlign="center">
-            <SoftTypography variant="button" color="text" fontWeight="regular">
-              Don&apos;t have an account?{" "}
-              <SoftTypography
-                component={Link}
-                to="/authentication/sign-up"
-                variant="button"
-                color="info"
-                fontWeight="medium"
-                textGradient
-              >
-                Sign up
-              </SoftTypography>
+      <SoftBox component="form" role="form">
+        <SoftBox mb={2}>
+          <SoftBox mb={1} ml={0.5}>
+            <SoftTypography component="label" variant="caption" fontWeight="bold">
+              Email
             </SoftTypography>
           </SoftBox>
+          <SoftInput
+            type="text"
+            placeholder="user-Id"
+            onChange={(e) => {
+              form.userId = e.target.value;
+            }}
+          />
         </SoftBox>
-      </form>
+        <SoftBox mb={2}>
+          <SoftBox mb={1} ml={0.5}>
+            <SoftTypography component="label" variant="caption" fontWeight="bold">
+              Password
+            </SoftTypography>
+          </SoftBox>
+          <SoftInput
+            type="password"
+            placeholder="Password"
+            onChange={(e) => {
+              form.password = e.target.value;
+            }}
+          />
+        </SoftBox>
+        <SoftBox mt={4} mb={1}>
+          <SoftButton variant="gradient" color="info" fullWidth onClick={handleLogin}>
+            sign in
+          </SoftButton>
+        </SoftBox>
+        <SoftBox mt={3} textAlign="center">
+          <SoftTypography variant="button" color="text" fontWeight="regular">
+            Don&apos;t have an account?{" "}
+            <SoftTypography
+              component={Link}
+              to="/sign-up"
+              variant="button"
+              color="info"
+              fontWeight="medium"
+              textGradient
+            >
+              Sign up
+            </SoftTypography>
+          </SoftTypography>
+        </SoftBox>
+      </SoftBox>
     </CoverLayout>
   );
 }

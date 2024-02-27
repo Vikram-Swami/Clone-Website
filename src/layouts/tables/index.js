@@ -26,7 +26,8 @@ function Tables() {
         <SoftBox mb={3}>
           <Card>
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-              <SoftTypography variant="h6">Authors table</SoftTypography>
+              <SoftTypography variant="h6">Team</SoftTypography>
+              <SoftTypography variant="h6">List / Tree</SoftTypography>
             </SoftBox>
             <SoftBox
               sx={{
@@ -42,25 +43,8 @@ function Tables() {
             </SoftBox>
           </Card>
         </SoftBox>
-        <Card>
-          <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-            <SoftTypography variant="h6">Projects table</SoftTypography>
-          </SoftBox>
-          <SoftBox
-            sx={{
-              "& .MuiTableRow-root:not(:last-child)": {
-                "& td": {
-                  borderBottom: ({ borders: { borderWidth, borderColor } }) =>
-                    `${borderWidth[1]} solid ${borderColor}`,
-                },
-              },
-            }}
-          >
-            <Table columns={prCols} rows={prRows} />
-          </SoftBox>
-        </Card>
       </SoftBox>
-      <Footer />
+      {/* <Footer /> */}
     </DashboardLayout>
   );
 }

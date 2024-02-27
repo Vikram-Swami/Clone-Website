@@ -70,7 +70,7 @@ const authorsTableData = {
           color="secondary"
           fontWeight="medium"
         >
-          Edit
+          View
         </SoftTypography>
       ),
     },
@@ -99,7 +99,7 @@ const authorsTableData = {
           color="secondary"
           fontWeight="medium"
         >
-          Edit
+          View
         </SoftTypography>
       ),
     },
@@ -122,7 +122,7 @@ const authorsTableData = {
           color="secondary"
           fontWeight="medium"
         >
-          Edit
+          View
         </SoftTypography>
       ),
     },
@@ -145,12 +145,12 @@ const authorsTableData = {
           color="secondary"
           fontWeight="medium"
         >
-          Edit
+          View
         </SoftTypography>
       ),
     },
     {
-      author: <Author image={team2} name="Richard Gran" email="richard@creative-tim.com" />,
+      author: <Author image={team4} name="Richard Gran" email="richard@creative-tim.com" />,
       function: <Function job="Manager" org="Executive" />,
       status: (
         <SoftBadge
@@ -174,7 +174,7 @@ const authorsTableData = {
           color="secondary"
           fontWeight="medium"
         >
-          Edit
+          View
         </SoftTypography>
       ),
     },
@@ -203,7 +203,7 @@ const authorsTableData = {
           color="secondary"
           fontWeight="medium"
         >
-          Edit
+          View
         </SoftTypography>
       ),
     },

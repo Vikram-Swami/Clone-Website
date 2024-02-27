@@ -23,11 +23,15 @@ function PaymentMethod() {
     <Card id="delete-account">
       <SoftBox pt={2} px={2} display="flex" justifyContent="space-between" alignItems="center">
         <SoftTypography variant="h6" fontWeight="medium">
-          Payment Method
+          Bank
         </SoftTypography>
         <SoftButton variant="gradient" color="dark">
           <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-          &nbsp;add new card
+          &nbsp;add Money
+        </SoftButton>
+        <SoftButton variant="gradient" color="dark">
+          <Icon sx={{ fontWeight: "bold" }}>add</Icon>
+          &nbsp;Withdrawal
         </SoftButton>
       </SoftBox>
       <SoftBox p={2}>

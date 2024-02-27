@@ -87,13 +87,7 @@ function Header() {
       >
         <Grid container spacing={3} alignItems="center">
           <Grid item>
-            <SoftAvatar
-              src={burceMars}
-              alt="profile-image"
-              variant="rounded"
-              size="xl"
-              shadow="sm"
-            />
+            <SoftAvatar icon={{ color: "green", component: " person4" }} />
           </Grid>
           <Grid item>
             <SoftBox height="100%" mt={0.5} lineHeight={1}>
@@ -101,23 +95,9 @@ function Header() {
                 Alex Thompson
               </SoftTypography>
               <SoftTypography variant="button" color="text" fontWeight="medium">
-                CEO / Co-Founder
+                Networker
               </SoftTypography>
             </SoftBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={4} sx={{ ml: "auto" }}>
-            <AppBar position="static">
-              <Tabs
-                orientation={tabsOrientation}
-                value={tabValue}
-                onChange={handleSetTabValue}
-                sx={{ background: "transparent" }}
-              >
-                <Tab label="App" icon={<Cube />} />
-                <Tab label="Message" icon={<Document />} />
-                <Tab label="Settings" icon={<Settings />} />
-              </Tabs>
-            </AppBar>
           </Grid>
         </Grid>
       </Card>

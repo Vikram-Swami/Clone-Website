@@ -127,14 +127,12 @@ function SignUp() {
       setUser(userData)
       setIsOpen(true)
       navigate("/login")
+      sessionStorage.clear();
     } catch (error) {
       setIsOpen(true);
       setUser(error?.response?.data);
     }
   };
-  useEffect(() => {
-  }, []);
-  console.log("called");
   return (
     <BasicLayout title="Welcome!" description="NextWork Technologies" image={curved6} >
       <Card>
@@ -487,7 +485,7 @@ function SignUp() {
                 Already have an account?&nbsp;
                 <SoftTypography
                   component={Link}
-                  to="/authentication/sign-in"
+                  to="/sign-in"
                   variant="button"
                   color="dark"
                   fontWeight="bold"

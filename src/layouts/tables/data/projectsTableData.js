@@ -35,14 +35,6 @@ const action = (
 );
 
 const projectsTableData = {
-  columns: [
-    { name: "project", align: "left" },
-    { name: "budget", align: "left" },
-    { name: "status", align: "left" },
-    { name: "completion", align: "center" },
-    { name: "action", align: "center" },
-  ],
-
   rows: [
     {
       project: [logoSpotify, "Spotift"],
@@ -56,7 +48,7 @@ const projectsTableData = {
           working
         </SoftTypography>
       ),
-      completion: <Completion value={60} color="info" />,
+      completion: "<Completion value={60} color= />",
       action,
     },
     {

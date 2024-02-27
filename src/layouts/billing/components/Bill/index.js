@@ -40,13 +40,8 @@ function Bill({ name, company, email, vat, noGutter }) {
             mt={{ xs: 2, sm: 0 }}
             ml={{ xs: -1.5, sm: 0 }}
           >
-            <SoftBox mr={1}>
-              <SoftButton variant="text" color="error">
-                <Icon>delete</Icon>&nbsp;delete
-              </SoftButton>
-            </SoftBox>
             <SoftButton variant="text" color="dark">
-              <Icon>edit</Icon>&nbsp;edit
+              <Icon>view</Icon>&nbsp;View
             </SoftButton>
           </SoftBox>
         </SoftBox>

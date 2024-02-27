@@ -17,8 +17,6 @@ import GradientLineChart from "examples/Charts/LineCharts/GradientLineChart";
 import typography from "assets/theme/base/typography";
 
 // Dashboard layout components
-import BuildByDevelopers from "layouts/dashboard/components/BuildByDevelopers";
-import WorkWithTheRockets from "layouts/dashboard/components/WorkWithTheRockets";
 import Projects from "layouts/dashboard/components/Projects";
 import OrderOverview from "layouts/dashboard/components/OrderOverview";
 
@@ -38,7 +36,7 @@ function Dashboard() {
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
-                title={{ text: "wallet" }}
+                title={{ text: "Members" }}
                 count="53,000"
                 percentage={{ color: "success" }}
                 icon={{ color: "info", component: "wallet" }}
@@ -60,22 +58,22 @@ function Dashboard() {
                 icon={{ color: "info", component: " paid" }}
               />
             </Grid>
-            <Grid item xs={12} sm={6} xl={3}>
-              <MiniStatisticsCard
-                title={{ text: "earning" }}
-                count="00"
-                // percentage={{ color: "success", text: "+5%" }}
-                icon={{
-                  color: "info",
-                  component: "shopping_cart",
-                }}
-              />
-            </Grid>
           </Grid>
         </SoftBox>
         <SoftBox mb={3}>
           <Grid container spacing={3}>
-            <Grid item xs={12} lg={7}>
+
+            <Grid item xs={12} lg={8}>
+              <ReportsBarChart
+                // description={<>{/* (<strong>+23%</strong>) than last week */}</>}
+                chart={chart}
+                items={items}
+              />
+            </Grid>
+            <Grid item xs={12} md={6} lg={4}>
+              <OrderOverview />
+            </Grid>
+            <Grid item xs={12} lg={8}>
               <GradientLineChart
                 title="Sales Overview"
                 description={
@@ -100,9 +98,6 @@ function Dashboard() {
         <Grid container spacing={3}>
           <Grid item xs={12} md={6} lg={8}>
             <Projects />
-          </Grid>
-          <Grid item xs={12} md={6} lg={4}>
-            <OrderOverview />
           </Grid>
         </Grid>
       </SoftBox >

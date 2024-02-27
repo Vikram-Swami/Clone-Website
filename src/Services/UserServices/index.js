@@ -35,8 +35,7 @@ class UserController {
   }
   async createAddress(data) {
     try {
-      const response = await axios.post(API_BASE_URL + createAddress, data
-      );
+      const response = await axios.post(API_BASE_URL + createAddress, data);
       console.log(response);
       return response.data;
     } catch (error) {
@@ -45,8 +44,7 @@ class UserController {
   }
   async createKycDetails(data) {
     try {
-      const response = await axios.post(API_BASE_URL + createKyc, data
-      );
+      const response = await axios.post(API_BASE_URL + createKyc, data);
       console.log(response);
       return response.data;
     } catch (error) {
