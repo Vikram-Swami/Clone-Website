@@ -293,6 +293,7 @@ function SignUp() {
                     name="city"
                     placeholder="City"
                     disabled
+                    readOnly
 
                   />
                 </SoftBox>
@@ -302,7 +303,7 @@ function SignUp() {
                     name="state"
                     disabled
                     placeholder="State"
-
+                    readOnly
                   />
                 </SoftBox>
                 <SoftBox mb={2}>
@@ -311,7 +312,7 @@ function SignUp() {
                     name="country"
                     disabled
                     placeholder="Country"
-
+                    readOnly
                   />
                 </SoftBox>
 

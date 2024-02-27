@@ -75,14 +75,6 @@ function Dashboard() {
         </SoftBox>
         <SoftBox mb={3}>
           <Grid container spacing={3}>
-            <Grid item xs={12} lg={5}>
-              <ReportsBarChart
-                // title="Profile"
-                description={<>{/* (<strong>+23%</strong>) than last week */}</>}
-                chart={chart}
-                items={items}
-              />
-            </Grid>
             <Grid item xs={12} lg={7}>
               <GradientLineChart
                 title="Sales Overview"
@@ -113,9 +105,9 @@ function Dashboard() {
             <OrderOverview />
           </Grid>
         </Grid>
-      </SoftBox>
+      </SoftBox >
       <Footer />
-    </DashboardLayout>
+    </DashboardLayout >
   );
 }
 
