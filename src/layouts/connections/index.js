@@ -14,6 +14,8 @@ import Table from "examples/Tables/Table";
 // Data
 import authorsTableData from "layouts/connections/data/authorsTableData";
 import projectsTableData from "layouts/connections/data/projectsTableData";
+import SoftButton from "components/SoftButton";
+import { Icon } from "@mui/material";
 
 function Connections() {
   const { columns, rows } = authorsTableData;
@@ -27,6 +29,10 @@ function Connections() {
           <Card>
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
               <SoftTypography variant="h6">Connection table</SoftTypography>
+              <SoftButton variant="gradient" color="dark" ml={2}>
+                <Icon sx={{ fontWeight: "bold" }}>add</Icon>
+                &nbsp;Create Connections
+              </SoftButton>
             </SoftBox>
             <SoftBox
               sx={{

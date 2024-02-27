@@ -19,56 +19,40 @@ import Invoices from "layouts/billing/components/Invoices";
 import BillingInformation from "layouts/billing/components/BillingInformation";
 import Transactions from "layouts/billing/components/Transactions";
 
-function Billing() {
+function Products() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
       <SoftBox mt={4}>
         <SoftBox mb={1.5}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} lg={8}>
+          <Grid container spacing={3} justifyContent={"space-around"}>
+            <Grid item xs={12} lg={10}>
               <Grid container spacing={3}>
-                <Grid item xs={12} md={6} xl={3}>
-                  <DefaultInfoCard icon="account_balance_wallet" title="Wallet" value="5581.00" />
+                <Grid item xs={12} md={6} xl={4}>
+                  <DefaultInfoCard icon="cloud" title="Storage : 512 GB" value="5581.00" />
                 </Grid>
-                <Grid item xs={12} md={6} xl={3}>
-                  <DefaultInfoCard
-                    icon="currency_rupee
-"
-                    title="Withdrawal"
-                    value="455.00"
-                  />
+                <Grid item xs={12} md={6} xl={4}>
+                  <DefaultInfoCard icon="cloud" title="Storage : 1 TB" value="455.00" />
                 </Grid>
-                <Grid item xs={12} md={6} xl={3}>
-                  <DefaultInfoCard icon="account_balance" title="Earning" value="5455.00" />
+                <Grid item xs={12} md={6} xl={4}>
+                  <DefaultInfoCard icon="cloud" title="Storage : 2 TB" value="5455.00" />
                 </Grid>
-                <Grid item xs={12} md={6} xl={3}>
-                  <DefaultInfoCard icon="paypal" title="paypal" value="$455.00" />
+                <Grid item xs={12} md={6} xl={4}>
+                  <DefaultInfoCard icon="cloud" title="Storage : 5 TB" value="$455.00" />
                 </Grid>
-                <Grid item xs={12}>
-                  <PaymentMethod />
+                <Grid item xs={12} md={6} xl={4}>
+                  <DefaultInfoCard icon="cloud" title="Storage : 10 TB" value="$455.00" />
+                </Grid>
+                <Grid item xs={12} md={6} xl={4}>
+                  <DefaultInfoCard icon="cloud" title="Storage : 20 TB" value="$455.00" />
                 </Grid>
               </Grid>
-            </Grid>
-            <Grid item xs={12} lg={4}>
-              <Invoices />
-            </Grid>
-          </Grid>
-        </SoftBox>
-        <SoftBox my={3}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={7}>
-              <BillingInformation />
-            </Grid>
-            <Grid item xs={12} md={5}>
-              <Transactions />
             </Grid>
           </Grid>
         </SoftBox>
       </SoftBox>
-      <Footer />
     </DashboardLayout>
   );
 }
 
-export default Billing;
+export default Products;

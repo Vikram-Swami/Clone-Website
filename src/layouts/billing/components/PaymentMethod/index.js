@@ -15,6 +15,8 @@ import borders from "assets/theme/base/borders";
 // Images
 import masterCardLogo from "assets/images/logos/mastercard.png";
 import visaLogo from "assets/images/logos/visa.png";
+import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
+import { Divider } from "@mui/material";
 
 function PaymentMethod() {
   const { borderWidth, borderColor } = borders;
@@ -22,63 +24,45 @@ function PaymentMethod() {
   return (
     <Card id="delete-account">
       <SoftBox pt={2} px={2} display="flex" justifyContent="space-between" alignItems="center">
-        <SoftTypography variant="h6" fontWeight="medium">
-          Bank
+        <SoftTypography variant="h4" fontWeight="medium">
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bank
         </SoftTypography>
-        <SoftButton variant="gradient" color="dark">
-          <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-          &nbsp;add Money
-        </SoftButton>
-        <SoftButton variant="gradient" color="dark">
-          <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-          &nbsp;Withdrawal
-        </SoftButton>
+        <SoftBox>
+          <SoftButton variant="gradient" color="dark" style={{ marginRight: "20px" }}>
+            <Icon sx={{ fontWeight: "bold" }}>add</Icon>
+            &nbsp;add Money
+          </SoftButton>
+
+          <SoftButton variant="gradient" color="dark" ml={2}>
+            <Icon sx={{ fontWeight: "bold" }}>add</Icon>
+            &nbsp;Withdrawal
+          </SoftButton>
+        </SoftBox>
       </SoftBox>
-      <SoftBox p={2}>
+      <SoftBox mt={5} mb={3}>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={6}>
-            <SoftBox
-              border={`${borderWidth[1]} solid ${borderColor}`}
-              borderRadius="lg"
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              p={3}
-            >
-              <SoftBox component="img" src={masterCardLogo} alt="master card" width="10%" mr={2} />
-              <SoftTypography variant="h6" fontWeight="medium">
-                ****&nbsp;&nbsp;****&nbsp;&nbsp;****&nbsp;&nbsp;7852
-              </SoftTypography>
-              <SoftBox ml="auto" lineHeight={0}>
-                <Tooltip title="Edit Card" placement="top">
-                  <Icon sx={{ cursor: "pointer" }} fontSize="small">
-                    edit
-                  </Icon>
-                </Tooltip>
+          <Grid item xs={12} md={6} xl={8} ml={4}>
+            <Card sx={{ height: "100%", boxShadow: "none" }}>
+              <SoftBox
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                pt={2}
+                px={2}
+              >
+                <SoftTypography variant="h6" fontWeight="medium" textTransform="capitalize">
+                  {"Holder Name :  Suraj Jha"}
+                  <br></br>
+                  {"Account No :  33210245564"}
+                  <br></br>
+                  {"IFSC :  SBINN45564"}
+                </SoftTypography>
               </SoftBox>
-            </SoftBox>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <SoftBox
-              border={`${borderWidth[1]} solid ${borderColor}`}
-              borderRadius="lg"
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              p={3}
-            >
-              <SoftBox component="img" src={visaLogo} alt="master card" width="10%" mr={2} />
-              <SoftTypography variant="h6" fontWeight="medium">
-                ****&nbsp;&nbsp;****&nbsp;&nbsp;****&nbsp;&nbsp;5248
-              </SoftTypography>
-              <SoftBox ml="auto" lineHeight={0}>
-                <Tooltip title="Edit Card" placement="top">
-                  <Icon sx={{ cursor: "pointer" }} fontSize="small">
-                    edit
-                  </Icon>
-                </Tooltip>
+              <SoftBox p={2}>
+                <SoftBox opacity={0.3}></SoftBox>
+                <SoftBox>{"Bank Name : SBI INDIA"}</SoftBox>
               </SoftBox>
-            </SoftBox>
+            </Card>
           </Grid>
         </Grid>
       </SoftBox>

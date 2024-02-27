@@ -10,7 +10,7 @@ import BasicLayout from "layouts/authentication/components/BasicLayout";
 import curved6 from "assets/images/curved-images/curved14.jpg";
 import FormDialog from "components/Pop";
 import UserController from "Services/UserServices";
-import { NativeSelect } from "@mui/material";
+import { MenuItem, NativeSelect, Select } from "@mui/material";
 function SignUp() {
   const [agreement, setAgreement] = useState(true);
   const [user, setUser] = useState();
@@ -129,7 +129,7 @@ function SignUp() {
   useEffect(() => {}, []);
   console.log("called");
   return (
-    <BasicLayout title="Welcome!" description="NextWork Technologies" image={curved6}>
+    <BasicLayout title="Welcome!" description="" image={curved6}>
       <Card>
         <SoftBox pt={2} pb={3} px={3}>
           <SoftBox
