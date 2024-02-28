@@ -18,8 +18,11 @@ import PaymentMethod from "layouts/billing/components/PaymentMethod";
 import Invoices from "layouts/billing/components/Invoices";
 import BillingInformation from "layouts/billing/components/BillingInformation";
 import Transactions from "layouts/billing/components/Transactions";
+import { useSoftUIController } from "context";
 
 function Billing() {
+  const [controller] = useSoftUIController();
+  const { user } = controller;
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -29,21 +32,21 @@ function Billing() {
             <Grid item xs={12} lg={8}>
               <Grid container spacing={3}>
                 <Grid item xs={12} md={6} xl={3}>
-                  <DefaultInfoCard icon="account_balance_wallet" title="Wallet" value="5581.00" />
+                  <DefaultInfoCard icon="account_balance_wallet" title="Wallet" value={user?.wallet} />
                 </Grid>
                 <Grid item xs={12} md={6} xl={3}>
                   <DefaultInfoCard
                     icon="currency_rupee
 "
                     title="Withdrawal"
-                    value="455.00"
+                    value={user?.earning}
                   />
                 </Grid>
                 <Grid item xs={12} md={6} xl={3}>
-                  <DefaultInfoCard icon="account_balance" title="Earning" value="5455.00" />
+                  <DefaultInfoCard icon="customerSupport" title="Members" value={user?.member} />
                 </Grid>
                 <Grid item xs={12} md={6} xl={3}>
-                  <DefaultInfoCard icon="paypal" title="paypal" value="$455.00" />
+                  <DefaultInfoCard icon="storage" title="Own Storage" value={user?.ownStr} />
                 </Grid>
                 <Grid item xs={12}>
                   <PaymentMethod />
@@ -55,7 +58,7 @@ function Billing() {
             </Grid>
           </Grid>
         </SoftBox>
-        <SoftBox my={3}>
+        {/* <SoftBox my={3}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={7}>
               <BillingInformation />
@@ -64,9 +67,9 @@ function Billing() {
               <Transactions />
             </Grid>
           </Grid>
-        </SoftBox>
+        </SoftBox> */}
       </SoftBox>
-      <Footer />
+
     </DashboardLayout>
   );
 }

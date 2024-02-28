@@ -22,36 +22,39 @@ import { useEffect } from "react";
 import ProductController from "Services/ConnectionsServices";
 import { useState } from "react";
 import { useSoftUIController } from "context";
-
-
+import DefaultProductCard from "examples/Cards/InfoCards/DefaultProductCard";
 
 function Products() {
   const productController = new ProductController();
-  const [product, setProduct] = useState();
+  const [products, setProducts] = useState([]);
   const [controller] = useSoftUIController();
   const { user } = controller;
+
   const getProducts = async () => {
     try {
       const storageData = await productController.getPublished();
       console.log(storageData);
-      if (storageData.status == 200) {
-        setProduct(storageData?.data);
+      if (storageData?.status === 200) {
+        setProducts(storageData?.data);
       }
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const createConnection = async () => {
     try {
-      const response = await productController.createConnections()
+      const response = await productController.createConnections();
+      console.log(response);
     } catch (error) {
-
+      console.log(error);
     }
-  }
+  };
+
   useEffect(() => {
-    getProducts()
-  }, [])
+    getProducts();
+  }, []);
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -60,9 +63,17 @@ function Products() {
           <Grid container spacing={3} justifyContent="space-around">
             <Grid item xs={12} lg={10}>
               <Grid container spacing={3}>
-                {product?.map((data, index) => (
+                {products.map((data, index) => (
                   <Grid key={index} item xs={12} md={6} xl={4}>
-                    <DefaultInfoCard {...data} icon="cloud" title={`Storage : ${data.range}`} />
+                    <DefaultProductCard
+                      icon="cloud"
+                      title={`Storage : ${data.range} GB`}
+                      description={`Space: ${data.space} GB`}
+                      value={`Rent: ${data.rent}%`}
+                      basicAmt={`Basic Amount: ${data.basicAmt}`}
+                      tax={`Tax: ${data.tax}%`}
+                      totalprice={`Total Price: ${data.basicAmt + (data.basicAmt * data.tax) / 100}`}
+                    />
                   </Grid>
                 ))}
               </Grid>
@@ -73,4 +84,5 @@ function Products() {
     </DashboardLayout>
   );
 }
+
 export default Products;
