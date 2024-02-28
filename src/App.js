@@ -18,13 +18,14 @@ import {
   setUser,
   setMiniSidenav,
   setOpenConfigurator,
-  setLoading
+  setLoading,
 } from "context";
 import Sidenav from "examples/Sidenav";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
-  const { miniSidenav, direction, layout, openConfigurator, sidenavColor, user, loading } = controller;
+  const { miniSidenav, direction, layout, openConfigurator, sidenavColor, user, loading } =
+    controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const { pathname } = useLocation();
 
@@ -43,10 +44,10 @@ export default function App() {
   };
 
   function getCookie(name) {
-    const cookieArray = document.cookie.split(';');
+    const cookieArray = document.cookie.split(";");
     for (let i = 0; i < cookieArray.length; i++) {
       const cookie = cookieArray[i].trim();
-      if (cookie.startsWith(name + '=')) {
+      if (cookie.startsWith(name + "=")) {
         return cookie.substring(name.length + 1);
       }
     }
@@ -56,7 +57,7 @@ export default function App() {
   async function getUserById() {
     setLoading(dispatch, true);
     try {
-      const userId = getCookie('userId');
+      const userId = getCookie("userId");
       let userController = new UserController();
       let data = await userController.getUserByIdFromAPI(userId);
       const user = new UserModel().toJson(data?.data);
@@ -70,7 +71,6 @@ export default function App() {
   }
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
-
       if (user && user.id !== undefined) {
         if (route.auth === user.type || route.auth === "any") {
           return <Route exact path={route.route} element={route.component} key={route.key} />;
@@ -92,8 +92,8 @@ export default function App() {
       display="flex"
       justifyContent="center"
       alignItems="center"
-      width="3.5rem"
-      height="3.5rem"
+      width="0"
+      height="0"
       bgColor="white"
       shadow="sm"
       borderRadius="50%"
@@ -104,11 +104,7 @@ export default function App() {
       color="dark"
       sx={{ cursor: "pointer" }}
       onClick={handleConfiguratorOpen}
-    >
-      <Icon fontSize="default" color="inherit">
-        settings
-      </Icon>
-    </SoftBox>
+    ></SoftBox>
   );
 
   return (

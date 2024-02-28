@@ -43,6 +43,7 @@ import {
 import team2 from "assets/images/team-2.jpg";
 import logoSpotify from "assets/images/small-logos/logo-spotify.svg";
 import SoftButton from "components/SoftButton";
+import { Height } from "@mui/icons-material";
 
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
@@ -133,7 +134,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
         </SoftBox>
         <SoftBox color={light ? "white" : "inherit"}>
           <SoftButton variant="gradient" color="dark" ml={2}>
-            <Icon sx={{ fontWeight: "bold", fontSize: "large" }}>account_balance_wallet</Icon>
+            <Icon sx={{ fontWeight: "bold", fontSize: "3rem !important" }}>
+              account_balance_wallet
+            </Icon>
             <Icon sx={{ fontWeight: "bold" }}>currency_rupee</Icon>
             &nbsp;5512.22
           </SoftButton>
