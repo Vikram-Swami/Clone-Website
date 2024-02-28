@@ -20,7 +20,6 @@ import curved9 from "assets/images/curved-images/curved-6.jpg";
 import UserController from "Services/UserServices";
 import LoginDialog from "components/Pop/login";
 
-
 function SignIn() {
   const form = useRef();
   const [user, setUser] = useState();
@@ -34,7 +33,6 @@ function SignIn() {
       console.log("Login successful:", userData);
       setIsOpen(true);
       setUser(userData);
-
     } catch (error) {
       console.error("Login failed:", error.message);
       setIsOpen(true);
@@ -44,8 +42,8 @@ function SignIn() {
   };
   return (
     <CoverLayout
-      title="Welcome back"
-      description="Enter your email and password to sign in"
+      title=" Welcome"
+      description="Enter your User-Id and password to Log-in"
       image={curved9}
     >
       <SoftBox component="form" role="form" ref={form}>
@@ -55,11 +53,7 @@ function SignIn() {
               User Id
             </SoftTypography>
           </SoftBox>
-          <SoftInput
-            type="text"
-            placeholder="user-Id"
-            name="userId"
-          />
+          <SoftInput type="text" placeholder="user-Id" name="userId" />
         </SoftBox>
         <SoftBox mb={2}>
           <SoftBox mb={1} ml={0.5}>
@@ -67,20 +61,30 @@ function SignIn() {
               Password
             </SoftTypography>
           </SoftBox>
-          <SoftInput
-            type="password"
-            placeholder="Password"
-            name="password"
-          />
+          <SoftInput type="password" placeholder="Password" name="password" />
         </SoftBox>
         <SoftBox mt={4} mb={1}>
           <SoftButton variant="gradient" color="info" fullWidth onClick={handleLogin}>
-            sign in
+            Log-in
           </SoftButton>
         </SoftBox>
         <SoftBox mt={3} textAlign="center">
           <SoftTypography variant="button" color="text" fontWeight="regular">
             Don&apos;t have an account?{" "}
+            <SoftTypography
+              component={Link}
+              to="/sign-up"
+              variant="button"
+              color="info"
+              fontWeight="medium"
+              textGradient
+            >
+              Sign up
+            </SoftTypography>
+          </SoftTypography>
+          <br></br>
+          <SoftTypography variant="button" color="text" fontWeight="regular">
+            Forget Password ?{" "}
             <SoftTypography
               component={Link}
               to="/sign-up"
