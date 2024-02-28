@@ -18,18 +18,27 @@ import CoverLayout from "layouts/authentication/components/CoverLayout";
 // Images
 import curved9 from "assets/images/curved-images/curved-6.jpg";
 import UserController from "Services/UserServices";
+import FormDialog from "components/Pop";
 
 function SignIn() {
   const form = useRef();
   const userController = new UserController();
   const handleLogin = async (e) => {
-    e.preventDefault();
-
     try {
-      const userData = await userController.login({ userId: form.userId, password: form.password });
+      const formDetails = new FormData(form.current);
+      const userData = await userController.login(formDetails);
       console.log("Login successful:", userData);
       console.log(form.userId);
-      // Handle successful login (e.g., store token in local storage, redirect user)
+      if (userData.status === 200) {
+        setIsOpen(true);
+        setStep(step + 1);
+        setUser(userData);
+        sessionStorage.setItem("userId", userData?.data?.id);
+        form.current.reset();
+      } else {
+        setIsOpen(true);
+        setUser(userData);
+      }
     } catch (error) {
       console.error("Login failed:", error.message);
       6;
@@ -42,7 +51,7 @@ function SignIn() {
       description="Enter your email and password to sign in"
       image={curved9}
     >
-      <SoftBox component="form" role="form">
+      <SoftBox component="form" role="form" ref={form}>
         <SoftBox mb={2}>
           <SoftBox mb={1} ml={0.5}>
             <SoftTypography component="label" variant="caption" fontWeight="bold">
@@ -52,9 +61,7 @@ function SignIn() {
           <SoftInput
             type="text"
             placeholder="user-Id"
-            onChange={(e) => {
-              form.userId = e.target.value;
-            }}
+            name="userId"
           />
         </SoftBox>
         <SoftBox mb={2}>
@@ -66,9 +73,7 @@ function SignIn() {
           <SoftInput
             type="password"
             placeholder="Password"
-            onChange={(e) => {
-              form.password = e.target.value;
-            }}
+            name="password"
           />
         </SoftBox>
         <SoftBox mt={4} mb={1}>
@@ -92,6 +97,7 @@ function SignIn() {
           </SoftTypography>
         </SoftBox>
       </SoftBox>
+      <FormDialog />
     </CoverLayout>
   );
 }
