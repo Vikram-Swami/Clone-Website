@@ -4,3 +4,4 @@ export const createAddress = "/create-address";
 export const createKyc = "/create-kyc";
 export const otpVerify = '/verify-otp'
 export const getUserByUserId = '/get-user-by-id'
+export const resendOtpRoute = '/resend-otp'

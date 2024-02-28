@@ -27,7 +27,7 @@ class UserModel {
             jsonData.status ?? false,
             jsonData.storage?.own ?? 0,
             jsonData.storage?.member ?? 0,
-            jsonData.storage.usable ?? 0,
+            jsonData.storage?.usable ?? 0,
             jsonData.earning ?? 0,
             jsonData.createdAt ?? new Date()
 

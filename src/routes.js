@@ -32,7 +32,7 @@ const routes = [
     name: "Create Members",
     key: "members",
     auth: "user",
-    route: "/sign-up",
+    route: "/create-members",
     icon: <Office size="12px" />,
     component: <SignUp />,
     noCollapse: true,
@@ -121,6 +121,17 @@ const routes = [
 
     key: "",
     // route: "/profile",
+    icon: <CustomerSupport size="12px" />,
+    // component: <Profile />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Refer Link",
+    auth: "user",
+
+    key: "",
+    route: "/*",
     icon: <CustomerSupport size="12px" />,
     // component: <Profile />,
     noCollapse: true,

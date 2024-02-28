@@ -1,43 +1,33 @@
-import { useState, useEffect, useMemo } from "react";
-
-// react-router components
-import { Routes, Route, Navigate, useLocation, redirect } from "react-router-dom";
-
-// @mui material components
+import React, { useState, useEffect } from "react";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Icon from "@mui/material/Icon";
-
-// NextWork  Dashboard React components
 import SoftBox from "components/SoftBox";
-
-// NextWork  Dashboard React examples
-import Sidenav from "examples/Sidenav";
-
-// NextWork  Dashboard React themes
 import themeRTL from "assets/theme/theme-rtl";
-
-// NextWork  Dashboard React routes
 import routes from "routes";
-
-// NextWork  Dashboard React contexts
-import { useSoftUIController, setUser, setMiniSidenav, setOpenConfigurator } from "context";
-
-// Images
 import brand from "assets/images/logo-ct.png";
 import UserModel from "Models/User";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 import Dashboard from "layouts/dashboard";
 import UserController from "Services/UserServices";
+import Loading from "react-loading";
+import {
+  useSoftUIController,
+  setUser,
+  setMiniSidenav,
+  setOpenConfigurator,
+  setLoading
+} from "context";
+import Sidenav from "examples/Sidenav";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
-  const { miniSidenav, direction, layout, openConfigurator, sidenavColor, user } = controller;
+  const { miniSidenav, direction, layout, openConfigurator, sidenavColor, user, loading } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const { pathname } = useLocation();
 
-  // Open sidenav when mouse enter on mini sidenav
   const handleOnMouseEnter = () => {
     if (miniSidenav && !onMouseEnter) {
       setMiniSidenav(dispatch, false);
@@ -45,7 +35,6 @@ export default function App() {
     }
   };
 
-  // Close sidenav when mouse leave mini sidenav
   const handleOnMouseLeave = () => {
     if (onMouseEnter) {
       setMiniSidenav(dispatch, true);
@@ -53,28 +42,34 @@ export default function App() {
     }
   };
 
-  // Api
-  async function getUserById() {
-    try {
-      let userController = new UserController();
-      let data = await userController.getUserById();
-      setUser(dispatch, data);
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-
+  function getCookie(name) {
+    const cookieArray = document.cookie.split(';');
+    for (let i = 0; i < cookieArray.length; i++) {
+      const cookie = cookieArray[i].trim();
+      if (cookie.startsWith(name + '=')) {
+        return cookie.substring(name.length + 1);
+      }
     }
+    return null;
   }
 
-  // Change the openConfigurator state
-  const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
-
-  // Setting page scroll to 0 when changing the route
+  async function getUserById() {
+    setLoading(dispatch, true);
+    try {
+      const userId = getCookie('userId');
+      let userController = new UserController();
+      let data = await userController.getUserByIdFromAPI(userId);
+      const user = new UserModel().toJson(data?.data);
+      console.log("user", user, data);
+      setUser(dispatch, user);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(dispatch, false);
+    }
+  }
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
-      if (route.collapse) {
-        getRoutes();
-      }
 
       if (user && user.id !== undefined) {
         if (route.auth === user.type || route.auth === "any") {
@@ -84,6 +79,8 @@ export default function App() {
 
       return null;
     });
+  const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
+
   useEffect(() => {
     getUserById();
     document.documentElement.scrollTop = 0;
@@ -113,12 +110,14 @@ export default function App() {
       </Icon>
     </SoftBox>
   );
-  console.log(user);
+
   return (
     <ThemeProvider theme={themeRTL}>
       <CssBaseline />
+      {loading && <Loading width={40} />}
       {layout === "dashboard" && user.id && (
         <>
+          {/* Render Sidenav and Configurator */}
           <Sidenav
             color={sidenavColor}
             brand={brand}
@@ -126,15 +125,15 @@ export default function App() {
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
           />
-          {/* <Configurator /> */}
           {configsButton}
         </>
       )}
       <Routes>
-        {<Route exact path="/" element={!user.id ? <SignIn /> : <Dashboard />} />}
-        {getRoutes(routes)}
-        {!user.id ? <Route path="/sign-up" element={<SignUp />} /> : null}
-        {<Route path="/*" element={<Navigate to="/" />} />}
+        {/* Render routes based on user authentication */}
+        <Route path="/" element={!user.id ? <SignIn /> : <Dashboard />} />
+        {!loading && user.id && getRoutes(routes)}
+        {!user.id && <Route path="/sign-up" element={<SignUp />} />}
+        {!user.id && <Route path="/*" element={<Navigate to="/" />} />}
       </Routes>
     </ThemeProvider>
   );
