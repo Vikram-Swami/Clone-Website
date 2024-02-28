@@ -30,7 +30,7 @@ const routes = [
   {
     type: "collapse",
     name: "Create Members",
-    key: "members",
+    key: "create-members",
     auth: "user",
     route: "/create-members",
     icon: <Office size="12px" />,
@@ -42,7 +42,7 @@ const routes = [
     name: "Team",
     auth: "user",
 
-    key: "team",
+    key: "my-team",
     route: "/my-team",
     icon: <Office size="12px" />,
     component: <Tables />,
@@ -73,7 +73,7 @@ const routes = [
   {
     type: "collapse",
     name: "Rents",
-    key: "rent",
+    key: "rents",
     auth: "any",
 
     route: "/rents",
@@ -84,8 +84,9 @@ const routes = [
   {
     type: "collapse",
     name: "Products",
-    key: "connection",
-    route: "/Products",
+    key: "products",
+    auth: "any",
+    route: "/products",
     icon: <CreditCard size="12px" />,
     component: <Products />,
     noCollapse: true,
@@ -118,20 +119,8 @@ const routes = [
     type: "collapse",
     name: "Refer Link",
     auth: "user",
-
-    key: "",
+    key: "referLink",
     // route: "/profile",
-    icon: <CustomerSupport size="12px" />,
-    // component: <Profile />,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
-    name: "Refer Link",
-    auth: "user",
-
-    key: "",
-    route: "/*",
     icon: <CustomerSupport size="12px" />,
     // component: <Profile />,
     noCollapse: true,

@@ -49,7 +49,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
-
+  const { user } = controller;
   useEffect(() => {
     // Setting the navbar type
     if (fixedNavbar) {
@@ -141,7 +141,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 wallet
               </Icon>
               <SoftTypography variant="button" fontWeight="medium" color={light ? "white" : "dark"}>
-                5581.00
+                {user?.wallet}
               </SoftTypography>
             </IconButton>
           </Link>

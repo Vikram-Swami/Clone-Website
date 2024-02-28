@@ -18,34 +18,53 @@ import PaymentMethod from "layouts/billing/components/PaymentMethod";
 import Invoices from "layouts/billing/components/Invoices";
 import BillingInformation from "layouts/billing/components/BillingInformation";
 import Transactions from "layouts/billing/components/Transactions";
+import { useEffect } from "react";
+import ProductController from "Services/ConnectionsServices";
+import { useState } from "react";
+import { useSoftUIController } from "context";
+
+
 
 function Products() {
+  const productController = new ProductController();
+  const [product, setProduct] = useState();
+  const [controller] = useSoftUIController();
+  const { user } = controller;
+  const getProducts = async () => {
+    try {
+      const storageData = await productController.getPublished();
+      console.log(storageData);
+      if (storageData.status == 200) {
+        setProduct(storageData?.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const createConnection = async () => {
+    try {
+      const response = await productController.createConnections()
+    } catch (error) {
+
+    }
+  }
+  useEffect(() => {
+    getProducts()
+  }, [])
   return (
     <DashboardLayout>
       <DashboardNavbar />
       <SoftBox mt={4}>
         <SoftBox mb={1.5}>
-          <Grid container spacing={3} justifyContent={"space-around"}>
+          <Grid container spacing={3} justifyContent="space-around">
             <Grid item xs={12} lg={10}>
               <Grid container spacing={3}>
-                <Grid item xs={12} md={6} xl={4}>
-                  <DefaultInfoCard icon="cloud" title="Storage : 512 GB" value="5581.00" />
-                </Grid>
-                <Grid item xs={12} md={6} xl={4}>
-                  <DefaultInfoCard icon="cloud" title="Storage : 1 TB" value="455.00" />
-                </Grid>
-                <Grid item xs={12} md={6} xl={4}>
-                  <DefaultInfoCard icon="cloud" title="Storage : 2 TB" value="5455.00" />
-                </Grid>
-                <Grid item xs={12} md={6} xl={4}>
-                  <DefaultInfoCard icon="cloud" title="Storage : 5 TB" value="$455.00" />
-                </Grid>
-                <Grid item xs={12} md={6} xl={4}>
-                  <DefaultInfoCard icon="cloud" title="Storage : 10 TB" value="$455.00" />
-                </Grid>
-                <Grid item xs={12} md={6} xl={4}>
-                  <DefaultInfoCard icon="cloud" title="Storage : 20 TB" value="$455.00" />
-                </Grid>
+                {product?.map((data, index) => (
+                  <Grid key={index} item xs={12} md={6} xl={4}>
+                    <DefaultInfoCard {...data} icon="cloud" title={`Storage : ${data.range}`} />
+                  </Grid>
+                ))}
               </Grid>
             </Grid>
           </Grid>
@@ -54,5 +73,4 @@ function Products() {
     </DashboardLayout>
   );
 }
-
 export default Products;
