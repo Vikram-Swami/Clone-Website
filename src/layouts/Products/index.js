@@ -1,23 +1,20 @@
 // @mui material components
+import { Icon } from "@mui/material";
 import Grid from "@mui/material/Grid";
 
 // Next Work Dashboard React components
 import SoftBox from "components/SoftBox";
+import SoftButton from "components/SoftButton";
+import DefaultProductCard from "examples/Cards/InfoCards/DefaultProductCard";
 
 // Next Work Dashboard React components
-import MasterCard from "examples/Cards/MasterCard";
-import DefaultInfoCard from "examples/Cards/InfoCards/DefaultInfoCard";
+import DefaultProdcutCard from "examples/Cards/InfoCards/DefaultProductCard";
 
 // Next Work Dashboard React examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import Footer from "examples/Footer";
 
 // Billing page components
-import PaymentMethod from "layouts/billing/components/PaymentMethod";
-import Invoices from "layouts/billing/components/Invoices";
-import BillingInformation from "layouts/billing/components/BillingInformation";
-import Transactions from "layouts/billing/components/Transactions";
 
 function Products() {
   return (
@@ -29,22 +26,12 @@ function Products() {
             <Grid item xs={12} lg={10}>
               <Grid container spacing={3}>
                 <Grid item xs={12} md={6} xl={4}>
-                  <DefaultInfoCard icon="cloud" title="Storage : 512 GB" value="5581.00" />
-                </Grid>
-                <Grid item xs={12} md={6} xl={4}>
-                  <DefaultInfoCard icon="cloud" title="Storage : 1 TB" value="455.00" />
-                </Grid>
-                <Grid item xs={12} md={6} xl={4}>
-                  <DefaultInfoCard icon="cloud" title="Storage : 2 TB" value="5455.00" />
-                </Grid>
-                <Grid item xs={12} md={6} xl={4}>
-                  <DefaultInfoCard icon="cloud" title="Storage : 5 TB" value="$455.00" />
-                </Grid>
-                <Grid item xs={12} md={6} xl={4}>
-                  <DefaultInfoCard icon="cloud" title="Storage : 10 TB" value="$455.00" />
-                </Grid>
-                <Grid item xs={12} md={6} xl={4}>
-                  <DefaultInfoCard icon="cloud" title="Storage : 20 TB" value="$455.00" />
+                  <DefaultProductCard
+                    icon="cloud"
+                    basicAmt="Unit Price (TB) : 32500"
+                    tax="Tax : 18%"
+                    totalprice="Total Price : 450012"
+                  />
                 </Grid>
               </Grid>
             </Grid>
