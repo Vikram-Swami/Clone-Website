@@ -8,19 +8,16 @@ import SoftTypography from "components/SoftTypography";
 // Next Work Dashboard React examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import Footer from "examples/Footer";
-import Table from "examples/Tables/Table";
 
 // Data
-import authorsTableData from "layouts/connections/data/authorsTableData";
-import projectsTableData from "layouts/connections/data/projectsTableData";
 import SoftButton from "components/SoftButton";
-import { Icon } from "@mui/material";
+import { Grid, Icon } from "@mui/material";
+import DefaultInfoCard from "examples/Cards/InfoCards/DefaultInfoCard";
+
+import { NavLink, useNavigate } from "react-router-dom";
 
 function Connections() {
-  const { columns, rows } = authorsTableData;
-  const { columns: prCols, rows: prRows } = projectsTableData;
-
+  const navigate = useNavigate();
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -29,27 +26,31 @@ function Connections() {
           <Card>
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
               <SoftTypography variant="h6">Connection table</SoftTypography>
-              <SoftButton variant="gradient" color="dark" ml={2}>
+              <NavLink to="/products"> <SoftButton variant="gradient" color="dark" ml={2} >
                 <Icon sx={{ fontWeight: "bold" }}>add</Icon>
                 &nbsp;Create Connections
               </SoftButton>
+              </NavLink>
             </SoftBox>
-            <SoftBox
-              sx={{
-                "& .MuiTableRow-root:not(:last-child)": {
-                  "& td": {
-                    borderBottom: ({ borders: { borderWidth, borderColor } }) =>
-                      `${borderWidth[1]} solid ${borderColor}`,
-                  },
-                },
-              }}
-            >
-              <Table columns={columns} rows={rows} />
+            <SoftBox mt={4}>
+              <SoftBox mb={1.5}>
+                <Grid container spacing={3} >
+                  <Grid item lg={12}>
+                    <Grid container spacing={3}>
+
+                      <Grid xs={12} xl={12}>
+                        <DefaultInfoCard icon="cloud" title={`You Don't have an active connection yet. Add connection to your portfolio and start earning.`} />
+                      </Grid>
+
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </SoftBox>
             </SoftBox>
           </Card>
         </SoftBox>
       </SoftBox>
-      <Footer />
+      {/* <Footer /> */}
     </DashboardLayout>
   );
 }

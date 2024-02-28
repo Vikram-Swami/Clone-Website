@@ -17,12 +17,14 @@ function DefaultProductCard({
   icon,
   title,
   description,
+  range,
   value,
   space,
   rent,
   basicAmt,
   tax,
   totalprice,
+  freeSpace, // Add freeSpace to props
 }) {
   return (
     <Card>
@@ -42,14 +44,14 @@ function DefaultProductCard({
         >
           <div style={{ textAlign: "center" }}>
             <Icon fontSize="large">{icon}</Icon>
-            <div style={{ fontSize: "1.40rem", marginTop: "-10px" }}>512 GB</div>
+            <div style={{ fontSize: "1.40rem", marginTop: "-10px" }}>{range} GB</div>
           </div>
         </SoftBox>
 
         <Box>
-          <SoftTypography variant="h6">Free Space : 16 GB</SoftTypography>
+          <SoftTypography variant="h6">Free Space : {freeSpace} GB</SoftTypography>
 
-          <SoftTypography variant="h6">Rent : 4.5%</SoftTypography>
+          <SoftTypography variant="h6">Rent : {rent}%</SoftTypography>
         </Box>
       </SoftBox>
       <SoftBox pb={2} px={2} textAlign="center" lineHeight={1.25}>
@@ -83,7 +85,7 @@ function DefaultProductCard({
               textTransform="capitalize"
               textAlign="left"
             >
-              {basicAmt}
+              Unit Price (TB) : {basicAmt}
             </SoftTypography>
             <SoftTypography
               variant="h6"
@@ -91,7 +93,7 @@ function DefaultProductCard({
               textTransform="capitalize"
               textAlign="left"
             >
-              {tax}
+              Tax: {tax}%
             </SoftTypography>
             <SoftTypography
               variant="h6"
@@ -99,7 +101,7 @@ function DefaultProductCard({
               textTransform="capitalize"
               textAlign="left"
             >
-              {totalprice}
+              Total Price : {totalprice}/-
             </SoftTypography>
           </Box>
           <SoftBox
@@ -111,12 +113,12 @@ function DefaultProductCard({
             width="3rem"
             height="2rem"
             shadow="md"
-            marginright="2rem"
+            marginRight="2rem" // Corrected property name
             borderRadius="lg"
             alignSelf="center"
             variant="gradient"
           >
-            <Icon sx={{ fontWeight: "bold" }}> add</Icon>
+            <Icon sx={{ fontWeight: "bold" }}>add</Icon>
           </SoftBox>
         </SoftBox>
       </SoftBox>
@@ -134,6 +136,8 @@ DefaultProductCard.defaultProps = {
   basicAmt: "",
   tax: "",
   totalprice: "",
+  range: "",
+  freeSpace: 0, // Add default value for freeSpace
 };
 
 // Typechecking props for the DefaultInfoCard
@@ -148,6 +152,8 @@ DefaultProductCard.propTypes = {
   basicAmt: PropTypes.string,
   tax: PropTypes.string,
   totalprice: PropTypes.string,
+  freeSpace: PropTypes.number, // Adjust the type to number
+  range: PropTypes.number, // Adjust the type to number
 };
 
 export default DefaultProductCard;

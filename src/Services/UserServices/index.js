@@ -43,7 +43,7 @@ class UserController {
   async createAddress(data) {
     try {
       const response = await axios.post(API_BASE_URL + createAddress, data);
-      console.log(response);
+
       return response.data;
     } catch (error) {
       throw error;
@@ -53,7 +53,7 @@ class UserController {
   async createKycDetails(data) {
     try {
       const response = await axios.post(API_BASE_URL + createKyc, data);
-      console.log(response);
+
       return response.data;
     } catch (error) {
       throw error;
@@ -63,7 +63,7 @@ class UserController {
   async verifyOtp(data) {
     try {
       const response = await axios.post(API_BASE_URL + otpVerify, { otp: data });
-      console.log(response);
+
       return response.data;
     } catch (error) {
       throw error;
@@ -73,14 +73,13 @@ class UserController {
   async getUserByIdFromAPI(data) {
     try {
       const authToken = await this.getCookie('authToken') ?? null;
-      console.log(authToken);
+
       const response = await axios.get(`${API_BASE_URL}${getUserByUserId}/${data}`, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${authToken}`
         }
       });
-      console.log(response);
       return response?.data;
     } catch (error) {
       throw error;
@@ -92,7 +91,6 @@ class UserController {
       const response = await axios.post(API_BASE_URL + resendOtpRoute, {
         id: data
       });
-      console.log(response);
       return response?.data;
     } catch (error) {
       throw error;

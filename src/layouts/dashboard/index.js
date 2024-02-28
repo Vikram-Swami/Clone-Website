@@ -19,51 +19,56 @@ import typography from "assets/theme/base/typography";
 // Dashboard layout components
 import Projects from "layouts/dashboard/components/Projects";
 import OrderOverview from "layouts/dashboard/components/OrderOverview";
-
+import { useSoftUIController } from "context";
 // Data
 import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
 import gradientLineChartData from "layouts/dashboard/data/gradientLineChartData";
-
+import UserModel from "Models/User";
 function Dashboard() {
+  const [controller] = useSoftUIController();
+  const { user } = controller;
   const { size } = typography;
   const { chart, items } = reportsBarChartData;
+  const newUser = new UserModel().toJson(user);
+
+  const miniStatisticsData = [
+    {
+      title: { text: "Storage" },
+      count: newUser?.ownStr ?? 0,
+      percentage: { color: "success" },
+      icon: { color: "info", component: "wallet" }
+    },
+    {
+      title: { text: "Team size" },
+      count: newUser?.members ?? 0,
+      percentage: { color: "success" },
+      icon: { color: "info", component: "groups" }
+    },
+    {
+      title: { text: "Today earning" },
+      count: newUser?.earning ?? 0,
+      percentage: { color: "error" },
+      icon: { color: "info", component: "currency_rupee" }
+    }
+  ];
 
   return (
     <DashboardLayout>
       <DashboardNavbar />
       <SoftBox py={3}>
         <SoftBox mb={3}>
-          <Grid container spacing={2} justifyContent={"center"}>
-            <Grid item xs={12} sm={6} xl={3}>
-              <MiniStatisticsCard
-                title={{ text: "Members" }}
-                count="53,000"
-                percentage={{ color: "success" }}
-                icon={{ color: "info", component: "wallet" }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} xl={3}>
-              <MiniStatisticsCard
-                title={{ text: "Team size" }}
-                count="2,300"
-                percentage={{ color: "success" }}
-                icon={{ color: "info", component: "groups" }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} xl={3}>
-              <MiniStatisticsCard
-                title={{ text: "today earning" }}
-                count="3,462"
-                percentage={{ color: "error" }}
-                icon={{ color: "info", component: " paid" }}
-              />
-            </Grid>
+          <Grid container spacing={2} justifyContent="center">
+            {miniStatisticsData.map((data, index) => (
+              <Grid key={index} item xs={12} sm={6} xl={3}>
+                <MiniStatisticsCard {...data} />
+              </Grid>
+            ))}
           </Grid>
         </SoftBox>
         <SoftBox mb={3}>
           <Grid container spacing={3}>
 
-            <Grid item xs={12} lg={8}>
+            <Grid item xs={12} lg={8} title="" >
               <ReportsBarChart
                 // description={<>{/* (<strong>+23%</strong>) than last week */}</>}
                 chart={chart}

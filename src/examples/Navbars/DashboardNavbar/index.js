@@ -51,7 +51,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
-
+  const { user } = controller;
   useEffect(() => {
     // Setting the navbar type
     if (fixedNavbar) {

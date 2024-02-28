@@ -17,9 +17,12 @@ import masterCardLogo from "assets/images/logos/mastercard.png";
 import visaLogo from "assets/images/logos/visa.png";
 import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
 import { Divider } from "@mui/material";
+import { useSoftUIController } from "context";
 
 function PaymentMethod() {
   const { borderWidth, borderColor } = borders;
+  const [controller] = useSoftUIController();
+  const { user } = controller;
 
   return (
     <Card id="delete-account">
@@ -51,16 +54,16 @@ function PaymentMethod() {
                 px={2}
               >
                 <SoftTypography variant="h6" fontWeight="medium" textTransform="capitalize">
-                  {"Holder Name :  Suraj Jha"}
+                  {`Holder Name :  ${user?.holder}`}
                   <br></br>
-                  {"Account No :  33210245564"}
+                  {`Account No :  ${user?.accountNo}`}
                   <br></br>
-                  {"IFSC :  SBINN45564"}
+                  {`IFSC :  ${user?.IFSC}`}
                 </SoftTypography>
               </SoftBox>
               <SoftBox p={2}>
                 <SoftBox opacity={0.3}></SoftBox>
-                <SoftBox>{"Bank Name : SBI INDIA"}</SoftBox>
+                <SoftBox>{`Bank Name : ${user?.bankName}`}</SoftBox>
               </SoftBox>
             </Card>
           </Grid>
