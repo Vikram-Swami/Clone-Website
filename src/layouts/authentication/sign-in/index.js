@@ -19,16 +19,18 @@ import CoverLayout from "layouts/authentication/components/CoverLayout";
 import curved9 from "assets/images/curved-images/curved-6.jpg";
 import UserController from "Services/UserServices";
 import LoginDialog from "components/Pop/login";
+import { useSoftUIController } from "context";
 
 
 function SignIn() {
   const form = useRef();
   const [user, setUser] = useState();
   const [isOpen, setIsOpen] = useState(false);
-
+  const { dispatch, loading } = useSoftUIController();
   const userController = new UserController();
   const handleLogin = async (e) => {
     try {
+      // dispatch({ type: "LOADING", value: true })
       const formDetails = new FormData(form.current);
       const userData = await userController.login(formDetails);
       console.log("Login successful:", userData);
@@ -38,7 +40,7 @@ function SignIn() {
     } catch (error) {
       console.error("Login failed:", error.message);
       setIsOpen(true);
-      setUser(error.response.data);
+      setUser(error?.response?.data);
       // Handle login error (e.g., display error message)
     }
   };

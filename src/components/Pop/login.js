@@ -9,10 +9,11 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { Grid } from '@mui/material';
 import UserController from 'Services/UserServices';
 import { useNavigate } from 'react-router-dom';
+import { useSoftUIController, setLoading } from 'context';
 
 function LoginDialog({ open, setOpen, data }) {
     const otpRef = useRef();
-    const navigate = useNavigate();
+    const [controller, dispatch] = useSoftUIController();
     const userController = new UserController();
 
     const handleOtpChange = () => {
@@ -36,38 +37,24 @@ function LoginDialog({ open, setOpen, data }) {
         return null;
     }
     const handleSubmit = async () => {
+        setLoading(dispatch, true);
         try {
             const enteredOtp = otpRef.current.value;
             const response = await userController.verifyOtp(enteredOtp);
             console.log(response);
 
-            if (response.status === 200) {
-                setCookie('authToken', response.data.token, 7);
-                setCookie('userId', response.data.userId, 7);
-
-                // Use the created Axios instance for subsequent requests
-                const axiosInstance = axios.create({
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${getCookie('authToken')}`  // Use authToken here, not userId
-                    },
-                });
-
-                // Example: Making a GET request with the created Axios instance
-                axiosInstance.get('/your-api-endpoint')
-                    .then(apiResponse => {
-                        console.log(apiResponse.data);
-                    })
-                    .catch(apiError => {
-                        console.error('API Error:', apiError);
-                    });
-
+            if (response?.status === 200) {
+                setCookie('authToken', response?.data.token, 7);
+                setCookie('userId', response?.data.userId, 7);
                 window.location.reload();
             }
         } catch (error) {
             console.log(error);
         }
+        finally {
+            setLoading(dispatch, false);
 
+        }
         console.log('Submitting OTP:', otpRef.current.value);
     };
 
@@ -97,41 +84,40 @@ function LoginDialog({ open, setOpen, data }) {
             <Dialog open={open} onClose={handleClose}>
                 <Grid>
                     <DialogTitle>{data?.message}</DialogTitle>
-                    <DialogContent>
+                    {
+                        data?.status == 200 &&
                         <DialogContent>
-                            {/* Display OTP expiration message and allow resend */}
-                            <div ref={(el) => (otpRef.message = el)} style={{ display: 'none', marginBottom: '10px' }}>
-                                <h2>Your OTP has expired</h2>
+                            <DialogContent>
+
+                                <div ref={(el) => (otpRef.message = el)} style={{ display: 'none', marginBottom: '10px' }}>
+                                    <h2>Your OTP has expired</h2>
+                                    <Button onClick={handleResendOtp}>
+                                        Resend OTP
+                                    </Button>
+                                </div>
+
+
+                                <TextField
+                                    autoFocus
+                                    margin="dense"
+                                    label="Enter OTP"
+                                    type="text"
+                                    fullWidth
+                                    inputRef={otpRef}
+                                    onChange={handleOtpChange}
+                                />
+
                                 <Button
-                                    onClick={
-                                        handleResendOtp}
-
+                                    onClick={handleSubmit}
+                                    color="primary"
+                                    ref={(el) => (otpRef.button = el)}
+                                    style={{ display: 'none' }}
                                 >
-                                    Resend OTP
+                                    Submit
                                 </Button>
-                            </div>
-
-                            {/* Add OTP input using ref */}
-                            <TextField
-                                autoFocus
-                                margin="dense"
-                                label="Enter OTP"
-                                type="text"
-                                fullWidth
-                                inputRef={otpRef}
-                                onChange={handleOtpChange}
-                            />
-                            {/* Show submit button conditionally */}
-                            <Button
-                                onClick={handleSubmit}
-                                color="primary"
-                                ref={(el) => (otpRef.button = el)}
-                                style={{ display: 'none' }}
-                            >
-                                Submit
-                            </Button>
+                            </DialogContent>
                         </DialogContent>
-                    </DialogContent>
+                    }
 
                     <DialogActions>
                         <Button onClick={handleClose}>Close</Button>

@@ -49,7 +49,7 @@ function Connections() {
           </Card>
         </SoftBox>
       </SoftBox>
-      {/* <Footer /> */}
+      <Footer />
     </DashboardLayout>
   );
 }
