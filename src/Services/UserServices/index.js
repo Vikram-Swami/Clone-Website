@@ -1,6 +1,7 @@
 import { createUser } from "Models/endpointes";
 import { createKyc } from "Models/endpointes";
 import { getUserByUserId } from "Models/endpointes";
+import { resendOtpRoute } from "Models/endpointes";
 import { otpVerify } from "Models/endpointes";
 import { createAddress } from "Models/endpointes";
 import { loginUser } from "Models/endpointes";
@@ -54,9 +55,20 @@ class UserController {
       throw error;
     }
   }
-  async getUserById(data) {
+  async getUserByIdFromAPI(data) {
     try {
-      const response = await axios.get(`${API_BASE_URL + getUserByUserId}`);
+      const response = await axios.get(`${API_BASE_URL}${getUserByUserId}/${data}`);
+      console.log(response);
+      return response?.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+  async resendOtp(data) {
+    try {
+      const response = await axios.post(API_BASE_URL + resendOtpRoute, {
+        id: data
+      });
       console.log(response);
       return response?.data;
     } catch (error) {

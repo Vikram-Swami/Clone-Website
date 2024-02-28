@@ -53,11 +53,22 @@ export default function App() {
     }
   };
 
+  function getCookie(name) {
+    const cookieArray = document.cookie.split(';');
+    for (let i = 0; i < cookieArray.length; i++) {
+      const cookie = cookieArray[i].trim();
+      if (cookie.startsWith(name + '=')) {
+        return cookie.substring(name.length + 1);
+      }
+    }
+    return null;
+  }
   // Api
   async function getUserById() {
     try {
+      const userId = getCookie('userId');
       let userController = new UserController();
-      let data = await userController.getUserById();
+      let data = await userController.getUserByIdFromAPI(userId);
       setUser(dispatch, data);
       console.log(data);
     } catch (error) {

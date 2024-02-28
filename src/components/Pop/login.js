@@ -1,19 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import { Grid } from '@mui/material';
 import UserController from 'Services/UserServices';
 import { useNavigate } from 'react-router-dom';
 
 function LoginDialog({ open, setOpen, data }) {
-    const [user, setUser] = useState();
     const otpRef = useRef();
     const navigate = useNavigate();
     const userController = new UserController();
@@ -28,19 +25,44 @@ function LoginDialog({ open, setOpen, data }) {
         expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
         document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
     };
-
+    function getCookie(name) {
+        const cookieArray = document.cookie.split(';');
+        for (let i = 0; i < cookieArray.length; i++) {
+            const cookie = cookieArray[i].trim();
+            if (cookie.startsWith(name + '=')) {
+                return cookie.substring(name.length + 1);
+            }
+        }
+        return null;
+    }
     const handleSubmit = async () => {
         try {
             const enteredOtp = otpRef.current.value;
             const response = await userController.verifyOtp(enteredOtp);
             console.log(response);
 
-            // Assuming the API response structure is correct
             if (response.status === 200) {
                 setCookie('authToken', response.data.token, 7);
                 setCookie('userId', response.data.userId, 7);
-                // Redirect to some page after successful login
-                navigate('/dashboard'); // Adjust the path accordingly
+
+                // Use the created Axios instance for subsequent requests
+                const axiosInstance = axios.create({
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${getCookie('authToken')}`  // Use authToken here, not userId
+                    },
+                });
+
+                // Example: Making a GET request with the created Axios instance
+                axiosInstance.get('/your-api-endpoint')
+                    .then(apiResponse => {
+                        console.log(apiResponse.data);
+                    })
+                    .catch(apiError => {
+                        console.error('API Error:', apiError);
+                    });
+
+                window.location.reload();
             }
         } catch (error) {
             console.log(error);
@@ -53,18 +75,41 @@ function LoginDialog({ open, setOpen, data }) {
         setOpen(false);
     };
 
+    const handleResendOtp = async () => {
+        try {
+            const userId = getCookie('userId');
+            console.log(userId);
+            const res = await userController.resendOtp(userId)
+        } catch (error) {
+            console.log(error);
+        }
+    }
     useEffect(() => {
-        setUser(data);
-        console.log("=>", data);
-    }, [data]);
+        const expirationTimeout = setTimeout(() => {
+        }, 1 * 60 * 1000);
+
+
+        return () => clearTimeout(expirationTimeout);
+    }, []);
 
     return (
         <React.Fragment>
             <Dialog open={open} onClose={handleClose}>
                 <Grid>
                     <DialogTitle>{data?.message}</DialogTitle>
-                    {data.status === 200 ? (
+                    <DialogContent>
                         <DialogContent>
+                            {/* Display OTP expiration message and allow resend */}
+                            <div ref={(el) => (otpRef.message = el)} style={{ display: 'none', marginBottom: '10px' }}>
+                                <h2>Your OTP has expired</h2>
+                                <Button
+                                    onClick={
+                                        handleResendOtp}
+
+                                >
+                                    Resend OTP
+                                </Button>
+                            </div>
 
                             {/* Add OTP input using ref */}
                             <TextField
@@ -80,15 +125,14 @@ function LoginDialog({ open, setOpen, data }) {
                             <Button
                                 onClick={handleSubmit}
                                 color="primary"
-                                ref={el => otpRef.button = el}
+                                ref={(el) => (otpRef.button = el)}
                                 style={{ display: 'none' }}
                             >
                                 Submit
                             </Button>
                         </DialogContent>
-                    ) : (
-                        ""
-                    )}
+                    </DialogContent>
+
                     <DialogActions>
                         <Button onClick={handleClose}>Close</Button>
                     </DialogActions>
@@ -101,7 +145,7 @@ function LoginDialog({ open, setOpen, data }) {
 LoginDialog.defaultProps = {
     open: false,
     setOpen: () => { },
-    data: [] ?? "",
+    data: [] ?? '',
 };
 
 LoginDialog.propTypes = {
