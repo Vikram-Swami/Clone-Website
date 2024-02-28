@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Card from "@mui/material/Card";
 import Checkbox from "@mui/material/Checkbox";
 import SoftBox from "components/SoftBox";
@@ -19,8 +19,7 @@ function SignUp() {
   const userController = new UserController();
   const navigate = useNavigate();
   let newUserId = sessionStorage.getItem("userId") ?? 0;
-  const [step, setStep] = useState(newUserId && 2);
-  ;
+  const [step, setStep] = useState(newUserId ? 2 : 1);
   const fetchPostalDetails = async (postalCode, e) => {
     try {
       const response = await fetch(`https://api.postalpincode.in/pincode/${postalCode}`);
@@ -61,8 +60,7 @@ function SignUp() {
     if (postalCode.length == 6) {
       await fetchPostalDetails(postalCode, e);
       return;
-    }
-    else {
+    } else {
       form.current.postalCode.parentNode.style.border = "none";
       form.current.city.value = "City";
       form.current.state.value = "State";
@@ -74,12 +72,10 @@ function SignUp() {
     if (ifsc.length == 11) {
       await bankDetails(ifsc, e);
       return;
-    }
-    else {
+    } else {
       form.current.IFSC.parentNode.style.border = "none";
     }
   };
-
 
   const handleSetAgreement = () => setAgreement((prevAgreement) => !prevAgreement);
 
@@ -97,13 +93,11 @@ function SignUp() {
         setIsOpen(true);
         setUser(userData);
       }
-
     } catch (error) {
       setIsOpen(true);
       setUser(error.response.data);
       console.error("Registration failed:", error);
     }
-
   };
 
   const handleAddress = async () => {
@@ -112,8 +106,8 @@ function SignUp() {
       const userData = await userController.createAddress(formdata);
       setStep(3);
       form.current.reset();
-      setUser(userData)
-      setIsOpen(true)
+      setUser(userData);
+      setIsOpen(true);
     } catch (error) {
       setIsOpen(true);
       setUser(error?.response?.data);
@@ -124,39 +118,41 @@ function SignUp() {
     try {
       const formdata = new FormData(form.current);
       const userData = await userController.createKycDetails(formdata);
-      setUser(userData)
-      setIsOpen(true)
-      navigate("/login")
-      sessionStorage.clear();
+      setUser(userData);
+      setIsOpen(true);
+      navigate("/login");
     } catch (error) {
       setIsOpen(true);
       setUser(error?.response?.data);
     }
   };
+  useEffect(() => { }, []);
   return (
-    <BasicLayout title="Welcome!" description="NextWork Technologies" image={curved6} >
+    <BasicLayout title="Welcome!" description="" image={curved6}>
       <Card>
         <SoftBox pt={2} pb={3} px={3}>
-          <SoftBox component="form" role="form" encType="multipart/form-data" method="POST" ref={form}>
+          <SoftBox
+            component="form"
+            role="form"
+            encType="multipart/form-data"
+            method="POST"
+            ref={form}
+          >
             {step === 1 ? (
               <>
                 <SoftBox mb={2}>
                   <h3>Add your Profile info</h3>
                 </SoftBox>
                 <SoftBox mb={2}>
-                  <SoftInput
-                    name="fullName"
-                    placeholder="Name"
-
-                  />
+                  <SoftInput name="fullName" placeholder="Name" />
                 </SoftBox>
                 <SoftBox mb={2}>
                   <NativeSelect
                     fullWidth
                     defaultValue="Mr. / Ms. / Mrs."
                     inputProps={{
-                      name: 'initial',
-                      id: 'uncontrolled-native',
+                      name: "initial",
+                      id: "uncontrolled-native",
                     }}
                   >
                     <option value="Mr. / Ms. / Mrs.">Mr. / Ms. / Mrs.</option>
@@ -166,12 +162,7 @@ function SignUp() {
                   </NativeSelect>
                 </SoftBox>
                 <SoftBox mb={2}>
-                  <SoftInput
-                    name="email"
-                    type="email"
-                    placeholder="Email"
-
-                  />
+                  <SoftInput name="email" type="email" placeholder="Email" />
                 </SoftBox>
                 <SoftBox mb={2}>
                   <SoftInput
@@ -179,8 +170,11 @@ function SignUp() {
                     type="text"
                     placeholder="Phone"
                     onChange={(e) => {
-                      e.target.value.replace()
-                      e.target.value = e.target.value.length > 10 ? e.target.value.toString().substr(0, 10) : e.target.value;
+                      e.target.value.replace();
+                      e.target.value =
+                        e.target.value.length > 10
+                          ? e.target.value.toString().substr(0, 10)
+                          : e.target.value;
                     }}
                     max={10}
                     onKeyPress={(e) => {
@@ -194,31 +188,16 @@ function SignUp() {
                   </SoftTypography>
                 </SoftBox>
                 <SoftBox mb={2}>
-                  <SoftInput
-                    name="password"
-                    type="password"
-                    placeholder="Password"
-
-                  />
+                  <SoftInput name="password" type="password" placeholder="Password" />
                   <SoftTypography color="text" fontWeight="light" fontSize="14px">
                     Password must be Alphanumerical and must contain atleast one special charactor.
                   </SoftTypography>
                 </SoftBox>
                 <SoftBox mb={2}>
-                  <SoftInput
-                    name="sponsorId"
-                    type="text"
-                    placeholder="sponsor id"
-
-                  />
+                  <SoftInput name="sponsorId" type="text" placeholder="sponsor id" />
                 </SoftBox>
                 <SoftBox mb={2}>
-                  <SoftInput
-                    name="placementId"
-                    type="text"
-                    placeholder="placement id"
-
-                  />
+                  <SoftInput name="placementId" type="text" placeholder="placement id" />
                 </SoftBox>
                 <SoftBox display="flex" alignItems="center">
                   <Checkbox checked={agreement} onChange={handleSetAgreement} />
@@ -252,26 +231,13 @@ function SignUp() {
                   <h3>Add your Address</h3>
                 </SoftBox>
                 <SoftBox mb={2}>
-                  <SoftInput
-                    placeholder="User Id"
-                    name="userId"
-                    value={newUserId}
-                    disabled
-                  />
+                  <SoftInput placeholder="User Id" name="userId" value={newUserId} disabled />
                 </SoftBox>
                 <SoftBox mb={2}>
-                  <SoftInput
-                    placeholder="Street-1"
-                    name="street1"
-
-                  />
+                  <SoftInput placeholder="Street-1" name="street1" />
                 </SoftBox>
                 <SoftBox mb={2}>
-                  <SoftInput
-                    placeholder="Street 2"
-                    name="street2"
-
-                  />
+                  <SoftInput placeholder="Street 2" name="street2" />
                 </SoftBox>
                 <SoftBox mb={2}>
                   <SoftInput
@@ -279,39 +245,23 @@ function SignUp() {
                     type="text"
                     placeholder="Postal Code"
                     onChange={(e) => {
-                      e.target.value = e.target.value.length > 6 ? e.target.value.toString().substr(0, 6) : e.target.value;
+                      e.target.value =
+                        e.target.value.length > 6
+                          ? e.target.value.toString().substr(0, 6)
+                          : e.target.value;
                       handlePostalCodeChange(e);
                     }}
                     max={10}
                   />
                 </SoftBox>
                 <SoftBox mb={2}>
-                  <SoftInput
-                    type="text"
-                    name="city"
-                    placeholder="City"
-                    disabled
-                    readOnly
-
-                  />
+                  <SoftInput type="text" name="city" placeholder="City" disabled />
                 </SoftBox>
                 <SoftBox mb={2}>
-                  <SoftInput
-                    type="text"
-                    name="state"
-                    disabled
-                    placeholder="State"
-                    readOnly
-                  />
+                  <SoftInput type="text" name="state" disabled placeholder="State" />
                 </SoftBox>
                 <SoftBox mb={2}>
-                  <SoftInput
-                    type="text"
-                    name="country"
-                    disabled
-                    placeholder="Country"
-                    readOnly
-                  />
+                  <SoftInput type="text" name="country" disabled placeholder="Country" />
                 </SoftBox>
 
                 <SoftBox display="flex" alignItems="center">
@@ -346,18 +296,10 @@ function SignUp() {
                   <h3>Add your Bank details</h3>
                 </SoftBox>
                 <SoftBox mb={2}>
-                  <SoftInput
-                    placeholder="User Id"
-                    name="userId"
-                    disabled
-                  />
+                  <SoftInput placeholder="User Id" name="userId" value={newUserId} disabled />
                 </SoftBox>
                 <SoftBox mb={2}>
-                  <SoftInput
-                    placeholder="Account Number"
-                    name="accountNo"
-
-                  />
+                  <SoftInput placeholder="Account Number" name="accountNo" />
                 </SoftBox>
                 <SoftBox mb={2}>
                   <SoftInput
@@ -368,18 +310,10 @@ function SignUp() {
                   />
                 </SoftBox>
                 <SoftBox mb={2}>
-                  <SoftInput
-                    placeholder="Bank Name"
-                    name="bankName"
-                    disabled
-                  />
+                  <SoftInput placeholder="Bank Name" name="bankName" disabled />
                 </SoftBox>
                 <SoftBox mb={2}>
-                  <SoftInput
-                    type="text"
-                    placeholder="Holder's Name"
-                    name="holder"
-                  />
+                  <SoftInput type="text" placeholder="Holder's Name" name="holder" />
                 </SoftBox>
                 <SoftBox mb={2}>
                   <SoftInput
@@ -395,11 +329,7 @@ function SignUp() {
                 </SoftBox>
                 <SoftBox mb={2}>
                   Aadhar file
-                  <SoftInput
-                    type="file"
-                    placeholder="aadhar file"
-                    name="aadharFile"
-                  />
+                  <SoftInput type="file" placeholder="aadhar file" name="aadharFile" />
                 </SoftBox>
 
                 <SoftBox mb={2}>
@@ -416,40 +346,20 @@ function SignUp() {
                 </SoftBox>
                 <SoftBox mb={2}>
                   PAN file
-                  <SoftInput
-                    type="file"
-                    placeholder="PAN file"
-                    name="panFile"
-                  />
+                  <SoftInput type="file" placeholder="PAN file" name="panFile" />
                 </SoftBox>
                 <SoftBox mb={2}>
                   Sign file
-                  <SoftInput
-                    type="file"
-                    placeholder="Signature"
-                    name="sign"
-                  />
+                  <SoftInput type="file" placeholder="Signature" name="sign" />
                 </SoftBox>
                 <SoftBox mb={2}>
-                  <SoftInput
-                    type="text"
-                    placeholder="Nominie Name"
-                    name="nomineeName"
-                  />
+                  <SoftInput type="text" placeholder="Nominie Name" name="nomineeName" />
                 </SoftBox>
                 <SoftBox mb={2}>
-                  <SoftInput
-                    type="text"
-                    placeholder="Nominie Relation"
-                    name="nomineeRel"
-                  />
+                  <SoftInput type="text" placeholder="Nominie Relation" name="nomineeRel" />
                 </SoftBox>
                 <SoftBox mb={2}>
-                  <SoftInput
-                    type="text"
-                    placeholder="Nominie age"
-                    name="nomineeAge"
-                  />
+                  <SoftInput type="text" placeholder="Nominie age" name="nomineeAge" />
                 </SoftBox>
                 <SoftBox display="flex" alignItems="center">
                   <Checkbox checked={agreement} onChange={setAgreement} />
@@ -485,7 +395,7 @@ function SignUp() {
                 Already have an account?&nbsp;
                 <SoftTypography
                   component={Link}
-                  to="/sign-in"
+                  to="/"
                   variant="button"
                   color="dark"
                   fontWeight="bold"
@@ -497,7 +407,6 @@ function SignUp() {
             </SoftBox>
           </SoftBox>
         </SoftBox>
-
       </Card>
       <FormDialog open={isOpen} setOpen={setIsOpen} data={user} />
     </BasicLayout>

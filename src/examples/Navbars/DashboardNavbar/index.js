@@ -131,7 +131,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
           <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
         </SoftBox>
         <SoftBox color={light ? "white" : "inherit"}>
-          <Link to="/sign-in">
+          <Link to="/">
             <IconButton sx={navbarIconButton} size="small">
               <Icon
                 sx={({ palette: { dark, white } }) => ({
@@ -167,7 +167,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
               />
             </SoftBox>
             <SoftBox color={light ? "white" : "inherit"}>
-              <Link to="/sign-in">
+              <Link to="/">
                 <IconButton sx={navbarIconButton} size="small">
                   <Icon
                     sx={({ palette: { dark, white } }) => ({

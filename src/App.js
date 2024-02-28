@@ -29,6 +29,7 @@ import UserModel from "Models/User";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 import Dashboard from "layouts/dashboard";
+import UserController from "Services/UserServices";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
@@ -54,10 +55,16 @@ export default function App() {
 
   // Api
   async function getUserById() {
-    let data = new UserModel(response.data);
-    setUser(dispatch, data);
+    try {
+      let userController = new UserController();
+      let data = await userController.getUserById();
+      setUser(dispatch, data);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+
+    }
   }
-  // getUserById();
 
   // Change the openConfigurator state
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
@@ -65,25 +72,23 @@ export default function App() {
   // Setting page scroll to 0 when changing the route
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
-
       if (route.collapse) {
         getRoutes();
       }
 
-      if (!user || user.userId === undefined || user.userId === null) {
+      if (user && user.id !== undefined) {
         if (route.auth === user.type || route.auth === "any") {
           return <Route exact path={route.route} element={route.component} key={route.key} />;
         }
-
       }
 
       return null;
     });
   useEffect(() => {
+    getUserById();
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
-
 
   const configsButton = (
     <SoftBox
@@ -112,7 +117,7 @@ export default function App() {
   return (
     <ThemeProvider theme={themeRTL}>
       <CssBaseline />
-      {layout === "dashboard" && (
+      {layout === "dashboard" && user.id && (
         <>
           <Sidenav
             color={sidenavColor}
@@ -129,7 +134,7 @@ export default function App() {
         {<Route exact path="/" element={!user.id ? <SignIn /> : <Dashboard />} />}
         {getRoutes(routes)}
         {!user.id ? <Route path="/sign-up" element={<SignUp />} /> : null}
-
+        {<Route path="/*" element={<Navigate to="/" />} />}
       </Routes>
     </ThemeProvider>
   );

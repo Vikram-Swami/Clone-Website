@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 
 // react-router-dom components
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // @mui material components
 import Switch from "@mui/material/Switch";
@@ -18,30 +18,27 @@ import CoverLayout from "layouts/authentication/components/CoverLayout";
 // Images
 import curved9 from "assets/images/curved-images/curved-6.jpg";
 import UserController from "Services/UserServices";
-import FormDialog from "components/Pop";
+import LoginDialog from "components/Pop/login";
+
 
 function SignIn() {
   const form = useRef();
+  const [user, setUser] = useState();
+  const [isOpen, setIsOpen] = useState(false);
+
   const userController = new UserController();
   const handleLogin = async (e) => {
     try {
       const formDetails = new FormData(form.current);
       const userData = await userController.login(formDetails);
       console.log("Login successful:", userData);
-      console.log(form.userId);
-      if (userData.status === 200) {
-        setIsOpen(true);
-        setStep(step + 1);
-        setUser(userData);
-        sessionStorage.setItem("userId", userData?.data?.id);
-        form.current.reset();
-      } else {
-        setIsOpen(true);
-        setUser(userData);
-      }
+      setIsOpen(true);
+      setUser(userData);
+
     } catch (error) {
       console.error("Login failed:", error.message);
-      6;
+      setIsOpen(true);
+      setUser(error.response.data);
       // Handle login error (e.g., display error message)
     }
   };
@@ -97,7 +94,7 @@ function SignIn() {
           </SoftTypography>
         </SoftBox>
       </SoftBox>
-      <FormDialog />
+      <LoginDialog open={isOpen} setOpen={setIsOpen} data={user} />
     </CoverLayout>
   );
 }

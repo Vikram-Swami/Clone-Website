@@ -13,6 +13,7 @@ import CustomerSupport from "examples/Icons/CustomerSupport";
 import CreditCard from "examples/Icons/CreditCard";
 import Income from "layouts/Income/income";
 import Rents from "layouts/Rents";
+import Products from "layouts/Products";
 
 const routes = [
   {
@@ -78,6 +79,15 @@ const routes = [
     route: "/rents",
     icon: <Office size="12px" />,
     component: <Rents />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Products",
+    key: "connection",
+    route: "/Products",
+    icon: <CreditCard size="12px" />,
+    component: <Products />,
     noCollapse: true,
   },
   {
