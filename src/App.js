@@ -65,16 +65,14 @@ export default function App() {
   // Setting page scroll to 0 when changing the route
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
-
       if (route.collapse) {
         getRoutes();
       }
 
-      if (!user || user.userId === undefined || user.userId === null) {
+      if (user && user.id !== undefined) {
         if (route.auth === user.type || route.auth === "any") {
           return <Route exact path={route.route} element={route.component} key={route.key} />;
         }
-
       }
 
       return null;
@@ -83,7 +81,6 @@ export default function App() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
-
 
   const configsButton = (
     <SoftBox
@@ -112,7 +109,7 @@ export default function App() {
   return (
     <ThemeProvider theme={themeRTL}>
       <CssBaseline />
-      {layout === "dashboard" && (
+      {layout === "dashboard" && user.id && (
         <>
           <Sidenav
             color={sidenavColor}
@@ -129,7 +126,6 @@ export default function App() {
         {<Route exact path="/" element={!user.id ? <SignIn /> : <Dashboard />} />}
         {getRoutes(routes)}
         {!user.id ? <Route path="/sign-up" element={<SignUp />} /> : null}
-
       </Routes>
     </ThemeProvider>
   );
