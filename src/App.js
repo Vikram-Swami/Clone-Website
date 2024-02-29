@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import Icon from "@mui/material/Icon";
 import SoftBox from "components/SoftBox";
 import themeRTL from "assets/theme/theme-rtl";
 import routes from "routes";
@@ -21,6 +20,8 @@ import {
   setLoading,
 } from "context";
 import Sidenav from "examples/Sidenav";
+import { CircularProgress, Grid, Stack } from "@mui/material";
+import SoftTypography from "components/SoftTypography";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
@@ -55,17 +56,19 @@ export default function App() {
   }
 
   async function getUserById() {
-    setLoading(dispatch, true);
     try {
       const userId = getCookie("userId");
       let userController = new UserController();
       let data = await userController.getUserByIdFromAPI(userId);
-      const user = new UserModel().toJson(data?.data);
-      console.log("user", user, data);
-      setUser(dispatch, user);
+      if (data.status === 200) {
+        const user = new UserModel().toJson(data?.data);
+        setUser(dispatch, user);
+        setLoading(dispatch, false);
+      } else {
+        setLoading(dispatch, false);
+      }
     } catch (error) {
       console.error(error);
-    } finally {
       setLoading(dispatch, false);
     }
   }
@@ -110,7 +113,6 @@ export default function App() {
   return (
     <ThemeProvider theme={themeRTL}>
       <CssBaseline />
-      {loading && <Loading width={40} />}
       {layout === "dashboard" && user.id && (
         <>
           {/* Render Sidenav and Configurator */}
@@ -124,13 +126,35 @@ export default function App() {
           {configsButton}
         </>
       )}
-      <Routes>
-        {/* Render routes based on user authentication */}
-        <Route path="/" element={!user.id ? <SignIn /> : <Dashboard />} />
-        {!loading && user.id && getRoutes(routes)}
-        {!user.id && <Route path="/sign-up" element={<SignUp />} />}
-        {!user.id && <Route path="/*" element={<Navigate to="/" />} />}
-      </Routes>
+      {!loading ? (
+        <Routes>
+          {/* Render routes based on user authentication */}
+          <Route path="/" element={!user.id ? <SignIn /> : <Dashboard />} />
+          {user.id && getRoutes(routes)}
+          {!user.id && <Route path="/sign-up" element={<SignUp />} />}
+          {!user.id && <Route path="/*" element={<Navigate to="/" />} />}
+        </Routes>
+      ) : (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <Stack sx={{ color: "grey.500" }} spacing={2} direction="row">
+            <CircularProgress color="success" />
+            <SoftTypography
+              sx={{
+                fontWeight: "bold", // Making the text bold
+              }}
+            >
+              Nextwork Technology
+            </SoftTypography>
+          </Stack>
+        </div>
+      )}
     </ThemeProvider>
   );
 }

@@ -16,10 +16,8 @@ function DefaultProductCard({
   color,
   icon,
   title,
-  description,
-  range,
-  value,
   space,
+  range,
   rent,
   basicAmt,
   tax,
@@ -42,41 +40,21 @@ function DefaultProductCard({
           borderRadius="lg"
           variant="gradient"
         >
-          <div style={{ textAlign: "center" }}>
+          <div style={{ textAlign: "center" }}>/
             <Icon fontSize="large">{icon}</Icon>
-            <div style={{ fontSize: "1.40rem", marginTop: "-10px" }}>{range} GB</div>
+            <div style={{ fontSize: "1.40rem", marginTop: "-10px" }}>{range} TB</div>
           </div>
         </SoftBox>
 
         <Box>
           <SoftTypography variant="h6">Free Space : {freeSpace} GB</SoftTypography>
 
-          <SoftTypography variant="h6">Rent : {rent}%</SoftTypography>
+          <SoftTypography variant="h6"> {rent}%</SoftTypography>
         </Box>
       </SoftBox>
       <SoftBox pb={2} px={2} textAlign="center" lineHeight={1.25}>
-        <SoftTypography variant="h6" fontWeight="medium" textTransform="capitalize">
-          {title}
-        </SoftTypography>
-        <SoftTypography variant="h6" fontWeight="medium" textTransform="capitalize">
-          {space}
-        </SoftTypography>
-        <SoftTypography variant="h6" fontWeight="medium" textTransform="capitalize">
-          {rent}
-        </SoftTypography>
+        <Divider />
 
-        {description && (
-          <SoftTypography variant="caption" color="text" fontWeight="regular">
-            {description}
-          </SoftTypography>
-        )}
-
-        {description && !value ? null : <Divider />}
-        {value && (
-          <SoftTypography variant="h5" fontWeight="medium">
-            {value}
-          </SoftTypography>
-        )}
         <SoftBox display="flex" justifyContent="space-between">
           <Box>
             <SoftTypography
@@ -85,7 +63,8 @@ function DefaultProductCard({
               textTransform="capitalize"
               textAlign="left"
             >
-              Unit Price (TB) : {basicAmt}
+              {" "}
+              {basicAmt}
             </SoftTypography>
             <SoftTypography
               variant="h6"
@@ -93,7 +72,7 @@ function DefaultProductCard({
               textTransform="capitalize"
               textAlign="left"
             >
-              Tax: {tax}%
+              {tax}%
             </SoftTypography>
             <SoftTypography
               variant="h6"
@@ -101,7 +80,7 @@ function DefaultProductCard({
               textTransform="capitalize"
               textAlign="left"
             >
-              Total Price : {totalprice}/-
+              {totalprice}/-
             </SoftTypography>
           </Box>
           <SoftBox
@@ -129,8 +108,6 @@ function DefaultProductCard({
 // Setting default values for the props of DefaultInfoCard
 DefaultProductCard.defaultProps = {
   color: "info",
-  value: "",
-  description: "",
   space: "",
   rent: "",
   basicAmt: "",
@@ -145,8 +122,7 @@ DefaultProductCard.propTypes = {
   color: PropTypes.oneOf(["primary", "secondary", "info", "success", "warning", "error", "dark"]),
   icon: PropTypes.node.isRequired,
   title: PropTypes.string.isRequired,
-  description: PropTypes.string,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  rent: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   space: PropTypes.string,
   rent: PropTypes.string,
   basicAmt: PropTypes.string,

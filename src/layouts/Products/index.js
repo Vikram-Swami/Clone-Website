@@ -14,10 +14,6 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 
 // Billing page components
-import PaymentMethod from "layouts/billing/components/PaymentMethod";
-import Invoices from "layouts/billing/components/Invoices";
-import BillingInformation from "layouts/billing/components/BillingInformation";
-import Transactions from "layouts/billing/components/Transactions";
 import { useEffect } from "react";
 import ProductController from "Services/ConnectionsServices";
 import { useState } from "react";
@@ -68,11 +64,13 @@ function Products() {
                     <DefaultProductCard
                       icon="cloud"
                       title={`Storage : ${data.range} GB`}
-                      description={`Space: ${data.space} GB`}
-                      value={`Rent: ${data.rent}%`}
+                      space={`Space: ${data.space} GB`}
+                      rent={`Rent: ${data.rent}`}
                       basicAmt={`Basic Amount: ${data.basicAmt}`}
-                      tax={`Tax: ${data.tax}%`}
-                      totalprice={`Total Price: ${data.basicAmt + (data.basicAmt * data.tax) / 100}`}
+                      tax={`Tax: ${data.tax}`}
+                      totalprice={`Total Price: ${
+                        parseFloat(data.basicAmt + (data.basicAmt * data.tax) / 100) * data.range
+                      }`}
                     />
                   </Grid>
                 ))}
