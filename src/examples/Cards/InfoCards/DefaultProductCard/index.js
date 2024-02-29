@@ -11,6 +11,8 @@ import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import SoftButton from "components/SoftButton";
 import { Box } from "@mui/material";
+import { useSoftUIController } from "context";
+import ProductController from "Services/ConnectionsServices";
 
 function DefaultProductCard({
   color,
@@ -24,8 +26,20 @@ function DefaultProductCard({
   basicAmt,
   tax,
   totalprice,
-  freeSpace, // Add freeSpace to props
+  freeSpace,
 }) {
+  const [controller] = useSoftUIController();
+  const productController = new ProductController();
+
+  const { user } = controller;
+  const createConnection = async (storage) => {
+    try {
+      const response = await productController.createConnections(storage, user?.id);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Card>
       <SoftBox pt={2} mx={1} mb={0} display="flex" alignItems="flex-end" justifyContent="center">
@@ -104,7 +118,7 @@ function DefaultProductCard({
               Total Price : {totalprice}/-
             </SoftTypography>
           </Box>
-          <SoftBox
+          <SoftButton
             display="grid"
             justifyContent="center"
             alignItems="center"
@@ -113,13 +127,14 @@ function DefaultProductCard({
             width="3rem"
             height="2rem"
             shadow="md"
-            marginRight="2rem" // Corrected property name
+            marginRight="2rem"
             borderRadius="lg"
             alignSelf="center"
             variant="gradient"
+            onClick={() => createConnection(description)}
           >
             <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-          </SoftBox>
+          </SoftButton>
         </SoftBox>
       </SoftBox>
     </Card>

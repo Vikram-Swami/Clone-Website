@@ -14,6 +14,7 @@ import CreditCard from "examples/Icons/CreditCard";
 import Income from "layouts/Income/income";
 import Rents from "layouts/Rents";
 import Products from "layouts/Products";
+import CreateMember from "components/CreateMember";
 
 const routes = [
   {
@@ -34,14 +35,13 @@ const routes = [
     auth: "user",
     route: "/create-members",
     icon: <Office size="12px" />,
-    component: <SignUp />,
+    component: <CreateMember />,
     noCollapse: true,
   },
   {
     type: "collapse",
     name: "Team",
     auth: "user",
-
     key: "my-team",
     route: "/my-team",
     icon: <Office size="12px" />,
@@ -56,7 +56,6 @@ const routes = [
     icon: <Office size="12px" />,
     component: <Connections />,
     auth: "any",
-
     noCollapse: true,
   },
   {
@@ -64,7 +63,6 @@ const routes = [
     name: "Income",
     key: "income",
     auth: "any",
-
     route: "/income",
     icon: <Office size="12px" />,
     component: <Income />,
@@ -75,7 +73,6 @@ const routes = [
     name: "Rents",
     key: "rents",
     auth: "any",
-
     route: "/rents",
     icon: <Office size="12px" />,
     component: <Rents />,
@@ -97,7 +94,6 @@ const routes = [
     key: "account",
     route: "/account",
     auth: "any",
-
     icon: <CreditCard size="12px" />,
     component: <Billing />,
     noCollapse: true,
@@ -110,7 +106,6 @@ const routes = [
     key: "profile",
     route: "/profile",
     auth: "any",
-
     icon: <CustomerSupport size="12px" />,
     component: <Profile />,
     noCollapse: true,

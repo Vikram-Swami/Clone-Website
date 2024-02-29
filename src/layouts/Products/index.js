@@ -27,8 +27,7 @@ import DefaultProductCard from "examples/Cards/InfoCards/DefaultProductCard";
 function Products() {
   const productController = new ProductController();
   const [products, setProducts] = useState([]);
-  const [controller] = useSoftUIController();
-  const { user } = controller;
+
 
   const getProducts = async () => {
     try {
@@ -42,14 +41,7 @@ function Products() {
     }
   };
 
-  const createConnection = async () => {
-    try {
-      const response = await productController.createConnections();
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
 
   useEffect(() => {
     getProducts();
@@ -68,7 +60,7 @@ function Products() {
                     <DefaultProductCard
                       icon="cloud"
                       title={`Storage : ${data.range} GB`}
-                      description={`Space: ${data.space} GB`}
+                      description={data.space}
                       value={`Rent: ${data.rent}%`}
                       basicAmt={`Basic Amount: ${data.basicAmt}`}
                       tax={`Tax: ${data.tax}%`}

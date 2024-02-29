@@ -70,9 +70,9 @@ function Dashboard() {
 
             <Grid item xs={12} lg={8} title="" >
               <ReportsBarChart
-                // description={<>{/* (<strong>+23%</strong>) than last week */}</>}
+
                 chart={chart}
-                items={items}
+                items=""
               />
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
@@ -100,13 +100,12 @@ function Dashboard() {
             </Grid>
           </Grid>
         </SoftBox>
-        <Grid container spacing={3}>
+        {/* <Grid container spacing={3}>
           <Grid item xs={12} md={6} lg={8}>
             <Projects />
           </Grid>
-        </Grid>
+        </Grid> */}
       </SoftBox >
-      <Footer />
     </DashboardLayout >
   );
 }

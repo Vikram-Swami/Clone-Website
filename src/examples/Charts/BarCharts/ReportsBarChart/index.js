@@ -23,16 +23,16 @@ import configs from "examples/Charts/BarCharts/ReportsBarChart/configs";
 function ReportsBarChart({ color, title, description, chart, items }) {
   const { data, options } = configs(chart.labels || [], chart.datasets || {});
 
-  const renderItems = items.map(({ icon, label, progress }) => (
-    <Grid item xs={6} sm={3} key={label}>
-      <BarReportsChartItem
-        color={color}
-        icon={{ color: icon.color, component: icon.component }}
-        label={label}
-        progress={{ content: progress.content, percentage: progress.percentage }}
-      />
-    </Grid>
-  ));
+  // const renderItems = items.map(({ icon, label, progress }) => (
+  //   <Grid item xs={6} sm={3} key={label}>
+  //     <BarReportsChartItem
+  //       color={color}
+  //       icon={{ color: icon.color, component: icon.component }}
+  //       label={label}
+  //       progress={{ content: progress.content, percentage: progress.percentage }}
+  //     />
+  //   </Grid>
+  // ));
 
   return (
     <Card sx={{ height: "100%" }}>
@@ -62,11 +62,11 @@ function ReportsBarChart({ color, title, description, chart, items }) {
               {description}
             </SoftTypography>
           </SoftBox>
-          <SoftBox py={1} px={0.5}>
+          {/* <SoftBox py={1} px={0.5}>
             <Grid container spacing={2}>
               {renderItems}
             </Grid>
-          </SoftBox>
+          </SoftBox> */}
         </SoftBox>
       </SoftBox>
     </Card>

@@ -3,8 +3,8 @@
 import { createContext, useContext, useReducer, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import UserModel from 'Models/User';
-import Loader from 'components/Loading';
 import Loading from 'react-loading';
+import ConnectionsModel from 'Models/Connection';
 
 const SoftUI = createContext(null);
 
@@ -40,8 +40,11 @@ function reducer(state, action) {
     case 'USER': {
       return { ...state, user: action.value };
     }
+    case 'CONNECTION': {
+      return { ...state, connection: action.value };
+    }
     case 'LOADING': {
-      return { ...state, loading: action.value };
+      return { ...state, loading: action.value.map(e => { return new ConnectionsModel(e) }) };
     }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
@@ -61,6 +64,7 @@ function NextworkControllerProvider({ children }) {
     direction: 'ltr',
     layout: 'dashboard',
     user: new UserModel(),
+    connection: [new ConnectionsModel()],
     loading: true,
   };
   const [controller, dispatch] = useReducer(reducer, initialState);
@@ -101,6 +105,7 @@ const setOpenConfigurator = (dispatch, value) => dispatch({ type: 'OPEN_CONFIGUR
 const setDirection = (dispatch, value) => dispatch({ type: 'DIRECTION', value });
 const setLayout = (dispatch, value) => dispatch({ type: 'LAYOUT', value });
 const setUser = (dispatch, value) => dispatch({ type: 'USER', value });
+const setConnection = (dispatch, value) => dispatch({ type: 'CONNECTION', value });
 const setLoading = (dispatch, value) => dispatch({ type: 'LOADING', value });
 
 export {
@@ -115,5 +120,6 @@ export {
   setDirection,
   setLayout,
   setUser,
+  setConnection,
   setLoading,
 };

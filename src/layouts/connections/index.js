@@ -15,9 +15,34 @@ import { Grid, Icon } from "@mui/material";
 import DefaultInfoCard from "examples/Cards/InfoCards/DefaultInfoCard";
 
 import { NavLink, useNavigate } from "react-router-dom";
+import ProductController from "Services/ConnectionsServices";
+import { useEffect, useState } from "react";
+import { useSoftUIController, setLoading } from "context";
 
 function Connections() {
-  const navigate = useNavigate();
+  const [connections, setConnections] = useState()
+  const productController = new ProductController();
+  const [controller, dispatch] = useSoftUIController();
+
+
+  const { user } = controller;
+  const getConnectionById = async () => {
+    try {
+      setLoading(dispatch, true);
+      const response = await productController.getConnectionByuserId(user?.id)
+      if (response?.status == 200) {
+
+        setConnections(response)
+        setLoading(dispatch, false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  useEffect(() => {
+    getConnectionById();
+    console.log(connections);
+  }, [])
   return (
     <DashboardLayout>
       <DashboardNavbar />

@@ -59,13 +59,20 @@ export default function App() {
       const userId = getCookie('userId');
       let userController = new UserController();
       let data = await userController.getUserByIdFromAPI(userId);
-      const user = new UserModel().toJson(data?.data);
-      console.log("user", user, data);
-      setUser(dispatch, user);
+      if (data.status === 200) {
+        const user = new UserModel().toJson(data?.data);
+        setUser(dispatch, user);
+        setLoading(dispatch, false);
+
+      } else {
+        setLoading(dispatch, false);
+
+      }
     } catch (error) {
-      console.error(error);
-    } finally {
+      console.error("Error fetching user:", error);
       setLoading(dispatch, false);
+
+    } finally {
     }
   }
   const getRoutes = (allRoutes) =>
