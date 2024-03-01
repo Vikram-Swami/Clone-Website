@@ -34,7 +34,6 @@ function Products() {
   };
 
 
-
   useEffect(() => {
     getProducts();
   }, []);
