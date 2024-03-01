@@ -5,6 +5,9 @@ import PropTypes from 'prop-types';
 import UserModel from 'Models/User';
 import Loading from 'react-loading';
 import ConnectionsModel from 'Models/Connection';
+import { CircularProgress, Stack } from '@mui/material';
+import SoftTypography from 'components/SoftTypography';
+import FormDialog from 'components/Pop';
 
 const SoftUI = createContext(null);
 
@@ -40,11 +43,12 @@ function reducer(state, action) {
     case 'USER': {
       return { ...state, user: action.value };
     }
-    case 'CONNECTION': {
-      return { ...state, connection: action.value };
-    }
     case 'LOADING': {
-      return { ...state, loading: action.value.map(e => { return new ConnectionsModel(e) }) };
+      return { ...state, loading: action.value };
+    }
+    case 'CONNECTION': {
+      return { ...state, connection: new ConnectionsModel().fromArray(action.value) };
+
     }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
@@ -64,8 +68,9 @@ function NextworkControllerProvider({ children }) {
     direction: 'ltr',
     layout: 'dashboard',
     user: new UserModel(),
-    connection: [new ConnectionsModel()],
-    loading: true,
+    connection: [],
+    dialog: false,
+    loading: false,
   };
   const [controller, dispatch] = useReducer(reducer, initialState);
 
@@ -73,7 +78,26 @@ function NextworkControllerProvider({ children }) {
 
   return (
     <SoftUI.Provider value={value}>
-      {controller.loading && <Loading width={40} />} {/* Conditionally render loader */}
+      {/* Conditionally render loader */}
+      {controller.loading ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+            width: "100%"
+          }}
+        >
+          <Stack sx={{ color: "grey.500" }} spacing={2} direction="row">
+            <CircularProgress color="success" />
+            <h4 style={{ fontWeight: 600, fontSize: "18px" }}>NextWork Technologies</h4>
+
+          </Stack>
+        </div>) : null}
+
+      <FormDialog open={controller.dialog.length > 0} setOpen={(v) => { setDialog(dispatch, []) }} data={controller.dialog[0]} />
+
       {children}
 
     </SoftUI.Provider>

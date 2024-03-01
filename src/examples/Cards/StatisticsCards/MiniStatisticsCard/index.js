@@ -9,8 +9,6 @@ import Icon from "@mui/material/Icon";
 // Next Work Dashboard React components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
-import { CardMedia } from "@mui/material";
-
 function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction }) {
   return (
     <Card>
@@ -51,7 +49,6 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
                 <SoftTypography
                   variant="h5"
                   fontWeight="bold"
-                  color={bgColor === "white" ? "dark" : "white"}
                 >
                   {count}{" "}
                   <SoftTypography variant="button" color={percentage.color} fontWeight="bold">
@@ -60,28 +57,6 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
                 </SoftTypography>
               </SoftBox>
             </Grid>
-
-            {direction === "right" ? (
-              <Grid item xs={4}>
-                <SoftBox
-                  variant="gradient"
-                  bgColor={bgColor === "white" ? icon.color : "white"}
-                  color={bgColor === "white" ? "white" : "dark"}
-                  width="3rem"
-                  height="3rem"
-                  marginLeft="auto"
-                  borderRadius="md"
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  shadow="md"
-                >
-                  <Icon fontSize="small" color="inherit">
-                    {icon.component}
-                  </Icon>
-                </SoftBox>
-              </Grid>
-            ) : null}
           </Grid>
         </SoftBox>
       </SoftBox>

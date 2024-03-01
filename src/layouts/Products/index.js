@@ -5,19 +5,12 @@ import Grid from "@mui/material/Grid";
 import SoftBox from "components/SoftBox";
 
 // Next Work Dashboard React components
-import MasterCard from "examples/Cards/MasterCard";
-import DefaultInfoCard from "examples/Cards/InfoCards/DefaultInfoCard";
 
 // Next Work Dashboard React examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import Footer from "examples/Footer";
 
 // Billing page components
-import PaymentMethod from "layouts/billing/components/PaymentMethod";
-import Invoices from "layouts/billing/components/Invoices";
-import BillingInformation from "layouts/billing/components/BillingInformation";
-import Transactions from "layouts/billing/components/Transactions";
 import { useEffect } from "react";
 import ProductController from "Services/ConnectionsServices";
 import { useState } from "react";
@@ -32,12 +25,11 @@ function Products() {
   const getProducts = async () => {
     try {
       const storageData = await productController.getPublished();
-      console.log(storageData);
       if (storageData?.status === 200) {
         setProducts(storageData?.data);
+
       }
     } catch (error) {
-      console.log(error);
     }
   };
 
@@ -59,12 +51,12 @@ function Products() {
                   <Grid key={index} item xs={12} md={6} xl={4}>
                     <DefaultProductCard
                       icon="cloud"
-                      title={`Storage : ${data.range} GB`}
-                      description={data.space}
-                      value={`Rent: ${data.rent}%`}
-                      basicAmt={`Basic Amount: ${data.basicAmt}`}
-                      tax={`Tax: ${data.tax}%`}
-                      totalprice={`Total Price: ${data.basicAmt + (data.basicAmt * data.tax) / 100}`}
+                      range={data.range}
+                      storage={data.space}
+                      rent={data.rent}
+                      basicAmt={data.basicAmt}
+                      tax={data.tax}
+                      totalprice={parseFloat(data.range * data.basicAmt) + parseFloat((data.range * data.basicAmt) * data.tax) / 100}
                     />
                   </Grid>
                 ))}

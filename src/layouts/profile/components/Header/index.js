@@ -3,9 +3,6 @@ import { useState, useEffect } from "react";
 // @mui material components
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
-import AppBar from "@mui/material/AppBar";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
 
 // Next Work Dashboard React components
 import SoftBox from "components/SoftBox";
@@ -15,16 +12,9 @@ import SoftAvatar from "components/SoftAvatar";
 // Next Work Dashboard React examples
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
-// Next Work Dashboard React icons
-import Cube from "examples/Icons/Cube";
-import Document from "examples/Icons/Document";
-import Settings from "examples/Icons/Settings";
-
 // Next Work Dashboard React base styles
 import breakpoints from "assets/theme/base/breakpoints";
 
-// Images
-import burceMars from "assets/images/bruce-mars.jpg";
 import curved0 from "assets/images/curved-images/curved0.jpg";
 import { useSoftUIController } from "context";
 
@@ -35,12 +25,13 @@ function Header() {
   const { user } = controller;
   useEffect(() => {
     // A function that sets the orientation state of the tabs.
+    console.log(user);
+
     function handleTabsOrientation() {
       return window.innerWidth < breakpoints.values.sm
         ? setTabsOrientation("vertical")
         : setTabsOrientation("horizontal");
     }
-
     /** 
      The event listener that's calling the handleTabsOrientation function when resizing the window.
     */
@@ -97,7 +88,7 @@ function Header() {
                 {user?.fullName}
               </SoftTypography>
               <SoftTypography variant="button" color="text" fontWeight="medium">
-                Networker
+                {user?.designationId.length > 1 ? user?.designationId : "User"}
               </SoftTypography>
             </SoftBox>
           </Grid>

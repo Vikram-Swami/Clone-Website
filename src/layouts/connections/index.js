@@ -14,35 +14,42 @@ import SoftButton from "components/SoftButton";
 import { Grid, Icon } from "@mui/material";
 import DefaultInfoCard from "examples/Cards/InfoCards/DefaultInfoCard";
 
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import ProductController from "Services/ConnectionsServices";
-import { useEffect, useState } from "react";
-import { useSoftUIController, setLoading } from "context";
+import { useEffect, useMemo, useState } from "react";
+import { useSoftUIController, setConnection, setLoading } from "context";
+import Table from "examples/Tables/Table";
+import connectionView from "layouts/tables/data/connections";
 
 function Connections() {
-  const [connections, setConnections] = useState()
   const productController = new ProductController();
   const [controller, dispatch] = useSoftUIController();
+  const { connection, user } = controller;
 
 
-  const { user } = controller;
+
   const getConnectionById = async () => {
     try {
-      setLoading(dispatch, true);
       const response = await productController.getConnectionByuserId(user?.id)
-      if (response?.status == 200) {
+      if (response?.status === 200) {
 
-        setConnections(response)
-        setLoading(dispatch, false);
+        setConnection(dispatch, response.data);
       }
     } catch (error) {
-      console.log(error);
+
     }
+
   }
+  const memoizedRows = useMemo(() => connectionView.rows(connection, user.fullName), [connection, user.fullName]);
+
+
   useEffect(() => {
+    setLoading(dispatch, true);
+
     getConnectionById();
-    console.log(connections);
+    setLoading(dispatch, false);
   }, [])
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -50,28 +57,34 @@ function Connections() {
         <SoftBox mb={3}>
           <Card>
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-              <SoftTypography variant="h6">Connection table</SoftTypography>
+              <SoftTypography variant="h6">My Connections</SoftTypography>
               <NavLink to="/products"> <SoftButton variant="gradient" color="dark" ml={2} >
                 <Icon sx={{ fontWeight: "bold" }}>add</Icon>
                 &nbsp;Create Connections
               </SoftButton>
               </NavLink>
             </SoftBox>
-            <SoftBox mt={4}>
-              <SoftBox mb={1.5}>
-                <Grid container spacing={3} >
-                  <Grid item lg={12}>
-                    <Grid container spacing={3}>
 
-                      <Grid xs={12} xl={12}>
-                        <DefaultInfoCard icon="cloud" title={`You Don't have an active connection yet. Add connection to your portfolio and start earning.`} />
+            {
+              connection.length > 0
+                ?
+                <Table columns={connectionView.columns} rows={memoizedRows} />
+                :
+                <SoftBox mt={4}>
+                  <SoftBox mb={1.5}>
+                    <Grid container spacing={3} >
+                      <Grid item lg={12}>
+                        <Grid container spacing={3}>
+
+                          <Grid xs={12} xl={12}>
+                            <DefaultInfoCard icon="cloud" title={`You Don't have an active connection yet. Add connection to your portfolio and start earning.`} />
+                          </Grid>
+
+                        </Grid>
                       </Grid>
-
                     </Grid>
-                  </Grid>
-                </Grid>
-              </SoftBox>
-            </SoftBox>
+                  </SoftBox>
+                </SoftBox>}
           </Card>
         </SoftBox>
       </SoftBox>

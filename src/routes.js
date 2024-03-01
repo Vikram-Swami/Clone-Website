@@ -4,7 +4,6 @@ import Tables from "layouts/tables";
 import Connections from "layouts/connections";
 import Billing from "layouts/billing";
 import Profile from "layouts/profile";
-import SignUp from "layouts/authentication/sign-up";
 
 // NextWork Dashboard React icons
 import Shop from "examples/Icons/Shop";
@@ -15,6 +14,8 @@ import Income from "layouts/Income/income";
 import Rents from "layouts/Rents";
 import Products from "layouts/Products";
 import CreateMember from "components/CreateMember";
+import SignUp from "layouts/authentication/sign-up";
+import SignIn from "layouts/authentication/sign-in";
 
 const routes = [
   {
@@ -26,6 +27,24 @@ const routes = [
     icon: <Shop size="12px" />,
     component: <Dashboard />,
     noCollapse: true,
+  },
+  {
+    type: "route",
+    name: "SignUp",
+    Key: "signup",
+    auth: null,
+    route: "sign-up",
+    component: <SignUp />,
+    noCollapse: false
+  },
+  {
+    type: "route",
+    name: "SignIn",
+    Key: "signin",
+    auth: null,
+    route: "/",
+    component: <SignIn />,
+    noCollapse: false
   },
 
   {

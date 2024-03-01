@@ -31,7 +31,7 @@ class ProductController {
 
             return response?.data;
         } catch (error) {
-            throw error;
+            return error;
         }
     }
     async createConnections(storage, id) {
@@ -47,22 +47,24 @@ class ProductController {
                     'Authorization': `Bearer ${authToken}`
                 }
             });
-            console.log("response=>", response);
             return response?.data;
         } catch (error) {
-            throw error;
+            return error;
         }
     }
     async getConnectionByuserId(id) {
-        console.log("userID=>", id);
+        const authToken = await this.getCookie('authToken') ?? null;
+
         try {
-            const response = await axios.get(`${API_BASE_URL + getConnectionByUserID}`, {
-                userId: id
+            const response = await axios.get(`${API_BASE_URL + getConnectionByUserID}/${id}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken}`
+                }
             });
-            console.log("response=>", response);
             return response?.data;
         } catch (error) {
-            throw error;
+            return error;
         }
     }
 

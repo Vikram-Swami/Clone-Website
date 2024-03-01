@@ -17,16 +17,12 @@ import ProductController from "Services/ConnectionsServices";
 function DefaultProductCard({
   color,
   icon,
-  title,
-  description,
+  storage,
   range,
-  value,
-  space,
   rent,
   basicAmt,
   tax,
   totalprice,
-  freeSpace,
 }) {
   const [controller] = useSoftUIController();
   const productController = new ProductController();
@@ -56,41 +52,21 @@ function DefaultProductCard({
           borderRadius="lg"
           variant="gradient"
         >
-          <div style={{ textAlign: "center" }}>
+          <div style={{ textAlign: "center" }}>/
             <Icon fontSize="large">{icon}</Icon>
-            <div style={{ fontSize: "1.40rem", marginTop: "-10px" }}>{range} GB</div>
+            <div style={{ fontSize: "1.40rem", marginTop: "-10px" }}>{range} TB</div>
           </div>
         </SoftBox>
 
         <Box>
-          <SoftTypography variant="h6">Free Space : {freeSpace} GB</SoftTypography>
+          <SoftTypography variant="h6">Free Space : {storage} GB</SoftTypography>
 
           <SoftTypography variant="h6">Rent : {rent}%</SoftTypography>
         </Box>
       </SoftBox>
       <SoftBox pb={2} px={2} textAlign="center" lineHeight={1.25}>
-        <SoftTypography variant="h6" fontWeight="medium" textTransform="capitalize">
-          {title}
-        </SoftTypography>
-        <SoftTypography variant="h6" fontWeight="medium" textTransform="capitalize">
-          {space}
-        </SoftTypography>
-        <SoftTypography variant="h6" fontWeight="medium" textTransform="capitalize">
-          {rent}
-        </SoftTypography>
+        <Divider />
 
-        {description && (
-          <SoftTypography variant="caption" color="text" fontWeight="regular">
-            {description}
-          </SoftTypography>
-        )}
-
-        {description && !value ? null : <Divider />}
-        {value && (
-          <SoftTypography variant="h5" fontWeight="medium">
-            {value}
-          </SoftTypography>
-        )}
         <SoftBox display="flex" justifyContent="space-between">
           <Box>
             <SoftTypography
@@ -99,7 +75,8 @@ function DefaultProductCard({
               textTransform="capitalize"
               textAlign="left"
             >
-              Unit Price (TB) : {basicAmt}
+
+              Basic Amount : {basicAmt}
             </SoftTypography>
             <SoftTypography
               variant="h6"
@@ -107,7 +84,7 @@ function DefaultProductCard({
               textTransform="capitalize"
               textAlign="left"
             >
-              Tax: {tax}%
+              GST : {tax}%
             </SoftTypography>
             <SoftTypography
               variant="h6"
@@ -115,7 +92,7 @@ function DefaultProductCard({
               textTransform="capitalize"
               textAlign="left"
             >
-              Total Price : {totalprice}/-
+              Total Payble : {totalprice}/-
             </SoftTypography>
           </Box>
           <SoftButton
@@ -129,9 +106,8 @@ function DefaultProductCard({
             shadow="md"
             marginRight="2rem"
             borderRadius="lg"
-            alignSelf="center"
             variant="gradient"
-            onClick={() => createConnection(description)}
+            onClick={() => createConnection(range)}
           >
             <Icon sx={{ fontWeight: "bold" }}>add</Icon>
           </SoftButton>
@@ -144,8 +120,6 @@ function DefaultProductCard({
 // Setting default values for the props of DefaultInfoCard
 DefaultProductCard.defaultProps = {
   color: "info",
-  value: "",
-  description: "",
   space: "",
   rent: "",
   basicAmt: "",
@@ -159,15 +133,12 @@ DefaultProductCard.defaultProps = {
 DefaultProductCard.propTypes = {
   color: PropTypes.oneOf(["primary", "secondary", "info", "success", "warning", "error", "dark"]),
   icon: PropTypes.node.isRequired,
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  space: PropTypes.string,
-  rent: PropTypes.string,
-  basicAmt: PropTypes.string,
-  tax: PropTypes.string,
-  totalprice: PropTypes.string,
-  freeSpace: PropTypes.number, // Adjust the type to number
+  storage: PropTypes.number,
+
+  rent: PropTypes.number,
+  basicAmt: PropTypes.number,
+  tax: PropTypes.number,
+  totalprice: PropTypes.number,
   range: PropTypes.number, // Adjust the type to number
 };
 
