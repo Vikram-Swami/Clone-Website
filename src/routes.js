@@ -1,21 +1,22 @@
+import React, { lazy, Suspense } from 'react';
 // NextWork Dashboard React layouts
-import Dashboard from "layouts/dashboard";
-import Tables from "layouts/tables";
-import Connections from "layouts/connections";
-import Billing from "layouts/billing";
-import Profile from "layouts/profile";
+const Dashboard = lazy(() => import('layouts/dashboard'));
+const Tables = lazy(() => import('layouts/tables'));
+const Connections = lazy(() => import('layouts/connections'));
+const Billing = lazy(() => import('layouts/billing'));
+const Profile = lazy(() => import('layouts/profile'));
 
-// NextWork Dashboard React icons
-import Shop from "examples/Icons/Shop";
-import Office from "examples/Icons/Office";
-import CustomerSupport from "examples/Icons/CustomerSupport";
-import CreditCard from "examples/Icons/CreditCard";
-import Income from "layouts/Income/income";
-import Rents from "layouts/Rents";
-import Products from "layouts/Products";
-import CreateMember from "components/CreateMember";
-import SignUp from "layouts/authentication/sign-up";
-import SignIn from "layouts/authentication/sign-in";
+// Lazy-loaded icons
+const Shop = lazy(() => import('examples/Icons/Shop'));
+const Office = lazy(() => import('examples/Icons/Office'));
+const CustomerSupport = lazy(() => import('examples/Icons/CustomerSupport'));
+const CreditCard = lazy(() => import('examples/Icons/CreditCard'));
+const Income = lazy(() => import('layouts/Income/income'));
+const Rents = lazy(() => import('layouts/Rents'));
+const Products = lazy(() => import('layouts/Products'));
+const CreateMember = lazy(() => import('components/CreateMember'));
+const SignUp = lazy(() => import('layouts/authentication/sign-up'));
+const SignIn = lazy(() => import('layouts/authentication/sign-in'));
 
 const routes = [
   {
@@ -140,9 +141,30 @@ const routes = [
     noCollapse: true,
   },
 ];
+export default routes;
 
-const components = {
+export const components = {
+  dashboard: <Dashboard />,
+  createMembers: <CreateMember />,
+  myTeam: <Tables />,
+  connections: <Connections />,
+  income: <Income />,
+  rents: <Rents />,
+  products: <Products />,
+  account: <Billing />,
+  profile: <Profile />,
+};
+
+export const icons = {
+  dashboard: <Shop size="12px" />,
+  createMembers: <Office size="12px" />,
+  myTeam: <Office size="12px" />,
+  connections: <Office size="12px" />,
+  income: <Office size="12px" />,
+  rents: <Office size="12px" />,
+  products: <CreditCard size="12px" />,
+  account: <CreditCard size="12px" />,
   profile: <CustomerSupport size="12px" />,
 };
 
-export default routes;
+

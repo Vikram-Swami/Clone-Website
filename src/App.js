@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -16,6 +16,7 @@ import {
   setLoading,
 } from "context";
 import Sidenav from "examples/Sidenav";
+import { components } from "routes";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
@@ -53,10 +54,33 @@ export default function App() {
     allRoutes.map((route) => {
       if (user && user.id !== undefined && route.auth !== null) {
         if (route.auth === "user" || route.auth === "any") {
-          return <Route exact path={route.route} element={route.component} key={route.key} />;
+          let Component = components[route.key];
+          return (
+            <Route
+              exact
+              path={route.route}
+              element={
+                <Suspense fallback={<div>Loading...</div>}>
+                  {components[route.key]}
+                </Suspense>
+              }
+              key={route.key}
+            />
+          );
         }
       } else if (user.id === undefined && route.auth === null) {
-        return <Route exact path={route.route} element={route.component} key={route.key} />;
+        return (
+          <Route
+            exact
+            path={route.route}
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                {route.component}
+              </Suspense>
+            }
+            key={route.key}
+          />
+        );
       }
 
       return null;
@@ -122,6 +146,7 @@ export default function App() {
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
           />
+          {configsButton}
         </>
       )}
       <Routes>
