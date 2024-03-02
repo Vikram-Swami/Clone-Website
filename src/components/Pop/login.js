@@ -41,6 +41,7 @@ function LoginDialog({ open, setOpen, data }) {
     try {
       const enteredOtp = otpRef.current.value;
       const response = await userController.verifyOtp(enteredOtp);
+      console.log(response);
 
       if (response?.status === 200) {
         setCookie("authToken", response?.data.token, 7);

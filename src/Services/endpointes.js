@@ -1,0 +1,10 @@
+export const createUser = "/register-user";
+export const loginUser = "/login";
+export const createAddress = "/create-address";
+export const createKyc = "/create-kyc";
+export const otpVerify = '/verify-otp';
+export const getUserByUserId = '/get-user-by-id';
+export const resendOtpRoute = '/resend-otp';
+export const getAllPublished = '/get-published';
+export const createConnection = '/create-connection';
+export const getConnectionByUserID = '/get-connection-by-user-id';
