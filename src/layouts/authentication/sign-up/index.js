@@ -10,7 +10,7 @@ import BasicLayout from "layouts/authentication/components/BasicLayout";
 import curved6 from "assets/images/curved-images/curved14.jpg";
 import FormDialog from "components/Pop";
 import UserController from "Services/UserServices";
-import { MenuItem, NativeSelect, Select } from "@mui/material";
+import { NativeSelect } from "@mui/material";
 function SignUp() {
   const [agreement, setAgreement] = useState(true);
   const [user, setUser] = useState();
@@ -126,7 +126,7 @@ function SignUp() {
       setUser(error?.response?.data);
     }
   };
-  useEffect(() => { }, []);
+  useEffect(() => {}, []);
   return (
     <BasicLayout title="Welcome!" description="" image={curved6}>
       <Card>

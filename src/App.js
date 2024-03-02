@@ -7,9 +7,6 @@ import themeRTL from "assets/theme/theme-rtl";
 import routes from "routes";
 import brand from "assets/images/logo-ct.png";
 import UserModel from "Models/User";
-import SignIn from "layouts/authentication/sign-in";
-import SignUp from "layouts/authentication/sign-up";
-import Dashboard from "layouts/dashboard";
 import UserController from "Services/UserServices";
 import {
   useSoftUIController,
@@ -19,9 +16,6 @@ import {
   setLoading,
 } from "context";
 import Sidenav from "examples/Sidenav";
-import { CircularProgress, Grid, Stack } from "@mui/material";
-import SoftTypography from "components/SoftTypography";
-import Loading from "react-loading";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
@@ -61,8 +55,7 @@ export default function App() {
         if (route.auth === user.type || route.auth === "any") {
           return <Route exact path={route.route} element={route.component} key={route.key} />;
         }
-      }
-      else if (user.id === undefined && route.auth === null) {
+      } else if (user.id === undefined && route.auth === null) {
         return <Route exact path={route.route} element={route.component} key={route.key} />;
       }
 
@@ -83,7 +76,6 @@ export default function App() {
         setLoading(dispatch, false);
       }
     } catch (error) {
-      console.error(error);
       setLoading(dispatch, false);
     }
   }
@@ -92,7 +84,6 @@ export default function App() {
 
   useEffect(() => {
     !user.id && getUserById();
-
 
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
@@ -134,13 +125,14 @@ export default function App() {
         </>
       )}
       <Routes>
-
         {/* Render routes based on user authentication */}
         {getRoutes(routes)}
-        {!user.id ? <Route path="/*" element={<Navigate to="/" />} /> : <Route path="/*" element={<Navigate to="/dashboard" />} />}
-
+        {!user.id ? (
+          <Route path="/*" element={<Navigate to="/" />} />
+        ) : (
+          <Route path="/*" element={<Navigate to="/dashboard" />} />
+        )}
       </Routes>
-
     </ThemeProvider>
   );
 }

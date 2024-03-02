@@ -16,23 +16,23 @@ import ProductController from "Services/ConnectionsServices";
 import { useState } from "react";
 import { useSoftUIController } from "context";
 import DefaultProductCard from "examples/Cards/InfoCards/DefaultProductCard";
+import { setDialog } from "context";
 
 function Products() {
   const productController = new ProductController();
   const [products, setProducts] = useState([]);
-
+  const [controller, dispatch] = useSoftUIController();
 
   const getProducts = async () => {
     try {
       const storageData = await productController.getPublished();
       if (storageData?.status === 200) {
         setProducts(storageData?.data);
-
+      } else {
+        setDialog(dispatch);
       }
-    } catch (error) {
-    }
+    } catch (error) {}
   };
-
 
   useEffect(() => {
     getProducts();
@@ -55,7 +55,10 @@ function Products() {
                       rent={data.rent}
                       basicAmt={data.basicAmt}
                       tax={data.tax}
-                      totalprice={parseFloat(data.range * data.basicAmt) + parseFloat((data.range * data.basicAmt) * data.tax) / 100}
+                      totalprice={
+                        parseFloat(data.range * data.basicAmt) +
+                        parseFloat(data.range * data.basicAmt * data.tax) / 100
+                      }
                     />
                   </Grid>
                 ))}
