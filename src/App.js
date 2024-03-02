@@ -64,7 +64,7 @@ export default function App() {
                   {components[route.key]}
                 </Suspense>
               }
-              key={route.key}
+              key={`${route.key}-${route.route}`} // Use a combination of key and route for uniqueness
             />
           );
         }
@@ -78,7 +78,7 @@ export default function App() {
                 {route.component}
               </Suspense>
             }
-            key={route.key}
+            key={`${route.key}-${route.route}`} // Use a combination of key and route for uniqueness
           />
         );
       }

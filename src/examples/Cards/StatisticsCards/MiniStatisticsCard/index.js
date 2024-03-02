@@ -114,6 +114,7 @@ MiniStatisticsCard.propTypes = {
     component: PropTypes.node.isRequired,
   }).isRequired,
   direction: PropTypes.oneOf(["right", "left"]),
+  children: PropTypes.node,
 };
 
 export default MiniStatisticsCard;
