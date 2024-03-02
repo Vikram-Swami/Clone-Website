@@ -1,10 +1,7 @@
 import { useRef, useState } from "react";
 
 // react-router-dom components
-import { Link, useNavigate } from "react-router-dom";
-
-// @mui material components
-import Switch from "@mui/material/Switch";
+import { Link } from "react-router-dom";
 
 // Next Work Dashboard React components
 import SoftBox from "components/SoftBox";

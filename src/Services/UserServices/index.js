@@ -11,10 +11,10 @@ const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 class UserController {
   async getCookie(name) {
-    const cookieArray = document.cookie.split(';');
+    const cookieArray = document.cookie.split(";");
     for (let i = 0; i < cookieArray.length; i++) {
       const cookie = cookieArray[i].trim();
-      if (cookie.startsWith(name + '=')) {
+      if (cookie.startsWith(name + "=")) {
         return cookie.substring(name.length + 1);
       }
     }
@@ -23,8 +23,8 @@ class UserController {
 
   async login(body) {
     try {
-      const authToken = await this.getCookie('authToken') ?? null;
-      const response = await axios.post(API_BASE_URL + loginUser, body,);
+      const authToken = (await this.getCookie("authToken")) ?? null;
+      const response = await axios.post(API_BASE_URL + loginUser, body);
       return response?.data;
     } catch (error) {
       throw error;
@@ -72,13 +72,15 @@ class UserController {
 
   async getUserByIdFromAPI(data) {
     try {
-      const authToken = await this.getCookie('authToken') ?? null;
+      const authToken = (await this.getCookie("authToken")) ?? null;
+      const userId = (await this.getCookie("userId")) ?? null;
 
-      const response = await axios.get(`${API_BASE_URL}${getUserByUserId}/${data}`, {
+      const response = await axios.get(`${API_BASE_URL}${getUserByUserId}`, {
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${authToken}`
-        }
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+          userId: `${userId}`,
+        },
       });
       return response?.data;
     } catch (error) {
@@ -89,7 +91,7 @@ class UserController {
   async resendOtp(data) {
     try {
       const response = await axios.post(API_BASE_URL + resendOtpRoute, {
-        id: data
+        id: data,
       });
       return response?.data;
     } catch (error) {

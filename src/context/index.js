@@ -3,10 +3,8 @@
 import { createContext, useContext, useReducer, useMemo } from "react";
 import PropTypes from "prop-types";
 import UserModel from "Models/User";
-import Loading from "react-loading";
 import ConnectionsModel from "Models/Connection";
 import { CircularProgress, Stack } from "@mui/material";
-import SoftTypography from "components/SoftTypography";
 import FormDialog from "components/Pop";
 
 const SoftUI = createContext(null);

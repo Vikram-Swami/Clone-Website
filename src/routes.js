@@ -35,7 +35,7 @@ const routes = [
     auth: null,
     route: "sign-up",
     component: <SignUp />,
-    noCollapse: false
+    noCollapse: false,
   },
   {
     type: "route",
@@ -44,7 +44,7 @@ const routes = [
     auth: null,
     route: "/",
     component: <SignIn />,
-    noCollapse: false
+    noCollapse: false,
   },
 
   {
@@ -140,5 +140,9 @@ const routes = [
     noCollapse: true,
   },
 ];
+
+const components = {
+  profile: <CustomerSupport size="12px" />,
+};
 
 export default routes;

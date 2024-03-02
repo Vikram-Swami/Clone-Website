@@ -52,7 +52,7 @@ export default function App() {
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
       if (user && user.id !== undefined && route.auth !== null) {
-        if (route.auth === user.type || route.auth === "any") {
+        if (route.auth === "user" || route.auth === "any") {
           return <Route exact path={route.route} element={route.component} key={route.key} />;
         }
       } else if (user.id === undefined && route.auth === null) {
