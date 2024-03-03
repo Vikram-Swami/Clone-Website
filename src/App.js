@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -16,6 +16,9 @@ import {
   setLoading,
 } from "context";
 import Sidenav from "examples/Sidenav";
+import Loading from "layouts/loading";
+import ApiClient from "Services/ApiClient";
+import { getUserByUserId } from "Services/endpointes";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
@@ -53,10 +56,24 @@ export default function App() {
     allRoutes.map((route) => {
       if (user && user.id !== undefined && route.auth !== null) {
         if (route.auth === user.type || route.auth === "any") {
-          return <Route exact path={route.route} element={route.component} key={route.key} />;
+          return (
+            <Route
+              exact
+              path={route.route}
+              element={<Suspense fallback={<Loading />}>{route.component} </Suspense>}
+              key={route.key}
+            />
+          );
         }
       } else if (user.id === undefined && route.auth === null) {
-        return <Route exact path={route.route} element={route.component} key={route.key} />;
+        return (
+          <Route
+            exact
+            path={route.route}
+            element={<Suspense fallback={<Loading />}>{route.component} </Suspense>}
+            key={route.key}
+          />
+        );
       }
 
       return null;
@@ -65,9 +82,8 @@ export default function App() {
   async function getUserById() {
     try {
       setLoading(dispatch, true);
-      const userId = getCookie("userId");
-      let userController = new UserController();
-      let data = await userController.getUserByIdFromAPI(userId);
+      const data = await ApiClient.getData(getUserByUserId);
+
       if (data.status === 200) {
         const user = new UserModel().toJson(data?.data);
         setUser(dispatch, user);
@@ -79,9 +95,6 @@ export default function App() {
       setLoading(dispatch, false);
     }
   }
-
-  const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
-
   useEffect(() => {
     !user.id && getUserById();
 
@@ -89,30 +102,10 @@ export default function App() {
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
 
-  const configsButton = (
-    <SoftBox
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      width="0"
-      height="0"
-      bgColor="white"
-      shadow="sm"
-      borderRadius="50%"
-      position="fixed"
-      right="2rem"
-      bottom="2rem"
-      zIndex={99}
-      color="dark"
-      sx={{ cursor: "pointer" }}
-      onClick={handleConfiguratorOpen}
-    ></SoftBox>
-  );
-
   return (
     <ThemeProvider theme={themeRTL}>
       <CssBaseline />
-      {layout === "dashboard" && user.id && (
+      {user.id && (
         <>
           {/* Render Sidenav and Configurator */}
           <Sidenav
@@ -126,6 +119,7 @@ export default function App() {
       )}
       <Routes>
         {/* Render routes based on user authentication */}
+
         {getRoutes(routes)}
         {!user.id ? (
           <Route path="/*" element={<Navigate to="/" />} />

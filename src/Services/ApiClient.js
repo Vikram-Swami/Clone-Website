@@ -1,25 +1,27 @@
 import requests from "./httpService";
 
-class ApiClient {
-  async getData(url) {
-    return await requests.get(url);
-  }
+const ApiClient = {
+  getData: async (url) => {
+    console.log(url, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    let res = await requests.get(url);
+    return res;
+  },
 
-  async createData(url, data) {
+  createData: async (url, data) => {
     return await requests.post(url, data);
-  }
+  },
 
-  async deleteData(url, id) {
+  deleteData: async (url, id) => {
     return await requests.delete(`${url}/${id}`);
-  }
+  },
 
-  async getDataByParam(url, param) {
+  getDataByParam: async (url, param) => {
     return await requests.get(`${url}/${param}`);
-  }
+  },
 
-  async getDataWithPagination(url, page, limit) {
+  getDataWithPagination: async (url, page, limit) => {
     return await requests.get(`${url}/${page}/${limit}`);
-  }
-}
+  },
+};
 
 export default ApiClient;

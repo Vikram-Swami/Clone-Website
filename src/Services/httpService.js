@@ -1,7 +1,7 @@
 import axios from "axios";
-
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 const instance = axios.create({
-  baseURL: `${process.env.REACT_APP_API_BASE_URL}`,
+  baseURL: `${API_BASE_URL}`,
   timeout: 50000,
   headers: {
     Accept: "application/json",
@@ -11,20 +11,21 @@ const instance = axios.create({
 
 // Add a request interceptor
 instance.interceptors.request.use(function (config) {
-  // Do something before request is sent
   let authToken, userId;
+
   const cookieArray = document.cookie.split(";");
+
   for (let i = 0; i < cookieArray.length; i++) {
     const cookie = cookieArray[i].trim();
     if (cookie.startsWith("userId" + "=")) {
-      userId = cookie.substring(name.length + 1);
+      userId = cookie.substring(String("userId").length + 1);
     } else if (cookie.startsWith("authToken" + "=")) {
-      userId = cookie.substring(name.length + 1);
+      authToken = cookie.substring(String("authToken").length + 1);
     } else if (userId && authToken) {
       break;
     }
   }
-
+  console.log(userId, authToken);
   return {
     ...config,
     headers: {
