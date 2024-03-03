@@ -14,6 +14,7 @@ import { registerUser, createKyc } from "Services/endpointes";
 import { ifscValidate } from "Services/endpointes";
 import { setDialog } from "context";
 import { toast } from "react-toastify";
+import { useSoftUIController } from "context";
 
 function SignUp() {
   const [agreement, setAgreement] = useState(true);
@@ -21,24 +22,7 @@ function SignUp() {
 
   const [step, setStep] = useState(1);
 
-  const fetchPostalDetails = async (postalCode, e) => {
-    try {
-      const response = await fetch(`https://api.postalpincode.in/pincode/${postalCode}`);
-      const data = await response.json();
-      if (data && data[0] && data[0].PostOffice) {
-        const postOffice = data[0].PostOffice[0];
-        form.current.city.value = postOffice?.District;
-        form.current.state.value = postOffice?.State;
-        form.current.country.value = postOffice?.Country;
-        form.current.postalCode.parentNode.style.border = "2px solid #67ca67 ";
-      } else {
-        form.current.postalCode.parentNode.style.border = "2px solid red";
-      }
-    } catch (error) {
-      console.error("Error fetching postal details:", error);
-    }
-  };
-
+  const [controller, dispatch] = useSoftUIController();
   // Validate IFSC Codes
   const handleIFSCCodeChange = async (e) => {
     const ifsc = e.target.value;
@@ -64,21 +48,36 @@ function SignUp() {
     }
   };
 
+  // Validate postal code
   const handlePostalCodeChange = async (e) => {
     const postalCode = e.target.value;
-    if (postalCode.length == 6) {
-      await fetchPostalDetails(postalCode, e);
-      return;
-    } else {
-      form.current.postalCode.parentNode.style.border = "none";
-      form.current.city.value = "City";
-      form.current.state.value = "State";
-      form.current.country.value = "Country";
+    try {
+      if (postalCode.length == 6) {
+        const response = await fetch(`https://api.postalpincode.in/pincode/${postalCode}`);
+        const data = await response.json();
+        if (data && data[0] && data[0].PostOffice) {
+          const postOffice = data[0].PostOffice[0];
+          form.current.city.value = postOffice?.District;
+          form.current.state.value = postOffice?.State;
+          form.current.country.value = postOffice?.Country;
+          form.current.postalCode.parentNode.style.border = "2px solid #67ca67 ";
+        } else {
+          form.current.postalCode.parentNode.style.border = "2px solid red";
+        }
+      } else {
+        form.current.postalCode.parentNode.style.border = "none";
+        form.current.city.value = "City";
+        form.current.state.value = "State";
+        form.current.country.value = "Country";
+      }
+    } catch (error) {
+      console.error("Error fetching postal details:", error);
     }
   };
 
   const handleSetAgreement = () => setAgreement((prevAgreement) => !prevAgreement);
 
+  // Submit forms
   const submitHandler = async (e, route) => {
     const formdata = new FormData(form.current);
     try {
@@ -94,7 +93,7 @@ function SignUp() {
       toast.error("Registration failed:", error);
     }
   };
-  useEffect(() => {}, []);
+
   return (
     <BasicLayout title="Welcome!" description="" image={curved6}>
       <Card>

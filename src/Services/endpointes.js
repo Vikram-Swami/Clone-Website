@@ -1,6 +1,7 @@
 export const createAddress = "/create-address";
 export const createConnections = "/create-connection";
 export const getConnectionByUserID = "/get-connection-by-user-id";
+export const validateUser = "/validate-user";
 // Admin Routes
 export const sourcetype = "/get-source-by-type";
 
@@ -74,7 +75,7 @@ export const activateConnection = "/activate-connection";
 export const getMembers = "/get-members";
 export const registerAdmin = "/register-admin";
 export const forgetPassword = "/forget-password";
-export const getUserByUserId = "/get-user-by-id";
+export const getUserById = "/get-user-by-id";
 export const verifyOtp = "/verify-otp";
 export const resendOtp = "/resend-otp";
 export const updateUser = "/update-user";

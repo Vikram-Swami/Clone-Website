@@ -9,8 +9,10 @@ import { useSoftUIController, setUser, setMiniSidenav, setLoading } from "contex
 import Sidenav from "examples/Sidenav";
 import Loading from "layouts/loading";
 import ApiClient from "Services/ApiClient";
-import { getUserByUserId } from "Services/endpointes";
 import { ToastContainer, toast } from "react-toastify";
+import { getUserById } from "Services/endpointes";
+import { startLoading } from "context";
+import { setDialog } from "context";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
@@ -32,29 +34,28 @@ export default function App() {
     }
   };
 
-  async function getUserById() {
+  async function getUser() {
     try {
-      setLoading(dispatch, true);
-      const data = await ApiClient.getData(getUserByUserId);
+      startLoading(dispatch, true);
+      const data = await ApiClient.getData(getUserById);
       if (data.status === 200) {
         setUser(dispatch, data?.data);
-        setLoading(dispatch, false);
-      } else {
-        setLoading(dispatch, false);
       }
+      setDialog(dispatch, [data]);
     } catch (error) {
       setLoading(dispatch, false);
       toast.error(error.response?.data?.message ?? "Oops! Something went wrong, please try later");
     }
   }
-
   useEffect(() => {
-    !user.id && getUserById();
+    if (!user.id) {
+      getUser();
+    }
 
+    // Scroll to the top of the page
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
-
   return (
     <ThemeProvider theme={themeRTL}>
       <ToastContainer />
@@ -98,9 +99,9 @@ export default function App() {
           return null;
         })}
         {!user.id ? (
-          <Route path="/*" element={<Navigate to="/" />} key="fallback" /> // Unique key for fallback route
+          <Route path="/*" element={<Navigate to="/" />} />
         ) : (
-          <Route path="/*" element={<Navigate to="/dashboard" />} key="fallback" /> // Unique key for fallback route
+          <Route path="/*" element={<Navigate to="/dashboard" />} />
         )}
       </Routes>
     </ThemeProvider>

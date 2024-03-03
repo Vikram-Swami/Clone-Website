@@ -22,22 +22,26 @@ import connectionView from "layouts/tables/data/connections";
 import ApiClient from "Services/ApiClient";
 import { toast } from "react-toastify";
 import { setDialog } from "context";
+import { getConnectionByUserID } from "Services/endpointes";
+import { startLoading } from "context";
 
 function Connections() {
   const [controller, dispatch] = useSoftUIController();
   const { connection, user } = controller;
 
   const getConnection = async () => {
+    startLoading(dispatch, true);
     try {
       const response = await ApiClient.getData(getConnectionByUserID);
       if (response?.status === 200) {
         setConnection(dispatch, response.data);
         toast.success(response?.message);
+        setLoading(dispatch, false);
       } else {
-        toast.error(response?.message);
         setDialog(dispatch, [userData]);
       }
     } catch (error) {
+      setLoading(dispatch, false);
       toast.error(error.response?.data?.message ?? "Oops! Something went wrong, please try later");
     }
   };
@@ -47,10 +51,7 @@ function Connections() {
   );
 
   useEffect(() => {
-    setLoading(dispatch, true);
-
-    getConnection();
-    setLoading(dispatch, false);
+    connection.length < 1 && getConnection();
   }, []);
 
   return (

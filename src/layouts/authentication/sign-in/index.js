@@ -31,13 +31,12 @@ function SignIn() {
       if (userData?.status == 200) {
         userData.status = "otp";
       }
-      setDialog(dispatch, [userData])
+      setDialog(dispatch, [userData]);
     } catch (error) {
       if (error.response?.data?.message) {
         setDialog(dispatch, [error.response?.data]);
-
       } else {
-        toast.error("Oops! Something went wrong. Please try later.")
+        toast.error("Oops! Something went wrong. Please try later.");
       }
       console.error("Login failed:", error);
       // Handle login error (e.g., display error message)
@@ -76,7 +75,7 @@ function SignIn() {
             Don&apos;t have an account?{" "}
             <SoftTypography
               component={Link}
-              to="/sign-up"
+              to="/sign-up/1"
               variant="button"
               color="info"
               fontWeight="medium"
@@ -101,7 +100,6 @@ function SignIn() {
           </SoftTypography>
         </SoftBox>
       </SoftBox>
-
     </CoverLayout>
   );
 }

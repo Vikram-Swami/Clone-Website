@@ -14,7 +14,6 @@ import { Box } from "@mui/material";
 import { useSoftUIController } from "context";
 import ApiClient from "Services/ApiClient";
 import { createConnections } from "Services/endpointes";
-
 function DefaultProductCard({ color, icon, storage, range, rent, basicAmt, tax, totalprice }) {
   const [controller] = useSoftUIController();
 

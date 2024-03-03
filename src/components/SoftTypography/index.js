@@ -8,13 +8,31 @@ import SoftTypographyRoot from "components/SoftTypography/SoftTypographyRoot";
 
 const SoftTypography = forwardRef(
   (
-    { color, fontWeight, textTransform, verticalAlign, textGradient, opacity, children, ...rest },
+    {
+      color,
+      fontWeight,
+      textTransform,
+      verticalAlign,
+      textGradient,
+      opacity,
+      children,
+      cursor,
+      ...rest
+    },
     ref
   ) => (
     <SoftTypographyRoot
       {...rest}
       ref={ref}
-      ownerState={{ color, textTransform, verticalAlign, fontWeight, opacity, textGradient }}
+      ownerState={{
+        color,
+        textTransform,
+        verticalAlign,
+        fontWeight,
+        opacity,
+        textGradient,
+        cursor,
+      }}
     >
       {children}
     </SoftTypographyRoot>
@@ -29,6 +47,7 @@ SoftTypography.defaultProps = {
   verticalAlign: "unset",
   textGradient: false,
   opacity: 1,
+  cursor: "auto",
 };
 
 // Typechecking props for the SoftTypography
@@ -62,6 +81,7 @@ SoftTypography.propTypes = {
   textGradient: PropTypes.bool,
   children: PropTypes.node.isRequired,
   opacity: PropTypes.number,
+  cursor: PropTypes.string,
 };
 
 export default SoftTypography;

@@ -15,12 +15,15 @@ import Icon from "@mui/material/Icon";
 // Next Work Dashboard React components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
+import SoftButton from "components/SoftButton";
 
 // Next Work Dashboard React examples
 import SidenavCollapse from "examples/Sidenav/SidenavCollapse";
+import SidenavCard from "examples/Sidenav/SidenavCard";
 
 // Custom styles for the Sidenav
 import SidenavRoot from "examples/Sidenav/SidenavRoot";
+import sidenavLogoLabel from "examples/Sidenav/styles/sidenav";
 
 // Next Work Dashboard React context
 import { useSoftUIController, setMiniSidenav } from "context";

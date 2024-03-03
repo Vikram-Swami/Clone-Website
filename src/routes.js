@@ -1,5 +1,6 @@
 import React, { lazy, Suspense } from "react";
 import Loading from "layouts/loading";
+import RecipeReviewCard from "layouts/verifyAccount";
 // NextWork Dashboard React layouts
 const Dashboard = lazy(() => import("layouts/dashboard"));
 const Tables = lazy(() => import("layouts/tables"));
@@ -9,16 +10,16 @@ const Profile = lazy(() => import("layouts/profile"));
 
 // Lazy-loaded icons
 
-const Shop = lazy(() => import('examples/Icons/Shop'));
-const Office = lazy(() => import('examples/Icons/Office'));
-const CustomerSupport = lazy(() => import('examples/Icons/CustomerSupport'));
-const CreditCard = lazy(() => import('examples/Icons/CreditCard'));
-const Income = lazy(() => import('layouts/Income/income'));
-const Rents = lazy(() => import('layouts/Rents'));
-const Products = lazy(() => import('layouts/Products'));
-const CreateMembers = lazy(() => import('layouts/CreateMember'));
-const SignUp = lazy(() => import('layouts/authentication/sign-up'));
-const SignIn = lazy(() => import('layouts/authentication/sign-in'));
+const Shop = lazy(() => import("examples/Icons/Shop"));
+const Office = lazy(() => import("examples/Icons/Office"));
+const CustomerSupport = lazy(() => import("examples/Icons/CustomerSupport"));
+const CreditCard = lazy(() => import("examples/Icons/CreditCard"));
+const Income = lazy(() => import("layouts/Income/income"));
+const Rents = lazy(() => import("layouts/Rents"));
+const Products = lazy(() => import("layouts/Products"));
+const CreateMembers = lazy(() => import("layouts/CreateMember"));
+const SignUp = lazy(() => import("layouts/authentication/sign-up"));
+const SignIn = lazy(() => import("layouts/authentication/sign-in"));
 
 const routes = [
   {
@@ -33,10 +34,20 @@ const routes = [
   },
   {
     type: "route",
+    name: "VerifyAccount",
+    key: "VerifyAccount",
+    auth: null,
+    route: "/verify-account/:id",
+    icon: <Shop size="12px" />,
+    component: <RecipeReviewCard />,
+    noCollapse: true,
+  },
+  {
+    type: "route",
     name: "SignUp",
     Key: "signup",
     auth: null,
-    route: "sign-up",
+    route: "sign-up/:step",
     component: <SignUp />,
     noCollapse: false,
   },
@@ -144,10 +155,14 @@ const routes = [
 export default routes;
 
 export const components = {
-
   dashboard: (
     <Suspense fallback={<Loading />}>
       <Dashboard />
+    </Suspense>
+  ),
+  VerifyAccount: (
+    <Suspense fallback={<Loading />}>
+      <RecipeReviewCard />
     </Suspense>
   ),
   createMembers: (

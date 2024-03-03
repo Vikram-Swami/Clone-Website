@@ -49,8 +49,10 @@ function reducer(state, action) {
       return { ...state, connection: new ConnectionsModel().fromArray(action.value) };
     }
     case "DIALOG": {
-      console.log(action.value);
-      return { ...state, dialog: action.value };
+      return { ...state, dialog: action.value, loading: false };
+    }
+    case "START_LOAD": {
+      return { ...state, dialog: [], loading: action.value };
     }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
@@ -98,7 +100,6 @@ function NextworkControllerProvider({ children }) {
         data={controller.dialog[0]}
       />
 
-
       {children}
       {controller.loading ? (
         <div
@@ -108,7 +109,12 @@ function NextworkControllerProvider({ children }) {
             alignItems: "center",
             height: "100vh",
             width: "100%",
-            background: "transparent",
+            position: "fixed",
+            height: "100dvh",
+            width: "100%",
+            top: 0,
+            background: "#2c292975",
+            zIndex: 11111111,
           }}
         >
           <Stack sx={{ color: "grey.500" }} spacing={2} direction="row">
@@ -149,6 +155,7 @@ const setUser = (dispatch, value) => dispatch({ type: "USER", value });
 const setConnection = (dispatch, value) => dispatch({ type: "CONNECTION", value });
 const setLoading = (dispatch, value) => dispatch({ type: "LOADING", value });
 const setDialog = (dispatch, value) => dispatch({ type: "DIALOG", value });
+const startLoading = (dispatch, value) => dispatch({ type: "START_LOAD", value });
 
 export {
   NextworkControllerProvider,
@@ -165,4 +172,5 @@ export {
   setConnection,
   setLoading,
   setDialog,
+  startLoading,
 };
