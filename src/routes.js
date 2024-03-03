@@ -1,12 +1,14 @@
-import React, { lazy, Suspense } from 'react';
+import Loading from "layouts/loading";
+import React, { lazy, Suspense } from "react";
 // NextWork Dashboard React layouts
-const Dashboard = lazy(() => import('layouts/dashboard'));
-const Tables = lazy(() => import('layouts/tables'));
-const Connections = lazy(() => import('layouts/connections'));
-const Billing = lazy(() => import('layouts/billing'));
-const Profile = lazy(() => import('layouts/profile'));
+const Dashboard = lazy(() => import("layouts/dashboard"));
+const Tables = lazy(() => import("layouts/tables"));
+const Connections = lazy(() => import("layouts/connections"));
+const Billing = lazy(() => import("layouts/billing"));
+const Profile = lazy(() => import("layouts/profile"));
 
 // Lazy-loaded icons
+
 const Shop = lazy(() => import('examples/Icons/Shop'));
 const Office = lazy(() => import('examples/Icons/Office'));
 const CustomerSupport = lazy(() => import('examples/Icons/CustomerSupport'));
@@ -144,15 +146,54 @@ const routes = [
 export default routes;
 
 export const components = {
-  dashboard: <Dashboard />,
-  createMembers: <CreateMembers />,
-  myTeam: <Tables />,
-  connections: <Connections />,
-  income: <Income />,
-  rents: <Rents />,
-  products: <Products />,
-  account: <Billing />,
-  profile: <Profile />,
+
+  dashboard: (
+    <Suspense fallback={<Loading />}>
+      <Dashboard />
+    </Suspense>
+  ),
+  createMembers: (
+    <Suspense fallback={<Loading />}>
+      <CreateMembers />
+    </Suspense>
+  ),
+  myTeam: (
+    <Suspense fallback={<Loading />}>
+      <Tables />
+    </Suspense>
+  ),
+  connections: (
+    <Suspense fallback={<Loading />}>
+      <Connections />
+    </Suspense>
+  ),
+  income: (
+    <Suspense fallback={<Loading />}>
+      <Income />
+    </Suspense>
+  ),
+  rents: (
+    <Suspense fallback={<Loading />}>
+      {" "}
+      <Rents />
+    </Suspense>
+  ),
+  products: (
+    <Suspense fallback={<Loading />}>
+      <Products />
+    </Suspense>
+  ),
+  account: (
+    <Suspense fallback={<Loading />}>
+      {" "}
+      <Billing />
+    </Suspense>
+  ),
+  profile: (
+    <Suspense fallback={<Loading />}>
+      <Profile />
+    </Suspense>
+  ),
 };
 
 export const icons = {
@@ -166,5 +207,3 @@ export const icons = {
   account: <CreditCard size="12px" />,
   profile: <CustomerSupport size="12px" />,
 };
-
-

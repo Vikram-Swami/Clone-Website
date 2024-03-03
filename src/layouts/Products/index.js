@@ -12,26 +12,26 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 // Billing page components
 import { useEffect } from "react";
-import ProductController from "Services/ConnectionsServices";
 import { useState } from "react";
 import { useSoftUIController } from "context";
 import DefaultProductCard from "examples/Cards/InfoCards/DefaultProductCard";
 import { setDialog } from "context";
+import ApiClient from "Services/ApiClient";
+import { getPublished } from "Services/endpointes";
 
 function Products() {
-  const productController = new ProductController();
   const [products, setProducts] = useState([]);
   const [controller, dispatch] = useSoftUIController();
 
   const getProducts = async () => {
     try {
-      const storageData = await productController.getPublished();
+      const storageData = await ApiClient.getData(getPublished);
       if (storageData?.status === 200) {
         setProducts(storageData?.data);
       } else {
         setDialog(dispatch);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   useEffect(() => {

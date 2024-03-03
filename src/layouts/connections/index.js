@@ -15,14 +15,15 @@ import { Grid, Icon } from "@mui/material";
 import DefaultInfoCard from "examples/Cards/InfoCards/DefaultInfoCard";
 
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import ProductController from "Services/ConnectionsServices";
 import { useEffect, useMemo, useState } from "react";
 import { useSoftUIController, setConnection, setLoading } from "context";
 import Table from "examples/Tables/Table";
 import connectionView from "layouts/tables/data/connections";
+import ApiClient from "Services/ApiClient";
+import { getConnectionByUserID } from "Services/endpointes";
+import { toast } from "react-toastify";
 
 function Connections() {
-  const productController = new ProductController();
   const [controller, dispatch] = useSoftUIController();
   const { connection, user } = controller;
 
@@ -30,12 +31,16 @@ function Connections() {
 
   const getConnectionById = async () => {
     try {
-      const response = await productController.getConnectionByuserId(user?.id)
+      const response = await ApiClient.getData(getConnectionByUserID);
       if (response?.status === 200) {
-
         setConnection(dispatch, response.data);
+        toast.success(response?.message)
+      }
+      else {
+        toast.error(response?.message)
       }
     } catch (error) {
+      toast.error("Something went wrong please try again later")
 
     }
 

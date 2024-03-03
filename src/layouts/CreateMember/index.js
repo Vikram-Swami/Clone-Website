@@ -19,16 +19,16 @@ import SoftInput from "components/SoftInput";
 import { Checkbox, NativeSelect } from "@mui/material";
 import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import UserController from "Services/UserServices";
 import SoftButton from "components/SoftButton";
 import FormDialog from "components/Pop";
+import ApiClient from "Services/ApiClient";
+import { registerUser } from "Services/endpointes";
 
 function CreateMembers() {
     const [agreement, setAgreement] = useState(true);
     const [user, setUser] = useState();
     const [isOpen, setIsOpen] = useState(false);
     const form = useRef(null);
-    const userController = new UserController();
     const navigate = useNavigate();
     let newUserId = sessionStorage.getItem("userId") ?? 0;
     const [step, setStep] = useState(newUserId ? 2 : 1);
@@ -94,7 +94,7 @@ function CreateMembers() {
     const registerHandler = async (e) => {
         try {
             const formdata = new FormData(form.current);
-            const userData = await userController.registerUser(formdata);
+            const userData = await ApiClient.createData(registerUser, formdata);
             if (userData.status === 200) {
                 setIsOpen(true);
                 setStep(step + 1);
@@ -112,32 +112,6 @@ function CreateMembers() {
         }
     };
 
-    const handleAddress = async () => {
-        try {
-            const formdata = new FormData(form.current);
-            const userData = await userController.createAddress(formdata);
-            setStep(3);
-            form.current.reset();
-            setUser(userData);
-            setIsOpen(true);
-        } catch (error) {
-            setIsOpen(true);
-            setUser(error?.response?.data);
-        }
-    };
-    const handleKyc = async (e) => {
-        e.preventDefault();
-        try {
-            const formdata = new FormData(form.current);
-            const userData = await userController.createKycDetails(formdata);
-            setUser(userData);
-            setIsOpen(true);
-            navigate("/login");
-        } catch (error) {
-            setIsOpen(true);
-            setUser(error?.response?.data);
-        }
-    };
     return (
         <DashboardLayout>
             <DashboardNavbar />
