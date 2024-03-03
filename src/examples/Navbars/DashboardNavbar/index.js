@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 // react-router components
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, Navigate, useNavigate } from "react-router-dom";
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
@@ -44,14 +44,24 @@ import team2 from "assets/images/team-2.jpg";
 import logoSpotify from "assets/images/small-logos/logo-spotify.svg";
 import SoftButton from "components/SoftButton";
 import { Height } from "@mui/icons-material";
+import { setLoading } from "context";
+import { setDialog } from "context";
 
 function DashboardNavbar({ absolute, light, isMini }) {
+  const navigate = useNavigate();
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useSoftUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
   const { user } = controller;
+  const logoutHandler = () => {
+    setDialog(dispatch, [{
+      message: "Are you sure you want to Log out?",
+      status: "Logout"
+    }])
+
+  }
   useEffect(() => {
     // Setting the navbar type
     if (fixedNavbar) {
@@ -133,11 +143,13 @@ function DashboardNavbar({ absolute, light, isMini }) {
           <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
         </SoftBox>
         <SoftBox color={light ? "white" : "inherit"}>
-          <SoftButton variant="gradient" color="dark" ml={2}>
+          <SoftButton variant="gradient" color="dark" ml={2} onClick={() => navigate("/account")} >
+
             <Icon sx={{ fontWeight: "bold", fontSize: "3rem !important" }}>
               account_balance_wallet
             </Icon>
             &nbsp;{user.wallet}
+
           </SoftButton>
           <IconButton
             size="small"
@@ -170,13 +182,21 @@ function DashboardNavbar({ absolute, light, isMini }) {
                   >
                     account_circle
                   </Icon>
-                  <SoftTypography
-                    variant="button"
-                    fontWeight="medium"
-                    color={light ? "white" : "dark"}
+
+                  <SoftButton
+                    color="success"
+                    variant="text"
+                    onClick={() => logoutHandler()}
                   >
-                    Log Out
-                  </SoftTypography>
+                    <SoftTypography
+                      variant="button"
+                      fontWeight="medium"
+                      color={light ? "white" : "dark"}
+
+                    >
+                      Log Out
+                    </SoftTypography>
+                  </SoftButton>
                 </IconButton>
               </Link>
               <IconButton

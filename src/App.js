@@ -10,6 +10,7 @@ import Sidenav from "examples/Sidenav";
 import Loading from "layouts/loading";
 import ApiClient from "Services/ApiClient";
 import { getUserByUserId } from "Services/endpointes";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
@@ -43,6 +44,7 @@ export default function App() {
       }
     } catch (error) {
       setLoading(dispatch, false);
+      toast.error(error.response?.data?.message ?? "Oops! Something went wrong, please try later");
     }
   }
 
@@ -55,6 +57,7 @@ export default function App() {
 
   return (
     <ThemeProvider theme={themeRTL}>
+      <ToastContainer />
       <CssBaseline />
       {user.id && (
         <>
@@ -69,15 +72,15 @@ export default function App() {
         </>
       )}
       <Routes>
-        {routes.map((route, index) => {
+        {routes.map((route) => {
           if (user && user.id !== undefined && route.auth !== null) {
             if (route.auth === user.type || route.auth === "any") {
               return (
                 <Route
                   exact
                   path={route.route}
-                  element={<Suspense fallback={<Loading />}>{route.component}</Suspense>}
-                  key={`${route.key}_${index}`} // Ensure uniqueness by appending index
+                  element={<Suspense fallback={<Loading />}>{route.component} </Suspense>}
+                  key={`${route.key}-${route.route}`}
                 />
               );
             }
@@ -86,8 +89,8 @@ export default function App() {
               <Route
                 exact
                 path={route.route}
-                element={<Suspense fallback={<Loading />}>{route.component}</Suspense>}
-                key={`${route.key}_${index}`} // Ensure uniqueness by appending index
+                element={<Suspense fallback={<Loading />}>{route.component} </Suspense>}
+                key={`${route.key}-${route.route}`}
               />
             );
           }

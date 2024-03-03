@@ -1,3 +1,6 @@
+export const createAddress = "/create-address";
+export const createConnections = "/create-connection";
+export const getConnectionByUserID = "/get-connection-by-user-id";
 // Admin Routes
 export const sourcetype = "/get-source-by-type";
 
@@ -88,5 +91,3 @@ export const updateTransactions = "/update-transactions";
 export const getTransactionByType = "/get-transaction-by-type";
 export const filterTransactions = "/filter-transactions";
 export const deleteUserTrans = "/delete-user-trans";
-
-export const createConnections = "/create-connection";

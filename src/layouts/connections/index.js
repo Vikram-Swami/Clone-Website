@@ -21,6 +21,7 @@ import Table from "examples/Tables/Table";
 import connectionView from "layouts/tables/data/connections";
 import ApiClient from "Services/ApiClient";
 import { toast } from "react-toastify";
+import { setDialog } from "context";
 
 function Connections() {
   const [controller, dispatch] = useSoftUIController();
@@ -28,15 +29,16 @@ function Connections() {
 
   const getConnection = async () => {
     try {
-      const response = await ApiClient.getData(getConnectionById);
+      const response = await ApiClient.getData(getConnectionByUserID);
       if (response?.status === 200) {
         setConnection(dispatch, response.data);
         toast.success(response?.message);
       } else {
         toast.error(response?.message);
+        setDialog(dispatch, [userData]);
       }
     } catch (error) {
-      toast.error("Something went wrong please try again later");
+      toast.error(error.response?.data?.message ?? "Oops! Something went wrong, please try later");
     }
   };
   const memoizedRows = useMemo(

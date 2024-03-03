@@ -8,21 +8,18 @@ import SoftInput from "components/SoftInput";
 import SoftButton from "components/SoftButton";
 import BasicLayout from "layouts/authentication/components/BasicLayout";
 import curved6 from "assets/images/curved-images/curved14.jpg";
-import FormDialog from "components/Pop";
 import { NativeSelect } from "@mui/material";
 import ApiClient from "Services/ApiClient";
 import { registerUser, createKyc } from "Services/endpointes";
-import { useSoftUIController } from "context";
+import { ifscValidate } from "Services/endpointes";
+import { setDialog } from "context";
 import { toast } from "react-toastify";
+
 function SignUp() {
   const [agreement, setAgreement] = useState(true);
-  const [user, setUser] = useState();
-  const [isOpen, setIsOpen] = useState(false);
   const form = useRef(null);
-  const navigate = useNavigate();
-  let newUserId = sessionStorage.getItem("userId") ?? 0;
-  const [step, setStep] = useState(newUserId ? 2 : 1);
-  const [controller, dispatch] = useSoftUIController();
+
+  const [step, setStep] = useState(1);
 
   const fetchPostalDetails = async (postalCode, e) => {
     try {
@@ -41,21 +38,29 @@ function SignUp() {
       console.error("Error fetching postal details:", error);
     }
   };
-  const bankDetails = async (ifsc, e) => {
+
+  // Validate IFSC Codes
+  const handleIFSCCodeChange = async (e) => {
+    const ifsc = e.target.value;
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/ifsc-validate/${ifsc}`);
-      const data = await response.json();
-      if (data) {
-        const bank = data?.data?.BANK;
-        form.current.bankName.value = bank;
-        form.current.IFSC.parentNode.style.border = "2px solid #67ca67 ";
+      if (ifsc.length === 11) {
+        const response = await ApiClient.getDataByParam(ifscValidate, ifsc);
+
+        if (response.status == 200) {
+          const bank = response?.data?.BANK;
+          form.current.bankName.value = bank;
+          form.current.IFSC.parentNode.style.border = "2px solid #67ca67 ";
+        } else {
+          form.current.bankName.value = "IFSC required";
+
+          form.current.IFSC.parentNode.style.border = "2px solid red";
+        }
       } else {
-        form.current.IFSC.parentNode.style.border = "2px solid red";
+        form.current.IFSC.parentNode.style.border = "none";
       }
     } catch (error) {
       form.current.IFSC.parentNode.style.border = "2px solid red";
-
-      console.error("Error fetching postal details:", error);
+      toast.error("error While fetching IFSC");
     }
   };
 
@@ -71,63 +76,22 @@ function SignUp() {
       form.current.country.value = "Country";
     }
   };
-  const handleIFSCCodeChange = async (e) => {
-    const ifsc = e.target.value;
-    if (ifsc.length == 11) {
-      await bankDetails(ifsc, e);
-      return;
-    } else {
-      form.current.IFSC.parentNode.style.border = "none";
-    }
-  };
 
   const handleSetAgreement = () => setAgreement((prevAgreement) => !prevAgreement);
 
-  const registerHandler = async (e) => {
+  const submitHandler = async (e, route) => {
+    const formdata = new FormData(form.current);
     try {
-      const formdata = new FormData(form.current);
-      const userData = await ApiClient.createData(registerUser, formdata);
-      if (userData.status === 200) {
-        setIsOpen(true);
+      const response = await ApiClient.createData(route, formdata);
+      if (response.status === 200) {
         setStep(step + 1);
-        setUser(userData);
-        sessionStorage.setItem("userId", userData?.data?.id);
-        form.current.reset();
+
+        setDialog(dispatch, [response]);
       } else {
-        setIsOpen(true);
-        setUser(userData);
+        setDialog(dispatch, [response]);
       }
     } catch (error) {
-      setIsOpen(true);
-      setUser(error.response.data);
-      console.error("Registration failed:", error);
-    }
-  };
-
-  const handleAddress = async () => {
-    try {
-      const formdata = new FormData(form.current);
-      const userData = await ApiClient.createData(registerUser, formdata);
-      setStep(3);
-      form.current.reset();
-      setUser(userData);
-      setIsOpen(true);
-    } catch (error) {
-      setIsOpen(true);
-      setUser(error?.response?.data);
-    }
-  };
-  const handleKyc = async (e) => {
-    e.preventDefault();
-    try {
-      const formdata = new FormData(form.current);
-      const userData = await ApiClient.createData(createKyc, formdata);
-      setUser(userData);
-      setIsOpen(true);
-      navigate("/login");
-    } catch (error) {
-      setIsOpen(true);
-      setUser(error?.response?.data);
+      toast.error("Registration failed:", error);
     }
   };
   useEffect(() => {}, []);
@@ -224,7 +188,12 @@ function SignUp() {
                   </SoftTypography>
                 </SoftBox>
                 <SoftBox mt={4} mb={1}>
-                  <SoftButton variant="gradient" color="dark" fullWidth onClick={registerHandler}>
+                  <SoftButton
+                    variant="gradient"
+                    color="dark"
+                    fullWidth
+                    onClick={(e) => submitHandler(e, registerUser)}
+                  >
                     Next
                   </SoftButton>
                 </SoftBox>
@@ -289,7 +258,12 @@ function SignUp() {
                   </SoftTypography>
                 </SoftBox>
                 <SoftBox mt={4} mb={1}>
-                  <SoftButton variant="gradient" color="dark" fullWidth onClick={handleAddress}>
+                  <SoftButton
+                    variant="gradient"
+                    color="dark"
+                    fullWidth
+                    onClick={(e) => submitHandler(e, registerUser)}
+                  >
                     Next
                   </SoftButton>
                 </SoftBox>
@@ -386,7 +360,12 @@ function SignUp() {
                   </SoftTypography>
                 </SoftBox>
                 <SoftBox mt={4} mb={1}>
-                  <SoftButton variant="gradient" color="dark" fullWidth onClick={handleKyc}>
+                  <SoftButton
+                    variant="gradient"
+                    color="dark"
+                    fullWidth
+                    onClick={(e) => submitHandler(e, createKyc)}
+                  >
                     Register
                   </SoftButton>
                 </SoftBox>
@@ -394,25 +373,39 @@ function SignUp() {
             ) : (
               ""
             )}
-            <SoftBox mt={3} textAlign="center">
-              <SoftTypography variant="button" color="text" fontWeight="regular">
-                Already have an account?&nbsp;
-                <SoftTypography
-                  component={Link}
-                  to="/"
-                  variant="button"
-                  color="dark"
-                  fontWeight="bold"
-                  textGradient
-                >
-                  Sign in
-                </SoftTypography>
+          </SoftBox>
+          <SoftBox mt={3} textAlign="center">
+            <SoftTypography variant="button" color="text" fontWeight="regular">
+              Already have an account?&nbsp;
+              <SoftTypography
+                component={Link}
+                to="/"
+                variant="button"
+                color="dark"
+                fontWeight="bold"
+                textGradient
+              >
+                Sign in
               </SoftTypography>
-            </SoftBox>
+            </SoftTypography>
+          </SoftBox>
+          <SoftBox mt={3} textAlign="center">
+            <SoftTypography variant="button" color="text" fontWeight="regular">
+              Already have an User -id?&nbsp;
+              <SoftTypography
+                component={Link}
+                to="/"
+                variant="button"
+                color="dark"
+                fontWeight="bold"
+                textGradient
+              >
+                Compleate your profile
+              </SoftTypography>
+            </SoftTypography>
           </SoftBox>
         </SoftBox>
       </Card>
-      <FormDialog open={isOpen} setOpen={setIsOpen} data={user} />
     </BasicLayout>
   );
 }

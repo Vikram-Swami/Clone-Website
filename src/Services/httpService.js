@@ -40,6 +40,8 @@ const requests = {
   post: (url, body) => instance.post(url, body).then((res) => res.data),
   put: (url, body) => instance.put(url, body).then((res) => res.data),
   delete: (url) => instance.delete(url).then((res) => res.data),
+
 };
+
 
 export default requests;
