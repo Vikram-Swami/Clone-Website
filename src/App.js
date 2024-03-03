@@ -40,36 +40,39 @@ export default function App() {
   };
 
 
-
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
       if (user && user.id !== undefined && route.auth !== null) {
 
         if (route.auth === user.type || route.auth === "any") {
+          console.log(`${route.key}-${route.route}`);
           return (
             <Route
               exact
               path={route.route}
 
               element={<Suspense fallback={<Loading />}>{route.component} </Suspense>}
-              key={route.key}
+              key={`${route.key}-${route.route}`}
             />
           );
         }
       } else if (user.id === undefined && route.auth === null) {
+        console.log(`from else if${route.key}-${route.route}`);
+
         return (
           <Route
             exact
             path={route.route}
 
             element={<Suspense fallback={<Loading />}>{route.component} </Suspense>}
-            key={route.key}
+            key={`${route.key}-${route.route}`}
           />
         );
       }
 
       return null;
-    });
+    }
+    );
 
   async function getUserById() {
     try {

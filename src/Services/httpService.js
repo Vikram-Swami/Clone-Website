@@ -38,10 +38,14 @@ instance.interceptors.request.use(function (config) {
 });
 
 const requests = {
-  get: (url) => instance.get(url),
-  post: (url, body) => instance.post(url, body),
-  put: (url, body) => instance.put(url, body),
-  delete: (url) => instance.delete(url),
+  get: (url) => instance.get(url).then(responseBody),
+
+  post: (url, body) => instance.post(url, body).then(responseBody),
+
+  put: (url, body) => instance.put(url, body).then(responseBody),
+
+  delete: (url) => instance.delete(url).then(responseBody),
 };
+
 
 export default requests;

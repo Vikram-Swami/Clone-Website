@@ -1,5 +1,5 @@
-import Loading from "layouts/loading";
 import React, { lazy, Suspense } from "react";
+import Loading from "layouts/loading";
 // NextWork Dashboard React layouts
 const Dashboard = lazy(() => import("layouts/dashboard"));
 const Tables = lazy(() => import("layouts/tables"));
@@ -137,9 +137,7 @@ const routes = [
     name: "Refer Link",
     auth: "user",
     key: "referLink",
-    // route: "/profile",
     icon: <CustomerSupport size="12px" />,
-    // component: <Profile />,
     noCollapse: true,
   },
 ];
