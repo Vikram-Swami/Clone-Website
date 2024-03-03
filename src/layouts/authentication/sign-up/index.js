@@ -18,7 +18,8 @@ function SignUp() {
   const [agreement, setAgreement] = useState(true);
   const form = useRef(null);
   const navigate = useNavigate();
-  const [step, setStep] = useState(newUserId ? 2 : 1);
+
+  const [step, setStep] = useState(1);
   const fetchPostalDetails = async (postalCode, e) => {
     try {
       const response = await fetch(`https://api.postalpincode.in/pincode/${postalCode}`);
@@ -406,21 +407,36 @@ function SignUp() {
             ) : (
               ""
             )}
-            <SoftBox mt={3} textAlign="center">
-              <SoftTypography variant="button" color="text" fontWeight="regular">
-                Already have an account?&nbsp;
-                <SoftTypography
-                  component={Link}
-                  to="/"
-                  variant="button"
-                  color="dark"
-                  fontWeight="bold"
-                  textGradient
-                >
-                  Sign in
-                </SoftTypography>
+          </SoftBox>
+          <SoftBox mt={3} textAlign="center">
+            <SoftTypography variant="button" color="text" fontWeight="regular">
+              Already have an account?&nbsp;
+              <SoftTypography
+                component={Link}
+                to="/"
+                variant="button"
+                color="dark"
+                fontWeight="bold"
+                textGradient
+              >
+                Sign in
               </SoftTypography>
-            </SoftBox>
+            </SoftTypography>
+          </SoftBox>
+          <SoftBox mt={3} textAlign="center">
+            <SoftTypography variant="button" color="text" fontWeight="regular">
+              Already have an User -id?&nbsp;
+              <SoftTypography
+                component={Link}
+                to="/"
+                variant="button"
+                color="dark"
+                fontWeight="bold"
+                textGradient
+              >
+                Compleate your profile
+              </SoftTypography>
+            </SoftTypography>
           </SoftBox>
         </SoftBox>
       </Card>

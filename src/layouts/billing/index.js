@@ -43,7 +43,7 @@ function Billing() {
                   />
                 </Grid>
                 <Grid item xs={12} md={6} xl={3}>
-                  <DefaultInfoCard icon="customerSupport" title="Members" value={user?.member} />
+                  <DefaultInfoCard icon="People" title="Members" value={user?.member} />
                 </Grid>
                 <Grid item xs={12} md={6} xl={3}>
                   <DefaultInfoCard icon="storage" title="Own Storage" value={user?.ownStr} />

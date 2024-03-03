@@ -11,6 +11,7 @@ import { useSoftUIController, setLoading } from "context";
 import ApiClient from "Services/ApiClient";
 import { verifyOtp } from "Services/endpointes";
 import { resendOtp } from "Services/endpointes";
+import { toast } from "react-toastify";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -55,7 +56,7 @@ function LoginDialog({ open, setOpen, data }) {
         window.location.reload();
       }
     } catch (error) {
-      console.log(error);
+      toast.error(error.response?.data?.message ?? "Oops! Something went wrong, please try later");
     } finally {
       setLoading(dispatch, false);
     }

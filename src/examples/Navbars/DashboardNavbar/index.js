@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 // react-router components
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, Navigate, useNavigate } from "react-router-dom";
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
@@ -48,6 +48,7 @@ import { setLoading } from "context";
 import { setDialog } from "context";
 
 function DashboardNavbar({ absolute, light, isMini }) {
+  const navigate = useNavigate();
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useSoftUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator } = controller;
@@ -142,11 +143,13 @@ function DashboardNavbar({ absolute, light, isMini }) {
           <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
         </SoftBox>
         <SoftBox color={light ? "white" : "inherit"}>
-          <SoftButton variant="gradient" color="dark" ml={2}>
+          <SoftButton variant="gradient" color="dark" ml={2} onClick={() => navigate("/account")} >
+
             <Icon sx={{ fontWeight: "bold", fontSize: "3rem !important" }}>
               account_balance_wallet
             </Icon>
             &nbsp;{user.wallet}
+
           </SoftButton>
           <IconButton
             size="small"

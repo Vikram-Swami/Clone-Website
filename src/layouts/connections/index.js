@@ -39,7 +39,7 @@ function Connections() {
         setDialog(dispatch, [userData])
       }
     } catch (error) {
-      toast.error("Something went wrong please try again later");
+      toast.error(error.response?.data?.message ?? "Oops! Something went wrong, please try later");
     }
   };
   const memoizedRows = useMemo(
