@@ -24,8 +24,6 @@ const {step}=useParams();
 const location = useLocation();
 
 const queryParams = new URLSearchParams(location.search);
-
-let userId; 
   const [controller , dispatch] =useSoftUIController(); 
   const navigate = useNavigate();
 // Validate IFSC Codes
@@ -323,7 +321,7 @@ const handlePostalCodeChange = async (e) => {
                 </SoftBox>
                 <SoftBox mb={2}>
                   Aadhar file
-                  <SoftInput type="file" placeholder="aadhar file" name="aadharFile" />
+                  <SoftInput type="file" placeholder="Aadhar file" name="aadharFile" />
                 </SoftBox>
 
                 <SoftBox mb={2}>

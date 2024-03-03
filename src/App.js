@@ -12,6 +12,8 @@ import ApiClient from "Services/ApiClient";
 import { getUserByUserId } from "Services/endpointes";
 import { ToastContainer, toast } from "react-toastify";
 import { getUserById } from "Services/endpointes";
+import { startLoading } from "context";
+import { setDialog } from "context";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
@@ -35,49 +37,28 @@ export default function App() {
 
   async function getUser() {
     try {
-      setLoading(dispatch, true);
+      startLoading(dispatch, true);
       const data = await ApiClient.getData(getUserById);
       if (data.status === 200) {
         setUser(dispatch, data?.data);
-        setLoading(dispatch, false);
-      } else {
-        setLoading(dispatch, false);
       }
+      setDialog(dispatch, [data]);
     } catch (error) {
       setLoading(dispatch, false);
       toast.error(error.response?.data?.message ?? "Oops! Something went wrong, please try later");
     }
   }
-  function getUserIdFromCookies() {
-    // Get all cookies as an array of strings
-    const cookies = document.cookie.split(';');
-  
-    // Iterate through cookies to find the one containing userId
-    for (let i = 0; i < cookies.length; i++) {
-      const cookie = cookies[i].trim();
-  
-      // Check if the cookie starts with "userId="
-      if (cookie.startsWith('userId=')) {
-        // Extract and return the userId from the cookie
-        return cookie.substring('userId='.length);
-      }
-    }
-  
-    // Return null if userId cookie is not found
-    return null;
-  }
   useEffect(() => {
-    const userIdFromCookies = getUserIdFromCookies();
 
-    if (!user.id && userIdFromCookies) {
-      
+    if (!user.id) {
+
       getUser();
     }
 
     // Scroll to the top of the page
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
-  }, [pathname, getUser, user.id]);
+  }, [pathname]);
   return (
     <ThemeProvider theme={themeRTL}>
       <ToastContainer />

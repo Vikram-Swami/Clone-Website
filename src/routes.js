@@ -1,5 +1,6 @@
 import React, { lazy, Suspense } from "react";
 import Loading from "layouts/loading";
+import RecipeReviewCard from "layouts/verifyAccount";
 // NextWork Dashboard React layouts
 const Dashboard = lazy(() => import("layouts/dashboard"));
 const Tables = lazy(() => import("layouts/tables"));
@@ -29,6 +30,16 @@ const routes = [
     route: "/dashboard",
     icon: <Shop size="12px" />,
     component: <Dashboard />,
+    noCollapse: true,
+  },
+  {
+    type: "route",
+    name: "VerifyAccount",
+    key: "VerifyAccount",
+    auth: null,
+    route: "/verify-account/:id",
+    icon: <Shop size="12px" />,
+    component: <RecipeReviewCard />,
     noCollapse: true,
   },
   {
@@ -148,6 +159,11 @@ export const components = {
   dashboard: (
     <Suspense fallback={<Loading />}>
       <Dashboard />
+    </Suspense>
+  ),
+  VerifyAccount: (
+    <Suspense fallback={<Loading />}>
+      <RecipeReviewCard />
     </Suspense>
   ),
   createMembers: (

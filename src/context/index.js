@@ -49,7 +49,7 @@ function reducer(state, action) {
       return { ...state, connection: new ConnectionsModel().fromArray(action.value) };
     }
     case "DIALOG": {
-      return { ...state, dialog: action.value };
+      return { ...state, dialog: action.value, loading: false };
     }
     case "START_LOAD": {
       return { ...state, dialog: [], loading: action.value };
@@ -90,7 +90,7 @@ function NextworkControllerProvider({ children }) {
           setDialog(dispatch, []);
         }}
         data={controller.dialog[0]}
-        />
+      />
 
       <LoginDialog
         open={controller.dialog.length > 0 && controller.dialog[0].status === "otp"}
@@ -98,32 +98,33 @@ function NextworkControllerProvider({ children }) {
           setDialog(dispatch, []);
         }}
         data={controller.dialog[0]}
-        />
+      />
 
 
       {children}
-        {controller.loading ? (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              height: "100vh",
-              width: "100%",
-              position: "fixed",
-              height: "100dvh",
-              width: '100%',
-              top: 0,
-              zIndex: 11111111
+      {controller.loading ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+            width: "100%",
+            position: "fixed",
+            height: "100dvh",
+            width: '100%',
+            top: 0,
+            background: "#2c292975",
+            zIndex: 11111111
 
-            }}
-          >
-            <Stack sx={{ color: "grey.500" }} spacing={2} direction="row">
-              <CircularProgress color="success" />
-              <h4 style={{ fontWeight: 600, fontSize: "18px" }}>NextWork Technologies</h4>
-            </Stack>
-          </div>
-        ) : null}
+          }}
+        >
+          <Stack sx={{ color: "grey.500" }} spacing={2} direction="row">
+            <CircularProgress color="success" />
+            <h4 style={{ fontWeight: 600, fontSize: "18px" }}>NextWork Technologies</h4>
+          </Stack>
+        </div>
+      ) : null}
     </SoftUI.Provider>
   );
 }
@@ -156,7 +157,7 @@ const setUser = (dispatch, value) => dispatch({ type: "USER", value });
 const setConnection = (dispatch, value) => dispatch({ type: "CONNECTION", value });
 const setLoading = (dispatch, value) => dispatch({ type: "LOADING", value });
 const setDialog = (dispatch, value) => dispatch({ type: "DIALOG", value });
-const startLoading = (dispatch, value) =>dispatch({type:"START_LOAD", value});
+const startLoading = (dispatch, value) => dispatch({ type: "START_LOAD", value });
 
 export {
   NextworkControllerProvider,
