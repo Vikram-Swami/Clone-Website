@@ -137,7 +137,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
             <Icon sx={{ fontWeight: "bold", fontSize: "3rem !important" }}>
               account_balance_wallet
             </Icon>
-            <Icon sx={{ fontWeight: "bold" }}>currency_rupee</Icon>
             &nbsp;{user.wallet}
           </SoftButton>
           <IconButton

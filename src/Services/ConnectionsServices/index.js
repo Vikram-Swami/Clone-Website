@@ -1,7 +1,10 @@
 import { createConnection } from "Models/endpointes";
 import { getConnectionByUserID } from "Models/endpointes";
 import { getAllPublished } from "Models/endpointes";
+import ApiClient from "Services/ApiClient";
+import requests from "Services/httpService";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -19,18 +22,17 @@ class ProductController {
 
   async getPublished() {
     try {
-      const authToken = (await this.getCookie("authToken")) ?? null;
-
-      const response = await axios.get(`${API_BASE_URL + getAllPublished}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
-
-      return response?.data;
+      console.log("slkdfjjd");
+      const response = new ApiClient.getData(getAllPublished);
+      if (response?.data) {
+        toast.success(response?.message)
+        return response?.data;
+      } else {
+        toast.error(response.message)
+      }
     } catch (error) {
-      return error;
+      toast.error("something went wrong");
+      console.log(error);
     }
   }
   async createConnections(storage, id) {

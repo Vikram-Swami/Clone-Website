@@ -17,9 +17,9 @@ instance.interceptors.request.use(function (config) {
   for (let i = 0; i < cookieArray.length; i++) {
     const cookie = cookieArray[i].trim();
     if (cookie.startsWith("userId" + "=")) {
-      userId = cookie.substring(name.length + 1);
+      userId = cookie.substring("userId".length + 1);
     } else if (cookie.startsWith("authToken" + "=")) {
-      userId = cookie.substring(name.length + 1);
+      authToken = cookie.substring("authToken".length + 1);
     } else if (userId && authToken) {
       break;
     }
@@ -35,16 +35,11 @@ instance.interceptors.request.use(function (config) {
   };
 });
 
-const responseBody = (response) => response.data;
-
 const requests = {
-  get: (url) => instance.get(url).then(responseBody),
-
-  post: (url, body) => instance.post(url, body).then(responseBody),
-
-  put: (url, body) => instance.put(url, body).then(responseBody),
-
-  delete: (url) => instance.delete(url).then(responseBody),
+  get: (url) => instance.get(url),
+  post: (url, body) => instance.post(url, body),
+  put: (url, body) => instance.put(url, body),
+  delete: (url) => instance.delete(url),
 };
 
 export default requests;

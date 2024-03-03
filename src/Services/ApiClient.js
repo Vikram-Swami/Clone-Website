@@ -1,7 +1,9 @@
 import requests from "./httpService";
 
 class ApiClient {
+  constructor() { }
   async getData(url) {
+    console.log("asfdas", url);
     return await requests.get(url);
   }
 
@@ -20,6 +22,7 @@ class ApiClient {
   async getDataWithPagination(url, page, limit) {
     return await requests.get(`${url}/${page}/${limit}`);
   }
+
 }
 
 export default ApiClient;

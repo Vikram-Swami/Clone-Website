@@ -74,9 +74,9 @@ function Connections() {
                   <SoftBox mb={1.5}>
                     <Grid container spacing={3} >
                       <Grid item lg={12}>
-                        <Grid container spacing={3}>
+                        <Grid item container spacing={3}>
 
-                          <Grid xs={12} xl={12}>
+                          <Grid item xs={12} xl={12}>
                             <DefaultInfoCard icon="cloud" title={`You Don't have an active connection yet. Add connection to your portfolio and start earning.`} />
                           </Grid>
 

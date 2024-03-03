@@ -14,7 +14,7 @@ const CreditCard = lazy(() => import('examples/Icons/CreditCard'));
 const Income = lazy(() => import('layouts/Income/income'));
 const Rents = lazy(() => import('layouts/Rents'));
 const Products = lazy(() => import('layouts/Products'));
-const CreateMember = lazy(() => import('components/CreateMember'));
+const CreateMembers = lazy(() => import('layouts/CreateMember'));
 const SignUp = lazy(() => import('layouts/authentication/sign-up'));
 const SignIn = lazy(() => import('layouts/authentication/sign-in'));
 
@@ -55,7 +55,7 @@ const routes = [
     auth: "user",
     route: "/create-members",
     icon: <Office size="12px" />,
-    component: <CreateMember />,
+    component: <CreateMembers />,
     noCollapse: true,
   },
   {
@@ -145,7 +145,7 @@ export default routes;
 
 export const components = {
   dashboard: <Dashboard />,
-  createMembers: <CreateMember />,
+  createMembers: <CreateMembers />,
   myTeam: <Tables />,
   connections: <Connections />,
   income: <Income />,
