@@ -5,7 +5,6 @@ import CssBaseline from "@mui/material/CssBaseline";
 import themeRTL from "assets/theme/theme-rtl";
 import routes from "routes";
 import brand from "assets/images/logo-ct.png";
-import UserModel from "Models/User";
 import { useSoftUIController, setUser, setMiniSidenav, setLoading } from "context";
 import Sidenav from "examples/Sidenav";
 import Loading from "layouts/loading";
@@ -31,33 +30,6 @@ export default function App() {
       setOnMouseEnter(false);
     }
   };
-
-  const getRoutes = () =>
-    routes.map((route) => {
-      if (user && user.id !== undefined && route.auth !== null) {
-        if (route.auth === user.type || route.auth === "any") {
-          return (
-            <Route
-              exact
-              path={route.route}
-              element={<Suspense fallback={<Loading />}>{route.component} </Suspense>}
-              key={route.key}
-            />
-          );
-        }
-      } else if (user.id === undefined && route.auth === null) {
-        return (
-          <Route
-            exact
-            path={route.route}
-            element={<Suspense fallback={<Loading />}>{route.component} </Suspense>}
-            key={route.key}
-          />
-        );
-      }
-
-      return null;
-    });
 
   async function getUserById() {
     try {
@@ -97,11 +69,35 @@ export default function App() {
         </>
       )}
       <Routes>
-        {getRoutes()}
+        {routes.map((route, index) => {
+          if (user && user.id !== undefined && route.auth !== null) {
+            if (route.auth === user.type || route.auth === "any") {
+              return (
+                <Route
+                  exact
+                  path={route.route}
+                  element={<Suspense fallback={<Loading />}>{route.component}</Suspense>}
+                  key={`${route.key}_${index}`} // Ensure uniqueness by appending index
+                />
+              );
+            }
+          } else if (user.id === undefined && route.auth === null) {
+            return (
+              <Route
+                exact
+                path={route.route}
+                element={<Suspense fallback={<Loading />}>{route.component}</Suspense>}
+                key={`${route.key}_${index}`} // Ensure uniqueness by appending index
+              />
+            );
+          }
+
+          return null;
+        })}
         {!user.id ? (
-          <Route path="/*" element={<Navigate to="/" />} />
+          <Route path="/*" element={<Navigate to="/" />} key="fallback" /> // Unique key for fallback route
         ) : (
-          <Route path="/*" element={<Navigate to="/dashboard" />} />
+          <Route path="/*" element={<Navigate to="/dashboard" />} key="fallback" /> // Unique key for fallback route
         )}
       </Routes>
     </ThemeProvider>

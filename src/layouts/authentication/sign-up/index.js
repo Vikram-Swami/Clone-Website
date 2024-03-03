@@ -12,6 +12,8 @@ import FormDialog from "components/Pop";
 import { NativeSelect } from "@mui/material";
 import ApiClient from "Services/ApiClient";
 import { registerUser, createKyc } from "Services/endpointes";
+import { useSoftUIController } from "context";
+import { toast } from "react-toastify";
 function SignUp() {
   const [agreement, setAgreement] = useState(true);
   const [user, setUser] = useState();
@@ -20,6 +22,8 @@ function SignUp() {
   const navigate = useNavigate();
   let newUserId = sessionStorage.getItem("userId") ?? 0;
   const [step, setStep] = useState(newUserId ? 2 : 1);
+  const [controller, dispatch] = useSoftUIController();
+
   const fetchPostalDetails = async (postalCode, e) => {
     try {
       const response = await fetch(`https://api.postalpincode.in/pincode/${postalCode}`);
