@@ -2,7 +2,6 @@ import requests from "./httpService";
 
 const ApiClient = {
   getData: async (url) => {
-    console.log(url, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     let res = await requests.get(url);
     return res;
   },
