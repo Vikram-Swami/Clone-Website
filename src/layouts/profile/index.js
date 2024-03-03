@@ -25,6 +25,7 @@ function Overview() {
               title="profile information"
               info={{
                 fullName: user?.fullName,
+                description: "",
                 mobile: user?.phone,
                 email: user?.email,
                 location: user?.city + " " + user?.state + " " + user?.country,

@@ -77,8 +77,6 @@ MiniStatisticsCard.defaultProps = {
   },
   direction: "right",
 };
-
-// Typechecking props for the MiniStatisticsCard
 MiniStatisticsCard.propTypes = {
   bgColor: PropTypes.oneOf([
     "white",
@@ -90,7 +88,7 @@ MiniStatisticsCard.propTypes = {
     "error",
     "dark",
   ]),
-  title: PropTypes.PropTypes.shape({
+  title: PropTypes.shape({
     fontWeight: PropTypes.oneOf(["light", "regular", "medium", "bold"]),
     text: PropTypes.string,
   }),
@@ -110,10 +108,19 @@ MiniStatisticsCard.propTypes = {
   }),
 
   icon: PropTypes.shape({
-    color: PropTypes.oneOf(["primary", "secondary", "info", "success", "warning", "error", "dark"]),
+    color: PropTypes.oneOf([
+      "primary",
+      "secondary",
+      "info",
+      "success",
+      "warning",
+      "error",
+      "dark",
+    ]),
     component: PropTypes.node.isRequired,
   }).isRequired,
   direction: PropTypes.oneOf(["right", "left"]),
+  children: PropTypes.node,
 };
 
 export default MiniStatisticsCard;

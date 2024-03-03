@@ -25,7 +25,6 @@ instance.interceptors.request.use(function (config) {
       break;
     }
   }
-  console.log(userId, authToken);
   return {
     ...config,
     headers: {
@@ -36,16 +35,11 @@ instance.interceptors.request.use(function (config) {
   };
 });
 
-const responseBody = (response) => response.data;
-
 const requests = {
-  get: (url) => instance.get(url).then(responseBody),
-
-  post: (url, body) => instance.post(url, body).then(responseBody),
-
-  put: (url, body) => instance.put(url, body).then(responseBody),
-
-  delete: (url) => instance.delete(url).then(responseBody),
+  get: (url) => instance.get(url).then((res) => res.data),
+  post: (url, body) => instance.post(url, body).then((res) => res.data),
+  put: (url, body) => instance.put(url, body).then((res) => res.data),
+  delete: (url) => instance.delete(url).then((res) => res.data),
 };
 
 export default requests;

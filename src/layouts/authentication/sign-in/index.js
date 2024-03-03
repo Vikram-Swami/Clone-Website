@@ -14,21 +14,21 @@ import CoverLayout from "layouts/authentication/components/CoverLayout";
 
 // Images
 import curved9 from "assets/images/curved-images/curved-6.jpg";
-import UserController from "Services/UserServices";
 import LoginDialog from "components/Pop/login";
 import { useSoftUIController } from "context";
+import ApiClient from "Services/ApiClient";
+import { login } from "Services/endpointes";
 
 function SignIn() {
   const form = useRef();
   const [user, setUser] = useState();
   const [isOpen, setIsOpen] = useState(false);
   const { dispatch, loading } = useSoftUIController();
-  const userController = new UserController();
   const handleLogin = async (e) => {
     try {
       // dispatch({ type: "LOADING", value: true })
       const formDetails = new FormData(form.current);
-      const userData = await userController.login(formDetails);
+      const userData = await ApiClient.createData(login, formDetails);
       console.log("Login successful:", userData);
       setIsOpen(true);
       setUser(userData);

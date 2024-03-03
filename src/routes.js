@@ -8,16 +8,17 @@ const Billing = lazy(() => import("layouts/billing"));
 const Profile = lazy(() => import("layouts/profile"));
 
 // Lazy-loaded icons
-const Shop = lazy(() => import("examples/Icons/Shop"));
-const Office = lazy(() => import("examples/Icons/Office"));
-const CustomerSupport = lazy(() => import("examples/Icons/CustomerSupport"));
-const CreditCard = lazy(() => import("examples/Icons/CreditCard"));
-const Income = lazy(() => import("layouts/Income/income"));
-const Rents = lazy(() => import("layouts/Rents"));
-const Products = lazy(() => import("layouts/Products"));
-const CreateMember = lazy(() => import("components/CreateMember"));
-const SignUp = lazy(() => import("layouts/authentication/sign-up"));
-const SignIn = lazy(() => import("layouts/authentication/sign-in"));
+
+const Shop = lazy(() => import('examples/Icons/Shop'));
+const Office = lazy(() => import('examples/Icons/Office'));
+const CustomerSupport = lazy(() => import('examples/Icons/CustomerSupport'));
+const CreditCard = lazy(() => import('examples/Icons/CreditCard'));
+const Income = lazy(() => import('layouts/Income/income'));
+const Rents = lazy(() => import('layouts/Rents'));
+const Products = lazy(() => import('layouts/Products'));
+const CreateMembers = lazy(() => import('layouts/CreateMember'));
+const SignUp = lazy(() => import('layouts/authentication/sign-up'));
+const SignIn = lazy(() => import('layouts/authentication/sign-in'));
 
 const routes = [
   {
@@ -56,7 +57,7 @@ const routes = [
     auth: "user",
     route: "/create-members",
     icon: <Office size="12px" />,
-    component: <CreateMember />,
+    component: <CreateMembers />,
     noCollapse: true,
   },
   {
@@ -145,6 +146,7 @@ const routes = [
 export default routes;
 
 export const components = {
+
   dashboard: (
     <Suspense fallback={<Loading />}>
       <Dashboard />
@@ -152,7 +154,7 @@ export const components = {
   ),
   createMembers: (
     <Suspense fallback={<Loading />}>
-      <CreateMember />
+      <CreateMembers />
     </Suspense>
   ),
   myTeam: (

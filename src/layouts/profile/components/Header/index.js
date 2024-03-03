@@ -88,7 +88,7 @@ function Header() {
                 {user?.fullName}
               </SoftTypography>
               <SoftTypography variant="button" color="text" fontWeight="medium">
-                {user?.designationId.length > 1 ? user?.designationId : "User"}
+                {user?.designationId?.length > 1 ? user?.designationId : "User"}
               </SoftTypography>
             </SoftBox>
           </Grid>

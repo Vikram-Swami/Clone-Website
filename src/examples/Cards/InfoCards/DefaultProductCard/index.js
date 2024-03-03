@@ -12,25 +12,16 @@ import SoftTypography from "components/SoftTypography";
 import SoftButton from "components/SoftButton";
 import { Box } from "@mui/material";
 import { useSoftUIController } from "context";
-import ProductController from "Services/ConnectionsServices";
+import ApiClient from "Services/ApiClient";
+import { createConnections } from "Services/endpointes";
 
-function DefaultProductCard({
-  color,
-  icon,
-  storage,
-  range,
-  rent,
-  basicAmt,
-  tax,
-  totalprice,
-}) {
+function DefaultProductCard({ color, icon, storage, range, rent, basicAmt, tax, totalprice }) {
   const [controller] = useSoftUIController();
-  const productController = new ProductController();
 
   const { user } = controller;
   const createConnection = async (storage) => {
     try {
-      const response = await productController.createConnections(storage, user?.id);
+      const response = await ApiClient.createData(createConnections, storage, user?.id);
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -52,8 +43,8 @@ function DefaultProductCard({
           borderRadius="lg"
           variant="gradient"
         >
-          <div style={{ textAlign: "center" }}>/
-            <Icon fontSize="large">{icon}</Icon>
+          <div style={{ textAlign: "center" }}>
+            /<Icon fontSize="large">{icon}</Icon>
             <div style={{ fontSize: "1.40rem", marginTop: "-10px" }}>{range} TB</div>
           </div>
         </SoftBox>
@@ -75,7 +66,6 @@ function DefaultProductCard({
               textTransform="capitalize"
               textAlign="left"
             >
-
               Basic Amount : {basicAmt}
             </SoftTypography>
             <SoftTypography

@@ -9,14 +9,14 @@ import SoftButton from "components/SoftButton";
 import BasicLayout from "layouts/authentication/components/BasicLayout";
 import curved6 from "assets/images/curved-images/curved14.jpg";
 import FormDialog from "components/Pop";
-import UserController from "Services/UserServices";
 import { NativeSelect } from "@mui/material";
+import ApiClient from "Services/ApiClient";
+import { registerUser, createKyc } from "Services/endpointes";
 function SignUp() {
   const [agreement, setAgreement] = useState(true);
   const [user, setUser] = useState();
   const [isOpen, setIsOpen] = useState(false);
   const form = useRef(null);
-  const userController = new UserController();
   const navigate = useNavigate();
   let newUserId = sessionStorage.getItem("userId") ?? 0;
   const [step, setStep] = useState(newUserId ? 2 : 1);
@@ -82,7 +82,7 @@ function SignUp() {
   const registerHandler = async (e) => {
     try {
       const formdata = new FormData(form.current);
-      const userData = await userController.registerUser(formdata);
+      const userData = await ApiClient.createData(registerUser, formdata);
       if (userData.status === 200) {
         setIsOpen(true);
         setStep(step + 1);
@@ -103,7 +103,7 @@ function SignUp() {
   const handleAddress = async () => {
     try {
       const formdata = new FormData(form.current);
-      const userData = await userController.createAddress(formdata);
+      const userData = await ApiClient.createData(registerUser, formdata);
       setStep(3);
       form.current.reset();
       setUser(userData);
@@ -117,7 +117,7 @@ function SignUp() {
     e.preventDefault();
     try {
       const formdata = new FormData(form.current);
-      const userData = await userController.createKycDetails(formdata);
+      const userData = await ApiClient.createData(createKyc, formdata);
       setUser(userData);
       setIsOpen(true);
       navigate("/login");

@@ -7,14 +7,13 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Grid } from "@mui/material";
-import UserController from "Services/UserServices";
-import { useNavigate } from "react-router-dom";
 import { useSoftUIController, setLoading } from "context";
+import ApiClient from "Services/ApiClient";
+import { verifyOtp } from "Services/endpointes";
 
 function LoginDialog({ open, setOpen, data }) {
   const otpRef = useRef();
   const [controller, dispatch] = useSoftUIController();
-  const userController = new UserController();
 
   const handleOtpChange = () => {
     const enteredOtp = otpRef.current.value;
@@ -40,7 +39,7 @@ function LoginDialog({ open, setOpen, data }) {
     setLoading(dispatch, true);
     try {
       const enteredOtp = otpRef.current.value;
-      const response = await userController.verifyOtp(enteredOtp);
+      const response = await ApiClient.createData(verifyOtp, { otp: enteredOtp });
       console.log(response);
 
       if (response?.status === 200) {
