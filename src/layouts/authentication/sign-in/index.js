@@ -18,24 +18,28 @@ import LoginDialog from "components/Pop/login";
 import { useSoftUIController } from "context";
 import ApiClient from "Services/ApiClient";
 import { login } from "Services/endpointes";
+import { setDialog } from "context";
+import { toast } from "react-toastify";
 
 function SignIn() {
   const form = useRef();
-  const [user, setUser] = useState();
-  const [isOpen, setIsOpen] = useState(false);
-  const { dispatch, loading } = useSoftUIController();
+  const [controller, dispatch] = useSoftUIController();
   const handleLogin = async (e) => {
     try {
-      // dispatch({ type: "LOADING", value: true })
       const formDetails = new FormData(form.current);
       const userData = await ApiClient.createData(login, formDetails);
-      console.log("Login successful:", userData);
-      setIsOpen(true);
-      setUser(userData);
+      if (userData?.status == 200) {
+        userData.status = "otp";
+      }
+      setDialog(dispatch, [userData])
     } catch (error) {
-      console.error("Login failed:", error.message);
-      setIsOpen(true);
-      setUser(error?.response?.data);
+      if (error.response?.data?.message) {
+        setDialog(dispatch, [error.response?.data]);
+
+      } else {
+        toast.error("Oops! Something went wrong. Please try later.")
+      }
+      console.error("Login failed:", error);
       // Handle login error (e.g., display error message)
     }
   };
@@ -97,7 +101,7 @@ function SignIn() {
           </SoftTypography>
         </SoftBox>
       </SoftBox>
-      <LoginDialog open={isOpen} setOpen={setIsOpen} data={user} />
+
     </CoverLayout>
   );
 }

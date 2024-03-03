@@ -5,23 +5,16 @@ import CssBaseline from "@mui/material/CssBaseline";
 import themeRTL from "assets/theme/theme-rtl";
 import routes from "routes";
 import brand from "assets/images/logo-ct.png";
-import UserModel from "Models/User"; import {
-  useSoftUIController,
-  setUser,
-  setMiniSidenav,
-  setOpenConfigurator,
-  setLoading,
-} from "context";
+import { useSoftUIController, setUser, setMiniSidenav, setLoading } from "context";
 import Sidenav from "examples/Sidenav";
-import { ToastContainer } from "react-toastify";
 import Loading from "layouts/loading";
 import ApiClient from "Services/ApiClient";
 import { getUserByUserId } from "Services/endpointes";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
-  const { miniSidenav, direction, layout, openConfigurator, sidenavColor, user, loading } =
-    controller;
+  const { miniSidenav, sidenavColor, user } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const { pathname } = useLocation();
 
@@ -39,57 +32,22 @@ export default function App() {
     }
   };
 
-
-  const getRoutes = (allRoutes) =>
-    allRoutes.map((route) => {
-      if (user && user.id !== undefined && route.auth !== null) {
-
-        if (route.auth === user.type || route.auth === "any") {
-          console.log(`${route.key}-${route.route}`);
-          return (
-            <Route
-              exact
-              path={route.route}
-
-              element={<Suspense fallback={<Loading />}>{route.component} </Suspense>}
-              key={`${route.key}-${route.route}`}
-            />
-          );
-        }
-      } else if (user.id === undefined && route.auth === null) {
-        console.log(`from else if${route.key}-${route.route}`);
-
-        return (
-          <Route
-            exact
-            path={route.route}
-
-            element={<Suspense fallback={<Loading />}>{route.component} </Suspense>}
-            key={`${route.key}-${route.route}`}
-          />
-        );
-      }
-
-      return null;
-    }
-    );
-
   async function getUserById() {
     try {
       setLoading(dispatch, true);
       const data = await ApiClient.getData(getUserByUserId);
-
       if (data.status === 200) {
-        const user = new UserModel().toJson(data?.data);
-        setUser(dispatch, user);
+        setUser(dispatch, data?.data);
         setLoading(dispatch, false);
       } else {
         setLoading(dispatch, false);
       }
     } catch (error) {
       setLoading(dispatch, false);
+      toast.error(error.response?.data?.message ?? "Oops! Something went wrong, please try later");
     }
   }
+
   useEffect(() => {
     !user.id && getUserById();
 
@@ -114,9 +72,33 @@ export default function App() {
         </>
       )}
       <Routes>
-        {/* Render routes based on user authentication */}
+        {
+          routes.map((route) => {
+            if (user && user.id !== undefined && route.auth !== null) {
+              if (route.auth === user.type || route.auth === "any") {
+                return (
+                  <Route
+                    exact
+                    path={route.route}
+                    element={<Suspense fallback={<Loading />}>{route.component} </Suspense>}
+                    key={`${route.key}-${route.route}`}
+                  />
+                );
+              }
+            } else if (user.id === undefined && route.auth === null) {
+              return (
+                <Route
+                  exact
+                  path={route.route}
+                  element={<Suspense fallback={<Loading />}>{route.component} </Suspense>}
+                  key={`${route.key}-${route.route}`}
+                />
+              );
+            }
 
-        {getRoutes(routes)}
+            return null;
+          }
+          )}
         {!user.id ? (
           <Route path="/*" element={<Navigate to="/" />} />
         ) : (

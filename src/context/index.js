@@ -6,6 +6,7 @@ import UserModel from "Models/User";
 import ConnectionsModel from "Models/Connection";
 import { CircularProgress, Stack } from "@mui/material";
 import FormDialog from "components/Pop";
+import LoginDialog from "components/Pop/login";
 
 const SoftUI = createContext(null);
 
@@ -39,7 +40,7 @@ function reducer(state, action) {
       return { ...state, layout: action.value };
     }
     case "USER": {
-      return { ...state, user: action.value };
+      return { ...state, user: new UserModel().toJson(action.value) };
     }
     case "LOADING": {
       return { ...state, loading: action.value };
@@ -48,7 +49,8 @@ function reducer(state, action) {
       return { ...state, connection: new ConnectionsModel().fromArray(action.value) };
     }
     case "DIALOG": {
-      return { ...state, connection: action.value };
+      console.log(action.value);
+      return { ...state, dialog: action.value };
     }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
@@ -69,7 +71,7 @@ function NextworkControllerProvider({ children }) {
     layout: "dashboard",
     user: new UserModel(),
     connection: [],
-    dialog: false,
+    dialog: [],
     loading: false,
   };
   const [controller, dispatch] = useReducer(reducer, initialState);
@@ -97,12 +99,21 @@ function NextworkControllerProvider({ children }) {
       ) : null}
 
       <FormDialog
-        open={controller.dialog.length > 0}
+        open={controller.dialog.length > 0 && controller.dialog[0].status !== "otp"}
         setOpen={(v) => {
           setDialog(dispatch, []);
         }}
         data={controller.dialog[0]}
       />
+
+      <LoginDialog
+        open={controller.dialog.length > 0 && controller.dialog[0].status === "otp"}
+        setOpen={(v) => {
+          setDialog(dispatch, []);
+        }}
+        data={controller.dialog[0]}
+      />
+
 
       {children}
     </SoftUI.Provider>

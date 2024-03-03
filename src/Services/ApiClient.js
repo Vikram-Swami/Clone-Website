@@ -1,10 +1,8 @@
 import requests from "./httpService";
 
-
 const ApiClient = {
   getData: async (url) => {
-    let res = await requests.get(url);
-    return res;
+    return await requests.get(url);
   },
 
   createData: async (url, data) => {
@@ -21,7 +19,6 @@ const ApiClient = {
 
   getDataWithPagination: async (url, page, limit) => {
     return await requests.get(`${url}/${page}/${limit}`);
-
   },
 };
 

@@ -1,13 +1,3 @@
-
-export const createUser = "/register-user";
-export const loginUser = "/login";
-export const createAddress = "/create-address";
-export const otpVerify = '/verify-otp';
-export const getUserByUserId = '/get-user-by-id';
-export const resendOtpRoute = '/resend-otp';
-export const getAllPublished = '/get-published';
-export const createConnections = '/create-connection';
-export const getConnectionByUserID = '/get-connection-by-user-id';
 // Admin Routes
 export const sourcetype = "/get-source-by-type";
 
@@ -81,7 +71,8 @@ export const activateConnection = "/activate-connection";
 export const getMembers = "/get-members";
 export const registerAdmin = "/register-admin";
 export const forgetPassword = "/forget-password";
-export const getUserById = "/get-user-by-id";
+export const getUserByUserId = "/get-user-by-id";
+export const verifyOtp = "/verify-otp";
 export const resendOtp = "/resend-otp";
 export const updateUser = "/update-user";
 export const ifscValidate = "/ifsc-validate";
@@ -97,3 +88,5 @@ export const updateTransactions = "/update-transactions";
 export const getTransactionByType = "/get-transaction-by-type";
 export const filterTransactions = "/filter-transactions";
 export const deleteUserTrans = "/delete-user-trans";
+
+export const createConnections = "/create-connection";

@@ -44,6 +44,8 @@ import team2 from "assets/images/team-2.jpg";
 import logoSpotify from "assets/images/small-logos/logo-spotify.svg";
 import SoftButton from "components/SoftButton";
 import { Height } from "@mui/icons-material";
+import { setLoading } from "context";
+import { setDialog } from "context";
 
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
@@ -52,6 +54,13 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
   const { user } = controller;
+  const logoutHandler = () => {
+    setDialog(dispatch, [{
+      message: "Are you sure you want to Log out?",
+      status: "Logout"
+    }])
+
+  }
   useEffect(() => {
     // Setting the navbar type
     if (fixedNavbar) {
@@ -170,13 +179,21 @@ function DashboardNavbar({ absolute, light, isMini }) {
                   >
                     account_circle
                   </Icon>
-                  <SoftTypography
-                    variant="button"
-                    fontWeight="medium"
-                    color={light ? "white" : "dark"}
+
+                  <SoftButton
+                    color="success"
+                    variant="text"
+                    onClick={() => logoutHandler()}
                   >
-                    Log Out
-                  </SoftTypography>
+                    <SoftTypography
+                      variant="button"
+                      fontWeight="medium"
+                      color={light ? "white" : "dark"}
+
+                    >
+                      Log Out
+                    </SoftTypography>
+                  </SoftButton>
                 </IconButton>
               </Link>
               <IconButton

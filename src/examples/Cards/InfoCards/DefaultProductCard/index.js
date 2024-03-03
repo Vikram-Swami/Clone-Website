@@ -15,16 +15,7 @@ import { useSoftUIController } from "context";
 import ApiClient from "Services/ApiClient";
 import { createConnections } from "Services/endpointes";
 
-function DefaultProductCard({
-  color,
-  icon,
-  storage,
-  range,
-  rent,
-  basicAmt,
-  tax,
-  totalprice,
-}) {
+function DefaultProductCard({ color, icon, storage, range, rent, basicAmt, tax, totalprice }) {
   const [controller] = useSoftUIController();
 
   const { user } = controller;
@@ -52,8 +43,8 @@ function DefaultProductCard({
           borderRadius="lg"
           variant="gradient"
         >
-          <div style={{ textAlign: "center" }}>/
-            <Icon fontSize="large">{icon}</Icon>
+          <div style={{ textAlign: "center" }}>
+            /<Icon fontSize="large">{icon}</Icon>
             <div style={{ fontSize: "1.40rem", marginTop: "-10px" }}>{range} TB</div>
           </div>
         </SoftBox>
@@ -75,7 +66,6 @@ function DefaultProductCard({
               textTransform="capitalize"
               textAlign="left"
             >
-
               Basic Amount : {basicAmt}
             </SoftTypography>
             <SoftTypography
