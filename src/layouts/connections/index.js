@@ -14,11 +14,11 @@ import SoftButton from "components/SoftButton";
 import { Grid, Icon } from "@mui/material";
 import DefaultInfoCard from "examples/Cards/InfoCards/DefaultInfoCard";
 
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useMemo, useState } from "react";
+import { NavLink } from "react-router-dom";
+import { useEffect, useMemo } from "react";
 import { useSoftUIController, setConnection, setLoading } from "context";
 import Table from "examples/Tables/Table";
-import connectionView from "layouts/tables/data/connections";
+import connectionView from "layouts/connections/data/connections";
 import ApiClient from "Services/ApiClient";
 import { toast } from "react-toastify";
 import { setDialog } from "context";
@@ -66,7 +66,7 @@ function Connections() {
                 {" "}
                 <SoftButton variant="gradient" color="dark" ml={2}>
                   <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-                  &nbsp;Create Connections
+                  &nbsp;Add New
                 </SoftButton>
               </NavLink>
             </SoftBox>
@@ -82,7 +82,7 @@ function Connections() {
                         <Grid item xs={12} xl={12}>
                           <DefaultInfoCard
                             icon="cloud"
-                            title={`You Don't have an active connection yet. Add connection to your portfolio and start earning.`}
+                            title={`You Don't have a connection yet. Add connection to your portfolio and start earning.`}
                           />
                         </Grid>
                       </Grid>
