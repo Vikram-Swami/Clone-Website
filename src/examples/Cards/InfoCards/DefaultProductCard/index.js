@@ -43,7 +43,7 @@ function DefaultProductCard({ color, icon, storage, range, rent, basicAmt, tax, 
           variant="gradient"
         >
           <div style={{ textAlign: "center" }}>
-            /<Icon fontSize="large">{icon}</Icon>
+            <Icon fontSize="large">{icon}</Icon>
             <div style={{ fontSize: "1.40rem", marginTop: "-10px" }}>{range} TB</div>
           </div>
         </SoftBox>

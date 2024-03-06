@@ -25,6 +25,11 @@ import { setDialog } from "context";
 import { getConnectionByUserID } from "Services/endpointes";
 import { startLoading } from "context";
 
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+
 function Connections() {
   const [controller, dispatch] = useSoftUIController();
   const { connection, user } = controller;
@@ -63,13 +68,12 @@ function Connections() {
           <Card>
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
               <SoftTypography variant="h6">Income Table</SoftTypography>
-              <NavLink to="/products">
-                {" "}
-                <SoftButton variant="gradient" color="dark" ml={2}>
-                  <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-                  &nbsp;Add New
-                </SoftButton>
-              </NavLink>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={["DatePicker"]}>
+                  <DatePicker label="Date Range" />
+                </DemoContainer>
+              </LocalizationProvider>
+              <SoftTypography></SoftTypography>
             </SoftBox>
 
             {connection.length > 0 ? (
