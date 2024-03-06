@@ -10,11 +10,9 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 // Data
-import SoftButton from "components/SoftButton";
-import { Grid, Icon } from "@mui/material";
+import { Grid } from "@mui/material";
 import DefaultInfoCard from "examples/Cards/InfoCards/DefaultInfoCard";
 
-import { NavLink } from "react-router-dom";
 import { useEffect, useMemo } from "react";
 import { useSoftUIController, setConnection, setLoading } from "context";
 import Table from "examples/Tables/Table";
@@ -24,6 +22,11 @@ import { toast } from "react-toastify";
 import { setDialog } from "context";
 import { getConnectionByUserID } from "Services/endpointes";
 import { startLoading } from "context";
+
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 function Connections() {
   const [controller, dispatch] = useSoftUIController();
@@ -63,13 +66,12 @@ function Connections() {
           <Card>
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
               <SoftTypography variant="h6">Income Table</SoftTypography>
-              <NavLink to="/products">
-                {" "}
-                <SoftButton variant="gradient" color="dark" ml={2}>
-                  <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-                  &nbsp;Add New
-                </SoftButton>
-              </NavLink>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={["DatePicker"]}>
+                  <DatePicker label="Date Range" />
+                </DemoContainer>
+              </LocalizationProvider>
+              <SoftTypography></SoftTypography>
             </SoftBox>
 
             {connection.length > 0 ? (

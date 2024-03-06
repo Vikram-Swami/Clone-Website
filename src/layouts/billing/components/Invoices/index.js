@@ -8,6 +8,7 @@ import SoftButton from "components/SoftButton";
 
 // Billing page components
 import Invoice from "layouts/billing/components/Invoice";
+import SoftInput from "components/SoftInput";
 
 function Invoices() {
   return (
@@ -16,9 +17,12 @@ function Invoices() {
         <SoftTypography variant="h6" fontWeight="medium">
           Invoices
         </SoftTypography>
-        <SoftButton variant="outlined" color="info" size="small">
-          view all
-        </SoftButton>
+        <SoftBox pr={1}>
+          <SoftInput
+            placeholder="Enter Transaction  ID"
+            icon={{ component: "search", direction: "left" }}
+          />
+        </SoftBox>
       </SoftBox>
       <SoftBox p={2}>
         <SoftBox component="ul" display="flex" flexDirection="column" p={0} m={0}>

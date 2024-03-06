@@ -28,7 +28,7 @@ function PaymentMethod() {
     <Card id="delete-account">
       <SoftBox pt={2} px={2} display="flex" justifyContent="space-between" alignItems="center">
         <SoftTypography variant="h4" fontWeight="medium">
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bank
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Account Details
         </SoftTypography>
         <SoftBox>
           <SoftButton variant="gradient" color="dark" style={{ marginRight: "20px" }}>

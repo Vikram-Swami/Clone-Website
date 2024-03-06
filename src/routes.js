@@ -1,9 +1,10 @@
 import React, { lazy, Suspense } from "react";
 import Loading from "layouts/loading";
 import RecipeReviewCard from "layouts/verifyAccount";
+import WorkinProgress from "layouts/Pages/workinprogress";
 // NextWork Dashboard React layouts
 const Dashboard = lazy(() => import("layouts/dashboard"));
-const Tables = lazy(() => import("layouts/tables"));
+const Team = lazy(() => import("layouts/tables"));
 const Connections = lazy(() => import("layouts/connections"));
 const Billing = lazy(() => import("layouts/billing"));
 const Profile = lazy(() => import("layouts/profile"));
@@ -73,12 +74,12 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Team",
+    name: "My Team",
     auth: "user",
     key: "my-team",
     route: "/my-team",
     icon: <Office size="12px" />,
-    component: <Tables />,
+    component: <Team />,
     noCollapse: true,
   },
   {
@@ -93,7 +94,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Income",
+    name: "My Income",
     key: "income",
     auth: "any",
     route: "/income",
@@ -103,20 +104,20 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Rents",
+    name: "My Rents",
     key: "rents",
     auth: "any",
     route: "/rents",
     icon: <Office size="12px" />,
-    component: <Rents />,
+    component: <Team />,
     noCollapse: true,
   },
   {
     type: "collapse",
-    name: "Products",
+    name: "New Connection",
     key: "products",
     auth: "any",
-    route: "/products",
+    route: "/new-connections",
     icon: <CreditCard size="12px" />,
     component: <Products />,
     noCollapse: true,
@@ -143,12 +144,48 @@ const routes = [
     component: <Profile />,
     noCollapse: true,
   },
+
+  { type: "title", title: "Benefits", key: "benefits_page" },
   {
     type: "collapse",
-    name: "Refer Link",
+    name: "Limit Rewards",
     auth: "user",
-    key: "referLink",
+    key: "limitRewards",
     icon: <CustomerSupport size="12px" />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: " Rewards",
+    auth: "user",
+    key: "rewards",
+    icon: <CustomerSupport size="12px" />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Royality",
+    auth: "user",
+    key: "royality",
+    icon: <CustomerSupport size="12px" />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Consultation",
+    auth: "user",
+    key: "consultation",
+    icon: <CustomerSupport size="12px" />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Work In Progress",
+    auth: "user",
+    key: "workInprogress",
+    route: "/pages",
+    icon: <CustomerSupport size="12px" />,
+    component: <WorkinProgress />,
     noCollapse: true,
   },
 ];
@@ -172,7 +209,7 @@ export const components = {
   ),
   myTeam: (
     <Suspense fallback={<Loading />}>
-      <Tables />
+      <Team />
     </Suspense>
   ),
   connections: (

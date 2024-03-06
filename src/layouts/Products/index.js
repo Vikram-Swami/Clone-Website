@@ -18,6 +18,7 @@ import DefaultProductCard from "examples/Cards/InfoCards/DefaultProductCard";
 import { setDialog } from "context";
 import ApiClient from "Services/ApiClient";
 import { getPublished } from "Services/endpointes";
+import SoftInput from "components/SoftInput";
 
 function Products() {
   const [products, setProducts] = useState([]);
@@ -43,6 +44,14 @@ function Products() {
       <DashboardNavbar />
       <SoftBox mt={4}>
         <SoftBox mb={1.5}>
+          <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
+            <SoftBox pr={1}>
+              <SoftInput
+                placeholder="Required TB"
+                icon={{ component: "search", direction: "left" }}
+              />
+            </SoftBox>
+          </SoftBox>
           <Grid container spacing={3} justifyContent="space-around">
             <Grid item xs={12} lg={10}>
               <Grid container spacing={3}>

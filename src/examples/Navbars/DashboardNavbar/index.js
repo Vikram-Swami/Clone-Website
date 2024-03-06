@@ -46,6 +46,7 @@ import SoftButton from "components/SoftButton";
 import { Height } from "@mui/icons-material";
 import { setLoading } from "context";
 import { setDialog } from "context";
+import { Avatar, Box, Divider, Stack } from "@mui/material";
 
 function DashboardNavbar({ absolute, light, isMini }) {
   const navigate = useNavigate();
@@ -56,12 +57,13 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const route = useLocation().pathname.split("/").slice(1);
   const { user } = controller;
   const logoutHandler = () => {
-    setDialog(dispatch, [{
-      message: "Are you sure you want to Log out?",
-      status: "Logout"
-    }])
-
-  }
+    setDialog(dispatch, [
+      {
+        message: "Are you sure you want to Log out?",
+        status: "Logout",
+      },
+    ]);
+  };
   useEffect(() => {
     // Setting the navbar type
     if (fixedNavbar) {
@@ -106,29 +108,46 @@ function DashboardNavbar({ absolute, light, isMini }) {
       onClose={handleCloseMenu}
       sx={{ mt: 2 }}
     >
-      <NotificationItem
-        image={<img src={team2} alt="person" />}
-        title={["New message", "from Laur"]}
-        date="13 minutes ago"
-        onClick={handleCloseMenu}
-      />
-      <NotificationItem
-        image={<img src={logoSpotify} alt="person" />}
-        title={["New album", "by Travis Scott"]}
-        date="1 day"
-        onClick={handleCloseMenu}
-      />
-      <NotificationItem
-        color="secondary"
-        image={
-          <Icon fontSize="small" sx={{ color: ({ palette: { white } }) => white.main }}>
-            payment
-          </Icon>
-        }
-        title={["", "Payment successfully completed"]}
-        date="2 days"
-        onClick={handleCloseMenu}
-      />
+      <Box>
+        <SoftTypography
+          variant="gradient"
+          color="dark"
+          ml={2}
+          p={1}
+          onClick={() => navigate("/profile")}
+          sx={{ display: "flex", alignItems: "center" }}
+        >
+          <Divider />
+          <Icon sx={{ fontWeight: "bold", fontSize: "2rem !important" }}>account_circle</Icon>
+          <span>&nbsp;&nbsp;&nbsp;Profile</span>
+        </SoftTypography>
+
+        <SoftTypography
+          variant="gradient"
+          color="dark"
+          ml={2}
+          p={1}
+          onClick={() => logoutHandler()}
+          sx={{ display: "flex", alignItems: "center" }}
+        >
+          <Divider />
+          <Icon sx={{ fontWeight: "bold", fontSize: "2rem !important" }}>logout_icon</Icon>
+          <span>&nbsp;&nbsp;&nbsp;Logout</span>
+        </SoftTypography>
+
+        <SoftTypography
+          variant="gradient"
+          color="dark"
+          ml={2}
+          p={1}
+          onClick={() => navigate("/account")}
+          sx={{ display: "flex", alignItems: "center" }}
+        >
+          <Divider />
+          <Icon sx={{ fontWeight: "bold", fontSize: "2rem !important" }}>share_icon</Icon>
+          <span>&nbsp;Refer Link</span>
+        </SoftTypography>
+      </Box>
     </Menu>
   );
 
@@ -143,13 +162,11 @@ function DashboardNavbar({ absolute, light, isMini }) {
           <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
         </SoftBox>
         <SoftBox color={light ? "white" : "inherit"}>
-          <SoftButton variant="gradient" color="dark" ml={2} onClick={() => navigate("/account")} >
-
+          <SoftButton variant="gradient" color="dark" ml={2} onClick={() => navigate("/account")}>
             <Icon sx={{ fontWeight: "bold", fontSize: "3rem !important" }}>
               account_balance_wallet
             </Icon>
             &nbsp;{user.wallet}
-
           </SoftButton>
           <IconButton
             size="small"
@@ -172,33 +189,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 icon={{ component: "search", direction: "left" }}
               />
             </SoftBox>
+
             <SoftBox color={light ? "white" : "inherit"}>
-              <Link to="/">
-                <IconButton sx={navbarIconButton} size="small">
-                  <Icon
-                    sx={({ palette: { dark, white } }) => ({
-                      color: light ? white.main : dark.main,
-                    })}
-                  >
-                    account_circle
-                  </Icon>
-
-                  <SoftButton
-                    color="success"
-                    variant="text"
-                    onClick={() => logoutHandler()}
-                  >
-                    <SoftTypography
-                      variant="button"
-                      fontWeight="medium"
-                      color={light ? "white" : "dark"}
-
-                    >
-                      Log Out
-                    </SoftTypography>
-                  </SoftButton>
-                </IconButton>
-              </Link>
               <IconButton
                 size="small"
                 color="inherit"
@@ -213,20 +205,14 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 size="small"
                 color="inherit"
                 sx={navbarIconButton}
-                onClick={handleConfiguratorOpen}
-              >
-                <Icon>settings</Icon>
-              </IconButton>
-              <IconButton
-                size="small"
-                color="inherit"
-                sx={navbarIconButton}
                 aria-controls="notification-menu"
                 aria-haspopup="true"
                 variant="contained"
                 onClick={handleOpenMenu}
               >
-                <Icon className={light ? "text-white" : "text-dark"}>notifications</Icon>
+                <Stack direction="row" spacing={2}>
+                  <Avatar alt="Remy Sharp" src="51365.jpg" />
+                </Stack>
               </IconButton>
               {renderMenu()}
             </SoftBox>

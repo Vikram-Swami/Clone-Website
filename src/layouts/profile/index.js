@@ -33,6 +33,33 @@ function Overview() {
               action={{ route: "", tooltip: "Edit Profile" }}
             />
           </Grid>
+          <Grid item xs={12} md={6} xl={4}>
+            <ProfileInfoCard
+              title="KYC information"
+              info={{
+                aadharNo: user?.aadharNo,
+                panNo: user?.panNo,
+                bankName: user?.bankName,
+                accountNo: user?.accountNo,
+                IFSC: user?.IFSC,
+                nomineeName: user?.nomineeName,
+              }}
+              action={{ route: "", tooltip: "Edit Profile" }}
+            />
+          </Grid>
+          <Grid item xs={12} md={6} xl={4}>
+            <ProfileInfoCard
+              title="Address information"
+              info={{
+                street1: user?.street1,
+                street2: user?.street2,
+                city: user?.city,
+                state: user?.state,
+                country: user?.country,
+              }}
+              action={{ route: "", tooltip: "Edit Profile" }}
+            />
+          </Grid>
         </Grid>
       </SoftBox>
 
