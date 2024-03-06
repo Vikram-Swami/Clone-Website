@@ -37,6 +37,7 @@ function Connections() {
         setConnection(dispatch, response.data);
         toast.success(response?.message);
         setLoading(dispatch, false);
+        console.log(response);
       } else {
         setDialog(dispatch, [userData]);
       }

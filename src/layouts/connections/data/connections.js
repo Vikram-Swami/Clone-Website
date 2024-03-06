@@ -141,6 +141,8 @@ const connectionView = {
             variant="caption"
             color="secondary"
             fontWeight="medium"
+            cursor="pointer"
+            onClick={() => { console.log("clicked ") }}
           >
             <Icon fontSize="small" color="green">
               visibility

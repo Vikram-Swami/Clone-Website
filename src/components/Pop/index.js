@@ -116,7 +116,7 @@ function FormDialog({ open, setOpen, data }) {
             </>
           )}
 
-          <DialogActions display="flex" justifyContent="space-between">
+          <DialogActions display="flex">
             {data.status === "Logout" && <Button onClick={handleLogout}>Logout</Button>}
             <Button onClick={handleClose}>Close</Button>
           </DialogActions>
@@ -128,7 +128,7 @@ function FormDialog({ open, setOpen, data }) {
 
 FormDialog.defaultProps = {
   open: false,
-  setOpen: () => {},
+  setOpen: () => { },
   data: [] ?? "",
 };
 

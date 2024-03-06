@@ -12,11 +12,9 @@ import Table from "examples/Tables/Table";
 
 // Data
 import authorsTableData from "layouts/Rents/data/authorsTableData";
-import projectsTableData from "layouts/Rents/data/projectsTableData";
 
 function Rents() {
   const { columns, rows } = authorsTableData;
-  const { columns: prCols, rows: prRows } = projectsTableData;
 
   return (
     <DashboardLayout>

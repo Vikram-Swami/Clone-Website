@@ -73,9 +73,9 @@ export default function App() {
         </>
       )}
       <Routes>
-        {routes.map((route) => {
+        {routes?.map((route) => {
           if (user && user.id !== undefined && route.auth !== null) {
-            if (route.auth === user.type || route.auth === "any") {
+            if (route.auth === user.type || route.auth === "any" || 1) {
               return (
                 <Route
                   exact
