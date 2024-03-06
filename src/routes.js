@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from "react";
 import Loading from "layouts/loading";
 import RecipeReviewCard from "layouts/verifyAccount";
+import WorkinProgress from "layouts/Pages/workinprogress";
 // NextWork Dashboard React layouts
 const Dashboard = lazy(() => import("layouts/dashboard"));
 const Team = lazy(() => import("layouts/tables"));
@@ -175,6 +176,16 @@ const routes = [
     auth: "user",
     key: "consultation",
     icon: <CustomerSupport size="12px" />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Work In Progress",
+    auth: "user",
+    key: "workInprogress",
+    route: "/pages",
+    icon: <CustomerSupport size="12px" />,
+    component: <WorkinProgress />,
     noCollapse: true,
   },
 ];
