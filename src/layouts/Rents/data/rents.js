@@ -90,32 +90,7 @@ function Verified({ status }) {
     );
   }
 }
-const editRent = (id, getAllRents) => async (formData) => {
-  try {
-    formData.append("id", id);
-    console.log(id, formData, formData.get("id"));
-    const response = await ApiClient.putData(updateRent, formData);
-    toast.success(response.message);
-    getAllRents();
-  } catch (error) {
-    console.error("Error adding Token:", error);
-    toast.error(
-      error.response?.data?.message ?? "Failed to delete Toeken. Please try again later."
-    );
-  }
-};
 
-const deleteBRent = (id, getAllRents) => async (form) => {
-  try {
-    console.log(id);
-    const response = await ApiClient.deleteData(deleteRent, id);
-    toast.success(response?.message);
-    getAllRents();
-  } catch (error) {
-    console.error("Error deleting Token:", error);
-    toast.error(error.response?.data?.message ?? "Failed to delete Token. Please try again later.");
-  }
-};
 const RentView = {
   columns: [
     { name: "user", align: "left" },
@@ -125,7 +100,6 @@ const RentView = {
     { name: "connectionId", align: "center" },
     { name: "status", align: "center" },
     { name: "endDate", align: "center" },
-    { name: "actions", align: "center" },
   ],
 
   rows: (data, dispatch, getAllRents) => {
@@ -147,65 +121,6 @@ const RentView = {
         connectionId: <Author name={e.connectionId} />,
         endDate: <Author name={formattedDate} />,
         status: <Status tnxId={e.transactionId} status={e.status} />,
-
-        actions: (
-          <SoftBox
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            gap="10px"
-            px={1}
-            py={0.5}
-          >
-            <SoftTypography
-              component="a"
-              href="#"
-              variant="caption"
-              color="info"
-              fontWeight="medium"
-              cursor="pointer"
-              onClick={() => {
-                setDialog(dispatch, [
-                  {
-                    status: "form",
-                    call: editRent(e.id, getAllRents),
-                    children: <RentForm data={e} />,
-
-                    message: `UPDATE - RENT - ${e.userId}`,
-                    action: "Update",
-                  },
-                ]);
-              }}
-            >
-              <Icon fontSize="small" color="info">
-                edit
-              </Icon>
-            </SoftTypography>
-            <SoftTypography
-              component="a"
-              href="#"
-              variant="caption"
-              color="error"
-              cursor="pointer"
-              fontWeight="medium"
-              onClick={() => {
-                setDialog(dispatch, [
-                  {
-                    status: "form",
-                    call: deleteBRent(e.id, getAllRents),
-
-                    message: `DELETE - RENT - ${e.userId}`,
-                    action: "Delete",
-                  },
-                ]);
-              }}
-            >
-              <Icon fontSize="small" color="error">
-                delete
-              </Icon>
-            </SoftTypography>
-          </SoftBox>
-        ),
       };
     });
   },

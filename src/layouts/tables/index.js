@@ -21,16 +21,34 @@ import { useSoftUIController, startLoading, setLoading, setTeam } from "context"
 import SoftInput from "components/SoftInput";
 import React from "react";
 import TeamView from "./data/team";
+import ApiClient from "Services/ApiClient";
+import { getMembers } from "Services/endpointes";
+import { setDialog } from "context";
+import { toast } from "react-toastify";
+import { setMembers } from "context";
 
 function Team() {
   const [controller, dispatch] = useSoftUIController();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  const { users } = controller;
+  const { member } = controller;
+
+  const getMember = () => {
+    startLoading(dispatch, true);
+    try {
+      const response = ApiClient.getData(getMembers);
+      setMembers(dispatch, response.data);
+      toast.success(response.message);
+    } catch (error) {
+      setLoading(dispatch, false);
+
+      toast.info(error.message);
+    }
+  };
 
   useEffect(() => {
-    users?.length < 1 && getAllTeam();
+    member?.length < 1 && getMember();
   }, []);
 
   const handleChangePage = (event, newPage) => {
@@ -42,7 +60,7 @@ function Team() {
     setPage(0);
   };
 
-  let memoizedRows = TeamView.rows(users, dispatch);
+  let memoizedRows = TeamView.rows(member, dispatch);
 
   return (
     <DashboardLayout>
@@ -64,7 +82,7 @@ function Team() {
               </SoftBox>
             </SoftBox>
 
-            {users?.length > 0 ? (
+            {member?.length > 0 ? (
               <>
                 <Table columns={TeamView.columns} rows={memoizedRows} />
                 <SoftBox mt={2} display="block" width={90}>
