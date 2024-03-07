@@ -4,7 +4,7 @@ import RecipeReviewCard from "layouts/verifyAccount";
 import WorkinProgress from "layouts/Pages/workinprogress";
 // NextWork Dashboard React layouts
 const Dashboard = lazy(() => import("layouts/dashboard"));
-const Team = lazy(() => import("layouts/tables"));
+const Team = lazy(() => import("layouts/Team"));
 const Connections = lazy(() => import("layouts/connections"));
 const Billing = lazy(() => import("layouts/billing"));
 const Profile = lazy(() => import("layouts/profile"));

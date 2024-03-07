@@ -28,6 +28,9 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
+
+
+
 function Connections() {
   const [controller, dispatch] = useSoftUIController();
   const { connection, user } = controller;
@@ -46,7 +49,7 @@ function Connections() {
       }
     } catch (error) {
       setLoading(dispatch, false);
-      toast.error(error.response?.data?.message ?? "Oops! Something went wrong, please try later");
+      toast.error(error.response?.data?.message ?? "Oops! Network error occured!");
     }
   };
   const memoizedRows = useMemo(
