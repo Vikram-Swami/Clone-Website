@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import Card from "@mui/material/Card";
 import Checkbox from "@mui/material/Checkbox";
 import SoftBox from "components/SoftBox";
@@ -15,14 +15,19 @@ import { ifscValidate } from "Services/endpointes";
 import { setDialog } from "context";
 import { toast } from "react-toastify";
 import { useSoftUIController } from "context";
-
+import { createAddress } from "Services/endpointes";
+import { setLoading } from "context";
 function SignUp() {
   const [agreement, setAgreement] = useState(true);
   const form = useRef(null);
+  const { step } = useParams();
+  const location = useLocation();
 
-  const [step, setStep] = useState(1);
+  const queryParams = new URLSearchParams(location.search);
 
+  let userId;
   const [controller, dispatch] = useSoftUIController();
+  const navigate = useNavigate();
   // Validate IFSC Codes
   const handleIFSCCodeChange = async (e) => {
     const ifsc = e.target.value;
@@ -44,7 +49,7 @@ function SignUp() {
       }
     } catch (error) {
       form.current.IFSC.parentNode.style.border = "2px solid red";
-      toast.error("error While fetching IFSC");
+      toast.error("Error While fetching IFSC");
     }
   };
 
@@ -72,28 +77,43 @@ function SignUp() {
       }
     } catch (error) {
       console.error("Error fetching postal details:", error);
+      toast.error("Error while fetching postal code");
     }
   };
 
   const handleSetAgreement = () => setAgreement((prevAgreement) => !prevAgreement);
 
-  // Submit forms
   const submitHandler = async (e, route) => {
     const formdata = new FormData(form.current);
+    setLoading(dispatch, true);
     try {
       const response = await ApiClient.createData(route, formdata);
       if (response.status === 200) {
-        setStep(step + 1);
-
+        if (step == 1) {
+          form.userId = response.data?.id;
+        } else if (step == 3) {
+          navigate("/sign-in");
+        }
+        let next = parseInt(step) + 1;
+        navigate(`/sign-up/${next}?userId=${form.userId}`);
         setDialog(dispatch, [response]);
       } else {
         setDialog(dispatch, [response]);
       }
+      setLoading(dispatch, false);
     } catch (error) {
-      toast.error("Registration failed:", error);
+      setDialog(dispatch, [error.response?.data]);
+      setLoading(dispatch, false);
     }
   };
-
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    if (queryParams.get("userId")) {
+      form.userId = queryParams.get("userId");
+    } else {
+      navigate("/sign-up/1");
+    }
+  }, []);
   return (
     <BasicLayout title="Welcome!" description="" image={curved6}>
       <Card>
@@ -105,7 +125,7 @@ function SignUp() {
             method="POST"
             ref={form}
           >
-            {step === 1 ? (
+            {step == 1 ? (
               <>
                 <SoftBox mb={2}>
                   <h3>Add your Profile info</h3>
@@ -203,7 +223,15 @@ function SignUp() {
                   <h3>Add your Address</h3>
                 </SoftBox>
                 <SoftBox mb={2}>
-                  <SoftInput placeholder="User Id" name="userId" value={newUserId} disabled />
+                  <SoftInput
+                    placeholder="User Id"
+                    name="userId"
+                    value={form?.userId ?? ""}
+                    disabled={form?.userId ?? false}
+                    onInput={(e) => {
+                      form.userId = e.target.value;
+                    }}
+                  />
                 </SoftBox>
                 <SoftBox mb={2}>
                   <SoftInput placeholder="Street-1" name="street1" />
@@ -261,7 +289,7 @@ function SignUp() {
                     variant="gradient"
                     color="dark"
                     fullWidth
-                    onClick={(e) => submitHandler(e, registerUser)}
+                    onClick={(e) => submitHandler(e, createAddress)}
                   >
                     Next
                   </SoftButton>
@@ -273,7 +301,12 @@ function SignUp() {
                   <h3>Add your Bank details</h3>
                 </SoftBox>
                 <SoftBox mb={2}>
-                  <SoftInput placeholder="User Id" name="userId" value={newUserId} disabled />
+                  <SoftInput
+                    placeholder="User Id"
+                    name="userId"
+                    value={form?.userId ?? ""}
+                    disabled={form.userId ?? false}
+                  />
                 </SoftBox>
                 <SoftBox mb={2}>
                   <SoftInput placeholder="Account Number" name="accountNo" />
@@ -390,16 +423,23 @@ function SignUp() {
           </SoftBox>
           <SoftBox mt={3} textAlign="center">
             <SoftTypography variant="button" color="text" fontWeight="regular">
-              Already have an User -id?&nbsp;
+              Is your profile pending?
               <SoftTypography
-                component={Link}
-                to="/"
+                onClick={() => {
+                  setDialog(dispatch, [
+                    {
+                      status: "skip",
+                      message: "Please Enter Your User Id",
+                    },
+                  ]);
+                }}
                 variant="button"
                 color="dark"
                 fontWeight="bold"
                 textGradient
+                cursor="pointer"
               >
-                Compleate your profile
+                complete profile
               </SoftTypography>
             </SoftTypography>
           </SoftBox>
