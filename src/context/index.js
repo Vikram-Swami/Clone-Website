@@ -8,6 +8,8 @@ import { CircularProgress, Stack } from "@mui/material";
 import FormDialog from "components/Pop";
 import LoginDialog from "components/Pop/login";
 import NewFormDialog from "components/NewDialog";
+import RentModel from "Models/Rents";
+import IncomeLog from "Models/Income";
 
 const SoftUI = createContext(null);
 
@@ -41,34 +43,29 @@ function reducer(state, action) {
       return { ...state, layout: action.value };
     }
     case "USER": {
-      return { ...state, loading: false, user: new UserModel().toJson(action.value) };
+      console.log(action.value);
+      return { ...state, user: new UserModel().toJson(action.value) };
     }
-    case "TRANSACTION": {
-      return { ...state, loading: false, transaction: new UserModel().toJson(action.value) };
+    case "RENT": {
+      return { ...state, loading: false, rent: new RentModel().fromArray(action.value) };
     }
-    case "RENTS": {
-      return { ...state, loading: false, rents: new UserModel().toJson(action.value) };
-    }
-    case "INCOMES": {
-      return { ...state, loading: false, incomes: new UserModel().toJson(action.value) };
-    }
-    case "PRODUCTS": {
-      return { ...state, loading: false, products: action.value };
-    }
-    case "NOTIFICATIONS": {
-      return { ...state, loading: false, notification: new UserModel().toJson(action.value) };
-    }
-    case "ROTUES": {
-      return { ...state, loading: false, routes: new UserModel().toJson(action.value) };
+    case "INCOME": {
+      return { ...state, loading: false, income: new IncomeLog().fromArray(action.value) };
     }
     case "LOADING": {
       return { ...state, loading: action.value };
     }
     case "CONNECTION": {
-      return { ...state, connection: new ConnectionsModel().fromArray(action.value) };
+      return { ...state, loading: false, connection: new ConnectionsModel().fromArray(action.value) };
+    }
+    case "NOTIFICATION": {
+      return { ...state, notifications: new ConnectionsModel().fromArray(action.value) };
     }
     case "DIALOG": {
       return { ...state, dialog: action.value, loading: false };
+    }
+    case "PRODUCTS": {
+      return { ...state, products: action.value, loading: false };
     }
     case "START_LOAD": {
       return { ...state, dialog: [], loading: action.value };
@@ -93,7 +90,10 @@ function NextworkControllerProvider({ children }) {
     user: new UserModel(),
     connection: [],
     products: [],
+    rent: [],
+    notifications: [],
     dialog: [],
+    income: [],
     loading: false,
   };
   const [controller, dispatch] = useReducer(reducer, initialState);
@@ -186,6 +186,9 @@ const setUser = (dispatch, value) => dispatch({ type: "USER", value });
 const setProducts = (dispatch, value) => dispatch({ type: "PRODUCTS", value });
 const setConnection = (dispatch, value) => dispatch({ type: "CONNECTION", value });
 const setLoading = (dispatch, value) => dispatch({ type: "LOADING", value });
+const setRent = (dispatch, value) => dispatch({ type: "RENT", value });
+const setNotification = (dispatch, value) => dispatch({ type: "NOTIFICATION", value });
+const setIncome = (dispatch, value) => dispatch({ type: "INCOME", value });
 const setDialog = (dispatch, value) => dispatch({ type: "DIALOG", value });
 const startLoading = (dispatch, value) => dispatch({ type: "START_LOAD", value });
 
@@ -201,7 +204,10 @@ export {
   setDirection,
   setLayout,
   setUser,
+  setIncome,
+  setRent,
   setConnection,
+  setNotification,
   setLoading,
   setDialog,
   startLoading,

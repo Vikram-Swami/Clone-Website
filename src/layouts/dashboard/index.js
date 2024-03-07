@@ -35,7 +35,7 @@ function Dashboard() {
       title: { text: "My Storage" },
       count: newUser?.ownStr ?? 0,
       percentage: { color: "success" },
-      icon: { color: "info", component: "wallet" }
+      icon: { color: "info", component: "storage" }
     },
     {
       title: { text: "My Team size" },

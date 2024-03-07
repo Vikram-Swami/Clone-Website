@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Suspense } from "react";
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import themeRTL from "assets/theme/theme-rtl";
@@ -13,13 +13,14 @@ import { ToastContainer, toast } from "react-toastify";
 import { getUserById } from "Services/endpointes";
 import { startLoading } from "context";
 import { setDialog } from "context";
+import { getSourceCount } from "Services/endpointes";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
   const { miniSidenav, sidenavColor, user } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const { pathname } = useLocation();
-
+  const navigate = useNavigate();
   const handleOnMouseEnter = () => {
     if (miniSidenav && !onMouseEnter) {
       setMiniSidenav(dispatch, false);
@@ -47,7 +48,21 @@ export default function App() {
       toast.error(error.response?.data?.message ?? "Oops! Something went wrong, please try later");
     }
   }
+  const getSources = async () => {
+    // try {
+    //   const response = await ApiClient.getData(getSourceCount);
+    //   if (response.status === 200) {
+    //     if (response.count < 1) {
+    //       navigate("/");
+    //     } else {
+    //       navigate("/progress");
+    //     }
+    //   }
+    // } catch (error) {}
+    // navigate("/progress");
+  };
   useEffect(() => {
+    getSources();
     if (!user.id) {
       getUser();
     }
@@ -99,7 +114,7 @@ export default function App() {
           return null;
         })}
         {!user.id ? (
-          <Route path="/*" element={<Navigate to="/" />} />
+          <Route path="/*" element={<Navigate to="/workinprogress" />} />
         ) : (
           <Route path="/*" element={<Navigate to="/dashboard" />} />
         )}

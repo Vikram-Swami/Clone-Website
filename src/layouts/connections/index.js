@@ -38,8 +38,8 @@ function Connections() {
       const response = await ApiClient.getDataByParam(getConnectionByUserID, user.id);
       setConnection(dispatch, response.data);
       toast.success(response?.message);
-      setDialog(dispatch, [userData]);
     } catch (error) {
+      console.log(error);
       toast.info(error.response?.data?.message ?? "Oops! Network Error");
       setLoading(dispatch, false);
     }

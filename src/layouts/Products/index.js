@@ -12,15 +12,12 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 // Billing page components
 import { useEffect } from "react";
-import { useState } from "react";
-import { useSoftUIController } from "context";
+import { useSoftUIController, setProducts } from "context";
 import DefaultProductCard from "examples/Cards/InfoCards/DefaultProductCard";
-import { setDialog } from "context";
 import ApiClient from "Services/ApiClient";
 import { getPublished } from "Services/endpointes";
 import SoftInput from "components/SoftInput";
 import { toast } from "react-toastify";
-import { setProducts } from "context";
 
 function Products() {
   const [controller, dispatch] = useSoftUIController();
@@ -28,11 +25,11 @@ function Products() {
 
   const getProducts = async () => {
     try {
-      console.log("called ------------------------------------")
       setLoading(dispatch, true);
+      console.log("============================================")
       const storageData = await ApiClient.getData(getPublished);
+      console.log("====================called========================")
       setProducts(dispatch, storageData?.data);
-      console.log("called inside ------------------------------------")
       toast.success(storageData.message);
     } catch (error) {
       toast.info(error.response?.data?.message);
@@ -40,7 +37,7 @@ function Products() {
   };
 
   useEffect(() => {
-    products.length < 1 && getProducts();
+    getProducts();
   }, []);
 
   return (
@@ -59,7 +56,7 @@ function Products() {
           <Grid container spacing={3} justifyContent="space-around">
             <Grid item xs={12} lg={10}>
               <Grid container spacing={3}>
-                {products.map((data, index) => (
+                {products?.map((data, index) => (
                   <Grid key={index} item xs={12} md={6} xl={4}>
                     <DefaultProductCard
                       icon="cloud"

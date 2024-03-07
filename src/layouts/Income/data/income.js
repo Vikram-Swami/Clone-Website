@@ -8,11 +8,6 @@ import { Icon } from "@mui/material";
 import { useState } from "react";
 import { setDialog } from "context";
 import { useSoftUIController } from "context";
-import ApiClient from "Services/ApiClient";
-import { toast } from "react-toastify";
-import { updateRent } from "Services/endpointes";
-import { deleteRent } from "Services/endpointes";
-import RentForm from "../form";
 
 function Author({ name, id }) {
   return (
@@ -90,64 +85,73 @@ function Verified({ status }) {
     );
   }
 }
-const editRent = (id, getAllRents) => async (formData) => {
-  try {
-    formData.append("id", id);
-    console.log(id, formData, formData.get("id"));
-    const response = await ApiClient.putData(updateRent, formData);
-    toast.success(response.message);
-    getAllRents();
-  } catch (error) {
-    console.error("Error adding Token:", error);
-    toast.error(
-      error.response?.data?.message ?? "Failed to delete Toeken. Please try again later."
-    );
-  }
-};
 
-const deleteBRent = (id, getAllRents) => async (form) => {
-  try {
-    console.log(id);
-    const response = await ApiClient.deleteData(deleteRent, id);
-    toast.success(response?.message);
-    getAllRents();
-  } catch (error) {
-    console.error("Error deleting Token:", error);
-    toast.error(error.response?.data?.message ?? "Failed to delete Token. Please try again later.");
-  }
-};
-const RentView = {
+const usersView = {
   columns: [
     { name: "user", align: "left" },
-    { name: "level", align: "left" },
-    { name: "storage", align: "center" },
-    { name: "amount", align: "center" },
-    { name: "connectionId", align: "center" },
+    { name: "amount", align: "left" },
+    { name: "phone", align: "center" },
+    { name: "verification", align: "center" },
+    { name: "earning", align: "center" },
     { name: "status", align: "center" },
-    { name: "endDate", align: "center" },
+    { name: "kyc", align: "center" },
+    { name: "address", align: "center" },
     { name: "actions", align: "center" },
   ],
 
-  rows: (data, dispatch, getAllRents) => {
+  rows: (data, dispatch) => {
     return data.map((e) => {
-      const dateObject = new Date(e.endDate);
+      const dateObject = new Date(e.createdAt);
 
       const options = { day: "2-digit", month: "2-digit", year: "2-digit" };
       const formattedDate = dateObject.toLocaleDateString("en-GB", options);
 
       return {
         user: <Author name={e.fullName} id={e.userId} />,
-        level: (
+        amount: (
           <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-            {e.level}
+            {e.amount}
           </SoftTypography>
         ),
-        storage: <Author name={e.storage} />,
-        amount: <Author name={e.amount} />,
-        connectionId: <Author name={e.connectionId} />,
-        endDate: <Author name={formattedDate} />,
-        status: <Status tnxId={e.transactionId} status={e.status} />,
+        phone: <Author name={e.phone} />,
 
+        verification: <Verified status={e.isVerified} />,
+        earning: (
+          <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+            {e.totalEarn}
+          </SoftTypography>
+        ),
+        status: <Status tnxId={e.transactionId} status={e.status} />,
+        kyc: (
+          <SoftTypography
+            component="a"
+            href="#"
+            variant="caption"
+            color="info"
+            fontWeight="medium"
+            cursor="pointer"
+            onClick={() => {}}
+          >
+            <Icon fontSize="small" color="info">
+              visibility
+            </Icon>
+          </SoftTypography>
+        ),
+        address: (
+          <SoftTypography
+            component="a"
+            href="#"
+            variant="caption"
+            color="info"
+            fontWeight="medium"
+            cursor="pointer"
+            onClick={() => {}}
+          >
+            <Icon fontSize="small" color="info">
+              visibility
+            </Icon>
+          </SoftTypography>
+        ),
         actions: (
           <SoftBox
             display="flex"
@@ -164,15 +168,27 @@ const RentView = {
               color="info"
               fontWeight="medium"
               cursor="pointer"
+              onClick={() => {}}
+            >
+              <Icon fontSize="small" color="info">
+                visibility
+              </Icon>
+            </SoftTypography>
+            <SoftTypography
+              component="a"
+              href="#"
+              variant="caption"
+              color="info"
+              fontWeight="medium"
+              cursor="pointer"
               onClick={() => {
                 setDialog(dispatch, [
                   {
                     status: "form",
-                    call: editRent(e.id, getAllRents),
-                    children: <RentForm data={e} />,
-
-                    message: `UPDATE - RENT - ${e.userId}`,
+                    route: "",
+                    message: `UPDATE - CONNECTION - ${e.userId}`,
                     action: "Update",
+                    children: <usersForm data={e} />,
                   },
                 ]);
               }}
@@ -192,9 +208,8 @@ const RentView = {
                 setDialog(dispatch, [
                   {
                     status: "form",
-                    call: deleteBRent(e.id, getAllRents),
-
-                    message: `DELETE - RENT - ${e.userId}`,
+                    route: "",
+                    message: `DELETE - CONNECTION - ${e.userId}`,
                     action: "Delete",
                   },
                 ]);
@@ -211,4 +226,4 @@ const RentView = {
   },
 };
 
-export default RentView;
+export default usersView;
