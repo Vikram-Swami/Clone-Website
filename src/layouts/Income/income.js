@@ -10,53 +10,55 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 // Data
-import { Grid, Icon } from "@mui/material";
+import SoftButton from "components/SoftButton";
+import { Checkbox, FormControlLabel, Grid, Icon, TablePagination } from "@mui/material";
 import DefaultInfoCard from "examples/Cards/InfoCards/DefaultInfoCard";
 
+import { NavLink } from "react-router-dom";
 import { useEffect, useMemo } from "react";
 import { useSoftUIController, setConnection, setLoading } from "context";
 import Table from "examples/Tables/Table";
-import connectionView from "layouts/connections/data/connections";
 import ApiClient from "Services/ApiClient";
 import { toast } from "react-toastify";
-import { setDialog } from "context";
-import { getConnectionByUserID } from "Services/endpointes";
-import { startLoading } from "context";
+import { useSoftUIController, startLoading, setLoading } from "context";
+import SoftInput from "components/SoftInput";
+import React from "react";
+import { getIncomes } from "Services/endpointes";
+import { setIncome } from "context";
+import usersView from "./data/income";
+import { getIncomeByUserId } from "Services/endpointes";
 
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-
-function Connections() {
+function Income() {
   const [controller, dispatch] = useSoftUIController();
-  const { connection, user } = controller;
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  const getConnection = async () => {
+  const { income } = controller;
+  const getAllusers = async () => {
     startLoading(dispatch, true);
     try {
-      const response = await ApiClient.getData(getConnectionByUserID);
-      if (response?.status === 200) {
-        setConnection(dispatch, response.data);
-        toast.success(response?.message);
-        setLoading(dispatch, false);
-        console.log(response);
-      } else {
-        setDialog(dispatch, [userData]);
-      }
+      const response = await ApiClient.getData(getIncomeByUserId, 0, 100);
+      setIncome(dispatch, response.data);
+      toast.success(response?.message);
     } catch (error) {
       setLoading(dispatch, false);
       toast.error(error.response?.data?.message ?? "Oops! Something went wrong, please try later");
     }
   };
-  const memoizedRows = useMemo(
-    () => connectionView.rows(connection, user.fullName),
-    [connection, user.fullName]
-  );
-
   useEffect(() => {
-    connection.length < 1 && getConnection();
+    income.length < 1 && getAllusers();
   }, []);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  let memoizedRows = usersView.rows(income, dispatch, getAllusers);
 
   return (
     <DashboardLayout>
@@ -66,16 +68,32 @@ function Connections() {
           <Card>
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
               <SoftTypography variant="h6">Income Table</SoftTypography>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DemoContainer components={["DatePicker"]}>
-                  <DatePicker label="Date Range" />
-                </DemoContainer>
-              </LocalizationProvider>
-              <SoftTypography></SoftTypography>
+
+              <FormControlLabel control={<Checkbox />} label="Paid" />
+              <FormControlLabel control={<Checkbox />} label="Pending" />
+
+              <SoftBox pr={1}>
+                <SoftInput
+                  placeholder="Enter user ID"
+                  icon={{ component: "search", direction: "left" }}
+                />
+              </SoftBox>
             </SoftBox>
 
-            {connection.length > 0 ? (
-              <Table columns={connectionView.columns} rows={memoizedRows} />
+            {income?.length > 0 ? (
+              <>
+                <Table columns={usersView.columns} rows={memoizedRows} />
+                <SoftBox mt={2} display="block" width={90}>
+                  <TablePagination
+                    component="span"
+                    count={100}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    rowsPerPage={rowsPerPage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                  />
+                </SoftBox>
+              </>
             ) : (
               <SoftBox mt={4}>
                 <SoftBox mb={1.5}>
@@ -85,7 +103,7 @@ function Connections() {
                         <Grid item xs={12} xl={12}>
                           <DefaultInfoCard
                             icon="cloud"
-                            title={`You Don't have a connection yet. Add connection to your portfolio and start earning.`}
+                            title={`You Don't have an active connection yet. Add connection to your portfolio and start earning.`}
                           />
                         </Grid>
                       </Grid>
@@ -102,4 +120,4 @@ function Connections() {
   );
 }
 
-export default Connections;
+export default Income;
