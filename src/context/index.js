@@ -43,7 +43,6 @@ function reducer(state, action) {
       return { ...state, layout: action.value };
     }
     case "USER": {
-      console.log(action.value);
       return { ...state, user: new UserModel().toJson(action.value) };
     }
     case "RENT": {
