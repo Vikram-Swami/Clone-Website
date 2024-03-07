@@ -110,6 +110,22 @@ class UserModel {
       jsonData.unread ?? 0
     );
   }
+  memberToArray(json) {
+    return json.map((e) => {
+      return {
+        userId: e?.userId ?? "",
+        fullName: e?.fullName ?? "",
+        email: e?.email ?? "",
+        phone: e?.phone ?? "xxx-xxx-xxxx",
+        image: e.image ?? {},
+        level: e?.level,
+        placementLevel: e.placementLevel,
+        storage: e.storage,
+        createdAt: e.createdAt,
+        updatedAt: e.updatedAt,
+      };
+    });
+  }
 }
 
 export default UserModel;
