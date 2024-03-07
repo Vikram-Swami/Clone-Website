@@ -104,7 +104,7 @@ function Connections() {
           <Card>
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
               <SoftTypography variant="h6">My Connections</SoftTypography>
-              <Button variant="outlined" onClick={handleClickOpen}>
+              <Button variant="gradient" onClick={handleClickOpen}>
                 Open payment dialog
               </Button>
               <Dialog

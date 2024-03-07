@@ -103,15 +103,18 @@ function DashboardNavbar({ absolute, light, isMini }) {
 
   const handleCopyLink = (user) => {
     const referLink = generateReferLink(user.id);
-    console.log(user);
+
     navigator.clipboard.writeText(referLink)
       .then(() => {
-        console.log('Link copied to clipboard:', referLink);
+        alert('Refer link copied to clipboard!');
       })
       .catch((err) => {
         console.error('Unable to copy link to clipboard', err);
+        // Handle the error or provide feedback to the user
+        alert('Error copying link to clipboard');
       });
   };
+
 
   const renderMenu = () => (
     <Menu

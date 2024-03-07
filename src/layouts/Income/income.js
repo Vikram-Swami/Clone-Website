@@ -10,20 +10,16 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 // Data
-import SoftButton from "components/SoftButton";
-import { Checkbox, FormControlLabel, Grid, Icon, TablePagination } from "@mui/material";
+import { Checkbox, FormControlLabel, Grid, TablePagination } from "@mui/material";
 import DefaultInfoCard from "examples/Cards/InfoCards/DefaultInfoCard";
 
-import { NavLink } from "react-router-dom";
-import { useEffect, useMemo } from "react";
-import { useSoftUIController, setConnection, setLoading } from "context";
+import { useEffect } from "react";
 import Table from "examples/Tables/Table";
 import ApiClient from "Services/ApiClient";
 import { toast } from "react-toastify";
 import { useSoftUIController, startLoading, setLoading } from "context";
 import SoftInput from "components/SoftInput";
 import React from "react";
-import { getIncomes } from "Services/endpointes";
 import { setIncome } from "context";
 import usersView from "./data/income";
 import { getIncomeByUserId } from "Services/endpointes";
