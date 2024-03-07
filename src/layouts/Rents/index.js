@@ -17,19 +17,37 @@ import DefaultInfoCard from "examples/Cards/InfoCards/DefaultInfoCard";
 import { NavLink } from "react-router-dom";
 import { useEffect } from "react";
 import Table from "examples/Tables/Table";
-import { useSoftUIController, startLoading, setLoading, setTeam } from "context";
+import ApiClient from "Services/ApiClient";
+import { toast } from "react-toastify";
+import { useSoftUIController, startLoading, setLoading } from "context";
 import SoftInput from "components/SoftInput";
 import React from "react";
+import { getRents } from "Services/endpointes";
+import RentForm from "./form";
+import RentView from "./data/rents";
+import { setRent } from "context";
+import { setDialog } from "context";
+import { createRent } from "Services/endpointes";
 
-function Team() {
+function Users() {
   const [controller, dispatch] = useSoftUIController();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  const { users } = controller;
-
+  const { rent } = controller;
+  const getAllRents = async () => {
+    startLoading(dispatch, true);
+    try {
+      const response = await ApiClient.getDataWithPagination(getRents, 0, 100);
+      setRent(dispatch, response.data);
+      toast.success(response?.message);
+    } catch (error) {
+      setLoading(dispatch, false);
+      toast.error(error.response?.data?.message ?? "Oops! Something went wrong, please try later");
+    }
+  };
   useEffect(() => {
-    users?.length < 1 && getAllTeam();
+    rent.length < 1 && getAllRents();
   }, []);
 
   const handleChangePage = (event, newPage) => {
@@ -40,8 +58,22 @@ function Team() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
-  let memoizedRows = TeamView.rows(users, dispatch);
+  const addRent = async (formData) => {
+    startLoading(dispatch, true);
+    try {
+      const response = await ApiClient.createData(createRent, formData);
+      if (response.status === 200) {
+        getAllRents();
+        setDialog(dispatch, [response]);
+      } else {
+        setDialog(dispatch, [response]);
+      }
+    } catch (error) {
+      setDialog(dispatch, [error?.response?.data]);
+      // toast.error(error?."Failed to add source. Please try again later.");
+    }
+  };
+  let memoizedRows = RentView.rows(rent, dispatch, getAllRents);
 
   return (
     <DashboardLayout>
@@ -50,29 +82,39 @@ function Team() {
         <SoftBox mb={3}>
           <Card>
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-              <SoftTypography variant="h6">MyTeams</SoftTypography>
-
-              <FormControlLabel control={<Checkbox />} label="List" />
-              <FormControlLabel control={<Checkbox />} label="Tree" />
+              <SoftTypography variant="h6">All Users</SoftTypography>
 
               <SoftBox pr={1}>
                 <SoftInput
-                  placeholder="Enter ID"
+                  placeholder="Enter Connection ID"
                   icon={{ component: "search", direction: "left" }}
                 />
               </SoftBox>
-              <NavLink to="/products">
-                {" "}
-                <SoftButton variant="gradient" color="dark" ml={2}>
-                  <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-                  &nbsp;Add New
-                </SoftButton>
-              </NavLink>
+
+              <SoftButton
+                variant="gradient"
+                color="dark"
+                ml={2}
+                // onClick={() => {
+                //   setDialog(dispatch, [
+                //     {
+                //       call: addRent,
+                //       status: "form",
+                //       message: "CREATE NEW RENT",
+                //       action: "Add New",
+                //       children: <RentForm />,
+                //     },
+                //   ]);
+                // }}
+              >
+                <Icon sx={{ fontWeight: "bold" }}>add</Icon>
+                &nbsp;Add New
+              </SoftButton>
             </SoftBox>
 
-            {users?.length > 0 ? (
+            {rent?.length > 0 ? (
               <>
-                <Table columns={TeamView.columns} rows={memoizedRows} />
+                <Table columns={RentView.columns} rows={memoizedRows} />
                 <SoftBox mt={2} display="block" width={90}>
                   <TablePagination
                     component="span"
@@ -110,4 +152,4 @@ function Team() {
   );
 }
 
-export default Team;
+export default Users;

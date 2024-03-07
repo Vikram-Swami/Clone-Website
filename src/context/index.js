@@ -7,6 +7,8 @@ import ConnectionsModel from "Models/Connection";
 import { CircularProgress, Stack } from "@mui/material";
 import FormDialog from "components/Pop";
 import LoginDialog from "components/Pop/login";
+import RentModel from "Models/Rents";
+import IncomeLog from "Models/Income";
 
 const SoftUI = createContext(null);
 
@@ -40,7 +42,14 @@ function reducer(state, action) {
       return { ...state, layout: action.value };
     }
     case "USER": {
+      console.log(action.value);
       return { ...state, user: new UserModel().toJson(action.value) };
+    }
+    case "RENT": {
+      return { ...state, rent: new RentModel().fromArray(action.value) };
+    }
+    case "INCOME": {
+      return { ...state, rent: new IncomeLog().fromArray(action.value) };
     }
     case "LOADING": {
       return { ...state, loading: action.value };
@@ -73,7 +82,9 @@ function NextworkControllerProvider({ children }) {
     layout: "dashboard",
     user: new UserModel(),
     connection: [],
+    rent: [],
     dialog: [],
+    income: [],
     loading: false,
   };
   const [controller, dispatch] = useReducer(reducer, initialState);
@@ -154,6 +165,8 @@ const setLayout = (dispatch, value) => dispatch({ type: "LAYOUT", value });
 const setUser = (dispatch, value) => dispatch({ type: "USER", value });
 const setConnection = (dispatch, value) => dispatch({ type: "CONNECTION", value });
 const setLoading = (dispatch, value) => dispatch({ type: "LOADING", value });
+const setRent = (dispatch, value) => dispatch({ type: "RENT", value });
+const setIncome = (dispatch, value) => dispatch({ type: "INCOME", value });
 const setDialog = (dispatch, value) => dispatch({ type: "DIALOG", value });
 const startLoading = (dispatch, value) => dispatch({ type: "START_LOAD", value });
 
@@ -169,6 +182,8 @@ export {
   setDirection,
   setLayout,
   setUser,
+  setIncome,
+  setRent,
   setConnection,
   setLoading,
   setDialog,

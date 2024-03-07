@@ -4,6 +4,7 @@ export const getConnectionByUserID = "/get-connection-by-user-id";
 export const validateUser = "/validate-user";
 // Admin Routes
 export const sourcetype = "/get-source-by-type";
+export const getSourceCount = "/get-source-count";
 
 export const getIncomes = "/get-incomes";
 export const getIncomeById = "/get-income-by-id";
@@ -92,3 +93,5 @@ export const updateTransactions = "/update-transactions";
 export const getTransactionByType = "/get-transaction-by-type";
 export const filterTransactions = "/filter-transactions";
 export const deleteUserTrans = "/delete-user-trans";
+
+export const getUserNotification = "/get-user-notification";
