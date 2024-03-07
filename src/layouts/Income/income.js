@@ -15,7 +15,8 @@ import { Checkbox, FormControlLabel, Grid, Icon, TablePagination } from "@mui/ma
 import DefaultInfoCard from "examples/Cards/InfoCards/DefaultInfoCard";
 
 import { NavLink } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
+import { useSoftUIController, setConnection, setLoading } from "context";
 import Table from "examples/Tables/Table";
 import ApiClient from "Services/ApiClient";
 import { toast } from "react-toastify";

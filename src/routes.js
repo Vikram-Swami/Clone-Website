@@ -257,3 +257,4 @@ export const icons = {
   account: <CreditCard size="12px" />,
   profile: <CustomerSupport size="12px" />,
 };
+

@@ -89,13 +89,18 @@ function SignUp() {
     try {
       const response = await ApiClient.createData(route, formdata);
       if (response.status === 200) {
+        let next = parseInt(step) + 1;
+        let route = `/sign-up/${next}?userId=${form.userId}`;
         if (step == 1) {
           form.userId = response.data?.id;
         } else if (step == 3) {
-          navigate("/sign-in");
+          route = '/sign-in';
+
         }
-        let next = parseInt(step) + 1;
-        navigate(`/sign-up/${next}?userId=${form.userId}`);
+        else if (step == 3) {
+
+        }
+        navigate(route);
         setDialog(dispatch, [response]);
       } else {
         setDialog(dispatch, [response]);

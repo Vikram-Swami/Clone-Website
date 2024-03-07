@@ -38,9 +38,8 @@ function Billing() {
                 </Grid>
                 <Grid item xs={12} md={6} xl={3}>
                   <DefaultInfoCard
-                    icon="currency_rupee
-"
-                    title="Withdrawal"
+                    icon="currency_rupee"
+                    title="Withdraw"
                     value={user?.earning}
                   />
                 </Grid>

@@ -114,7 +114,7 @@ export default function App() {
           return null;
         })}
         {!user.id ? (
-          <Route path="/*" element={<Navigate to="/" />} />
+          <Route path="/*" element={<Navigate to="/workinprogress" />} />
         ) : (
           <Route path="/*" element={<Navigate to="/dashboard" />} />
         )}
