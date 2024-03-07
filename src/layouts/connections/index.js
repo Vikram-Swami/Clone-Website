@@ -48,7 +48,7 @@ function Connections() {
   const getConnection = async () => {
     startLoading(dispatch, true);
     try {
-      const response = await ApiClient.getData(getConnectionByUserID);
+      const response = await ApiClient.getDataByParam(getConnectionByUserID, user.userId);
       if (response?.status === 200) {
         setConnection(dispatch, response.data);
         toast.success(response?.message);
@@ -59,7 +59,7 @@ function Connections() {
       }
     } catch (error) {
       setLoading(dispatch, false);
-      toast.error(error.response?.data?.message ?? "Oops! Something went wrong, please try later");
+      toast.error(error.response?.data?.message);
     }
   };
   const memoizedRows = useMemo(
