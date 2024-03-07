@@ -49,6 +49,9 @@ function reducer(state, action) {
     case "RENT": {
       return { ...state, loading: false, rent: new RentModel().fromArray(action.value) };
     }
+    case "MEMBER": {
+      return { ...state, loading: false, member: new UserModel().memberToArray(action.value) };
+    }
     case "INCOME": {
       return { ...state, loading: false, income: new IncomeLog().fromArray(action.value) };
     }
@@ -93,6 +96,7 @@ function NextworkControllerProvider({ children }) {
     rent: [],
     notifications: [],
     dialog: [],
+    member: [],
     income: [],
     loading: false,
   };
@@ -189,6 +193,7 @@ const setLoading = (dispatch, value) => dispatch({ type: "LOADING", value });
 const setRent = (dispatch, value) => dispatch({ type: "RENT", value });
 const setNotification = (dispatch, value) => dispatch({ type: "NOTIFICATION", value });
 const setIncome = (dispatch, value) => dispatch({ type: "INCOME", value });
+const setMembers = (dispatch, value) => dispatch({ type: "MEMBER", value });
 const setDialog = (dispatch, value) => dispatch({ type: "DIALOG", value });
 const startLoading = (dispatch, value) => dispatch({ type: "START_LOAD", value });
 
@@ -211,5 +216,5 @@ export {
   setLoading,
   setDialog,
   startLoading,
-  setProducts,
+  setMembers,
 };

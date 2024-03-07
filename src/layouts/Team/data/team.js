@@ -102,9 +102,6 @@ const TeamView = {
     { name: "verification", align: "center" },
     { name: "earning", align: "center" },
     { name: "status", align: "center" },
-    { name: "kyc", align: "center" },
-    { name: "address", align: "center" },
-    { name: "actions", align: "center" },
   ],
 
   rows: (data, dispatch) => {
@@ -131,105 +128,6 @@ const TeamView = {
           </SoftTypography>
         ),
         status: <Status tnxId={e.transactionId} status={e.status} />,
-        kyc: (
-          <SoftTypography
-            component="a"
-            href="#"
-            variant="caption"
-            color="info"
-            fontWeight="medium"
-            cursor="pointer"
-            onClick={() => {}}
-          >
-            <Icon fontSize="small" color="info">
-              visibility
-            </Icon>
-          </SoftTypography>
-        ),
-        address: (
-          <SoftTypography
-            component="a"
-            href="#"
-            variant="caption"
-            color="info"
-            fontWeight="medium"
-            cursor="pointer"
-            onClick={() => {}}
-          >
-            <Icon fontSize="small" color="info">
-              visibility
-            </Icon>
-          </SoftTypography>
-        ),
-        actions: (
-          <SoftBox
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            gap="10px"
-            px={1}
-            py={0.5}
-          >
-            <SoftTypography
-              component="a"
-              href="#"
-              variant="caption"
-              color="info"
-              fontWeight="medium"
-              cursor="pointer"
-              onClick={() => {}}
-            >
-              <Icon fontSize="small" color="info">
-                visibility
-              </Icon>
-            </SoftTypography>
-            <SoftTypography
-              component="a"
-              href="#"
-              variant="caption"
-              color="info"
-              fontWeight="medium"
-              cursor="pointer"
-              onClick={() => {
-                setDialog(dispatch, [
-                  {
-                    status: "form",
-                    route: "",
-                    message: `UPDATE - CONNECTION - ${e.userId}`,
-                    action: "Update",
-                    children: <usersForm data={e} />,
-                  },
-                ]);
-              }}
-            >
-              <Icon fontSize="small" color="info">
-                edit
-              </Icon>
-            </SoftTypography>
-            <SoftTypography
-              component="a"
-              href="#"
-              variant="caption"
-              color="error"
-              cursor="pointer"
-              fontWeight="medium"
-              onClick={() => {
-                setDialog(dispatch, [
-                  {
-                    status: "form",
-                    route: "",
-                    message: `DELETE - CONNECTION - ${e.userId}`,
-                    action: "Delete",
-                  },
-                ]);
-              }}
-            >
-              <Icon fontSize="small" color="error">
-                delete
-              </Icon>
-            </SoftTypography>
-          </SoftBox>
-        ),
       };
     });
   },
