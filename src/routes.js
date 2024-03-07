@@ -183,11 +183,12 @@ const routes = [
     name: "Work In Progress",
     auth: "user",
     key: "workInprogress",
-    route: "/pages",
+    route: "/workinprogress",
     icon: <CustomerSupport size="12px" />,
     component: <WorkinProgress />,
     noCollapse: true,
   },
+
 ];
 export default routes;
 
