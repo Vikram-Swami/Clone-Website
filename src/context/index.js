@@ -7,6 +7,7 @@ import ConnectionsModel from "Models/Connection";
 import { CircularProgress, Stack } from "@mui/material";
 import FormDialog from "components/Pop";
 import LoginDialog from "components/Pop/login";
+import NewFormDialog from "components/NewDialog";
 
 const SoftUI = createContext(null);
 
@@ -40,7 +41,25 @@ function reducer(state, action) {
       return { ...state, layout: action.value };
     }
     case "USER": {
-      return { ...state, user: new UserModel().toJson(action.value) };
+      return { ...state, loading: false, user: new UserModel().toJson(action.value) };
+    }
+    case "TRANSACTION": {
+      return { ...state, loading: false, transaction: new UserModel().toJson(action.value) };
+    }
+    case "RENTS": {
+      return { ...state, loading: false, rents: new UserModel().toJson(action.value) };
+    }
+    case "INCOMES": {
+      return { ...state, loading: false, incomes: new UserModel().toJson(action.value) };
+    }
+    case "PRODUCTS": {
+      return { ...state, loading: false, products: action.value };
+    }
+    case "NOTIFICATIONS": {
+      return { ...state, loading: false, notification: new UserModel().toJson(action.value) };
+    }
+    case "ROTUES": {
+      return { ...state, loading: false, routes: new UserModel().toJson(action.value) };
     }
     case "LOADING": {
       return { ...state, loading: action.value };
@@ -73,6 +92,7 @@ function NextworkControllerProvider({ children }) {
     layout: "dashboard",
     user: new UserModel(),
     connection: [],
+    products: [],
     dialog: [],
     loading: false,
   };
@@ -85,7 +105,11 @@ function NextworkControllerProvider({ children }) {
       {/* Conditionally render loader */}
 
       <FormDialog
-        open={controller.dialog.length > 0 && controller.dialog[0].status !== "otp"}
+        open={
+          controller.dialog?.length > 0 &&
+          controller.dialog?.[0]?.status !== "otp" &&
+          controller.dialog?.[0]?.status !== "form"
+        }
         setOpen={(v) => {
           setDialog(dispatch, []);
         }}
@@ -94,6 +118,13 @@ function NextworkControllerProvider({ children }) {
 
       <LoginDialog
         open={controller.dialog.length > 0 && controller.dialog[0].status === "otp"}
+        setOpen={(v) => {
+          setDialog(dispatch, []);
+        }}
+        data={controller.dialog[0]}
+      />
+      <NewFormDialog
+        open={controller.dialog.length > 0 && controller.dialog[0].status === "form"}
         setOpen={(v) => {
           setDialog(dispatch, []);
         }}
@@ -152,6 +183,7 @@ const setOpenConfigurator = (dispatch, value) => dispatch({ type: "OPEN_CONFIGUR
 const setDirection = (dispatch, value) => dispatch({ type: "DIRECTION", value });
 const setLayout = (dispatch, value) => dispatch({ type: "LAYOUT", value });
 const setUser = (dispatch, value) => dispatch({ type: "USER", value });
+const setProducts = (dispatch, value) => dispatch({ type: "PRODUCTS", value });
 const setConnection = (dispatch, value) => dispatch({ type: "CONNECTION", value });
 const setLoading = (dispatch, value) => dispatch({ type: "LOADING", value });
 const setDialog = (dispatch, value) => dispatch({ type: "DIALOG", value });
@@ -173,4 +205,5 @@ export {
   setLoading,
   setDialog,
   startLoading,
+  setProducts,
 };

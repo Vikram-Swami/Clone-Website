@@ -98,7 +98,7 @@ function Team() {
                           <DefaultInfoCard
                             sx={{ height: "400px" }}
                             icon="cloud"
-                            title={`You Don't have an active connection yet. Add connection to your portfolio and start earning.`}
+                            title={`You Don't have a member in you team yet. Increase team size to earn more.`}
                           />
 
                           <NavLink to="/new_connections">

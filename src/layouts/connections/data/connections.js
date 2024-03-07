@@ -6,6 +6,7 @@ import SoftBadge from "components/SoftBadge";
 
 import { Icon } from "@mui/material";
 import SoftButton from "components/SoftButton";
+import PurchaseView from "../transactiion";
 
 function Author({ name, id }) {
   return (
@@ -49,8 +50,18 @@ function Status({ tnxId, status }) {
             shadow="md"
             marginRight="2rem"
             borderRadius="lg"
+            cursor="pointer"
             onClick={() => {
-              console.log(status, isAlloted);
+              setDialog(dispatch, [
+                {
+                  status: "form",
+                  title: "Please select payment method",
+                  message: `MAKE PAYMENT AND GET AUTO GENERATED RENTS EVERY MONTH - ${e.id}`,
+                  action: "Submit",
+
+                  children: <PurchaseView data={e} />,
+                },
+              ]);
             }}
           >
             Make Payment

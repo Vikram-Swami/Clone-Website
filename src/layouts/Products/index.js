@@ -19,24 +19,28 @@ import { setDialog } from "context";
 import ApiClient from "Services/ApiClient";
 import { getPublished } from "Services/endpointes";
 import SoftInput from "components/SoftInput";
+import { toast } from "react-toastify";
+import { setProducts } from "context";
 
 function Products() {
-  const [products, setProducts] = useState([]);
   const [controller, dispatch] = useSoftUIController();
+  const { products } = controller;
 
   const getProducts = async () => {
     try {
+      console.log("called ------------------------------------")
+      setLoading(dispatch, true);
       const storageData = await ApiClient.getData(getPublished);
-      if (storageData?.status === 200) {
-        setProducts(storageData?.data);
-      } else {
-        setDialog(dispatch);
-      }
-    } catch (error) { }
+      setProducts(dispatch, storageData?.data);
+      console.log("called inside ------------------------------------")
+      toast.success(storageData.message);
+    } catch (error) {
+      toast.info(error.response?.data?.message);
+    }
   };
 
   useEffect(() => {
-    getProducts();
+    products.length < 1 && getProducts();
   }, []);
 
   return (

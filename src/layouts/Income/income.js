@@ -88,7 +88,7 @@ function Connections() {
                         <Grid item xs={12} xl={12}>
                           <DefaultInfoCard
                             icon="cloud"
-                            title={`You Don't have a connection yet. Add connection to your portfolio and start earning.`}
+                            title={`You Don't have an active Income yet. Add connection to your portfolio and start earning.`}
                           />
                         </Grid>
                       </Grid>

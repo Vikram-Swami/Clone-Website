@@ -50,10 +50,7 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
                   variant="h5"
                   fontWeight="bold"
                 >
-                  {count}{" "}
-                  <SoftTypography variant="button" color={percentage.color} fontWeight="bold">
-                    {percentage.text}
-                  </SoftTypography>
+                  {count}
                 </SoftTypography>
               </SoftBox>
             </Grid>

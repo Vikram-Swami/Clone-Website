@@ -23,7 +23,7 @@ import React from "react";
 
 function Team() {
   const [controller, dispatch] = useSoftUIController();
-  const [page, setPage] = React.useState(0);
+  const [page, setPage] = React.useState(1);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const { users } = controller;
@@ -57,17 +57,10 @@ function Team() {
 
               <SoftBox pr={1}>
                 <SoftInput
-                  placeholder="Enter ID"
+                  placeholder="Enter Connection ID"
                   icon={{ component: "search", direction: "left" }}
                 />
               </SoftBox>
-              <NavLink to="/products">
-                {" "}
-                <SoftButton variant="gradient" color="dark" ml={2}>
-                  <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-                  &nbsp;Add New
-                </SoftButton>
-              </NavLink>
             </SoftBox>
 
             {users?.length > 0 ? (
@@ -93,7 +86,7 @@ function Team() {
                         <Grid item xs={12} xl={12}>
                           <DefaultInfoCard
                             icon="cloud"
-                            title={`You Don't have an active connection yet. Add connection to your portfolio and start earning.`}
+                            title={`You Don't have an active Rent yet. Add connection to your portfolio and start getting rent every month.`}
                           />
                         </Grid>
                       </Grid>
