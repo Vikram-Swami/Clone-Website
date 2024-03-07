@@ -5,9 +5,7 @@ import SoftTypography from "components/SoftTypography";
 import SoftBadge from "components/SoftBadge";
 
 import { Icon } from "@mui/material";
-import { useState } from "react";
 import { setDialog } from "context";
-import { useSoftUIController } from "context";
 
 function Author({ name, id }) {
   return (
@@ -130,7 +128,7 @@ const usersView = {
             color="info"
             fontWeight="medium"
             cursor="pointer"
-            onClick={() => {}}
+            onClick={() => { }}
           >
             <Icon fontSize="small" color="info">
               visibility
@@ -145,7 +143,7 @@ const usersView = {
             color="info"
             fontWeight="medium"
             cursor="pointer"
-            onClick={() => {}}
+            onClick={() => { }}
           >
             <Icon fontSize="small" color="info">
               visibility
@@ -168,7 +166,7 @@ const usersView = {
               color="info"
               fontWeight="medium"
               cursor="pointer"
-              onClick={() => {}}
+              onClick={() => { }}
             >
               <Icon fontSize="small" color="info">
                 visibility
