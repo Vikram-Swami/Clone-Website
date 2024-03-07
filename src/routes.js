@@ -181,14 +181,13 @@ const routes = [
   {
     type: "collapse",
     name: "Work In Progress",
-    auth: "user",
+    auth: null,
     key: "workInprogress",
     route: "/workinprogress",
     icon: <CustomerSupport size="12px" />,
     component: <WorkinProgress />,
     noCollapse: true,
   },
-
 ];
 export default routes;
 
@@ -258,3 +257,4 @@ export const icons = {
   account: <CreditCard size="12px" />,
   profile: <CustomerSupport size="12px" />,
 };
+

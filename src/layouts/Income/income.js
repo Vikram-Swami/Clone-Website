@@ -10,11 +10,9 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 // Data
-import SoftButton from "components/SoftButton";
 import { Grid, Icon } from "@mui/material";
 import DefaultInfoCard from "examples/Cards/InfoCards/DefaultInfoCard";
 
-import { NavLink } from "react-router-dom";
 import { useEffect, useMemo } from "react";
 import { useSoftUIController, setConnection, setLoading } from "context";
 import Table from "examples/Tables/Table";

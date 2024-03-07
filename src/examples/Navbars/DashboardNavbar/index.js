@@ -95,7 +95,24 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
 
-  // Render the notifications menu
+  const generateReferLink = (id) => {
+    const referLink = '';
+
+    return `${referLink} & sponsorId=${id} & userId=${id}`;
+  };
+
+  const handleCopyLink = (user) => {
+    const referLink = generateReferLink(user.id);
+    console.log(user);
+    navigator.clipboard.writeText(referLink)
+      .then(() => {
+        console.log('Link copied to clipboard:', referLink);
+      })
+      .catch((err) => {
+        console.error('Unable to copy link to clipboard', err);
+      });
+  };
+
   const renderMenu = () => (
     <Menu
       anchorEl={openMenu}
@@ -115,6 +132,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
           ml={2}
           p={1}
           onClick={() => navigate("/profile")}
+          cursor="pointer"
           sx={{ display: "flex", alignItems: "center" }}
         >
           <Divider />
@@ -128,6 +146,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
           ml={2}
           p={1}
           onClick={() => logoutHandler()}
+          cursor="pointer"
           sx={{ display: "flex", alignItems: "center" }}
         >
           <Divider />
@@ -140,7 +159,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
           color="dark"
           ml={2}
           p={1}
-          onClick={() => navigate("/account")}
+          onClick={() => handleCopyLink(user)}
+          cursor="pointer"
+
           sx={{ display: "flex", alignItems: "center" }}
         >
           <Divider />

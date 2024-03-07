@@ -77,12 +77,11 @@ function SignUp() {
       }
     } catch (error) {
       console.error("Error fetching postal details:", error);
-      toast.error("Error while fetching postal code")
+      toast.error("Error while fetching postal code");
     }
   };
 
   const handleSetAgreement = () => setAgreement((prevAgreement) => !prevAgreement);
-
 
   const submitHandler = async (e, route) => {
     const formdata = new FormData(form.current);
@@ -90,30 +89,33 @@ function SignUp() {
     try {
       const response = await ApiClient.createData(route, formdata);
       if (response.status === 200) {
+        let next = parseInt(step) + 1;
+        let route = `/sign-up/${next}?userId=${form.userId}`;
         if (step == 1) {
-          form.userId = response.data?.id
+          form.userId = response.data?.id;
+        } else if (step == 3) {
+          route = '/sign-in';
+
         }
-        let next = parseInt(step + 1);
-        navigate(`/sign-up/${next}?userId=${form.userId}`);
+        else if (step == 3) {
+
+        }
+        navigate(route);
         setDialog(dispatch, [response]);
       } else {
         setDialog(dispatch, [response]);
       }
       setLoading(dispatch, false);
-
     } catch (error) {
-
       setDialog(dispatch, [error.response?.data]);
       setLoading(dispatch, false);
-
     }
   };
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
-    if (queryParams.get('userId')) {
-      form.userId = queryParams.get('userId');
-    }
-    else {
+    if (queryParams.get("userId")) {
+      form.userId = queryParams.get("userId");
+    } else {
       navigate("/sign-up/1");
     }
   }, []);
@@ -210,7 +212,12 @@ function SignUp() {
                   </SoftTypography>
                 </SoftBox>
                 <SoftBox mt={4} mb={1}>
-                  <SoftButton variant="gradient" color="dark" fullWidth onClick={(e) => submitHandler(e, registerUser)}>
+                  <SoftButton
+                    variant="gradient"
+                    color="dark"
+                    fullWidth
+                    onClick={(e) => submitHandler(e, registerUser)}
+                  >
                     Next
                   </SoftButton>
                 </SoftBox>
@@ -221,11 +228,15 @@ function SignUp() {
                   <h3>Add your Address</h3>
                 </SoftBox>
                 <SoftBox mb={2}>
-                  <SoftInput placeholder="User Id" name="userId" value={form?.userId ?? ""}
+                  <SoftInput
+                    placeholder="User Id"
+                    name="userId"
+                    value={form?.userId ?? ""}
                     disabled={form?.userId ?? false}
                     onInput={(e) => {
                       form.userId = e.target.value;
-                    }} />
+                    }}
+                  />
                 </SoftBox>
                 <SoftBox mb={2}>
                   <SoftInput placeholder="Street-1" name="street1" />
@@ -279,7 +290,12 @@ function SignUp() {
                   </SoftTypography>
                 </SoftBox>
                 <SoftBox mt={4} mb={1}>
-                  <SoftButton variant="gradient" color="dark" fullWidth onClick={(e) => submitHandler(e, createAddress)}>
+                  <SoftButton
+                    variant="gradient"
+                    color="dark"
+                    fullWidth
+                    onClick={(e) => submitHandler(e, createAddress)}
+                  >
                     Next
                   </SoftButton>
                 </SoftBox>
@@ -290,7 +306,12 @@ function SignUp() {
                   <h3>Add your Bank details</h3>
                 </SoftBox>
                 <SoftBox mb={2}>
-                  <SoftInput placeholder="User Id" name="userId" value={form?.userId ?? ""} disabled={form.userId ?? false} />
+                  <SoftInput
+                    placeholder="User Id"
+                    name="userId"
+                    value={form?.userId ?? ""}
+                    disabled={form.userId ?? false}
+                  />
                 </SoftBox>
                 <SoftBox mb={2}>
                   <SoftInput placeholder="Account Number" name="accountNo" />
@@ -376,7 +397,12 @@ function SignUp() {
                   </SoftTypography>
                 </SoftBox>
                 <SoftBox mt={4} mb={1}>
-                  <SoftButton variant="gradient" color="dark" fullWidth onClick={(e) => submitHandler(e, createKyc)}>
+                  <SoftButton
+                    variant="gradient"
+                    color="dark"
+                    fullWidth
+                    onClick={(e) => submitHandler(e, createKyc)}
+                  >
                     Register
                   </SoftButton>
                 </SoftBox>
@@ -405,10 +431,12 @@ function SignUp() {
               Is your profile pending?
               <SoftTypography
                 onClick={() => {
-                  setDialog(dispatch, [{
-                    status: "skip",
-                    message: 'Please Enter Your User Id'
-                  }])
+                  setDialog(dispatch, [
+                    {
+                      status: "skip",
+                      message: "Please Enter Your User Id",
+                    },
+                  ]);
                 }}
                 variant="button"
                 color="dark"
