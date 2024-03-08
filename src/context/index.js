@@ -63,7 +63,7 @@ function reducer(state, action) {
       return { ...state, loading: false, connection: new ConnectionsModel().fromArray(action.value) };
     }
     case "NOTIFICATION": {
-      return { ...state, notifications: new Notification().fromArray(action.value) };
+      return { ...state, loading: false, notifications: new Notification().fromArray(action.value) };
     }
     case "DIALOG": {
       return { ...state, dialog: action.value, loading: false, accept: false };

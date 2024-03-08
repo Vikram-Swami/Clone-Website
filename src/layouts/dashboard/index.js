@@ -32,7 +32,7 @@ import { toast } from "react-toastify";
 import { setLoading } from "context";
 
 function Dashboard() {
-  const [controller] = useSoftUIController();
+  const [controller, dispatch] = useSoftUIController();
   const { user } = controller;
   const { size } = typography;
   const { chart, items } = reportsBarChartData;

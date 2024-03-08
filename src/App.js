@@ -11,7 +11,6 @@ import Loading from "layouts/loading";
 import ApiClient from "Services/ApiClient";
 import { ToastContainer, toast } from "react-toastify";
 import { getUserById } from "Services/endpointes";
-import Dashboard from "layouts/dashboard";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
@@ -51,7 +50,28 @@ export default function App() {
     }
   }
 
+  async function getUser() {
+    try {
+      startLoading(dispatch, true);
+      const data = await ApiClient.getData(getUserById);
+      if (data.status == 200) {
+        setUser(dispatch, data?.data);
+        setDialog(dispatch, [data]);
+      } else {
+        toast.success(data.message);
+        setLoading(dispatch, false);
+      }
+    } catch (error) {
+      setLoading(dispatch, false);
+      toast.info(error.response?.data?.message ?? "Welcome Back!");
+    }
+  }
+
+
   useEffect(() => {
+    if ((getCookie() && user.id == null) || (getCookie() && user.id == undefined)) {
+      getUser();
+    }
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
@@ -99,12 +119,11 @@ export default function App() {
               />
             );
           }
-          // {getCookie() && redirect(route.route)}
         })}
         {!getCookie() ? (
           <Route path="/*" element={<Navigate to="/" />} />
         ) : (
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/*" element={<Navigate to="/dashboard" />} />
         )}
       </Routes>
     </ThemeProvider>

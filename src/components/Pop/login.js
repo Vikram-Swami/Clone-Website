@@ -12,6 +12,7 @@ import ApiClient from "Services/ApiClient";
 import { verifyOtp } from "Services/endpointes";
 import { resendOtp } from "Services/endpointes";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -20,7 +21,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 function LoginDialog({ open, setOpen, data }) {
   const otpRef = useRef();
   const [controller, dispatch] = useSoftUIController();
-
+  const navigate = useNavigate();
   const handleOtpChange = () => {
     const enteredOtp = otpRef.current.value;
     otpRef.button.style.display = enteredOtp.length === 6 ? "block" : "none";
@@ -53,7 +54,7 @@ function LoginDialog({ open, setOpen, data }) {
       if (response?.status === 200) {
         setCookie("authToken", response?.data.token, 7);
         setCookie("userId", response?.data.userId, 7);
-        window.location.reload();
+        navigate("/dashboard");
       }
     } catch (error) {
       toast.error(error.response?.data?.message ?? "Oops! Something went wrong, please try later");
