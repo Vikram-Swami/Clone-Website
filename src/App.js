@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Suspense } from "react";
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation, redirect } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import themeRTL from "assets/theme/theme-rtl";
@@ -11,7 +11,7 @@ import Loading from "layouts/loading";
 import ApiClient from "Services/ApiClient";
 import { ToastContainer, toast } from "react-toastify";
 import { getUserById } from "Services/endpointes";
-import { setLoading } from "context";
+import Dashboard from "layouts/dashboard";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
@@ -33,29 +33,25 @@ export default function App() {
     }
   };
 
-  async function getUser() {
-    try {
-      startLoading(dispatch, true);
-      const data = await ApiClient.getData(getUserById);
-      if (data.status == 200) {
-
-        setUser(dispatch, data?.data);
-        setDialog(dispatch, [data]);
-      } else {
-        toast.success(data.message);
-        setLoading(dispatch, false);
+  function getCookie() {
+    const cookieArray = document.cookie.split(";");
+    let userId, authToken;
+    for (let i = 0; i < cookieArray.length; i++) {
+      const cookie = cookieArray[i].trim();
+      if (cookie.startsWith("userId" + "=")) {
+        userId = cookie.substring(String("userId").length + 1);
+      } else if (cookie.startsWith("authToken" + "=")) {
+        authToken = cookie.substring(String("authToken").length + 1);
       }
-    } catch (error) {
-      setLoading(dispatch, false);
-      toast.info(error.response?.data?.message ?? "Welcome Back!");
+    }
+    if (userId && authToken && userId !== undefined && authToken !== undefined && userId !== "") {
+      return true;
+    } else {
+      return false;
     }
   }
-  useEffect(() => {
-    if (!user.id) {
-      getUser();
-    }
 
-    // Scroll to the top of the page
+  useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
@@ -64,7 +60,7 @@ export default function App() {
       <ToastContainer />
       <CssBaseline />
       <Loading condition={loading} />
-      {user.id && (
+      {getCookie() && (
         <>
           {/* Render Sidenav and Configurator */}
           <Sidenav
@@ -79,33 +75,36 @@ export default function App() {
       <Routes>
         {routes?.map((route) => {
           if (user && user.id !== undefined && route.auth !== null) {
-            if (route.auth === user.type || route.auth === "any" || 1) {
+            if (getCookie() && route.auth !== null) {
               return (
                 <Route
                   exact
                   path={route.route}
-                  element={<Suspense fallback={<Loading condition={true} />}>{route.component} </Suspense>}
+                  element={
+                    <Suspense fallback={<Loading condition={true} />}>{route.component} </Suspense>
+                  }
                   key={`${route.key}-${route.route}`}
                 />
               );
             }
-          } else if (user.id === undefined && route.auth === null) {
+          } else if (!getCookie() && route.auth === null) {
             return (
               <Route
                 exact
                 path={route.route}
-                element={<Suspense fallback={<Loading condition={true} />}>{route.component} </Suspense>}
+                element={
+                  <Suspense fallback={<Loading condition={true} />}>{route.component} </Suspense>
+                }
                 key={`${route.key}-${route.route}`}
               />
             );
           }
-
-          return null;
+          // {getCookie() && redirect(route.route)}
         })}
-        {!user.id ? (
+        {!getCookie() ? (
           <Route path="/*" element={<Navigate to="/" />} />
         ) : (
-          <Route path="/*" element={<Navigate to="/dashboard" />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         )}
       </Routes>
     </ThemeProvider>

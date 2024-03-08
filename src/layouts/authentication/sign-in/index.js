@@ -20,6 +20,8 @@ import ApiClient from "Services/ApiClient";
 import { login } from "Services/endpointes";
 import { setDialog } from "context";
 import { toast } from "react-toastify";
+import { Box } from "@mui/material";
+import { Block } from "@mui/icons-material";
 
 function SignIn() {
   const form = useRef();
@@ -37,64 +39,66 @@ function SignIn() {
     }
   };
   return (
-    <CoverLayout
-      title=" Welcome"
-      description="Enter your User-Id and password to Log-in"
-      image={curved9}
-    >
-      <SoftBox component="form" role="form" ref={form}>
-        <SoftBox mb={2}>
-          <SoftBox mb={1} ml={0.5}>
-            <SoftTypography component="label" variant="caption" fontWeight="bold">
-              User Id
+    <>
+      <CoverLayout
+        title=" Welcome"
+        description="Enter your User-Id and password to Log-in"
+        image={curved9}
+      >
+        <SoftBox component="form" role="form" ref={form}>
+          <SoftBox mb={2}>
+            <SoftBox mb={1} ml={0.5}>
+              <SoftTypography component="label" variant="caption" fontWeight="bold">
+                User Id
+              </SoftTypography>
+            </SoftBox>
+            <SoftInput type="text" placeholder="user-Id" name="userId" />
+          </SoftBox>
+          <SoftBox mb={2}>
+            <SoftBox mb={1} ml={0.5}>
+              <SoftTypography component="label" variant="caption" fontWeight="bold">
+                Password
+              </SoftTypography>
+            </SoftBox>
+            <SoftInput type="password" placeholder="Password" name="password" />
+          </SoftBox>
+          <SoftBox mt={4} mb={1}>
+            <SoftButton variant="gradient" color="info" fullWidth onClick={handleLogin}>
+              Log-in
+            </SoftButton>
+          </SoftBox>
+          <SoftBox mt={3} textAlign="center">
+            <SoftTypography variant="button" color="text" fontWeight="regular">
+              Don&apos;t have an account?{" "}
+              <SoftTypography
+                component={Link}
+                to="/sign-up/1"
+                variant="button"
+                color="info"
+                fontWeight="medium"
+                textGradient
+              >
+                Sign up
+              </SoftTypography>
+            </SoftTypography>
+            <br></br>
+            <SoftTypography variant="button" color="text" fontWeight="regular">
+              Forget Password ?{" "}
+              <SoftTypography
+                component={Link}
+                to="/sign-up"
+                variant="button"
+                color="info"
+                fontWeight="medium"
+                textGradient
+              >
+                Sign up
+              </SoftTypography>
             </SoftTypography>
           </SoftBox>
-          <SoftInput type="text" placeholder="user-Id" name="userId" />
         </SoftBox>
-        <SoftBox mb={2}>
-          <SoftBox mb={1} ml={0.5}>
-            <SoftTypography component="label" variant="caption" fontWeight="bold">
-              Password
-            </SoftTypography>
-          </SoftBox>
-          <SoftInput type="password" placeholder="Password" name="password" />
-        </SoftBox>
-        <SoftBox mt={4} mb={1}>
-          <SoftButton variant="gradient" color="info" fullWidth onClick={handleLogin}>
-            Log-in
-          </SoftButton>
-        </SoftBox>
-        <SoftBox mt={3} textAlign="center">
-          <SoftTypography variant="button" color="text" fontWeight="regular">
-            Don&apos;t have an account?{" "}
-            <SoftTypography
-              component={Link}
-              to="/sign-up/1"
-              variant="button"
-              color="info"
-              fontWeight="medium"
-              textGradient
-            >
-              Sign up
-            </SoftTypography>
-          </SoftTypography>
-          <br></br>
-          <SoftTypography variant="button" color="text" fontWeight="regular">
-            Forget Password ?{" "}
-            <SoftTypography
-              component={Link}
-              to="/sign-up"
-              variant="button"
-              color="info"
-              fontWeight="medium"
-              textGradient
-            >
-              Click here
-            </SoftTypography>
-          </SoftTypography>
-        </SoftBox>
-      </SoftBox>
-    </CoverLayout>
+      </CoverLayout>
+    </>
   );
 }
 

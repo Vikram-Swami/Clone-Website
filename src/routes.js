@@ -2,7 +2,8 @@ import React, { lazy, Suspense } from "react";
 import Loading from "layouts/loading";
 import RecipeReviewCard from "layouts/verifyAccount";
 // NextWork Dashboard React layouts
-const Dashboard = lazy(() => import("layouts/dashboard"));
+// const Dashboard = lazy(() => import("layouts/dashboard"));
+import Dashboard from "layouts/dashboard";
 const Team = lazy(() => import("layouts/Team"));
 const Connections = lazy(() => import("layouts/connections"));
 const Billing = lazy(() => import("layouts/billing"));
@@ -246,4 +247,3 @@ export const icons = {
   account: <CreditCard size="12px" />,
   profile: <CustomerSupport size="12px" />,
 };
-
