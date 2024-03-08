@@ -4,15 +4,6 @@ import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import SoftBadge from "components/SoftBadge";
 
-import { Icon } from "@mui/material";
-import { useState } from "react";
-import { setDialog } from "context";
-import { useSoftUIController } from "context";
-import ApiClient from "Services/ApiClient";
-import { toast } from "react-toastify";
-import { updateRent } from "Services/endpointes";
-import { deleteRent } from "Services/endpointes";
-import RentForm from "../form";
 
 function Author({ name, id }) {
   return (
@@ -100,10 +91,11 @@ const RentView = {
     { name: "connectionId", align: "center" },
     { name: "status", align: "center" },
     { name: "endDate", align: "center" },
+
   ],
 
-  rows: (data, dispatch, getAllRents) => {
-    return data.map((e) => {
+  rows: (data) => {
+    return data?.map((e) => {
       const dateObject = new Date(e.endDate);
 
       const options = { day: "2-digit", month: "2-digit", year: "2-digit" };

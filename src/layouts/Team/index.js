@@ -11,39 +11,35 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 // Data
 import SoftButton from "components/SoftButton";
-import { Checkbox, FormControlLabel, Grid, Icon, TablePagination } from "@mui/material";
+import { Checkbox, FormControlLabel, Grid } from "@mui/material";
 import DefaultInfoCard from "examples/Cards/InfoCards/DefaultInfoCard";
 
 import { NavLink } from "react-router-dom";
 import { useEffect } from "react";
 import Table from "examples/Tables/Table";
-import { useSoftUIController, startLoading, setLoading, setTeam } from "context";
+import { useSoftUIController, startLoading, setLoading } from "context";
 import SoftInput from "components/SoftInput";
 import React from "react";
 import TeamView from "./data/team";
 import ApiClient from "Services/ApiClient";
 import { getMembers } from "Services/endpointes";
-import { setDialog } from "context";
 import { toast } from "react-toastify";
 import { setMembers } from "context";
 
 function Team() {
   const [controller, dispatch] = useSoftUIController();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  const { member } = controller;
+  const { member, user } = controller;
 
-  const getMember = () => {
+  const getMember = async () => {
     startLoading(dispatch, true);
     try {
-      const response = ApiClient.getData(getMembers);
+      const response = await ApiClient.getData(getMembers);
       setMembers(dispatch, response.data);
       toast.success(response.message);
     } catch (error) {
-      setLoading(dispatch, false);
-
       toast.info(error.message);
+      setLoading(dispatch, false);
     }
   };
 
@@ -51,16 +47,8 @@ function Team() {
     member?.length < 1 && getMember();
   }, []);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  let memoizedRows = TeamView.rows(member, dispatch);
+  let memoizedRows = TeamView.rows(member);
 
   return (
     <DashboardLayout>
@@ -83,19 +71,7 @@ function Team() {
             </SoftBox>
 
             {member?.length > 0 ? (
-              <>
-                <Table columns={TeamView.columns} rows={memoizedRows} />
-                <SoftBox mt={2} display="block" width={90}>
-                  <TablePagination
-                    component="span"
-                    count={100}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    rowsPerPage={rowsPerPage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                  />
-                </SoftBox>
-              </>
+              <Table columns={TeamView.columns} rows={memoizedRows} />
             ) : (
               <SoftBox mt={4}>
                 <SoftBox mb={1.5} sx={{ display: "flex", justifyContent: "center" }}>
@@ -119,10 +95,9 @@ function Team() {
                             title={`You Don't have a member in you team yet. Increase team size to earn more.`}
                           />
 
-                          <NavLink to="/new_connections">
+                          <NavLink to="/create-member">
                             <SoftButton variant="gradient" color="dark" ml={2}>
-                              <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-                              &nbsp;Start Earning
+                              &nbsp;Add member
                             </SoftButton>
                           </NavLink>
                         </Grid>

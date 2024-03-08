@@ -9,7 +9,7 @@ class Notification {
         this.createdAt = createdAt;
     }
     fromJson(jsonData) {
-        return new ConnectionsModel(
+        return new Notification(
             jsonData._id ?? null,
             jsonData.userId,
             jsonData.title,
@@ -23,7 +23,7 @@ class Notification {
     fromArray(jsonData) {
         let data = [];
         for (let json of jsonData) {
-            data.push(new ConnectionsModel(
+            data.push(new Notification(
                 json._id ?? null,
                 json.userId,
                 json.title,
@@ -36,3 +36,5 @@ class Notification {
         return data;
     }
 }
+
+export default Notification;

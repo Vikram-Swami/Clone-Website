@@ -10,7 +10,7 @@ import Icon from "@mui/material/Icon";
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import SoftButton from "components/SoftButton";
-import { Box } from "@mui/material";
+import { Box, Checkbox, FormControlLabel, Typography } from "@mui/material";
 import { useSoftUIController } from "context";
 import ApiClient from "Services/ApiClient";
 import { createConnections } from "Services/endpointes";
@@ -20,29 +20,36 @@ import { setLoading } from "context";
 import { toast } from "react-toastify";
 import { getSourceByType } from "Services/endpointes";
 import { useNavigate } from "react-router-dom";
+import { setAccept } from "context";
+import { setConnection } from "context";
 function DefaultProductCard({ color, icon, storage, range, rent, basicAmt, tax, totalprice }) {
   const [controller, dispatch] = useSoftUIController();
-  const { user } = controller;
+  const { user, accept } = controller;
   const navigate = useNavigate();
 
-  const createConnection = (storage) => async () => {
+  const createConnection = (storage) => async (accept) => {
     try {
+      if (!accept) {
+        toast.error("Please Accept Terms & conditions first.");
+        return;
+      }
       setLoading(dispatch, true);
       const response = await ApiClient.createData(createConnections, { "userId": user.userId, "storage": storage });
       console.log(response);
-      setDialog(dispatch, [response?.data]);
-      navigate("/connection")
+      setDialog(dispatch, [response]);
+      setConnection(dispatch, []);
+      navigate("/connections")
     } catch (error) {
       toast.error(error?.response?.data?.message);
       setLoading(dispatch, false);
     }
   };
 
-  const getTermsCondition = async (storage) => {
+  const getTermsCondition = (storage) => async () => {
     try {
       setLoading(dispatch, true)
       const response = await ApiClient.getDataByParam(getSourceByType, "terms-condition");
-      setDialog(dispatch, [{ status: "form", title: "Please Acknowledge our Terms & Conditions.", message: response?.data?.range, action: "Agree & Buy", call: createConnection(storage) }])
+      setDialog(dispatch, [{ status: "form", title: "Please Accept Terms & Conditions", message: response?.data?.range, children: (<FormControlLabel control={<Checkbox onChange={(e) => { setAccept(dispatch, e.target.checked) }} />} label="I Agree*" />), action: "Agree & Buy", call: createConnection(storage) }])
     } catch (err) {
       toast.warn(err?.response?.data?.message);
       setLoading(dispatch, false);
@@ -126,7 +133,34 @@ function DefaultProductCard({ color, icon, storage, range, rent, basicAmt, tax, 
               sx={{ padding: "0 !important", }}
               borderRadius="md"
               variant="gradient"
-              onClick={() => getTermsCondition(range)}
+              onClick={() => setDialog(dispatch, [{
+                status: "form", title: "please confirm your purchase", children: (<Box>
+                  <Typography
+                    variant="h6"
+                    fontWeight="medium"
+                    textTransform="capitalize"
+                    textAlign="left"
+                  >
+                    Basic Amount : {basicAmt}
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    fontWeight="medium"
+                    textTransform="capitalize"
+                    textAlign="left"
+                  >
+                    GST : {tax}%
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    fontWeight="medium"
+                    textTransform="capitalize"
+                    textAlign="left"
+                  >
+                    Total Payble : {totalprice}/-
+                  </Typography>
+                </Box>), call: getTermsCondition(range), action: "Confirm"
+              }])}
             >
               BUY
             </SoftButton>

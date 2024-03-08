@@ -39,13 +39,12 @@ function Connections() {
       setConnection(dispatch, response.data);
       toast.success(response?.message);
     } catch (error) {
-      console.log(error);
       toast.info(error.response?.data?.message ?? "Oops! Network Error");
       setLoading(dispatch, false);
     }
   };
   const memoizedRows = useMemo(
-    () => connectionView.rows(connection, user.fullName),
+    () => connectionView.rows(connection, user.fullName, dispatch),
     [connection, user.fullName]
   );
 

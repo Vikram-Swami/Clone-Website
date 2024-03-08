@@ -18,7 +18,7 @@ class IncomeLog {
           json.userId,
           json.amount,
           json.type ?? "",
-          JSON.parse(json.status) ?? false,
+          json.status ?? false,
           json.createdAt ?? new Date(),
           json.updatedAt ?? new Date()
         )

@@ -1,7 +1,6 @@
 import React, { lazy, Suspense } from "react";
 import Loading from "layouts/loading";
 import RecipeReviewCard from "layouts/verifyAccount";
-import WorkinProgress from "layouts/Pages/workinprogress";
 // NextWork Dashboard React layouts
 const Dashboard = lazy(() => import("layouts/dashboard"));
 const Team = lazy(() => import("layouts/Team"));
@@ -109,7 +108,7 @@ const routes = [
     auth: "any",
     route: "/rents",
     icon: <Office size="12px" />,
-    component: <Team />,
+    component: <Rents />,
     noCollapse: true,
   },
   {
@@ -178,69 +177,59 @@ const routes = [
     icon: <CustomerSupport size="12px" />,
     noCollapse: true,
   },
-  {
-    type: "collapse",
-    name: "Work In Progress",
-    auth: null,
-    key: "workInprogress",
-    route: "/workinprogress",
-    icon: <CustomerSupport size="12px" />,
-    component: <WorkinProgress />,
-    noCollapse: true,
-  },
 ];
 export default routes;
 
 export const components = {
   dashboard: (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<Loading condition={true} />}>
       <Dashboard />
     </Suspense>
   ),
   VerifyAccount: (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<Loading condition={true} />}>
       <RecipeReviewCard />
     </Suspense>
   ),
   createMembers: (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<Loading condition={true} />}>
       <CreateMembers />
     </Suspense>
   ),
   myTeam: (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<Loading condition={true} />}>
       <Team />
     </Suspense>
   ),
   connections: (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<Loading condition={true} />}>
       <Connections />
     </Suspense>
   ),
   income: (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<Loading condition={true} />}>
       <Income />
     </Suspense>
   ),
   rents: (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<Loading condition={true} />}>
       {" "}
       <Rents />
     </Suspense>
   ),
   products: (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<Loading condition={true} />}>
       <Products />
     </Suspense>
   ),
   account: (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<Loading condition={true} />}>
       {" "}
       <Billing />
     </Suspense>
   ),
   profile: (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<Loading condition={true} />}>
       <Profile />
     </Suspense>
   ),

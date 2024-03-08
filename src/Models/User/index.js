@@ -114,14 +114,16 @@ class UserModel {
     return json.map((e) => {
       return {
         userId: e?.userId ?? "",
-        fullName: e?.fullName ?? "",
+        name: e?.fullName ?? "",
         email: e?.email ?? "",
         phone: e?.phone ?? "xxx-xxx-xxxx",
+        status: e.status,
+        isVerified: e.isVerified,
         image: e.image ?? {},
         level: e?.level,
         placementLevel: e.placementLevel,
         storage: e.storage,
-        createdAt: e.createdAt,
+        createdAt: new Date(e.createdAt),
         updatedAt: e.updatedAt,
       };
     });

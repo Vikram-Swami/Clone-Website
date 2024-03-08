@@ -1,26 +1,23 @@
 import React, { useState, useEffect, Suspense } from "react";
-import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import themeRTL from "assets/theme/theme-rtl";
 import routes from "routes";
 import brand from "assets/images/logo-ct.png";
-import { useSoftUIController, setUser, setMiniSidenav, setLoading } from "context";
+import { useSoftUIController, setUser, setMiniSidenav, startLoading, setDialog } from "context";
 import Sidenav from "examples/Sidenav";
 import Loading from "layouts/loading";
 import ApiClient from "Services/ApiClient";
 import { ToastContainer, toast } from "react-toastify";
 import { getUserById } from "Services/endpointes";
-import { startLoading } from "context";
-import { setDialog } from "context";
-import { getSourceCount } from "Services/endpointes";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
-  const { miniSidenav, sidenavColor, user } = controller;
+  const { miniSidenav, sidenavColor, user, loading } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const { pathname } = useLocation();
-  const navigate = useNavigate();
+
   const handleOnMouseEnter = () => {
     if (miniSidenav && !onMouseEnter) {
       setMiniSidenav(dispatch, false);
@@ -39,30 +36,13 @@ export default function App() {
     try {
       startLoading(dispatch, true);
       const data = await ApiClient.getData(getUserById);
-      if (data.status === 200) {
-        setUser(dispatch, data?.data);
-      }
+      setUser(dispatch, data?.data);
       setDialog(dispatch, [data]);
     } catch (error) {
-      setLoading(dispatch, false);
-      toast.error(error.response?.data?.message ?? "Oops! Something went wrong, please try later");
+      toast.info(error.response?.data?.message ?? "Network Error");
     }
   }
-  const getSources = async () => {
-    // try {
-    //   const response = await ApiClient.getData(getSourceCount);
-    //   if (response.status === 200) {
-    //     if (response.count < 1) {
-    //       navigate("/");
-    //     } else {
-    //       navigate("/progress");
-    //     }
-    //   }
-    // } catch (error) {}
-    // navigate("/progress");
-  };
   useEffect(() => {
-    getSources();
     if (!user.id) {
       getUser();
     }
@@ -75,6 +55,7 @@ export default function App() {
     <ThemeProvider theme={themeRTL}>
       <ToastContainer />
       <CssBaseline />
+      <Loading condition={loading} />
       {user.id && (
         <>
           {/* Render Sidenav and Configurator */}
@@ -95,7 +76,7 @@ export default function App() {
                 <Route
                   exact
                   path={route.route}
-                  element={<Suspense fallback={<Loading />}>{route.component} </Suspense>}
+                  element={<Suspense fallback={<Loading condition={true} />}>{route.component} </Suspense>}
                   key={`${route.key}-${route.route}`}
                 />
               );
@@ -105,7 +86,7 @@ export default function App() {
               <Route
                 exact
                 path={route.route}
-                element={<Suspense fallback={<Loading />}>{route.component} </Suspense>}
+                element={<Suspense fallback={<Loading condition={true} />}>{route.component} </Suspense>}
                 key={`${route.key}-${route.route}`}
               />
             );
@@ -114,7 +95,7 @@ export default function App() {
           return null;
         })}
         {!user.id ? (
-          <Route path="/*" element={<Navigate to="/workinprogress" />} />
+          <Route path="/*" element={<Navigate to="/signin" />} />
         ) : (
           <Route path="/*" element={<Navigate to="/dashboard" />} />
         )}

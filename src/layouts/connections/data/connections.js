@@ -6,7 +6,15 @@ import SoftBadge from "components/SoftBadge";
 
 import { Icon } from "@mui/material";
 import SoftButton from "components/SoftButton";
-import PurchaseView from "../transactiion";
+import { setDialog } from "context";
+import { Button, Card, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField } from "@mui/material";
+import { PropTypes } from "prop-types";
+import Transaction from "../../../examples/TransactionView";
+import { startLoading } from "context";
+import ApiClient from "Services/ApiClient";
+import { purchase } from "Services/endpointes";
+import { toast } from "react-toastify";
+
 
 function Author({ name, id }) {
   return (
@@ -23,7 +31,20 @@ function Author({ name, id }) {
   );
 }
 
-function Status({ tnxId, status }) {
+const payment = (id, amount, dispatch) => async (form) => {
+  try {
+    // console.log(form.getAll("tnxId"));
+    // form.append("id", id);
+    // form.append("amount", amount);
+    // startLoading(dispatch, true);
+    // const result = await ApiClient.createData(purchase, form)
+    // setDialog(dispatch, [result]);
+  } catch (err) {
+    toast.error(err.response?.data?.message);
+  }
+}
+
+function Status({ tnxId, status, dispatch, e }) {
   if (tnxId && status) {
     return (
       <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
@@ -56,10 +77,10 @@ function Status({ tnxId, status }) {
                 {
                   status: "form",
                   title: "Please select payment method",
-                  message: `MAKE PAYMENT AND GET AUTO GENERATED RENTS EVERY MONTH - ${e.id}`,
-                  action: "Submit",
-
-                  children: <PurchaseView data={e} />,
+                  message: `Connection - ${e.storage} TB`,
+                  action: "Pay Now",
+                  children: (<Transaction amount={parseFloat(e.amount + parseFloat(e.amount * `0.${e.tax}`))} type="purchase" />),
+                  call: payment(e.id, e.amount, dispatch)
                 },
               ]);
             }}
@@ -112,7 +133,7 @@ const connectionView = {
     { name: "lookup", align: "center" },
   ],
 
-  rows: (data, name) => {
+  rows: (data, name, dispatch) => {
     return data.map((e) => {
       const dateObject = new Date(e.createdAt);
 
@@ -144,7 +165,7 @@ const connectionView = {
             )}
           </SoftTypography>
         ),
-        status: <Status tnxId={e.transactionId} status={e.status} />,
+        status: <Status tnxId={e.transactionId} status={e.status} dispatch={dispatch} e={e} />,
         lookup: (
           <SoftTypography
             component="a"
@@ -153,7 +174,16 @@ const connectionView = {
             color="secondary"
             fontWeight="medium"
             cursor="pointer"
-            onClick={() => { console.log("clicked ") }}
+            onClick={() => {
+              setDialog(dispatch, [
+                {
+                  status: "form",
+                  title: `CONNECTION ID - ${e.id}`,
+                  message: `Invoices and Credential will be available soon.`,
+                  // children: (<Transaction amount={e.amount} type="purchase" />),
+                },
+              ]);
+            }}
           >
             <Icon fontSize="small" color="green">
               visibility

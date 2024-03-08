@@ -10,6 +10,8 @@ import LoginDialog from "components/Pop/login";
 import NewFormDialog from "components/NewDialog";
 import RentModel from "Models/Rents";
 import IncomeLog from "Models/Income";
+import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
+import Notification from "Models/Notification";
 
 const SoftUI = createContext(null);
 
@@ -61,19 +63,22 @@ function reducer(state, action) {
       return { ...state, loading: false, connection: new ConnectionsModel().fromArray(action.value) };
     }
     case "NOTIFICATION": {
-      return { ...state, notifications: new ConnectionsModel().fromArray(action.value) };
+      return { ...state, notifications: new Notification().fromArray(action.value) };
     }
     case "DIALOG": {
-      return { ...state, dialog: action.value, loading: false };
+      return { ...state, dialog: action.value, loading: false, accept: false };
     }
     case "PRODUCTS": {
       return { ...state, products: action.value, loading: false };
+    }
+    case "ACCEPT": {
+      return { ...state, accept: action.value };
     }
     case "START_LOAD": {
       return { ...state, dialog: [], loading: action.value };
     }
     default: {
-      throw new Error(`Unhandled action type: ${action.type}`);
+      console.log(`Unhandled action type: ${action.type}`);
     }
   }
 }
@@ -97,6 +102,7 @@ function NextworkControllerProvider({ children }) {
     dialog: [],
     member: [],
     income: [],
+    accept: false,
     loading: false,
   };
   const [controller, dispatch] = useReducer(reducer, initialState);
@@ -120,14 +126,14 @@ function NextworkControllerProvider({ children }) {
       />
 
       <LoginDialog
-        open={controller.dialog.length > 0 && controller.dialog[0].status === "otp"}
+        open={controller.dialog.length > 0 && controller.dialog[0]?.status === "otp"}
         setOpen={(v) => {
           setDialog(dispatch, []);
         }}
         data={controller.dialog[0]}
       />
       <NewFormDialog
-        open={controller.dialog.length > 0 && controller.dialog[0].status === "form"}
+        open={controller.dialog.length > 0 && controller.dialog[0]?.status === "form"}
         setOpen={(v) => {
           setDialog(dispatch, []);
         }}
@@ -135,28 +141,6 @@ function NextworkControllerProvider({ children }) {
       />
 
       {children}
-      {controller.loading ? (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-            width: "100%",
-            position: "fixed",
-            height: "100dvh",
-            width: "100%",
-            top: 0,
-            background: "#2c292975",
-            zIndex: 11111111,
-          }}
-        >
-          <Stack sx={{ color: "grey.500" }} spacing={2} direction="row">
-            <CircularProgress color="success" />
-            <h4 style={{ fontWeight: 600, fontSize: "18px" }}>NextWork Technologies</h4>
-          </Stack>
-        </div>
-      ) : null}
     </SoftUI.Provider>
   );
 }
@@ -195,6 +179,7 @@ const setIncome = (dispatch, value) => dispatch({ type: "INCOME", value });
 const setMembers = (dispatch, value) => dispatch({ type: "MEMBER", value });
 const setDialog = (dispatch, value) => dispatch({ type: "DIALOG", value });
 const startLoading = (dispatch, value) => dispatch({ type: "START_LOAD", value });
+const setAccept = (dispatch, value) => dispatch({ type: "ACCEPT", value });
 
 export {
   NextworkControllerProvider,
@@ -215,5 +200,7 @@ export {
   setLoading,
   setDialog,
   startLoading,
+  setAccept,
+  setProducts,
   setMembers,
 };

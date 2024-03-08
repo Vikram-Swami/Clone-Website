@@ -1,19 +1,17 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
 import { useSoftUIController } from 'context';
 import { PropTypes } from 'prop-types';
+import { Button, Card, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField } from "@mui/material";
 
 export default function NewFormDialog({ open, setOpen, data }) {
     const [controller, dispatch] = useSoftUIController();
-
     const handleClose = () => {
-        data.call();
         setOpen(false);
     };
+    const handleSubmit = () => {
+        data.call(controller.accept);
+
+    }
 
 
     return (
@@ -22,25 +20,26 @@ export default function NewFormDialog({ open, setOpen, data }) {
                 open={open}
                 onClose={handleClose}
                 PaperProps={{
-                    component: 'div',
-                    // onSubmit: async (event) => {
-                    //     event.preventDefault();
-                    //     const formData = new FormData(event.currentTarget);
-                    //     console.log(formData.get("rule"));
-                    //     data.call(formData);
-                    //     handleClose();
-                    // },
+                    component: 'form',
+                    onSubmit: (e) => {
+                        e.preventDefault();
+                        const formData = new FormData(e.currentTarget);
+                        console.log(formData.get("paymentMethod"));
+                        data.call(formData);
+                        handleSubmit();
+                    }
                 }}
             >
-                <DialogTitle>{data?.message}</DialogTitle>
                 <DialogTitle>{data?.title}</DialogTitle>
+                <DialogContent tabIndex={-1}>
 
-                <DialogContent>
+                    <DialogTitle>{data?.message}</DialogTitle>
                     {data?.children}
                 </DialogContent>
+
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>
-                    <Button type="submit" onClick={handleClose}>{data?.action}</Button>
+                    {data.action && <Button type="submit">{data?.action}</Button>}
                 </DialogActions>
             </Dialog>
         </React.Fragment>
