@@ -11,6 +11,7 @@ import Loading from "layouts/loading";
 import ApiClient from "Services/ApiClient";
 import { ToastContainer, toast } from "react-toastify";
 import { getUserById } from "Services/endpointes";
+import { setLoading } from "context";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
@@ -36,10 +37,17 @@ export default function App() {
     try {
       startLoading(dispatch, true);
       const data = await ApiClient.getData(getUserById);
-      setUser(dispatch, data?.data);
-      setDialog(dispatch, [data]);
+      if (data.status == 200) {
+
+        setUser(dispatch, data?.data);
+        setDialog(dispatch, [data]);
+      } else {
+        toast.success(data.message);
+        setLoading(dispatch, false);
+      }
     } catch (error) {
-      toast.info(error.response?.data?.message ?? "Network Error");
+      setLoading(dispatch, false);
+      toast.info(error.response?.data?.message ?? "Welcome Back!");
     }
   }
   useEffect(() => {
@@ -95,7 +103,7 @@ export default function App() {
           return null;
         })}
         {!user.id ? (
-          <Route path="/*" element={<Navigate to="/signin" />} />
+          <Route path="/*" element={<Navigate to="/" />} />
         ) : (
           <Route path="/*" element={<Navigate to="/dashboard" />} />
         )}

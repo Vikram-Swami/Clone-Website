@@ -67,7 +67,7 @@ class UserModel {
 
   toJson(jsonData) {
     return new UserModel(
-      jsonData.userId ?? null,
+      jsonData?.userId ?? null,
       jsonData.fullName ?? "user",
       jsonData.email ?? "",
       jsonData.phone ?? "xxx-xxx-xxxx",

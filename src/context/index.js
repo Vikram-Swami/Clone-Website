@@ -45,7 +45,7 @@ function reducer(state, action) {
       return { ...state, layout: action.value };
     }
     case "USER": {
-      return { ...state, user: new UserModel().toJson(action.value) };
+      return { ...state, loading: false, user: new UserModel().toJson(action.value) };
     }
     case "RENT": {
       return { ...state, loading: false, rent: new RentModel().fromArray(action.value) };

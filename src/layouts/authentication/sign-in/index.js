@@ -33,13 +33,7 @@ function SignIn() {
       }
       setDialog(dispatch, [userData]);
     } catch (error) {
-      if (error.response?.data?.message) {
-        setDialog(dispatch, [error.response?.data]);
-      } else {
-        toast.error("Oops! Something went wrong. Please try later.");
-      }
-      console.error("Login failed:", error);
-      // Handle login error (e.g., display error message)
+      toast.error(error.response?.data?.message ?? "Network Error!")
     }
   };
   return (
@@ -95,7 +89,7 @@ function SignIn() {
               fontWeight="medium"
               textGradient
             >
-              Sign up
+              Click here
             </SoftTypography>
           </SoftTypography>
         </SoftBox>
