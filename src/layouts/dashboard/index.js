@@ -22,6 +22,8 @@ import { useSoftUIController } from "context";
 import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
 import gradientLineChartData from "layouts/dashboard/data/gradientLineChartData";
 import UserModel from "Models/User";
+import { setUser } from "context";
+import { setDialog } from "context";
 
 function Dashboard() {
   const [controller] = useSoftUIController();
@@ -35,22 +37,36 @@ function Dashboard() {
       title: { text: "My Storage" },
       count: newUser?.ownStr ?? 0,
       percentage: { color: "success" },
-      icon: { color: "info", component: "storage" }
+      icon: { color: "info", component: "storage" },
     },
     {
       title: { text: "My Team size" },
       count: newUser?.members ?? 0,
       percentage: { color: "success" },
-      icon: { color: "info", component: "groups" }
+      icon: { color: "info", component: "groups" },
     },
     {
       title: { text: "My Earning" },
       count: newUser?.earning ?? 0,
       percentage: { color: "error" },
-      icon: { color: "info", component: "currency_rupee" }
-    }
+      icon: { color: "info", component: "currency_rupee" },
+    },
   ];
-
+  async function getUser() {
+    try {
+      startLoading(dispatch, true);
+      const data = await ApiClient.getData(getUserById);
+      setUser(dispatch, data?.data);
+      setDialog(dispatch, [data]);
+    } catch (error) {
+      toast.info(error.response?.data?.message ?? "Network Error");
+    }
+  }
+  useEffect(() => {
+    if (!user.id) {
+      getUser();
+    }
+  }, []);
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -66,13 +82,8 @@ function Dashboard() {
         </SoftBox>
         <SoftBox mb={3}>
           <Grid container spacing={3}>
-
             <Grid item xs={12} lg={8}>
-              <ReportsBarChart
-                chart={chart}
-                items={[]}
-                title="title"
-              />
+              <ReportsBarChart chart={chart} items={[]} title="title" />
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
               <OrderOverview />
@@ -99,8 +110,8 @@ function Dashboard() {
             </Grid>
           </Grid>
         </SoftBox>
-      </SoftBox >
-    </DashboardLayout >
+      </SoftBox>
+    </DashboardLayout>
   );
 }
 
