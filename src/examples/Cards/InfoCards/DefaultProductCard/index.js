@@ -45,7 +45,7 @@ function DefaultProductCard({ color, icon, storage, range, rent, basicAmt, tax, 
     }
   };
 
-  const getTermsCondition = (storage) => async () => {
+  const getTermsCondition = (storage) => async (form) => {
     try {
       setLoading(dispatch, true)
       const response = await ApiClient.getDataByParam(getSourceByType, "terms-condition");
