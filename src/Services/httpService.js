@@ -4,7 +4,7 @@ const instance = axios.create({
   baseURL: `${API_BASE_URL}`,
   timeout: 50000,
   headers: {
-    Accept: "application/json",
+    Accept: "authorization",
     "Content-Type": "application/json",
     "Content-Type": "multipart/form-data",
   },
