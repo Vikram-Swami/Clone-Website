@@ -44,7 +44,7 @@ export default function App() {
         authToken = cookie.substring(String("authToken").length + 1);
       }
     }
-    if (userId && authToken && userId !== undefined && authToken !== undefined && userId !== "") {
+    if (userId && authToken && userId !== "" && user.id) {
       return true;
     } else {
       return false;
@@ -70,7 +70,7 @@ export default function App() {
 
 
   useEffect(() => {
-    if ((getCookie() && user.id == null) || (getCookie() && user.id == undefined)) {
+    if (!getCookie()) {
       getUser();
     }
     document.documentElement.scrollTop = 0;
@@ -81,7 +81,7 @@ export default function App() {
       <ToastContainer />
       <CssBaseline />
       <Loading condition={loading} />
-      {getCookie() && (
+      {user.id && (
         <>
           {/* Render Sidenav and Configurator */}
           <Sidenav
@@ -95,8 +95,8 @@ export default function App() {
       )}
       <Routes>
         {routes?.map((route) => {
-          if (user && user.id !== undefined && route.auth !== null) {
-            if (getCookie() && route.auth !== null) {
+          if (getCookie() && route.auth !== null) {
+            if (route.auth !== null) {
               return (
                 <Route
                   exact
@@ -108,7 +108,7 @@ export default function App() {
                 />
               );
             }
-          } else if (!getCookie() && route.auth === null) {
+          } else if (route.auth === null) {
             return (
               <Route
                 exact
