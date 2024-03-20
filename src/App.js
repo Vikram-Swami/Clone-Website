@@ -81,7 +81,7 @@ export default function App() {
       <ToastContainer />
       <CssBaseline />
       <Loading condition={loading} />
-      {user.id && (
+      {getCookie() ? (
         <>
           {/* Render Sidenav and Configurator */}
           <Sidenav
@@ -92,10 +92,10 @@ export default function App() {
             onMouseLeave={handleOnMouseLeave}
           />
         </>
-      )}
+      ) : ""}
       <Routes>
         {routes?.map((route) => {
-          if (getCookie() && route.auth !== null) {
+          if (getCookie()) {
             if (route.auth !== null) {
               return (
                 <Route
