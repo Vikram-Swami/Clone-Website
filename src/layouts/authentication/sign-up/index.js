@@ -17,15 +17,44 @@ import { toast } from "react-toastify";
 import { useSoftUIController } from "context";
 import { createAddress } from "Services/endpointes";
 import { setLoading } from "context";
+import SignatureCanvas from "react-signature-canvas";
+
 function SignUp() {
   const [agreement, setAgreement] = useState(true);
   const form = useRef(null);
   const { step } = useParams();
   const location = useLocation();
-
+  const signatureRef = useRef(null);
   const queryParams = new URLSearchParams(location.search);
 
-  let userId;
+
+  const handleCanvasDraw = (e) => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x + 2, y + 2);
+    ctx.stroke();
+    ctx.closePath();
+  };
+
+  const handleCanvasClear = () => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  };
+
+  const handleSaveSignature = () => {
+    const dataURL = canvas.toDataURL(); // Get the data URL of the canvas image
+    // Save dataURL in your form data or state
+    form.current.signature.value = dataURL;
+  };
+
+
   const [controller, dispatch] = useSoftUIController();
   const navigate = useNavigate();
   // Validate IFSC Codes
@@ -111,6 +140,20 @@ function SignUp() {
       setLoading(dispatch, false);
     }
   };
+  const clearSignature = () => {
+    signatureRef.current.clear();
+  };
+
+  const handleInputChange = (e) => {
+    const inputValue = e.target.value.toUpperCase();
+    e.target.value = inputValue;
+    return isValidPAN(inputValue);
+  };
+  const isValidPAN = (pan) => {
+    const panRegex = /^([A-Z]){5}([0-9]){4}([A-Z]){1}?$/;
+    return panRegex.test(pan);
+  };
+
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     if (queryParams.get("userId")) {
@@ -352,11 +395,7 @@ function SignUp() {
                     type="tel"
                     placeholder="PAN Number"
                     name="panNo"
-                    onKeyPress={(e) => {
-                      if (isNaN(e.key)) {
-                        e.preventDefault();
-                      }
-                    }}
+                    onChange={(e) => { handleInputChange(e); }}
                   />
                 </SoftBox>
                 <SoftBox mb={2}>
@@ -375,6 +414,16 @@ function SignUp() {
                 </SoftBox>
                 <SoftBox mb={2}>
                   <SoftInput type="text" placeholder="Nominie age" name="nomineeAge" />
+                </SoftBox>
+                <SoftBox mb={2}>
+                  <SignatureCanvas
+                    ref={signatureRef}
+                    penColor="blue"
+                    canvasProps={{ width: 300, height: 150, className: "signature-canvas" }}
+                  />
+                  <SoftButton onClick={clearSignature}>
+                    Clear Signature
+                  </SoftButton>
                 </SoftBox>
                 <SoftBox display="flex" alignItems="center">
                   <Checkbox checked={agreement} onChange={setAgreement} />
