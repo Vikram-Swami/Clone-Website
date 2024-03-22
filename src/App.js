@@ -44,7 +44,7 @@ export default function App() {
         authToken = cookie.substring(String("authToken").length + 1);
       }
     }
-    if (userId && authToken && userId !== "" && user.id) {
+    if (userId && authToken && userId !== "") {
       return true;
     } else {
       return false;
@@ -70,7 +70,7 @@ export default function App() {
 
 
   useEffect(() => {
-    if (!getCookie()) {
+    if (getCookie()) {
       getUser();
     }
     document.documentElement.scrollTop = 0;

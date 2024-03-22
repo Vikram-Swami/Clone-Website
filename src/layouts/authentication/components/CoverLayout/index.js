@@ -9,25 +9,25 @@ import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 
 // Next Work Dashboard React examples
-import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import PageLayout from "examples/LayoutContainers/PageLayout";
 
 // Authentication layout components
 import Footer from "layouts/authentication/components/Footer";
 
-function CoverLayout({ color, header, title, description, image, top, children }) {
+function CoverLayout({ color, header, title, top, children }) {
   return (
     <PageLayout background="white">
       <Grid
         container
+        py={2}
         justifyContent="center"
-        sx={{
-          minHeight: "75vh",
-          margin: 0,
-        }}
+        flexDirection={"column"}
+        alignItems={"center"}
+        minHeight={"100dvh"}
       >
-        <Grid item xs={11} sm={8} md={5} xl={3}>
-          <SoftBox mt={top}>
+        <img src="/logo.png" alt="Nextwork Technologies" width={250} />
+        <Grid item xs={11} sm={12} md={12} xl={12}>
+          <SoftBox mt={top} border="1px solid lightgrey" width="30dvw" borderRadius="10px">
             <SoftBox pt={3} px={3}>
               {!header ? (
                 <>
@@ -36,15 +36,12 @@ function CoverLayout({ color, header, title, description, image, top, children }
                       {title}
                     </SoftTypography>
                   </SoftBox>
-                  <SoftTypography variant="body2" fontWeight="regular" color="text">
-                    {description}
-                  </SoftTypography>
                 </>
               ) : (
                 header
               )}
             </SoftBox>
-            <SoftBox p={3}>{children}</SoftBox>
+            <SoftBox pb={3} px={3}>{children}</SoftBox>
           </SoftBox>
         </Grid>
         <Grid item xs={12} md={12}>
@@ -62,7 +59,6 @@ function CoverLayout({ color, header, title, description, image, top, children }
           ></SoftBox>
         </Grid>
       </Grid>
-      <Footer />
     </PageLayout>
   );
 }
@@ -73,7 +69,7 @@ CoverLayout.defaultProps = {
   title: "",
   description: "",
   color: "info",
-  top: 20,
+  top: 4,
 };
 
 // Typechecking props for the CoverLayout
