@@ -46,7 +46,7 @@ function CreateMembers() {
         <SoftBox mb={3}>
           <Card>
             <SoftBox display="flex" p={3}>
-              <SoftTypography variant="h6">Add Member</SoftTypography>
+              <SoftTypography variant="h6">ADD MEMBER</SoftTypography>
             </SoftBox>
             <SoftBox
 
@@ -70,7 +70,7 @@ function CreateMembers() {
                           label="Initial"
                           name="initial"
                         >
-                          <MenuItem fullWidth value="Mr.">Mr.</MenuItem>
+                          <MenuItem fullwidth value="Mr.">Mr.</MenuItem>
                           <MenuItem value="Mrs.">Mrs.</MenuItem>
                           <MenuItem value="Miss">Miss</MenuItem>
                           <MenuItem value="Ms.">Ms.</MenuItem>

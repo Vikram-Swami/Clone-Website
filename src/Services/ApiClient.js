@@ -9,6 +9,10 @@ const ApiClient = {
     return await requests.post(url, data);
   },
 
+  updateData: async (url, data) => {
+    return await requests.put(url, data);
+  },
+
   deleteData: async (url, id) => {
     return await requests.delete(`${url}/${id}`);
   },

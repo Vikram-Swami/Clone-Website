@@ -23,7 +23,6 @@ import Table from "examples/Tables/Table";
 import connectionView from "layouts/connections/data/connections";
 import ApiClient from "Services/ApiClient";
 import { toast } from "react-toastify";
-import { setDialog } from "context";
 import { getConnectionByUserID } from "Services/endpointes";
 import { startLoading } from "context";
 import React from "react";
@@ -65,8 +64,7 @@ function Connections() {
               <NavLink to="/new-connections">
                 {" "}
                 <SoftButton variant="gradient" color="dark" ml={2}>
-                  <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-                  &nbsp;Add New
+                  &nbsp;Add Storage
                 </SoftButton>
               </NavLink>
             </SoftBox>

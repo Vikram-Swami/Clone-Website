@@ -4,6 +4,7 @@ import RecipeReviewCard from "layouts/verifyAccount";
 // NextWork Dashboard React layouts
 // const Dashboard = lazy(() => import("layouts/dashboard"));
 import Dashboard from "layouts/dashboard";
+import ForgetPassword from "layouts/authentication/forget-password";
 const Team = lazy(() => import("layouts/Team"));
 const Connections = lazy(() => import("layouts/connections"));
 const Billing = lazy(() => import("layouts/billing"));
@@ -49,6 +50,7 @@ const routes = [
     Key: "signup",
     auth: null,
     route: "sign-up/:step",
+
     component: <SignUp />,
     noCollapse: false,
   },
@@ -59,6 +61,15 @@ const routes = [
     auth: null,
     route: "/",
     component: <SignIn />,
+    noCollapse: false,
+  },
+  {
+    type: "route",
+    name: "ForgetPass",
+    Key: "reset-password",
+    auth: null,
+    route: "/reset-password",
+    component: <ForgetPassword />,
     noCollapse: false,
   },
 

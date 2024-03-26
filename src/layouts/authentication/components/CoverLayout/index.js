@@ -14,7 +14,7 @@ import PageLayout from "examples/LayoutContainers/PageLayout";
 // Authentication layout components
 import Footer from "layouts/authentication/components/Footer";
 
-function CoverLayout({ color, header, title, top, children }) {
+function CoverLayout({ header, title, top, children }) {
   return (
     <PageLayout background="white">
       <Grid
@@ -25,14 +25,20 @@ function CoverLayout({ color, header, title, top, children }) {
         alignItems={"center"}
         minHeight={"100dvh"}
       >
-        <img src="/logo.png" alt="Nextwork Technologies" width={250} />
         <Grid item xs={11} sm={12} md={12} xl={12}>
-          <SoftBox mt={top} border="1px solid lightgrey" width="30dvw" borderRadius="10px">
+          <SoftBox
+            component="img"
+            src="/logo.png"
+            alt="Nextwork Technologies"
+            width="100%"
+            maxWidth="16.25rem"
+          />
+          <SoftBox mt={top} border="1px solid lightgrey" minWidth="22dvw" borderRadius="10px">
             <SoftBox pt={3} px={3}>
               {!header ? (
                 <>
                   <SoftBox mb={1}>
-                    <SoftTypography variant="h3" fontWeight="bold" color={color} textGradient>
+                    <SoftTypography variant="h5" fontWeight="bold" color={"dark"} textGradient>
                       {title}
                     </SoftTypography>
                   </SoftBox>
@@ -58,6 +64,7 @@ function CoverLayout({ color, header, title, top, children }) {
             }}
           ></SoftBox>
         </Grid>
+        <Footer />
       </Grid>
     </PageLayout>
   );
@@ -87,7 +94,6 @@ CoverLayout.propTypes = {
   header: PropTypes.node,
   title: PropTypes.string,
   description: PropTypes.string,
-  image: PropTypes.string.isRequired,
   top: PropTypes.number,
   children: PropTypes.node.isRequired,
 };

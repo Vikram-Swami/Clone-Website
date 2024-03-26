@@ -13,7 +13,7 @@ const usersForm = ({ data }) => {
         value={data?.user}
         label="user"
         type="text"
-        fullWidth
+        fullwidth
         variant="standard"
         sx={{ marginBottom: "20px" }}
       />
@@ -26,7 +26,7 @@ const usersForm = ({ data }) => {
         value={data.storage}
         label="Storage"
         type="text"
-        fullWidth
+        fullwidth
         variant="standard"
       />
       <TextField
@@ -38,7 +38,7 @@ const usersForm = ({ data }) => {
         value={data.amount}
         label="Amount"
         type="text"
-        fullWidth
+        fullwidth
         variant="standard"
       />
       <TextField
@@ -50,10 +50,10 @@ const usersForm = ({ data }) => {
         name="boughtAt"
         label="boughtAt"
         type="text"
-        fullWidth
+        fullwidth
         variant="standard"
       />
-      <FormControl fullWidth>
+      <FormControl fullwidth>
         <InputLabel
           id="status-label"
           sx={{ transform: "translate(0, 1.5px) scale(0.75)", marginLeft: "10px" }}

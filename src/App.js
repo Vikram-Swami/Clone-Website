@@ -70,7 +70,7 @@ export default function App() {
 
 
   useEffect(() => {
-    if (getCookie()) {
+    if (getCookie() && !user.id) {
       getUser();
     }
     document.documentElement.scrollTop = 0;
@@ -81,7 +81,7 @@ export default function App() {
       <ToastContainer />
       <CssBaseline />
       <Loading condition={loading} />
-      {getCookie() ? (
+      {getCookie() && user.id ? (
         <>
           {/* Render Sidenav and Configurator */}
           <Sidenav
@@ -95,7 +95,7 @@ export default function App() {
       ) : ""}
       <Routes>
         {routes?.map((route) => {
-          if (getCookie()) {
+          if (getCookie() && user.id) {
             if (route.auth !== null) {
               return (
                 <Route
@@ -122,10 +122,10 @@ export default function App() {
           }
         })}
 
-        {!getCookie() ? (
-          <Route path="/*" element={<Navigate to="/" />} />
-        ) : (
+        {getCookie() && user.id ? (
           <Route path="/*" element={<Navigate to="/dashboard" />} />
+        ) : (
+          <Route path="/*" element={<Navigate to="/" />} />
         )}
       </Routes>
     </ThemeProvider>

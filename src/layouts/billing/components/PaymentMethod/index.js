@@ -90,7 +90,7 @@ function PaymentMethod() {
             <TextField
               label="Enter Amount To Withdraw"
               variant="outlined"
-              fullWidth
+              fullwidth
               value={withdrawalAmount}
               onChange={handleAmountChange}
               margin="normal"
@@ -146,7 +146,7 @@ function PaymentMethod() {
                       id="utrlInput"
                       label="UTI"
                       type="text"
-                      fullWidth
+                      fullwidth
                       variant="standard"
                       value={utrlInput}
                       onChange={(e) => setUtrlInput(e.target.value)}
@@ -168,7 +168,7 @@ function PaymentMethod() {
                 name="cardNumber"
                 label="Card Number"
                 type="text"
-                fullWidth
+                fullwidth
                 variant="standard"
               />
             )}
@@ -180,7 +180,7 @@ function PaymentMethod() {
                 name="upiId"
                 label="UPI ID"
                 type="text"
-                fullWidth
+                fullwidth
                 variant="standard"
               />
             )}
@@ -192,7 +192,7 @@ function PaymentMethod() {
                 name="utrlLink"
                 label="UTR Link"
                 type="text"
-                fullWidth
+                fullwidth
                 variant="standard"
               />
             )}
