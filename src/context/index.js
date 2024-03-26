@@ -4,13 +4,11 @@ import { createContext, useContext, useReducer, useMemo } from "react";
 import PropTypes from "prop-types";
 import UserModel from "Models/User";
 import ConnectionsModel from "Models/Connection";
-import { CircularProgress, Stack } from "@mui/material";
 import FormDialog from "components/Pop";
 import LoginDialog from "components/Pop/login";
 import NewFormDialog from "components/NewDialog";
 import RentModel from "Models/Rents";
 import IncomeLog from "Models/Income";
-import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
 import Notification from "Models/Notification";
 
 const SoftUI = createContext(null);

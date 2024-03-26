@@ -7,13 +7,15 @@ import SoftBadge from "components/SoftBadge";
 import { Icon } from "@mui/material";
 import SoftButton from "components/SoftButton";
 import { setDialog } from "context";
-import { Button, Card, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField } from "@mui/material";
-import { PropTypes } from "prop-types";
+
 import Transaction from "../../../examples/TransactionView";
-import { startLoading } from "context";
+import { toast } from "react-toastify";
 import ApiClient from "Services/ApiClient";
 import { purchase } from "Services/endpointes";
-import { toast } from "react-toastify";
+import { setConnection } from "context";
+import { setLoading } from "context";
+import { activateConnection } from "Services/endpointes";
+import { startLoading } from "context";
 
 
 function Author({ name, id }) {
@@ -31,20 +33,44 @@ function Author({ name, id }) {
   );
 }
 
-const payment = (id, amount, dispatch) => async (form) => {
+const payment = (id, amount, dispatch, call) => async (form) => {
   try {
-    // console.log(form.getAll("tnxId"));
-    // form.append("id", id);
-    // form.append("amount", amount);
-    // startLoading(dispatch, true);
-    // const result = await ApiClient.createData(purchase, form)
-    // setDialog(dispatch, [result]);
+    form.append("id", id);
+    form.append("amount", amount);
+    startLoading(dispatch, true);
+    const response = await ApiClient.createData(purchase, form);
+    if (response.status == 200) {
+      setDialog(dispatch, [response]);
+      call();
+
+    } else {
+      setDialog(dispatch, [response]);
+    }
+
   } catch (err) {
     toast.error(err.response?.data?.message);
+    setLoading(dispatch, false);
   }
 }
 
-function Status({ tnxId, status, dispatch, e }) {
+const actConnection = async (id, dispatch, call) => {
+  try {
+    startLoading(dispatch, true);
+    const response = await ApiClient.createData(activateConnection, { connectionId: id });
+    if (response.status == 200) {
+      setDialog(dispatch, [response]);
+      call();
+    }
+    else {
+      setDialog(dispatch, [response]);
+    }
+  } catch (err) {
+    startLoading(dispatch, false);
+    toast.error(err.response?.data?.message ?? "Network Error!");
+  }
+}
+
+function Status({ tnxId, status, dispatch, call, e }) {
   if (tnxId && status) {
     return (
       <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
@@ -80,7 +106,7 @@ function Status({ tnxId, status, dispatch, e }) {
                   message: `Connection - ${e.storage} TB`,
                   action: "Pay Now",
                   children: (<Transaction amount={parseFloat(e.amount + parseFloat(e.amount * `0.${e.tax}`))} type="purchase" />),
-                  call: payment(e.id, e.amount, dispatch)
+                  call: payment(e.id, (parseFloat(e.amount + parseFloat(e.amount * `0.${e.tax}`))), dispatch, call)
                 },
               ]);
             }}
@@ -103,7 +129,7 @@ function Status({ tnxId, status, dispatch, e }) {
             borderRadius="lg"
             variant="gradient"
             onClick={() => {
-              console.log(status, isAlloted);
+              actConnection(e.id, dispatch, call);
             }}
           >
             Activate Rent
@@ -133,7 +159,7 @@ const connectionView = {
     { name: "lookup", align: "center" },
   ],
 
-  rows: (data, name, dispatch) => {
+  rows: (data, name, dispatch, getConnection) => {
     return data.map((e) => {
       const dateObject = new Date(e.createdAt);
 
@@ -165,7 +191,7 @@ const connectionView = {
             )}
           </SoftTypography>
         ),
-        status: <Status tnxId={e.transactionId} status={e.status} dispatch={dispatch} e={e} />,
+        status: <Status tnxId={e.transactionId} status={e.status} dispatch={dispatch} call={getConnection} e={e} />,
         lookup: (
           <SoftTypography
             component="a"

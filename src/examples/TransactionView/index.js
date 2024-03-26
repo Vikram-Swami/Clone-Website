@@ -89,49 +89,51 @@ export default function Transaction({ amount, type }) {
                         </>
                     }
                 </RadioGroup>
-                {tnxId ||
+            </FormControl >
+            {
+                <TextField
+                    margin="dense"
+                    id="tnxIdInput"
+                    label="UTI"
+                    type="text"
+                    fullWidth
+                    name='tnxId'
+                    variant="standard"
+                    disabled
+                    value={tnxId}
+                    onChange={(e) => setTnxId(e.target.value)} // Update tnxId state here
+                />
+
+
+            }
+            <Box display="block" textAlign='right'>
+                <Typography display="block" variant="caption" color="dark">Amount : ₹{amount}</Typography>
+                <Typography fontSize={10} display="block" variant="caption" color="textSecondary">
+                    *Inclusive all taxes
+                </Typography>
+            </Box>
+            {/* Dialog for entering transaction ID */}
+            <Dialog open={openDialog} onClose={handleDialogClose}>
+                <DialogTitle>Enter Transaction ID</DialogTitle>
+                <DialogContent>
                     <TextField
                         margin="dense"
                         id="tnxIdInput"
+                        label="Enter UTI"
                         type="text"
+                        fullWidth
                         name='tnxId'
                         variant="standard"
                         value={tnxId}
-                        disabled
-                        defaultValue={tnxId}
-                        onChange={(e) => setTnxId(e.target.value)}
+                        onChange={(e) => setTnxId(e.target.value)} // Update tnxId state here
                     />
 
-                }
-                <Box display="block" textAlign='right'>
-                    <Typography display="block" variant="caption" color="dark">Amount : ₹{amount}</Typography>
-                    <Typography fontSize={10} display="block" variant="caption" color="textSecondary">
-                        *Inclusive all taxes
-                    </Typography>
-                </Box>
-                {/* Dialog for entering transaction ID */}
-                <Dialog open={openDialog} onClose={handleDialogClose}>
-                    <DialogTitle>Enter Transaction ID</DialogTitle>
-                    <DialogContent>
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="tnxIdInput"
-                            label="Transaction ID"
-                            type="text"
-                            fullWidth
-                            name='tnxId'
-                            variant="standard"
-                            value={tnxId}
-                            onChange={(e) => setTnxId(e.target.value)}
-                        />
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleDialogClose}>Cancel</Button>
-                        <Button onClick={handleDialogSubmit}>Submit</Button>
-                    </DialogActions>
-                </Dialog>
-            </FormControl >
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleDialogClose}>Cancel</Button>
+                    <Button onClick={handleDialogSubmit}>Submit</Button>
+                </DialogActions>
+            </Dialog>
         </>
     );
 }
