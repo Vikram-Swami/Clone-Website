@@ -48,7 +48,7 @@ function Team() {
   }, []);
 
 
-  let memoizedRows = TeamView.rows(member);
+  let memoizedRows = TeamView.rows(member, dispatch, user.id);
 
   return (
     <DashboardLayout>

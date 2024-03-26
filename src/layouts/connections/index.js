@@ -43,7 +43,7 @@ function Connections() {
     }
   };
   const memoizedRows = useMemo(
-    () => connectionView.rows(connection, user.fullName, dispatch),
+    () => connectionView.rows(connection, user.fullName, dispatch, getConnection),
     [connection, user.fullName]
   );
 
