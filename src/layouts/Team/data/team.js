@@ -90,16 +90,18 @@ const TeamView = {
     { name: "status", align: "center" },
     { name: "level", align: "center" },
     { name: "storage", align: "center" },
+    { name: "add", align: "center" }
   ],
 
-  rows: (data) => {
+  rows: (data, dispatch, id) => {
+    data.shift();
     return data?.map((e) => {
       const dateObject = new Date(e.createdAt);
 
       const options = { day: "2-digit", month: "2-digit", year: "2-digit" };
       const formattedDate = dateObject.toLocaleDateString("en-GB", options);
 
-      return e?.level >= 0 ? {
+      return {
         user: <Author name={e.name} id={e.userId} />,
         email: (
           <SoftTypography variant="caption" color="secondary" fontWeight="medium">
@@ -120,7 +122,37 @@ const TeamView = {
         storage: <SoftTypography variant="caption" color="secondary" fontWeight="medium">
           {e.storage}
         </SoftTypography>,
-      } : "";
+        add: <SoftTypography
+          component="a"
+          href="#"
+          variant="caption"
+          color="secondary"
+          fontWeight="medium"
+          cursor="pointer"
+          onClick={() => {
+            const generateReferLink = () => {
+              const referLink = window.location.origin;
+
+              return `${referLink}/sign-up/1?sponsorId=${id}&placementId=${e.userId}`;
+            };
+
+            const referLink = generateReferLink();
+
+            navigator.clipboard.writeText(referLink)
+              .then(() => {
+                setDialog(dispatch, [{ status: 200, message: "Link has been coppied to clipboard. Please share the link with your new Member." }])
+              })
+              .catch((_) => {
+                setDialog(dispatch, [{ status: 400, message: "Unable to copy the Link." }])
+
+              });
+          }}
+        >
+          <Icon fontSize="small" color="green">
+            add_link
+          </Icon>
+        </SoftTypography>
+      };
     });
   },
 };

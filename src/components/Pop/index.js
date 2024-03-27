@@ -13,7 +13,6 @@ import { validateUser } from "Services/endpointes";
 import { toast } from "react-toastify";
 import { setLoading } from "context";
 import { useSoftUIController } from "context";
-import { setDialog } from "context";
 import { startLoading } from "context";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -47,18 +46,7 @@ function FormDialog({ open, setOpen, data }) {
   const handleClose = () => {
     setOpen(false);
   };
-  const handleLogout = () => {
-    const cookies = document.cookie.split(";");
 
-    for (let i = 0; i < cookies.length; i++) {
-      const cookie = cookies[i];
-      const eqPos = cookie.indexOf("=");
-      const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-      document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-    }
-    setOpen(false);
-    window.location.reload();
-  };
 
   return (
     <React.Fragment>
@@ -69,8 +57,8 @@ function FormDialog({ open, setOpen, data }) {
             <DialogTitle>Attempts Left: {data?.remainingAttempts}</DialogTitle>
           )}
 
-          {data.status === 200 && (
-            <DialogContent>
+          {data.status === 200 && data?.data?.id && (
+            <DialogContent textAlign="center">
               <DialogContentText>Id:{data?.data?.id}</DialogContentText>
             </DialogContent>
           )}
@@ -117,7 +105,6 @@ function FormDialog({ open, setOpen, data }) {
           )}
 
           <DialogActions display="flex">
-            {data.status === "Logout" && <Button onClick={handleLogout}>Logout</Button>}
             <Button onClick={handleClose}>Close</Button>
           </DialogActions>
         </Grid>

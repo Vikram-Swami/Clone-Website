@@ -4,14 +4,14 @@ import { PropTypes } from 'prop-types';
 import { Button, Card, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField } from "@mui/material";
 
 export default function NewFormDialog({ open, setOpen, data }) {
-    const [controller, dispatch] = useSoftUIController();
+    const [controller,] = useSoftUIController();
     const handleClose = () => {
         setOpen(false);
     };
-    const handleSubmit = () => {
-        data.call(controller.accept);
+    // const handleSubmit = () => {
+    //     data.call(controller.accept);
 
-    }
+    // }
 
 
     return (
@@ -24,9 +24,7 @@ export default function NewFormDialog({ open, setOpen, data }) {
                     onSubmit: (e) => {
                         e.preventDefault();
                         const formData = new FormData(e.currentTarget);
-                        console.log(formData.get("paymentMethod"));
                         data.call(formData);
-                        handleSubmit();
                     }
                 }}
             >

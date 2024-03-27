@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 
 // react-router-dom components
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // Next Work Dashboard React components
 import SoftBox from "components/SoftBox";
@@ -12,88 +12,84 @@ import SoftButton from "components/SoftButton";
 // Authentication layout components
 import CoverLayout from "layouts/authentication/components/CoverLayout";
 
-// Images
-import curved9 from "assets/images/curved-images/curved-6.jpg";
-import LoginDialog from "components/Pop/login";
 import { useSoftUIController } from "context";
 import ApiClient from "Services/ApiClient";
 import { login } from "Services/endpointes";
 import { setDialog } from "context";
 import { toast } from "react-toastify";
-import { Box } from "@mui/material";
-import { Block } from "@mui/icons-material";
+import { setLoading } from "context";
+import { startLoading } from "context";
 
 function SignIn() {
-  const form = useRef();
-  const [controller, dispatch] = useSoftUIController();
+  const [, dispatch] = useSoftUIController();
+  const navigate = useNavigate();
+
+  const setCookie = (name, value, days) => {
+    const expires = new Date();
+    expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+    document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
+  };
+
   const handleLogin = async (e) => {
     try {
-      const formDetails = new FormData(form.current);
-      const userData = await ApiClient.createData(login, formDetails);
-      if (userData?.status == 200) {
-        userData.status = "otp";
+      e.preventDefault();
+      startLoading(dispatch, true);
+      const formDetails = new FormData(e.currentTarget);
+      const response = await ApiClient.createData(login, formDetails);
+      if (response?.status == 200) {
+        setCookie("authToken", response?.data.token, 7);
+        setCookie("userId", response?.data.userId, 7);
+        navigate("/dashboard");
       }
-      setDialog(dispatch, [userData]);
+      setDialog(dispatch, [response]);
     } catch (error) {
+      setLoading(dispatch, false);
+      console.log(error);
       toast.error(error.response?.data?.message ?? "Network Error!")
     }
   };
+
   return (
     <>
       <CoverLayout
-        title=" Welcome"
-        description="Enter your User-Id and password to Log-in"
-        image={curved9}
+        title="Sign In"
       >
-        <SoftBox component="form" role="form" ref={form}>
-          <SoftBox mb={2}>
-            <SoftBox mb={1} ml={0.5}>
-              <SoftTypography component="label" variant="caption" fontWeight="bold">
-                User Id
+        <SoftBox component="form" role="form" textAlign="center" display="flex" flexDirection="column" justifyContent="center" alignItems="center" onSubmit={handleLogin}>
+          <SoftBox mb={1} width="100%">
+            <SoftBox ml={0.5} textAlign="left">
+              <SoftTypography component="label" variant="caption" fontWeight="bold" onChange={(e) => { e.target.value = e.target.value.toUpperCase(); }}>
+                ID
               </SoftTypography>
             </SoftBox>
-            <SoftInput type="text" placeholder="user-Id" name="userId" />
+            <SoftInput type="text" placeholder="Email / User ID" name="userId" />
           </SoftBox>
-          <SoftBox mb={2}>
-            <SoftBox mb={1} ml={0.5}>
+          <SoftBox mb={1} width="100%">
+            <SoftBox ml={0.5} textAlign="left">
               <SoftTypography component="label" variant="caption" fontWeight="bold">
                 Password
               </SoftTypography>
             </SoftBox>
             <SoftInput type="password" placeholder="Password" name="password" />
           </SoftBox>
-          <SoftBox mt={4} mb={1}>
-            <SoftButton variant="gradient" color="info" fullWidth onClick={handleLogin}>
-              Log-in
+          <SoftBox mt={1} mb={1}>
+            <SoftButton variant="gradient" color="info" type="submit">
+              Submit
             </SoftButton>
           </SoftBox>
-          <SoftBox mt={3} textAlign="center">
-            <SoftTypography variant="button" color="text" fontWeight="regular">
-              Don&apos;t have an account?{" "}
-              <SoftTypography
-                component={Link}
-                to="/sign-up/1"
-                variant="button"
-                color="info"
-                fontWeight="medium"
-                textGradient
-              >
-                Sign up
-              </SoftTypography>
+          <SoftBox mt={1} fontSize="0.9rem">
+
+            <SoftTypography variant="p" fontWeight="bold" color="text">
+              Forget Password?{" "}
             </SoftTypography>
-            <br></br>
-            <SoftTypography variant="button" color="text" fontWeight="regular">
-              Forget Password ?{" "}
-              <SoftTypography
-                component={Link}
-                to="/sign-up"
-                variant="button"
-                color="info"
-                fontWeight="medium"
-                textGradient
-              >
-                Sign up
-              </SoftTypography>
+            <SoftTypography
+              component={Link}
+              to="/reset-password"
+              variant="a"
+              color="info"
+              textGradient
+              cursor="pointer"
+            >
+              Reset Now
             </SoftTypography>
           </SoftBox>
         </SoftBox>

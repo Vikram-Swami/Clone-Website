@@ -36,15 +36,8 @@ import {
   useSoftUIController,
   setTransparentNavbar,
   setMiniSidenav,
-  setOpenConfigurator,
 } from "context";
-
-// Images
-import team2 from "assets/images/team-2.jpg";
-import logoSpotify from "assets/images/small-logos/logo-spotify.svg";
 import SoftButton from "components/SoftButton";
-import { Height } from "@mui/icons-material";
-import { setLoading } from "context";
 import { setDialog } from "context";
 import { Avatar, Box, Divider, Stack } from "@mui/material";
 
@@ -52,15 +45,30 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const navigate = useNavigate();
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useSoftUIController();
-  const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator } = controller;
+  const { miniSidenav, transparentNavbar, fixedNavbar } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
   const { user } = controller;
+  const handleLogout = () => {
+    const cookies = document.cookie.split(";");
+
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i];
+      const eqPos = cookie.indexOf("=");
+      const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+      document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    }
+    setDialog(dispatch, []);
+    navigate("/");
+
+  };
   const logoutHandler = () => {
     setDialog(dispatch, [
       {
-        message: "Are you sure you want to Log out?",
-        status: "Logout",
+        status: "form",
+        action: "Logout",
+        title: "Are you sure to Logout from your Account.",
+        call: handleLogout
       },
     ]);
   };
@@ -77,10 +85,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
       setTransparentNavbar(dispatch, (fixedNavbar && window.scrollY === 0) || !fixedNavbar);
     }
 
-    /** 
-     The event listener that's calling the handleTransparentNavbar function when 
-     scrolling the window.
-    */
     window.addEventListener("scroll", handleTransparentNavbar);
 
     // Call the handleTransparentNavbar function to set the state with the initial value.
@@ -91,14 +95,13 @@ function DashboardNavbar({ absolute, light, isMini }) {
   }, [dispatch, fixedNavbar]);
 
   const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
-  const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
 
   const generateReferLink = (id) => {
-    const referLink = '';
+    const referLink = window.location.origin;
 
-    return `${referLink} & sponsorId=${id} & userId=${id}`;
+    return `${referLink}/sign-up/1?sponsorId=${id}&placementId=${id}`;
   };
 
   const handleCopyLink = (user) => {
@@ -106,12 +109,11 @@ function DashboardNavbar({ absolute, light, isMini }) {
 
     navigator.clipboard.writeText(referLink)
       .then(() => {
-        alert('Refer link copied to clipboard!');
+        setDialog(dispatch, [{ status: 201, message: "Link has been coppied to clipboard. Please share the link with your new Member." }])
       })
-      .catch((err) => {
-        console.error('Unable to copy link to clipboard', err);
-        // Handle the error or provide feedback to the user
-        alert('Error copying link to clipboard');
+      .catch((_) => {
+        setDialog(dispatch, [{ status: 400, message: "Unable to copy the Link." }])
+
       });
   };
 
@@ -126,51 +128,70 @@ function DashboardNavbar({ absolute, light, isMini }) {
       }}
       open={Boolean(openMenu)}
       onClose={handleCloseMenu}
-      sx={{ mt: 2 }}
+
     >
       <Box>
-        <SoftTypography
+        <SoftBox
           variant="gradient"
-          color="dark"
-          ml={2}
-          p={1}
+          px={1}
+          my={0.5}
           onClick={() => navigate("/profile")}
-          cursor="pointer"
-          sx={{ display: "flex", alignItems: "center" }}
+          display="flex"
+          sx={{ cursor: "pointer" }}
+          alignItems="center"
+          color="warning"
         >
           <Divider />
-          <Icon sx={{ fontWeight: "bold", fontSize: "2rem !important" }}>account_circle</Icon>
-          <span>&nbsp;&nbsp;&nbsp;Profile</span>
-        </SoftTypography>
+          <Icon fontSize="1rem">account_circle</Icon>
+          <SoftTypography cursor="pointer" fontSize="1rem" pl={1} component="span">My Profile</SoftTypography>
 
-        <SoftTypography
+        </SoftBox>
+        <SoftBox
           variant="gradient"
-          color="dark"
-          ml={2}
-          p={1}
-          onClick={() => logoutHandler()}
-          cursor="pointer"
-          sx={{ display: "flex", alignItems: "center" }}
-        >
-          <Divider />
-          <Icon sx={{ fontWeight: "bold", fontSize: "2rem !important" }}>logout_icon</Icon>
-          <span>&nbsp;&nbsp;&nbsp;Logout</span>
-        </SoftTypography>
-
-        <SoftTypography
-          variant="gradient"
-          color="dark"
-          ml={2}
-          p={1}
+          px={1}
+          my={0.5}
           onClick={() => handleCopyLink(user)}
-          cursor="pointer"
-
-          sx={{ display: "flex", alignItems: "center" }}
+          display="flex"
+          alignItems="center"
+          sx={{ cursor: "pointer" }}
+          color="secondary"
         >
           <Divider />
-          <Icon sx={{ fontWeight: "bold", fontSize: "2rem !important" }}>share_icon</Icon>
-          <span>&nbsp;Refer Link</span>
-        </SoftTypography>
+          <Icon fontSize="1rem">notifications</Icon>
+          <SoftTypography cursor="pointer" fontSize="1rem" pl={1} component="span">Notifications</SoftTypography>
+
+        </SoftBox>
+
+        <SoftBox
+          variant="gradient"
+          px={1}
+          my={0.5}
+          onClick={() => handleCopyLink(user)}
+          display="flex"
+          alignItems="center"
+          sx={{ cursor: "pointer" }}
+          color="info"
+        >
+          <Divider />
+          <Icon fontSize="1rem">share_icon</Icon>
+          <SoftTypography cursor="pointer" fontSize="1rem" pl={1} component="span">Refer</SoftTypography>
+
+        </SoftBox>
+        <SoftBox
+          variant="gradient"
+          px={1}
+          my={0.5}
+          onClick={() => logoutHandler()}
+          display="flex"
+          sx={{ cursor: "pointer" }}
+          alignItems="center"
+          color="error"
+        >
+          <Divider />
+          <Icon fontSize="1rem">logout_icon</Icon>
+          <SoftTypography cursor="pointer" fontSize="1rem" pl={1} component="span">Log Out</SoftTypography>
+        </SoftBox>
+
       </Box>
     </Menu>
   );
@@ -185,27 +206,19 @@ function DashboardNavbar({ absolute, light, isMini }) {
         <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
           <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
         </SoftBox>
-        <SoftBox color={light ? "white" : "inherit"}>
+
+        <SoftBox color={light ? "white" : "inherit"} sx={{ display: "none" }}>
           <SoftButton variant="gradient" color="dark" ml={2} onClick={() => navigate("/account")}>
             <Icon sx={{ fontWeight: "bold", fontSize: "3rem !important" }}>
               account_balance_wallet
             </Icon>
             &nbsp;{user.wallet}
           </SoftButton>
-          <IconButton
-            size="small"
-            color="inherit"
-            sx={navbarMobileMenu}
-            onClick={handleMiniSidenav}
-          >
-            <Icon className={light ? "text-white" : "text-dark"}>
-              {miniSidenav ? "menu_open" : "menu"}
-            </Icon>
-          </IconButton>
+
 
           {renderMenu()}
         </SoftBox>
-        {isMini ? null : (
+        {(
           <SoftBox sx={(theme) => navbarRow(theme, { isMini })}>
             <SoftBox pr={1}>
               <SoftInput
@@ -214,17 +227,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
               />
             </SoftBox>
 
+
+
             <SoftBox color={light ? "white" : "inherit"}>
-              <IconButton
-                size="small"
-                color="inherit"
-                sx={navbarMobileMenu}
-                onClick={handleMiniSidenav}
-              >
-                <Icon className={light ? "text-white" : "text-dark"}>
-                  {miniSidenav ? "menu_open" : "menu"}
-                </Icon>
-              </IconButton>
               <IconButton
                 size="small"
                 color="inherit"
@@ -240,6 +245,16 @@ function DashboardNavbar({ absolute, light, isMini }) {
               </IconButton>
               {renderMenu()}
             </SoftBox>
+            <IconButton
+              size="small"
+              color="inherit"
+              sx={navbarMobileMenu}
+              onClick={handleMiniSidenav}
+            >
+              <Icon className={light ? "text-white" : "text-dark"}>
+                {!miniSidenav ? "menu_open" : "menu"}
+              </Icon>
+            </IconButton>
           </SoftBox>
         )}
       </Toolbar>

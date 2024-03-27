@@ -22,14 +22,7 @@ import { useSoftUIController } from "context";
 import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
 import gradientLineChartData from "layouts/dashboard/data/gradientLineChartData";
 import UserModel from "Models/User";
-import { setUser } from "context";
-import { setDialog } from "context";
-import ApiClient from "Services/ApiClient";
-import { startLoading } from "context";
-import { getUserById } from "Services/endpointes";
-import { useEffect } from "react";
-import { toast } from "react-toastify";
-import { setLoading } from "context";
+
 
 function Dashboard() {
   const [controller, dispatch] = useSoftUIController();
@@ -58,27 +51,7 @@ function Dashboard() {
       icon: { color: "info", component: "currency_rupee" },
     },
   ];
-  async function getUser() {
-    try {
-      startLoading(dispatch, true);
-      const data = await ApiClient.getData(getUserById);
-      if (data.status == 200) {
-        setUser(dispatch, data?.data);
-        setDialog(dispatch, [data]);
-      } else {
-        toast.success(data.message);
-        setLoading(dispatch, false);
-      }
-    } catch (error) {
-      setLoading(dispatch, false);
-      toast.info(error.response?.data?.message ?? "Welcome Back!");
-    }
-  }
-  useEffect(() => {
-    if (!user.id) {
-      getUser();
-    }
-  }, []);
+
   return (
     <DashboardLayout>
       <DashboardNavbar />

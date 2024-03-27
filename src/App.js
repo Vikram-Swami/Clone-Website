@@ -44,7 +44,7 @@ export default function App() {
         authToken = cookie.substring(String("authToken").length + 1);
       }
     }
-    if (userId && authToken && userId !== undefined && authToken !== undefined && userId !== "") {
+    if (userId && authToken && userId !== "") {
       return true;
     } else {
       return false;
@@ -70,7 +70,7 @@ export default function App() {
 
 
   useEffect(() => {
-    if ((getCookie() && user.id == null) || (getCookie() && user.id == undefined)) {
+    if (getCookie() && !user.id) {
       getUser();
     }
     document.documentElement.scrollTop = 0;
@@ -81,7 +81,7 @@ export default function App() {
       <ToastContainer />
       <CssBaseline />
       <Loading condition={loading} />
-      {getCookie() && (
+      {getCookie() && user.id ? (
         <>
           {/* Render Sidenav and Configurator */}
           <Sidenav
@@ -92,11 +92,11 @@ export default function App() {
             onMouseLeave={handleOnMouseLeave}
           />
         </>
-      )}
+      ) : ""}
       <Routes>
         {routes?.map((route) => {
-          if (user && user.id !== undefined && route.auth !== null) {
-            if (getCookie() && route.auth !== null) {
+          if (getCookie() && user.id) {
+            if (route.auth !== null) {
               return (
                 <Route
                   exact
@@ -108,7 +108,7 @@ export default function App() {
                 />
               );
             }
-          } else if (!getCookie() && route.auth === null) {
+          } else if (route.auth === null) {
             return (
               <Route
                 exact
@@ -121,10 +121,11 @@ export default function App() {
             );
           }
         })}
-        {!getCookie() ? (
-          <Route path="/*" element={<Navigate to="/" />} />
-        ) : (
+
+        {getCookie() && user.id ? (
           <Route path="/*" element={<Navigate to="/dashboard" />} />
+        ) : (
+          <Route path="/*" element={<Navigate to="/" />} />
         )}
       </Routes>
     </ThemeProvider>

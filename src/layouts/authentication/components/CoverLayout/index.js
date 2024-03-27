@@ -9,42 +9,45 @@ import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 
 // Next Work Dashboard React examples
-import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import PageLayout from "examples/LayoutContainers/PageLayout";
 
 // Authentication layout components
 import Footer from "layouts/authentication/components/Footer";
 
-function CoverLayout({ color, header, title, description, image, top, children }) {
+function CoverLayout({ header, title, top, children }) {
   return (
     <PageLayout background="white">
       <Grid
         container
+        py={2}
         justifyContent="center"
-        sx={{
-          minHeight: "75vh",
-          margin: 0,
-        }}
+        flexDirection={"column"}
+        alignItems={"center"}
+        minHeight={"100dvh"}
       >
-        <Grid item xs={11} sm={8} md={5} xl={3}>
-          <SoftBox mt={top}>
+        <Grid item xs={11} sm={12} md={12} xl={12}>
+          <SoftBox
+            component="img"
+            src="/logo.png"
+            alt="Nextwork Technologies"
+            width="100%"
+            maxWidth="16.25rem"
+          />
+          <SoftBox mt={top} border="1px solid lightgrey" minWidth="22dvw" borderRadius="10px">
             <SoftBox pt={3} px={3}>
               {!header ? (
                 <>
                   <SoftBox mb={1}>
-                    <SoftTypography variant="h3" fontWeight="bold" color={color} textGradient>
+                    <SoftTypography variant="h5" fontWeight="bold" color={"dark"} textGradient>
                       {title}
                     </SoftTypography>
                   </SoftBox>
-                  <SoftTypography variant="body2" fontWeight="regular" color="text">
-                    {description}
-                  </SoftTypography>
                 </>
               ) : (
                 header
               )}
             </SoftBox>
-            <SoftBox p={3}>{children}</SoftBox>
+            <SoftBox pb={3} px={3}>{children}</SoftBox>
           </SoftBox>
         </Grid>
         <Grid item xs={12} md={12}>
@@ -61,8 +64,8 @@ function CoverLayout({ color, header, title, description, image, top, children }
             }}
           ></SoftBox>
         </Grid>
+        <Footer />
       </Grid>
-      <Footer />
     </PageLayout>
   );
 }
@@ -73,7 +76,7 @@ CoverLayout.defaultProps = {
   title: "",
   description: "",
   color: "info",
-  top: 20,
+  top: 4,
 };
 
 // Typechecking props for the CoverLayout
@@ -91,7 +94,6 @@ CoverLayout.propTypes = {
   header: PropTypes.node,
   title: PropTypes.string,
   description: PropTypes.string,
-  image: PropTypes.string.isRequired,
   top: PropTypes.number,
   children: PropTypes.node.isRequired,
 };

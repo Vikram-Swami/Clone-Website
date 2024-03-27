@@ -44,7 +44,6 @@ function LoginDialog({ open, setOpen, data }) {
   }
   const handleSubmit = async (id) => {
     setLoading(dispatch, true);
-    console.log(id);
     try {
       const enteredOtp = otpRef.current.value;
       const response = await ApiClient.createData(verifyOtp, {
@@ -61,7 +60,6 @@ function LoginDialog({ open, setOpen, data }) {
     } finally {
       setLoading(dispatch, false);
     }
-    console.log("Submitting OTP:", otpRef.current.value);
   };
 
   const handleClose = () => {
