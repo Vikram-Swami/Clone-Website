@@ -29,7 +29,7 @@ function Income() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  const { income } = controller;
+  const { income, user } = controller;
   const getAllusers = async () => {
     startLoading(dispatch, true);
     try {
@@ -54,7 +54,7 @@ function Income() {
     setPage(0);
   };
 
-  let memoizedRows = usersView.rows(income, dispatch, getAllusers);
+  let memoizedRows = usersView.rows(income, user.fullName, dispatch);
 
   return (
     <DashboardLayout>

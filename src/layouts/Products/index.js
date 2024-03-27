@@ -62,7 +62,7 @@ function Products() {
               <Grid container spacing={3}>
                 {products.map((data, index) => {
                   data.range = parseFloat(data.range) < 1 ? 1 : data.range;
-                  (<Grid key={index} item xs={12} md={6} xl={4}>
+                  return (<Grid key={index} item xs={12} md={6} xl={4}>
                     <DefaultProductCard
                       icon="cloud"
                       range={data.range}

@@ -19,6 +19,7 @@ import { startLoading } from "context";
 
 import SignatureCanvas from "react-signature-canvas";
 import { Typography } from "antd";
+import { setLoading } from "context";
 
 function SignUp() {
 
@@ -121,7 +122,10 @@ function SignUp() {
     else if (step == 3 && form.sign) {
       let sign = dataURLtoFile(form.sign);
       formdata.append("sign", sign);
-
+    }
+    if (step == 3 && !isValidPAN(formdata.get("panNo"))) {
+      toast.error("Invalid PAN Number");
+      return;
     }
     startLoading(dispatch, true);
     try {
@@ -138,25 +142,22 @@ function SignUp() {
       }
       setDialog(dispatch, [response]);
     } catch (error) {
+      setLoading(dispatch, false);
       toast.error(error.response?.data?.message ?? "Network Error!");
 
     }
   };
+
   const handleInputChange = (e) => {
     const inputValue = e.target.value.toUpperCase();
-    if (!isValidPAN(inputValue)) {
-      e.target.value = ''; // Clear the input field
-    } else {
-      e.target.value = inputValue;
-    }
+    e.target.value = inputValue;
+    return isValidPAN(inputValue);
   };
 
   const isValidPAN = (pan) => {
     const panRegex = /^([A-Z]){5}([0-9]){4}([A-Z]){1}?$/;
     return panRegex.test(pan);
   };
-
-
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -436,7 +437,7 @@ function SignUp() {
               Submit
             </SoftButton>
           </SoftBox>
-          <SoftBox fontSize="0.9rem">
+          <SoftBox mt={1} fontSize="0.9rem">
 
             <SoftTypography variant="p" fontWeight="bold" color="text">
               Already a User?
