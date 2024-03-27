@@ -18,7 +18,6 @@ import { setAccept } from "context";
 import { startLoading } from "context";
 
 import SignatureCanvas from "react-signature-canvas";
-import Separator from "../components/Separator";
 import { Typography } from "antd";
 
 function SignUp() {
@@ -139,23 +138,25 @@ function SignUp() {
       }
       setDialog(dispatch, [response]);
     } catch (error) {
-      console.log(error);
-      setDialog(dispatch, [error.response?.data]);
-      toast.error(error);
+      toast.error(error.response?.data?.message ?? "Network Error!");
 
     }
   };
-
-
   const handleInputChange = (e) => {
     const inputValue = e.target.value.toUpperCase();
-    e.target.value = inputValue;
-    return isValidPAN(inputValue);
+    if (!isValidPAN(inputValue)) {
+      e.target.value = ''; // Clear the input field
+    } else {
+      e.target.value = inputValue;
+    }
   };
+
   const isValidPAN = (pan) => {
     const panRegex = /^([A-Z]){5}([0-9]){4}([A-Z]){1}?$/;
     return panRegex.test(pan);
   };
+
+
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -326,7 +327,7 @@ function SignUp() {
 
               <SoftBox mb={2} width="100%">
                 <SoftInput
-                  type="tel"
+                  type="text"
                   placeholder="PAN Number"
                   name="panNo"
                   onChange={(e) => { handleInputChange(e); }}
@@ -435,29 +436,6 @@ function SignUp() {
               Submit
             </SoftButton>
           </SoftBox>
-          <SoftBox mt={1} fontSize="0.9rem">
-
-            <SoftTypography variant="p" fontWeight="bold" color="text">
-              Incomplete Profile?
-            </SoftTypography><br />
-            <SoftTypography
-              onClick={() => {
-                setDialog(dispatch, [
-                  {
-                    status: "skip",
-                    message: "Please Enter Your User Id",
-                  },
-                ]);
-              }}
-              variant="button"
-              color="info"
-              textGradient
-              cursor="pointer"
-            >
-              Complete Now
-            </SoftTypography>
-          </SoftBox>
-          <Separator />
           <SoftBox fontSize="0.9rem">
 
             <SoftTypography variant="p" fontWeight="bold" color="text">

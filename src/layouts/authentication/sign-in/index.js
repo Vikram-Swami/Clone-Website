@@ -19,6 +19,7 @@ import { setDialog } from "context";
 import { toast } from "react-toastify";
 import { setLoading } from "context";
 import { startLoading } from "context";
+import Separator from "../components/Separator";
 
 function SignIn() {
   const [, dispatch] = useSoftUIController();
@@ -77,6 +78,29 @@ function SignIn() {
             </SoftButton>
           </SoftBox>
           <SoftBox mt={1} fontSize="0.9rem">
+
+            <SoftTypography variant="p" fontWeight="bold" color="text">
+              Incomplete Profile?
+            </SoftTypography>{" "}
+            <SoftTypography
+              onClick={() => {
+                setDialog(dispatch, [
+                  {
+                    status: "skip",
+                    message: "Please Enter Your User Id",
+                  },
+                ]);
+              }}
+              variant="button"
+              color="info"
+              textGradient
+              cursor="pointer"
+            >
+              Complete Now
+            </SoftTypography>
+          </SoftBox>
+          <Separator />
+          <SoftBox fontSize="0.9rem">
 
             <SoftTypography variant="p" fontWeight="bold" color="text">
               Forget Password?{" "}
