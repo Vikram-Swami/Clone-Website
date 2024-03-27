@@ -57,7 +57,7 @@ function SignIn() {
         <SoftBox component="form" role="form" textAlign="center" display="flex" flexDirection="column" justifyContent="center" alignItems="center" onSubmit={handleLogin}>
           <SoftBox mb={1} width="100%">
             <SoftBox ml={0.5} textAlign="left">
-              <SoftTypography component="label" variant="caption" fontWeight="bold">
+              <SoftTypography component="label" variant="caption" fontWeight="bold" onChange={(e) => { e.target.value = e.target.value.toUpperCase(); }}>
                 ID
               </SoftTypography>
             </SoftBox>

@@ -99,7 +99,6 @@ export default function Transaction({ amount, type }) {
                     fullWidth
                     name='tnxId'
                     variant="standard"
-                    disabled
                     value={tnxId}
                     onChange={(e) => setTnxId(e.target.value)} // Update tnxId state here
                 />

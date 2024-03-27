@@ -12,7 +12,6 @@ import Transaction from "../../../examples/TransactionView";
 import { toast } from "react-toastify";
 import ApiClient from "Services/ApiClient";
 import { purchase } from "Services/endpointes";
-import { setConnection } from "context";
 import { setLoading } from "context";
 import { activateConnection } from "Services/endpointes";
 import { startLoading } from "context";

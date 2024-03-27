@@ -94,13 +94,14 @@ const TeamView = {
   ],
 
   rows: (data, dispatch, id) => {
+    data.shift();
     return data?.map((e) => {
       const dateObject = new Date(e.createdAt);
 
       const options = { day: "2-digit", month: "2-digit", year: "2-digit" };
       const formattedDate = dateObject.toLocaleDateString("en-GB", options);
 
-      return e?.level >= 0 ? {
+      return {
         user: <Author name={e.name} id={e.userId} />,
         email: (
           <SoftTypography variant="caption" color="secondary" fontWeight="medium">
@@ -139,7 +140,7 @@ const TeamView = {
 
             navigator.clipboard.writeText(referLink)
               .then(() => {
-                setDialog(dispatch, [{ status: 201, message: "Link has been coppied to clipboard. Please share the link with your new Member." }])
+                setDialog(dispatch, [{ status: 200, message: "Link has been coppied to clipboard. Please share the link with your new Member." }])
               })
               .catch((_) => {
                 setDialog(dispatch, [{ status: 400, message: "Unable to copy the Link." }])
@@ -151,7 +152,7 @@ const TeamView = {
             add_link
           </Icon>
         </SoftTypography>
-      } : "";
+      };
     });
   },
 };
