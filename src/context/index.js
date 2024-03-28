@@ -76,7 +76,7 @@ function reducer(state, action) {
       return { ...state, dialog: [], loading: action.value };
     }
     default: {
-      console.log(`Unhandled action type: ${action.type}`);
+      return { ...state, loading: false };
     }
   }
 }

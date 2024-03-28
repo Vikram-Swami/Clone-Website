@@ -6,6 +6,7 @@ import SoftBadge from "components/SoftBadge";
 
 import { Icon } from "@mui/material";
 import { setDialog } from "context";
+import { toast } from "react-toastify";
 
 function Author({ name, id }) {
   return (
@@ -23,81 +24,37 @@ function Author({ name, id }) {
 }
 
 function Status({ tnxId, status }) {
-  if (tnxId === null) {
+  if (!status) {
     return (
       <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
-        <SoftBox display="flex" alignItems="center" flexDirection="column" gap="4px">
-          <SoftBadge
-            variant="gradient"
-            badgeContent="payment pending"
-            color="warning"
-            size="xs"
-            container
-          />
-        </SoftBox>
-      </SoftBox>
-    );
-  } else if (!status) {
-    return (
-      <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
-        <SoftBadge variant="gradient" badgeContent="Inactive" color="warning" size="xs" container />
+        <SoftBadge variant="gradient" badgeContent="Unpaid" color="warning" size="xs" container />
       </SoftBox>
     );
   } else {
     return (
       <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
         <SoftBox display="flex" flexDirection="column">
-          <SoftBadge variant="gradient" badgeContent="Active" color="success" size="xs" container />
+          <SoftBadge variant="gradient" badgeContent="paid" color="success" size="xs" container />
         </SoftBox>
       </SoftBox>
     );
   }
 }
 
-function Verified({ status }) {
-  if (!status) {
-    return (
-      <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
-        <SoftBadge
-          variant="gradient"
-          badgeContent="Not Verified"
-          color="error"
-          size="xs"
-          container
-        />
-      </SoftBox>
-    );
-  } else {
-    return (
-      <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
-        <SoftBox display="flex" flexDirection="column">
-          <SoftBadge
-            variant="gradient"
-            badgeContent="Verified"
-            color="success"
-            size="xs"
-            container
-          />
-        </SoftBox>
-      </SoftBox>
-    );
-  }
-}
 
 const usersView = {
   columns: [
     { name: "user", align: "left" },
     { name: "amount", align: "left" },
-    { name: "phone", align: "center" },
-    { name: "verification", align: "center" },
-    { name: "earning", align: "center" },
+    { name: "tds", align: "center" },
+    { name: "conveniencecharge", align: "center" },
+    { name: "type", align: "center" },
     { name: "status", align: "center" },
-    { name: "kyc", align: "center" },
-    { name: "address", align: "center" },
     { name: "actions", align: "center" },
   ],
 
-  rows: (data, dispatch) => {
+  rows: (data, name, dispatch) => {
+
     return data.map((e) => {
       const dateObject = new Date(e.createdAt);
 
@@ -105,51 +62,19 @@ const usersView = {
       const formattedDate = dateObject.toLocaleDateString("en-GB", options);
 
       return {
-        user: <Author name={e.fullName} id={e.userId} />,
+        user: <Author name={name} id={e.userId} />,
         amount: (
           <SoftTypography variant="caption" color="secondary" fontWeight="medium">
             {e.amount}
           </SoftTypography>
         ),
-        phone: <Author name={e.phone} />,
+        tds: <Author name={e.tds ?? 0} />,
+        conveniencecharge: <Author name={e.conCharge ?? 0} />,
 
-        verification: <Verified status={e.isVerified} />,
-        earning: (
-          <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-            {e.totalEarn}
-          </SoftTypography>
-        ),
-        status: <Status tnxId={e.transactionId} status={e.status} />,
-        kyc: (
-          <SoftTypography
-            component="a"
-            href="#"
-            variant="caption"
-            color="info"
-            fontWeight="medium"
-            cursor="pointer"
-            onClick={() => { }}
-          >
-            <Icon fontSize="small" color="info">
-              visibility
-            </Icon>
-          </SoftTypography>
-        ),
-        address: (
-          <SoftTypography
-            component="a"
-            href="#"
-            variant="caption"
-            color="info"
-            fontWeight="medium"
-            cursor="pointer"
-            onClick={() => { }}
-          >
-            <Icon fontSize="small" color="info">
-              visibility
-            </Icon>
-          </SoftTypography>
-        ),
+        type: <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+          {e.type}
+        </SoftTypography>,
+        status: <Status status={e.status} />,
         actions: (
           <SoftBox
             display="flex"
@@ -166,55 +91,10 @@ const usersView = {
               color="info"
               fontWeight="medium"
               cursor="pointer"
-              onClick={() => { }}
+              onClick={() => { toast.success("Details will be available soon!") }}
             >
               <Icon fontSize="small" color="info">
                 visibility
-              </Icon>
-            </SoftTypography>
-            <SoftTypography
-              component="a"
-              href="#"
-              variant="caption"
-              color="info"
-              fontWeight="medium"
-              cursor="pointer"
-              onClick={() => {
-                setDialog(dispatch, [
-                  {
-                    status: "form",
-                    route: "",
-                    message: `UPDATE - CONNECTION - ${e.userId}`,
-                    action: "Update",
-                    children: <usersForm data={e} />,
-                  },
-                ]);
-              }}
-            >
-              <Icon fontSize="small" color="info">
-                edit
-              </Icon>
-            </SoftTypography>
-            <SoftTypography
-              component="a"
-              href="#"
-              variant="caption"
-              color="error"
-              cursor="pointer"
-              fontWeight="medium"
-              onClick={() => {
-                setDialog(dispatch, [
-                  {
-                    status: "form",
-                    route: "",
-                    message: `DELETE - CONNECTION - ${e.userId}`,
-                    action: "Delete",
-                  },
-                ]);
-              }}
-            >
-              <Icon fontSize="small" color="error">
-                delete
               </Icon>
             </SoftTypography>
           </SoftBox>
