@@ -94,14 +94,13 @@ const TeamView = {
   ],
 
   rows: (data, dispatch, id) => {
-    data.shift();
-    return data?.map((e) => {
+    return data?.map((e, i) => {
       const dateObject = new Date(e.createdAt);
 
       const options = { day: "2-digit", month: "2-digit", year: "2-digit" };
       const formattedDate = dateObject.toLocaleDateString("en-GB", options);
 
-      return {
+      return i != 0 ? {
         user: <Author name={e.name} id={e.userId} />,
         email: (
           <SoftTypography variant="caption" color="secondary" fontWeight="medium">
@@ -152,7 +151,7 @@ const TeamView = {
             add_link
           </Icon>
         </SoftTypography>
-      };
+      } : "";
     });
   },
 };

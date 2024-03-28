@@ -143,7 +143,7 @@ function SignUp() {
       setDialog(dispatch, [response]);
     } catch (error) {
       setLoading(dispatch, false);
-      toast.error(error.response?.data?.message ?? "Network Error!");
+      toast.error(error.response?.data?.message ?? "Unsupported Files reported!")
 
     }
   };

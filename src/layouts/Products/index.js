@@ -61,7 +61,7 @@ function Products() {
             <Grid item xs={12} lg={10}>
               <Grid container spacing={3}>
                 {products.map((data, index) => {
-                  data.range = parseFloat(data.range) < 1 ? 1 : data.range;
+                  let multiplier = parseFloat(data.range) < 1 ? 1 : data.range;
                   return (<Grid key={index} item xs={12} md={6} xl={4}>
                     <DefaultProductCard
                       icon="cloud"
@@ -71,8 +71,8 @@ function Products() {
                       basicAmt={data.basicAmt}
                       tax={data.tax}
                       totalprice={
-                        parseFloat(data.range * data.basicAmt) +
-                        parseFloat(data.range * data.basicAmt * data.tax) / 100
+                        parseFloat(multiplier * data.basicAmt) +
+                        parseFloat(multiplier * data.basicAmt * data.tax) / 100
                       }
                     />
                   </Grid>)

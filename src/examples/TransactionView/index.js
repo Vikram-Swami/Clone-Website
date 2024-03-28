@@ -102,8 +102,6 @@ export default function Transaction({ amount, type }) {
                     value={tnxId}
                     onChange={(e) => setTnxId(e.target.value)} // Update tnxId state here
                 />
-
-
             }
             <Box display="block" textAlign='right'>
                 <Typography display="block" variant="caption" color="dark">Amount : ₹{amount}</Typography>
