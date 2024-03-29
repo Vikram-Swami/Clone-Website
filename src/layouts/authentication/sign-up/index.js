@@ -148,6 +148,18 @@ function SignUp() {
     }
   };
 
+  // Function to handle image capture from camera
+  const handleCapturePhoto = (inputName, facingMode) => {
+    return () => {
+      // Access the input element
+      const input = document.querySelector(`input[name="${inputName}"]`);
+      // Set the capture attribute to enable camera access
+      input.setAttribute("capture", facingMode);
+      // Trigger a click event to open the camera interface
+      input.click();
+    };
+  };
+
   const handleInputChange = (e) => {
     const inputValue = e.target.value.toUpperCase();
     e.target.value = inputValue;
@@ -344,32 +356,75 @@ function SignUp() {
                 <SoftInput type="text" placeholder="Nominie age" name="nomineeAge" />
               </SoftBox>
               <SoftBox mb={2} width="100%">
-                <SoftBox display="flex" alignItems="center" justifyContent="space-between">
-
-                  <SoftTypography color="text" fontWeight="medium" whiteSpace="nowrap" pr={1} fontSize="0.9rem">
+                {/* Input for capturing Aadhar Front photo */}
+                <SoftBox
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <SoftTypography
+                    color="text"
+                    fontWeight="medium"
+                    whiteSpace="nowrap"
+                    pr={1}
+                    fontSize="0.9rem"
+                  >
                     Aadhar Front
                   </SoftTypography>
-                  <input type="file" accept="image/*" name="aadharFront" />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    name="aadharFront"
+                  />
                 </SoftBox>
               </SoftBox>
               <SoftBox mb={2} width="100%">
-                <SoftBox display="flex" alignItems="center" justifyContent="space-between">
-
-                  <SoftTypography color="text" pr={1} fontWeight="medium" whiteSpace="nowrap" fontSize="0.9rem">
+                {/* Input for capturing Aadhar Back photo */}
+                <SoftBox
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <SoftTypography
+                    color="text"
+                    fontWeight="medium"
+                    whiteSpace="nowrap"
+                    pr={1}
+                    fontSize="0.9rem"
+                  >
                     Aadhar Back
                   </SoftTypography>
-                  <input type="file" accept="image/*" name="aadharBack" />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    name="aadharBack"
+                  />
                 </SoftBox>
               </SoftBox>
               <SoftBox mb={2} width="100%">
-                <SoftBox display="flex" alignItems="center" justifyContent="space-between">
-
-                  <SoftTypography color="text" pr={1} fontWeight="medium" whiteSpace="nowrap" fontSize="0.9rem">
+                {/* Input for capturing PAN file */}
+                <SoftBox
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <SoftTypography
+                    color="text"
+                    fontWeight="medium"
+                    whiteSpace="nowrap"
+                    pr={1}
+                    fontSize="0.9rem"
+                  >
                     Upload PAN
                   </SoftTypography>
-                  <input type="file" accept="image/*" name="panFile" />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    name="panFile"
+                  />
                 </SoftBox>
               </SoftBox>
+
             </>
           ) : (
             ""
