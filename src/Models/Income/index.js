@@ -1,8 +1,9 @@
 class IncomeLog {
-  constructor(id, userId, amount, tds, conCharge, type, status, createdAt, updatedAt) {
+  constructor(id, userId, amount, level, tds, conCharge, type, status, createdAt, updatedAt) {
     this.id = id;
     this.userId = userId;
     this.amount = amount;
+    this.level = level;
     this.tds = tds;
     this.conCharge = conCharge;
     this.type = type;
@@ -19,6 +20,7 @@ class IncomeLog {
           json._id ?? null,
           json.userId,
           json.amount,
+          json.level,
           json.tds,
           json.conCharge,
           json.type ?? "",

@@ -22,7 +22,6 @@ import { Typography } from "antd";
 import { setLoading } from "context";
 
 function SignUp() {
-
   const form = useRef(null);
   const [controller, dispatch] = useSoftUIController();
   const { accept } = controller;
@@ -33,7 +32,7 @@ function SignUp() {
 
   const signatureRef = useRef(null);
 
-  const titles = ["CREATE NEW ACCOUNT", "ADD ADDRESS", "Complete KYC"]
+  const titles = ["CREATE NEW ACCOUNT", "ADD ADDRESS", "Complete KYC"];
   const routes = [registerUser, createAddress, createKyc];
 
   function dataURLtoFile(dataURL) {
@@ -51,7 +50,6 @@ function SignUp() {
 
     return file;
   }
-
 
   // Validate IFSC Codes
   const handleIFSCCodeChange = async (e) => {
@@ -76,7 +74,6 @@ function SignUp() {
       toast.error("Error While fetching IFSC");
     }
   };
-
 
   // Validate postal code
   const handlePostalCodeChange = async (e) => {
@@ -105,7 +102,7 @@ function SignUp() {
     }
   };
 
-  // 
+  //
   const handleSetAgreement = () => setAccept(dispatch, !accept);
 
   const submitHandler = async (e, route) => {
@@ -118,8 +115,7 @@ function SignUp() {
     if (step == 3 && !form.sign) {
       toast.error("Signatures are required!");
       return;
-    }
-    else if (step == 3 && form.sign) {
+    } else if (step == 3 && form.sign) {
       let sign = dataURLtoFile(form.sign);
       formdata.append("sign", sign);
     }
@@ -133,18 +129,17 @@ function SignUp() {
       if (response.status == 200) {
         form.current.reset();
         let next = parseInt(step) + 1;
-        form.userId = response.data?.userId
+        form.userId = response.data?.userId;
         let route = `/sign-up/${next}?userId=${form.userId}`;
         if (step == 3) {
-          route = '/sign-in';
+          route = "/sign-in";
         }
         navigate(route);
       }
       setDialog(dispatch, [response]);
     } catch (error) {
       setLoading(dispatch, false);
-      toast.error(error.response?.data?.message ?? "Unsupported Files reported!")
-
+      toast.error(error.response?.data?.message ?? "Unsupported Files reported!");
     }
   };
 
@@ -164,26 +159,42 @@ function SignUp() {
     if (parseInt(step) > 1 && queryParams.get("userId")) {
       form.userId = queryParams.get("userId");
     } else if (queryParams.get("sponsorId")) {
-      form.sponsorId = queryParams.get("sponsorId")
+      form.sponsorId = queryParams.get("sponsorId");
       form.placementId = queryParams.get("placementId");
-    }
-    else {
-      navigate("/")
+    } else {
+      navigate("/");
     }
   }, []);
   return (
-    <CoverLayout title={titles[step - 1]} >
+    <CoverLayout title={titles[step - 1]}>
       <SoftBox pt={2} pb={3} px={3}>
-
-        <SoftBox component="form" role="form"
+        <SoftBox
+          component="form"
+          role="form"
           onSubmit={(e) => submitHandler(e, routes[parseInt(step - 1)])}
           textAlign="center"
-          display="flex" encType="multipart/form-data" flexDirection="column" justifyContent="center" alignItems="center" ref={form} >
+          display="flex"
+          encType="multipart/form-data"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+          ref={form}
+        >
           {step == 1 ? (
             <>
               <SoftBox mb={2} width="100%">
-                <FormControl sx={{ display: "flex", gap: 5, justifyContent: "center", flexDirection: "row", alignContent: "center" }} >
-                  <FormLabel color="primary" sx={{ alignSelf: "center" }} >Initials</FormLabel>
+                <FormControl
+                  sx={{
+                    display: "flex",
+                    gap: 5,
+                    justifyContent: "center",
+                    flexDirection: "row",
+                    alignContent: "center",
+                  }}
+                >
+                  <FormLabel color="primary" sx={{ alignSelf: "center" }}>
+                    Initials
+                  </FormLabel>
                   <Select
                     labelId="initial"
                     id="demo-simple-select"
@@ -191,7 +202,9 @@ function SignUp() {
                     label="Initial"
                     name="initial"
                   >
-                    <MenuItem fullWidth value="Mr.">Mr.</MenuItem>
+                    <MenuItem fullWidth value="Mr.">
+                      Mr.
+                    </MenuItem>
                     <MenuItem value="Mrs.">Mrs.</MenuItem>
                     <MenuItem value="Miss">Miss</MenuItem>
                     <MenuItem value="Ms.">Ms.</MenuItem>
@@ -236,10 +249,22 @@ function SignUp() {
                 </SoftTypography>
               </SoftBox>
               <SoftBox mb={2} width="100%">
-                <SoftInput name="sponsorId" value={form.sponsorId} disabled={form.sponsorId} type="text" placeholder="sponsor id" />
+                <SoftInput
+                  name="sponsorId"
+                  value={form.sponsorId}
+                  disabled={form.sponsorId}
+                  type="text"
+                  placeholder="sponsor id"
+                />
               </SoftBox>
               <SoftBox mb={2} width="100%">
-                <SoftInput name="placementId" value={form.placementId ?? form.sponsorId} disabled={form.placementId ?? form.sponsorId} type="text" placeholder="placement id" />
+                <SoftInput
+                  name="placementId"
+                  value={form.placementId ?? form.sponsorId}
+                  disabled={form.placementId ?? form.sponsorId}
+                  type="text"
+                  placeholder="placement id"
+                />
               </SoftBox>
             </>
           ) : step == 2 ? (
@@ -299,7 +324,7 @@ function SignUp() {
               <SoftBox mb={2} width="100%">
                 <SoftInput placeholder="Account Number" name="accountNo" />
               </SoftBox>
-              <SoftBox mb={2} width='100%'>
+              <SoftBox mb={2} width="100%">
                 <SoftInput
                   type="text"
                   placeholder="IFSC"
@@ -331,7 +356,9 @@ function SignUp() {
                   type="text"
                   placeholder="PAN Number"
                   name="panNo"
-                  onChange={(e) => { handleInputChange(e); }}
+                  onChange={(e) => {
+                    handleInputChange(e);
+                  }}
                 />
               </SoftBox>
               <SoftBox mb={2} width="100%">
@@ -345,27 +372,42 @@ function SignUp() {
               </SoftBox>
               <SoftBox mb={2} width="100%">
                 <SoftBox display="flex" alignItems="center" justifyContent="space-between">
-
-                  <SoftTypography color="text" fontWeight="medium" whiteSpace="nowrap" pr={1} fontSize="0.9rem">
-                    Aadhar Front
+                  <SoftTypography
+                    color="text"
+                    fontWeight="medium"
+                    whiteSpace="nowrap"
+                    pr={1}
+                    fontSize="0.9rem"
+                  >
+                    Aadhar Front (max 1mb)
                   </SoftTypography>
                   <input type="file" accept="image/*" name="aadharFront" />
                 </SoftBox>
               </SoftBox>
               <SoftBox mb={2} width="100%">
                 <SoftBox display="flex" alignItems="center" justifyContent="space-between">
-
-                  <SoftTypography color="text" pr={1} fontWeight="medium" whiteSpace="nowrap" fontSize="0.9rem">
-                    Aadhar Back
+                  <SoftTypography
+                    color="text"
+                    pr={1}
+                    fontWeight="medium"
+                    whiteSpace="nowrap"
+                    fontSize="0.9rem"
+                  >
+                    Aadhar Back (max 1mb)
                   </SoftTypography>
                   <input type="file" accept="image/*" name="aadharBack" />
                 </SoftBox>
               </SoftBox>
               <SoftBox mb={2} width="100%">
                 <SoftBox display="flex" alignItems="center" justifyContent="space-between">
-
-                  <SoftTypography color="text" pr={1} fontWeight="medium" whiteSpace="nowrap" fontSize="0.9rem">
-                    Upload PAN
+                  <SoftTypography
+                    color="text"
+                    pr={1}
+                    fontWeight="medium"
+                    whiteSpace="nowrap"
+                    fontSize="0.9rem"
+                  >
+                    Upload PAN (max 1mb)
                   </SoftTypography>
                   <input type="file" accept="image/*" name="panFile" />
                 </SoftBox>
@@ -396,52 +438,75 @@ function SignUp() {
             </SoftTypography>
           </SoftBox>
           <SoftBox mt={1} mb={1}>
-            {
-              step == 3 &&
+            {step == 3 && (
               <SoftBox mb={2} width="100%">
-                <SoftButton variant="gradient" color="info" onClick={() => {
-                  setDialog(dispatch, [{
-                    status: "form",
-                    title: "E-SIGN",
-                    message: "Add new signatures",
-                    children: <Box display="flex" flexDirection="column" alignItems="center">
-                      <Box border="1px solid black" sx={{ width: "100%", maxWidth: "400px", height: "30vh", maxHeight: "400px" }}>
-                        <SignatureCanvas
-                          ref={signatureRef}
-                          penColor="blue"
-                          canvasProps={{ style: { width: "100%", height: "100%" } }}
-                        />
-                      </Box>
+                <SoftButton
+                  variant="gradient"
+                  color="info"
+                  onClick={() => {
+                    setDialog(dispatch, [
+                      {
+                        status: "form",
+                        title: "E-SIGN",
+                        message: "Add new signatures",
+                        children: (
+                          <Box display="flex" flexDirection="column" alignItems="center">
+                            <Box
+                              border="1px solid black"
+                              sx={{
+                                width: "100%",
+                                maxWidth: "400px",
+                                height: "30vh",
+                                maxHeight: "400px",
+                              }}
+                            >
+                              <SignatureCanvas
+                                ref={signatureRef}
+                                penColor="blue"
+                                canvasProps={{ style: { width: "100%", height: "100%" } }}
+                              />
+                            </Box>
 
-                      <Typography fontSize="0.9rem" fontWeight="medium" style={{ color: "red", marginTop: "5px" }} color="#00ff00" textAlign="center">Please make sure the information you provide is correct and best of your knowledge. Wrong information leads to rejection or suspension of your account.</Typography>
-                    </Box>
-                    , action: "submit", call: () => {
-                      if (signatureRef.current.isEmpty()) {
-                        toast.warn("Signatures are required!")
-                      } else {
-                        setDialog(dispatch, []);
-                        form.sign = signatureRef.current.toDataURL();
-                        toast.success("Signatures Captured Successfully!");
-                      }
-                    }
-                  }])
-                }}>E-sign
+                            <Typography
+                              fontSize="0.9rem"
+                              fontWeight="medium"
+                              style={{ color: "red", marginTop: "5px" }}
+                              color="#00ff00"
+                              textAlign="center"
+                            >
+                              Please make sure the information you provide is correct and best of
+                              your knowledge. Wrong information leads to rejection or suspension of
+                              your account.
+                            </Typography>
+                          </Box>
+                        ),
+                        action: "submit",
+                        call: () => {
+                          if (signatureRef.current.isEmpty()) {
+                            toast.warn("Signatures are required!");
+                          } else {
+                            setDialog(dispatch, []);
+                            form.sign = signatureRef.current.toDataURL();
+                            toast.success("Signatures Captured Successfully!");
+                          }
+                        },
+                      },
+                    ]);
+                  }}
+                >
+                  E-sign
                 </SoftButton>
               </SoftBox>
-            }
-            <SoftButton
-              variant="gradient"
-              type="submit"
-              color="info"
-            >
+            )}
+            <SoftButton variant="gradient" type="submit" color="info">
               Submit
             </SoftButton>
           </SoftBox>
           <SoftBox mt={1} fontSize="0.9rem">
-
             <SoftTypography variant="p" fontWeight="bold" color="text">
               Already a User?
-            </SoftTypography><br />
+            </SoftTypography>
+            <br />
             <SoftTypography
               component={Link}
               to="/"
@@ -455,7 +520,7 @@ function SignUp() {
           </SoftBox>
         </SoftBox>
       </SoftBox>
-    </CoverLayout >
+    </CoverLayout>
   );
 }
 
