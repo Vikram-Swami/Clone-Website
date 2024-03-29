@@ -70,15 +70,7 @@ const actConnection = async (id, dispatch, call) => {
 }
 
 function Status({ tnxId, status, dispatch, call, e }) {
-  if (tnxId && status) {
-    return (
-      <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
-        <SoftBox display="flex" flexDirection="column">
-          <SoftBadge variant="gradient" badgeContent="online" color="success" size="xs" container />
-        </SoftBox>
-      </SoftBox>
-    );
-  } else if (tnxId === null) {
+  if (tnxId === null || !tnxId) {
     return (
       <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
         <SoftBox display="flex" alignItems="center" flexDirection="column" gap="4px">
