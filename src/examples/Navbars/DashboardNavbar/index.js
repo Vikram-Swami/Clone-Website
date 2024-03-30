@@ -39,6 +39,7 @@ import {
 import SoftButton from "components/SoftButton";
 import { setDialog } from "context";
 import { Avatar, Box, Divider, Stack } from "@mui/material";
+import NotificationItem from "examples/Items/NotificationItem";
 
 function DashboardNavbar({ absolute, light, isMini }) {
   const navigate = useNavigate();
@@ -190,52 +191,13 @@ function DashboardNavbar({ absolute, light, isMini }) {
 
     >
       <Box>
-        <SoftBox
-          variant="gradient"
-          px={1}
-          my={0.5}
-          onClick={() => navigate("/profile")}
-          display="flex"
-          sx={{ cursor: "pointer" }}
-          alignItems="center"
-          color="warning"
-        >
-          <Divider />
-          <Icon fontSize="1rem">account_circle</Icon>
-          <SoftTypography cursor="pointer" fontSize="1rem" pl={1} component="span">My Profile</SoftTypography>
 
-        </SoftBox>
-
-        <SoftBox
-          variant="gradient"
-          px={1}
-          my={0.5}
-          onClick={() => handleCopyLink(user)}
-          display="flex"
-          alignItems="center"
-          sx={{ cursor: "pointer" }}
-          color="info"
-        >
-          <Divider />
-          <Icon fontSize="1rem">share_icon</Icon>
-          <SoftTypography cursor="pointer" fontSize="1rem" pl={1} component="span">Sponsor</SoftTypography>
-
-        </SoftBox>
-        <SoftBox
-          variant="gradient"
-          px={1}
-          my={0.5}
-          onClick={() => logoutHandler()}
-          display="flex"
-          sx={{ cursor: "pointer" }}
-          alignItems="center"
-          color="error"
-        >
-          <Divider />
-          <Icon fontSize="1rem">logout_icon</Icon>
-          <SoftTypography cursor="pointer" fontSize="1rem" pl={1} component="span">Log Out</SoftTypography>
-        </SoftBox>
-
+        <NotificationItem
+          image={<img src={team2} alt="person" />}
+          title={["New message", "from Laur"]}
+          date="13 minutes ago"
+          onClick={handleCloseMenu}
+        />
       </Box>
     </Menu>
   );
