@@ -91,7 +91,8 @@ const TeamView = {
     { name: "add", align: "center" },
   ],
 
-  rows: (data, dispatch, id) => {
+  rows: (data, dispatch, user) => {
+    console.log(user);
     return data?.map((e, i) => {
       const dateObject = new Date(e.createdAt);
 
@@ -118,7 +119,7 @@ const TeamView = {
             ),
 
             status: <Status verified={e.isVerified} status={e.status} />,
-            level: <Level level={e.level} pLevel={e.placementLevel} />,
+            level: <Level level={parseInt(e.level - user.level)} pLevel={e.placementLevel} />,
             storage: (
               <SoftTypography variant="caption" color="secondary" fontWeight="medium">
                 {e.storage}
@@ -136,7 +137,7 @@ const TeamView = {
                   const generateReferLink = () => {
                     const referLink = window.location.origin;
 
-                    return `${referLink}/sign-up/1?sponsorId=${id}&placementId=${e.userId}`;
+                    return `${referLink}/sign-up/1?sponsorId=${user.id}&placementId=${e.userId}`;
                   };
 
                   const referLink = generateReferLink();

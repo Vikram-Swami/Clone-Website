@@ -26,6 +26,7 @@ class UserModel {
     street2,
     city,
     state,
+    level,
     country,
     postalCode,
     rentCount,
@@ -59,6 +60,7 @@ class UserModel {
     this.street2 = street2;
     this.city = city;
     this.state = state;
+    this.level = level;
     this.country = country;
     this.postalCode = postalCode;
     this.rentCount = rentCount;
@@ -104,6 +106,7 @@ class UserModel {
       jsonData.street2 ?? "",
       jsonData.city ?? "",
       jsonData.state ?? "",
+      jsonData.level ?? 0,
       jsonData.country ?? "",
       jsonData.postalCode ?? "",
       jsonData.rentCount ?? 0,
