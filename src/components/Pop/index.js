@@ -20,29 +20,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 function FormDialog({ open, setOpen, data }) {
-  let userIdref = useRef();
-  const navigate = useNavigate();
-  let [controller, dispatch] = useSoftUIController();
 
-  const validateUsers = async (e, step) => {
-    e.preventDefault();
-    startLoading(dispatch, true);
-    const userId = new FormData(userIdref.current);
-
-    try {
-      const response = await ApiClient.createData(validateUser, userId);
-      if (response.status === 200) {
-        setOpen(false);
-        navigate(`/sign-up/${step}?userId=${userId.get("userId")}`);
-      } else {
-        toast.error(response.message ?? "User Not found");
-      }
-      setLoading(dispatch, false);
-    } catch (error) {
-      toast.error(error.response?.data?.message ?? "Oops! Network Error. Please try later.");
-      setLoading(dispatch, false);
-    }
-  };
   const handleClose = () => {
     setOpen(false);
   };

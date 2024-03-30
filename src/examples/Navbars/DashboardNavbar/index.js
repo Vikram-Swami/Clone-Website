@@ -192,12 +192,12 @@ function DashboardNavbar({ absolute, light, isMini }) {
     >
       <Box>
 
-        <NotificationItem
+        {/* <NotificationItem
           image={<img src={team2} alt="person" />}
           title={["New message", "from Laur"]}
           date="13 minutes ago"
           onClick={handleCloseMenu}
-        />
+        /> */}
       </Box>
     </Menu>
   );
