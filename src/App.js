@@ -69,6 +69,8 @@ export default function App() {
       const data = await ApiClient.getData(getUserById);
       if (data.status == 200) {
         setUser(dispatch, data?.data);
+      } else {
+        deleteData();
       }
       setDialog(dispatch, [data]);
     } catch (error) {

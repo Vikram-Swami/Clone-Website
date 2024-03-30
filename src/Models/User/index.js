@@ -5,7 +5,6 @@ class UserModel {
     email,
     phone,
     type,
-    members,
     wallet,
     status,
     ownStr,
@@ -36,7 +35,6 @@ class UserModel {
     this.email = email;
     this.phone = phone;
     this.type = type;
-    this.members = members;
     this.wallet = wallet;
     this.status = status;
     this.ownStr = ownStr;
@@ -67,12 +65,11 @@ class UserModel {
 
   toJson(jsonData) {
     return new UserModel(
-      jsonData?.userId ?? null,
+      jsonData?.userId?.toUpperCase() ?? null,
       jsonData.fullName ?? "user",
       jsonData.email ?? "",
       jsonData.phone ?? "xxx-xxx-xxxx",
       jsonData.type ?? "",
-      jsonData.members ?? null,
       jsonData.wallet ?? null,
       jsonData.status ?? false,
       jsonData.storage?.own ?? null,

@@ -143,6 +143,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
           <SoftTypography cursor="pointer" fontSize="1rem" pl={1} component="span">My Profile</SoftTypography>
 
         </SoftBox>
+
         <SoftBox
           variant="gradient"
           px={1}
@@ -151,11 +152,57 @@ function DashboardNavbar({ absolute, light, isMini }) {
           display="flex"
           alignItems="center"
           sx={{ cursor: "pointer" }}
-          color="secondary"
+          color="info"
         >
           <Divider />
-          <Icon fontSize="1rem">notifications</Icon>
-          <SoftTypography cursor="pointer" fontSize="1rem" pl={1} component="span">Notifications</SoftTypography>
+          <Icon fontSize="1rem">share_icon</Icon>
+          <SoftTypography cursor="pointer" fontSize="1rem" pl={1} component="span">Sponsor</SoftTypography>
+
+        </SoftBox>
+        <SoftBox
+          variant="gradient"
+          px={1}
+          my={0.5}
+          onClick={() => logoutHandler()}
+          display="flex"
+          sx={{ cursor: "pointer" }}
+          alignItems="center"
+          color="error"
+        >
+          <Divider />
+          <Icon fontSize="1rem">logout_icon</Icon>
+          <SoftTypography cursor="pointer" fontSize="1rem" pl={1} component="span">Log Out</SoftTypography>
+        </SoftBox>
+
+      </Box>
+    </Menu>
+  );
+  const renderNotification = () => (
+    <Menu
+      anchorEl={openMenu}
+      anchorReference={null}
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "left",
+      }}
+      open={Boolean(openMenu)}
+      onClose={handleCloseMenu}
+
+    >
+      <Box>
+        <SoftBox
+          variant="gradient"
+          px={1}
+          my={0.5}
+          onClick={() => navigate("/profile")}
+          display="flex"
+          sx={{ cursor: "pointer" }}
+          alignItems="center"
+          color="warning"
+        >
+          <Divider />
+          <Icon fontSize="1rem">account_circle</Icon>
+          <SoftTypography cursor="pointer" fontSize="1rem" pl={1} component="span">My Profile</SoftTypography>
 
         </SoftBox>
 
@@ -171,7 +218,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
         >
           <Divider />
           <Icon fontSize="1rem">share_icon</Icon>
-          <SoftTypography cursor="pointer" fontSize="1rem" pl={1} component="span">Refer</SoftTypography>
+          <SoftTypography cursor="pointer" fontSize="1rem" pl={1} component="span">Sponsor</SoftTypography>
 
         </SoftBox>
         <SoftBox
@@ -217,12 +264,20 @@ function DashboardNavbar({ absolute, light, isMini }) {
         </SoftBox>
         {(
           <SoftBox sx={(theme) => navbarRow(theme, { isMini })}>
-            <SoftBox pr={1}>
-              <SoftInput
-                placeholder="Type here..."
-                icon={{ component: "search", direction: "left" }}
-              />
-            </SoftBox>
+
+            <IconButton
+              size="small"
+              color="inherit"
+              sx={navbarIconButton}
+              aria-controls="notification-menu"
+              aria-haspopup="true"
+              variant="contained"
+              onClick={handleOpenMenu}
+            >
+              <Icon className={light ? "text-white" : "text-dark"}>notifications</Icon>
+              {renderNotification()}
+
+            </IconButton>
 
 
 
@@ -242,6 +297,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
               </IconButton>
               {renderMenu()}
             </SoftBox>
+
             <IconButton
               size="small"
               color="inherit"

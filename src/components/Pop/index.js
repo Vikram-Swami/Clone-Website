@@ -60,48 +60,8 @@ function FormDialog({ open, setOpen, data }) {
           {data.status === 200 && data?.data?.id && (
             <DialogContent textAlign="center">
               <DialogContentText>Id:{data?.data?.id}</DialogContentText>
+              {data.data?.userId && <DialogContentText>userId:{data?.data?.userId}</DialogContentText>}
             </DialogContent>
-          )}
-          {data.status === "skip" && (
-            <>
-              <DialogContent>
-                <DialogContent>
-                  <form encType="multipart/form-data" ref={(userIdref = {})}>
-                    <div
-                      ref={(el) => (userIdref.message = el)}
-                      style={{ display: "none", marginBottom: "10px" }}
-                    ></div>
-
-                    <TextField
-                      autoFocus
-                      name="userId"
-                      margin="dense"
-                      label="Enter User Id"
-                      type="text"
-                      fullWidth
-                    />
-                  </form>
-                </DialogContent>
-              </DialogContent>
-              <Button
-                variant="gradient"
-                color="light"
-                onClick={(e) => {
-                  validateUsers(e, 2);
-                }}
-              >
-                Pending Address? complete now
-              </Button>
-              <Button
-                variant="gradient"
-                color="dark"
-                onClick={(e) => {
-                  validateUsers(e, 3);
-                }}
-              >
-                Pending KYC?<> complete now</>
-              </Button>
-            </>
           )}
 
           <DialogActions display="flex">

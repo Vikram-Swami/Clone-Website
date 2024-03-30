@@ -21,6 +21,7 @@ import Separator from "../components/Separator";
 import { TextField } from "@mui/material";
 import { sendOtp } from "Services/endpointes";
 import { verifyOtp } from "Services/endpointes";
+import { validateUser } from "Services/endpointes";
 
 function SignIn() {
   const [, dispatch] = useSoftUIController();
@@ -62,6 +63,8 @@ function SignIn() {
       startLoading(dispatch, false);
       const response = await ApiClient.createData(verifyOtp, form);
       if (response.status === 200) {
+        setCookie("authToken", response?.data.token, 1);
+        setCookie("userId", response?.data.userId, 1);
         navigate("/dashboard");
         toast.success(response.message);
       }
@@ -91,6 +94,25 @@ function SignIn() {
       toast.error(err?.toString());
     }
   }
+
+  const completeProfile = async (form) => {
+
+    try {
+      startLoading(dispatch, true);
+      const response = await ApiClient.createData(validateUser, form);
+      if (response.status === 200) {
+        let step = response.data?.step;
+        let userId = response.data?.userId;
+        navigate(`/sign-up/${step}?userId=${userId}`);
+        setLoading(dispatch, false);
+      } else {
+        setDialog(dispatch, [response]);
+      }
+    } catch (error) {
+      toast.error(error.toString());
+      setLoading(dispatch, false);
+    }
+  };
 
   return (
     <>
@@ -132,7 +154,7 @@ function SignIn() {
               }}
               variant="span"
               color="info"
-              fontSize="0.9rem"
+              fontSize="0.8rem"
               whiteSpace="nowrap"
               ml={1}
               textTransform="uppercase"
@@ -142,7 +164,7 @@ function SignIn() {
               Login with OTP
             </SoftTypography>
           </SoftBox>
-          <SoftBox mt={1} fontSize="0.9rem">
+          <SoftBox fontSize="0.9rem">
 
             <SoftTypography variant="p" fontWeight="bold" color="text">
               Incomplete Profile?
@@ -151,8 +173,11 @@ function SignIn() {
               onClick={() => {
                 setDialog(dispatch, [
                   {
-                    status: "skip",
-                    message: "Please Enter Your User Id",
+                    status: "form",
+                    title: "Please Enter your UserId",
+                    children: <TextField autoFocus name="userId" placeholder="User ID / Email" margin="dense" label="ID" type="text" fullWidth />,
+                    action: "Submit",
+                    call: completeProfile
                   },
                 ]);
               }}
@@ -166,7 +191,6 @@ function SignIn() {
           </SoftBox>
           <Separator />
           <SoftBox fontSize="0.9rem">
-
             <SoftTypography variant="p" fontWeight="bold" color="text">
               Forget Password?{" "}
             </SoftTypography>
