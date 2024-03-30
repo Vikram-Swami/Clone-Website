@@ -34,11 +34,14 @@ function DefaultProductCard({ color, icon, storage, range, rent, basicAmt, tax, 
         return;
       }
       setLoading(dispatch, true);
-      const response = await ApiClient.createData(createConnections, { "userId": user.userId, "storage": storage });
+      const response = await ApiClient.createData(createConnections, {
+        userId: user.userId,
+        storage: storage,
+      });
       console.log(response);
       setDialog(dispatch, [response]);
       setConnection(dispatch, []);
-      navigate("/connections")
+      navigate("/connections");
     } catch (error) {
       toast.error(error?.response?.data?.message);
       setLoading(dispatch, false);
@@ -47,14 +50,34 @@ function DefaultProductCard({ color, icon, storage, range, rent, basicAmt, tax, 
 
   const getTermsCondition = (storage) => async (form) => {
     try {
-      setLoading(dispatch, true)
+      setLoading(dispatch, true);
       const response = await ApiClient.getDataByParam(getSourceByType, "terms-condition");
-      setDialog(dispatch, [{ status: "form", title: "Please Accept Terms & Conditions", message: response?.data?.range, children: (<FormControlLabel control={<Checkbox onChange={(e) => { setAccept(dispatch, e.target.checked) }} />} label="I Agree*" />), action: "Agree & Buy", call: createConnection(storage) }])
+      setDialog(dispatch, [
+        {
+          status: "form",
+          title: "Please Accept Terms & Conditions",
+          message: response?.data?.range,
+          children: (
+            <FormControlLabel
+              control={
+                <Checkbox
+                  onChange={(e) => {
+                    setAccept(dispatch, e.target.checked);
+                  }}
+                />
+              }
+              label="I Agree*"
+            />
+          ),
+          action: "Agree & Buy",
+          call: createConnection(storage),
+        },
+      ]);
     } catch (err) {
       toast.warn(err?.response?.data?.message);
       setLoading(dispatch, false);
     }
-  }
+  };
 
   const descriptionElementRef = React.useRef(null);
   React.useEffect(() => {
@@ -105,7 +128,7 @@ function DefaultProductCard({ color, icon, storage, range, rent, basicAmt, tax, 
                 textTransform="capitalize"
                 textAlign="left"
               >
-                Basic Amount : {basicAmt}
+                Amount : {basicAmt * range}
               </SoftTypography>
               <SoftTypography
                 variant="h6"
@@ -130,46 +153,54 @@ function DefaultProductCard({ color, icon, storage, range, rent, basicAmt, tax, 
               color="info"
               shadow="md"
               height="0.001rem"
-              sx={{ padding: "0 !important", }}
+              sx={{ padding: "0 !important" }}
               borderRadius="md"
               variant="gradient"
-              onClick={() => setDialog(dispatch, [{
-                status: "form", title: "please confirm your purchase", children: (<Box>
-                  <Typography
-                    variant="h6"
-                    fontWeight="medium"
-                    textTransform="capitalize"
-                    textAlign="left"
-                  >
-                    Basic Amount : {basicAmt}
-                  </Typography>
-                  <Typography
-                    variant="h6"
-                    fontWeight="medium"
-                    textTransform="capitalize"
-                    textAlign="left"
-                  >
-                    GST : {tax}%
-                  </Typography>
-                  <Typography
-                    variant="h6"
-                    fontWeight="medium"
-                    textTransform="capitalize"
-                    textAlign="left"
-                  >
-                    Total Payble : {totalprice}/-
-                  </Typography>
-                </Box>), call: getTermsCondition(range), action: "Confirm"
-              }])}
+              onClick={() =>
+                setDialog(dispatch, [
+                  {
+                    status: "form",
+                    title: "please confirm your purchase",
+                    children: (
+                      <Box>
+                        <Typography
+                          variant="h6"
+                          fontWeight="medium"
+                          textTransform="capitalize"
+                          textAlign="left"
+                        >
+                          Basic Amount : {basicAmt}
+                        </Typography>
+                        <Typography
+                          variant="h6"
+                          fontWeight="medium"
+                          textTransform="capitalize"
+                          textAlign="left"
+                        >
+                          GST : {tax}%
+                        </Typography>
+                        <Typography
+                          variant="h6"
+                          fontWeight="medium"
+                          textTransform="capitalize"
+                          textAlign="left"
+                        >
+                          Total Payble : {totalprice}/-
+                        </Typography>
+                      </Box>
+                    ),
+                    call: getTermsCondition(range),
+                    action: "Confirm",
+                  },
+                ])
+              }
             >
               BUY
             </SoftButton>
-
           </SoftBox>
         </SoftBox>
       </Card>
     </>
-
   );
 }
 

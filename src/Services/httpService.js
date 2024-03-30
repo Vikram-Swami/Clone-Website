@@ -37,10 +37,10 @@ instance.interceptors.request.use(function (config) {
 });
 
 const requests = {
-  get: (url) => instance.get(url).then((res) => res.data),
-  post: (url, body) => instance.post(url, body).then((res) => res.data),
-  put: (url, body) => instance.put(url, body).then((res) => res.data),
-  delete: (url) => instance.delete(url).then((res) => res.data),
+  get: (url) => instance.get(url).then((res) => res.data).catch(err => { return err.response ? err.response.data : err; }),
+  post: (url, body) => instance.post(url, body).then((res) => res.data).catch(err => { return err.response ? err.response.data : err; }),
+  put: (url, body) => instance.put(url, body).then((res) => res.data).catch(err => { return err.response ? err.response.data : err; }),
+  delete: (url) => instance.delete(url).then((res) => res.data).catch(err => { return err.response ? err.response.data : err; }),
 };
 
 export default requests;

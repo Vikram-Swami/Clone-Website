@@ -23,30 +23,28 @@ import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
 import gradientLineChartData from "layouts/dashboard/data/gradientLineChartData";
 import UserModel from "Models/User";
 
-
 function Dashboard() {
   const [controller, dispatch] = useSoftUIController();
   const { user } = controller;
   const { size } = typography;
   const { chart, items } = reportsBarChartData;
-  const newUser = new UserModel().toJson(user);
 
   const miniStatisticsData = [
     {
       title: { text: "My Storage" },
-      count: newUser?.ownStr ?? 0,
+      count: user?.ownStr ?? 0,
       percentage: { color: "success" },
       icon: { color: "info", component: "storage" },
     },
     {
       title: { text: "My Team size" },
-      count: newUser?.members ?? 0,
+      count: user?.members ?? 0,
       percentage: { color: "success" },
       icon: { color: "info", component: "groups" },
     },
     {
       title: { text: "My Earning" },
-      count: newUser?.earning ?? 0,
+      count: user?.wallet ?? 0,
       percentage: { color: "error" },
       icon: { color: "info", component: "currency_rupee" },
     },

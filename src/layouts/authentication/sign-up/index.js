@@ -73,7 +73,7 @@ function SignUp() {
       }
     } catch (error) {
       form.current.IFSC.parentNode.style.border = "2px solid red";
-      toast.error("Error While fetching IFSC");
+      toast.error(error.toString());
     }
   };
 
@@ -101,7 +101,7 @@ function SignUp() {
         form.current.country.value = "Country";
       }
     } catch (error) {
-      toast.error(error.response?.data?.message ?? "Network Error!");
+      toast.error(error.toString());
     }
   };
 
@@ -143,21 +143,8 @@ function SignUp() {
       setDialog(dispatch, [response]);
     } catch (error) {
       setLoading(dispatch, false);
-      toast.error(error.response?.data?.message ?? "Unsupported Files reported!")
-
+      toast.error(error.toString());
     }
-  };
-
-  // Function to handle image capture from camera
-  const handleCapturePhoto = (inputName, facingMode) => {
-    return () => {
-      // Access the input element
-      const input = document.querySelector(`input[name="${inputName}"]`);
-      // Set the capture attribute to enable camera access
-      input.setAttribute("capture", facingMode);
-      // Trigger a click event to open the camera interface
-      input.click();
-    };
   };
 
   const handleInputChange = (e) => {
@@ -244,7 +231,7 @@ function SignUp() {
               <SoftBox mb={2} width="100%">
                 <SoftInput name="password" type="password" placeholder="Password" />
                 <SoftTypography color="text" fontWeight="light" fontSize="0.8rem">
-                  Password must be Alphanumerical and must contain atleast one special charactor.
+                  Password must be Alphanumerical, minimum 8 characters long and must contain atleast one special charactor.
                 </SoftTypography>
               </SoftBox>
               <SoftBox mb={2} width="100%">

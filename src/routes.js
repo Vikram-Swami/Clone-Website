@@ -105,7 +105,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "My Income",
+    name: "Income History",
     key: "income",
     auth: "any",
     route: "/income",

@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import UserModel from "Models/User";
 import ConnectionsModel from "Models/Connection";
 import FormDialog from "components/Pop";
-import LoginDialog from "components/Pop/login";
 import NewFormDialog from "components/NewDialog";
 import RentModel from "Models/Rents";
 import IncomeLog from "Models/Income";
@@ -114,17 +113,8 @@ function NextworkControllerProvider({ children }) {
       <FormDialog
         open={
           controller.dialog?.length > 0 &&
-          controller.dialog?.[0]?.status !== "otp" &&
-          controller.dialog?.[0]?.status !== "form"
+          controller.dialog[0]?.status !== "form"
         }
-        setOpen={(v) => {
-          setDialog(dispatch, []);
-        }}
-        data={controller.dialog[0]}
-      />
-
-      <LoginDialog
-        open={controller.dialog.length > 0 && controller.dialog[0]?.status === "otp"}
         setOpen={(v) => {
           setDialog(dispatch, []);
         }}

@@ -41,20 +41,17 @@ function Status({ tnxId, status }) {
   }
 }
 
-
 const usersView = {
   columns: [
     { name: "user", align: "left" },
-    { name: "amount", align: "left" },
-    { name: "tds", align: "center" },
-    { name: "conveniencecharge", align: "center" },
     { name: "type", align: "center" },
+    { name: "level", align: "center" },
+    { name: "amount", align: "left" },
     { name: "status", align: "center" },
     { name: "actions", align: "center" },
   ],
 
   rows: (data, name, dispatch) => {
-
     return data.map((e) => {
       const dateObject = new Date(e.createdAt);
 
@@ -63,17 +60,22 @@ const usersView = {
 
       return {
         user: <Author name={name} id={e.userId} />,
-        amount: (
+
+        type: (
           <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-            {e.amount}
+            {e.type}
           </SoftTypography>
         ),
-        tds: <Author name={e.tds ?? 0} />,
-        conveniencecharge: <Author name={e.conCharge ?? 0} />,
-
-        type: <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {e.type}
-        </SoftTypography>,
+        level: (
+          <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+            {e.level + 1}
+          </SoftTypography>
+        ),
+        amount: (
+          <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+            {e.amount + e.tds + e.conCharge}
+          </SoftTypography>
+        ),
         status: <Status status={e.status} />,
         actions: (
           <SoftBox
@@ -91,7 +93,9 @@ const usersView = {
               color="info"
               fontWeight="medium"
               cursor="pointer"
-              onClick={() => { toast.success("Details will be available soon!") }}
+              onClick={() => {
+                toast.success("Details will be available soon!");
+              }}
             >
               <Icon fontSize="small" color="info">
                 visibility

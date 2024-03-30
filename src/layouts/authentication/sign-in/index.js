@@ -1,5 +1,3 @@
-import { useRef, useState } from "react";
-
 // react-router-dom components
 import { Link, useNavigate } from "react-router-dom";
 
@@ -20,6 +18,9 @@ import { toast } from "react-toastify";
 import { setLoading } from "context";
 import { startLoading } from "context";
 import Separator from "../components/Separator";
+import { TextField } from "@mui/material";
+import { sendOtp } from "Services/endpointes";
+import { verifyOtp } from "Services/endpointes";
 
 function SignIn() {
   const [, dispatch] = useSoftUIController();
@@ -38,17 +39,58 @@ function SignIn() {
       const formDetails = new FormData(e.currentTarget);
       const response = await ApiClient.createData(login, formDetails);
       if (response?.status == 200) {
-        setCookie("authToken", response?.data.token, 7);
-        setCookie("userId", response?.data.userId, 7);
+        setCookie("authToken", response?.data.token, 1);
+        setCookie("userId", response?.data.userId, 1);
         navigate("/dashboard");
+        toast.success(response.message);
       }
-      setDialog(dispatch, [response]);
+      else {
+        setDialog(dispatch, [response]);
+      }
     } catch (error) {
+      toast.error(error.toString());
+    }
+    finally {
       setLoading(dispatch, false);
-      console.log(error);
-      toast.error(error.response?.data?.message ?? "Network Error!")
+
     }
   };
+
+  const verifyOtpLogin = async (id, form) => {
+    try {
+      form.append("userId", id);
+      startLoading(dispatch, false);
+      const response = await ApiClient.createData(verifyOtp, form);
+      if (response.status === 200) {
+        navigate("/dashboard");
+        toast.success(response.message);
+      }
+      else {
+        setDialog(dispatch, [response]);
+      }
+    } catch (err) {
+      setLoading(dispatch, false);
+      toast.error(err.toString());
+    }
+  }
+
+  const handleOtpLogin = async (form) => {
+    try {
+      startLoading(dispatch, true);
+      const response = await ApiClient.createData(sendOtp, form);
+      if (response.status === 200) {
+        response.status = "form";
+        response.action = "submit";
+        response.title = "Pleae Enter Your OTP"
+        response.children = <TextField autoFocus name="otp" placeholder="6 digit otp" margin="dense" label="Enter OTP" type="number" fullWidth />;
+        response.call = (data) => verifyOtpLogin(response.data?.userId, data);
+      }
+      setDialog(dispatch, [response]);
+    } catch (err) {
+      setLoading(dispatch, false);
+      toast.error(err?.toString());
+    }
+  }
 
   return (
     <>
@@ -76,6 +118,29 @@ function SignIn() {
             <SoftButton variant="gradient" color="info" type="submit">
               Submit
             </SoftButton>
+            <SoftTypography
+              onClick={() => {
+                setDialog(dispatch, [
+                  {
+                    status: "form",
+                    title: "Please Enter Your User Id",
+                    children: <TextField autoFocus name="userId" placeholder="User ID / Email" margin="dense" label="ID" type="text" fullWidth />,
+                    action: "Submit",
+                    call: handleOtpLogin
+                  },
+                ]);
+              }}
+              variant="span"
+              color="info"
+              fontSize="0.9rem"
+              whiteSpace="nowrap"
+              ml={1}
+              textTransform="uppercase"
+
+              cursor="pointer"
+            >
+              Login with OTP
+            </SoftTypography>
           </SoftBox>
           <SoftBox mt={1} fontSize="0.9rem">
 

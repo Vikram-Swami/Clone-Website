@@ -1,17 +1,12 @@
 import * as React from 'react';
 import { useSoftUIController } from 'context';
 import { PropTypes } from 'prop-types';
-import { Button, Card, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 
 export default function NewFormDialog({ open, setOpen, data }) {
-    const [controller,] = useSoftUIController();
     const handleClose = () => {
         setOpen(false);
     };
-    // const handleSubmit = () => {
-    //     data.call(controller.accept);
-
-    // }
 
 
     return (
@@ -22,6 +17,7 @@ export default function NewFormDialog({ open, setOpen, data }) {
                 PaperProps={{
                     component: 'form',
                     onSubmit: (e) => {
+                        console.log(data);
                         e.preventDefault();
                         const formData = new FormData(e.currentTarget);
                         data.call(formData);
@@ -31,7 +27,7 @@ export default function NewFormDialog({ open, setOpen, data }) {
                 <DialogTitle>{data?.title}</DialogTitle>
                 <DialogContent tabIndex={-1}>
 
-                    <DialogTitle>{data?.message}</DialogTitle>
+                    <DialogTitle fontSize={14}>{data?.message}</DialogTitle>
                     {data?.children}
                 </DialogContent>
 

@@ -1,5 +1,3 @@
-import { useRef, useState } from "react";
-
 // react-router-dom components
 import { Link, useNavigate } from "react-router-dom";
 
@@ -29,18 +27,16 @@ function ForgetPassword() {
     const changePass = (id) => async (form) => {
         try {
             form.append("id", id);
-            console.log(form, id);
             startLoading(dispatch, true);
             const response = await ApiClient.updateData(changePassword, form);
-            console.log(response);
             if (response.status == 200) {
                 navigate("/");
             }
             setDialog(dispatch, [response]);
 
         } catch (err) {
+            toast.error(err.toString());
             setLoading(dispatch, false);
-            toast.error(err.response?.data?.message ?? "Network Error!")
         }
     }
 
@@ -51,20 +47,17 @@ function ForgetPassword() {
             const formDetails = new FormData(e.currentTarget);
             let userId = formDetails.get("userId");
             const response = await ApiClient.createData(forgetPassword, formDetails);
-            if (response?.status == 200) {
+            if (response.status == 200) {
                 response.call = changePass(userId);
                 response.status = "form";
+                response.title = "Please enter OTP"
                 response.children = <TextField autoFocus name="otp" margin="dense" label="Enter OTP" type="text" fullWidth />;
                 response.action = "Submit";
-                console.log(userId);
-                setDialog(dispatch, [response]);
             }
-            else {
-                setDialog(dispatch, [response])
-            }
-        } catch (error) {
+            setDialog(dispatch, [response]);
+        } catch (err) {
+            toast.error(err.toString());
             setLoading(dispatch, false);
-            toast.error(error.response?.data?.message ?? "Network Error!")
         }
     };
 
@@ -77,10 +70,10 @@ function ForgetPassword() {
                     <SoftBox mb={1} width="100%">
                         <SoftBox ml={0.5} textAlign="left">
                             <SoftTypography component="label" variant="caption" fontWeight="bold">
-                                USER ID
+                                ID
                             </SoftTypography>
                         </SoftBox>
-                        <SoftInput type="text" placeholder="User ID" name="userId" />
+                        <SoftInput type="text" placeholder="User ID / Email" name="userId" />
                     </SoftBox>
                     <SoftBox mb={1} width="100%">
                         <SoftBox ml={0.5} textAlign="left">
@@ -106,7 +99,7 @@ function ForgetPassword() {
                     <SoftBox mt={1} fontSize="0.9rem">
 
                         <SoftTypography variant="p" fontWeight="bold" color="text">
-                            Remmemeber Account?{" "}
+                            Remember Account?{" "}
                         </SoftTypography>
                         <SoftTypography
                             component={Link}
