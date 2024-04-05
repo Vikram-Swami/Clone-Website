@@ -5,6 +5,7 @@ import RecipeReviewCard from "layouts/verifyAccount";
 // const Dashboard = lazy(() => import("layouts/dashboard"));
 import Dashboard from "layouts/dashboard";
 import ForgetPassword from "layouts/authentication/forget-password";
+import { ToastContainer } from "react-toastify";
 const Team = lazy(() => import("layouts/Team"));
 const Connections = lazy(() => import("layouts/connections"));
 const Billing = lazy(() => import("layouts/billing"));
@@ -75,6 +76,17 @@ const routes = [
 
   {
     type: "collapse",
+    name: "New Connection",
+    key: "new-connections",
+    auth: "any",
+    route: "/new-connections",
+    icon: <CreditCard size="12px" />,
+    component: <Products />,
+    noCollapse: true,
+  },
+
+  {
+    type: "collapse",
     name: "Create Members",
     key: "create-members",
     auth: "user",
@@ -105,16 +117,6 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Income History",
-    key: "income",
-    auth: "any",
-    route: "/income",
-    icon: <Office size="12px" />,
-    component: <Income />,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
     name: "My Rents",
     key: "rents",
     auth: "any",
@@ -125,14 +127,17 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "New Connection",
-    key: "new-connections",
+    name: "My Earning",
+    key: "my-earnings",
     auth: "any",
-    route: "/new-connections",
-    icon: <CreditCard size="12px" />,
-    component: <Products />,
+    route: "/my-earnings",
+    icon: <Office size="12px" />,
+    component: <Income />,
     noCollapse: true,
   },
+
+
+  { type: "title", title: "My Account", key: "account-pages" },
   {
     type: "collapse",
     name: "Account",
@@ -141,18 +146,6 @@ const routes = [
     auth: "any",
     icon: <CreditCard size="12px" />,
     component: <Billing />,
-    noCollapse: true,
-  },
-
-  { type: "title", title: "Account Pages", key: "account-pages" },
-  {
-    type: "collapse",
-    name: "Profile",
-    key: "profile",
-    route: "/profile",
-    auth: "any",
-    icon: <CustomerSupport size="12px" />,
-    component: <Profile />,
     noCollapse: true,
   },
 

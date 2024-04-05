@@ -12,6 +12,8 @@ import ApiClient from "Services/ApiClient";
 import { ToastContainer, toast } from "react-toastify";
 import { getUserById } from "Services/endpointes";
 import { setLoading } from "context";
+import { getUserNotification } from "Services/endpointes";
+import { setNotification } from "context";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
@@ -68,11 +70,15 @@ export default function App() {
       startLoading(dispatch, true);
       const data = await ApiClient.getData(getUserById);
       if (data.status == 200) {
+        const notifications = await ApiClient.getData(getUserNotification);
+        if (notifications.status == 200) {
+          setNotification(dispatch, notifications.data);
+        }
         setUser(dispatch, data?.data);
       } else {
         deleteData();
+        setDialog(dispatch, [data]);
       }
-      setDialog(dispatch, [data]);
     } catch (error) {
       deleteData();
       setLoading(dispatch, false);

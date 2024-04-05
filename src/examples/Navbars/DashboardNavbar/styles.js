@@ -84,7 +84,7 @@ const navbarRow = ({ breakpoints }, { isMini }) => ({
 
   [breakpoints.up("xl")]: {
     justifyContent: "stretch !important",
-    width: "max-content !important",
+    width: "100% !important",
   },
 });
 
@@ -92,7 +92,8 @@ const navbarIconButton = ({ typography: { size }, breakpoints }) => ({
   px: 0.75,
 
   "& .material-icons, .material-icons-round": {
-    fontSize: `${size.md} !important`,
+    fontSize: `${size} !important`,
+    marginRight: "10px"
   },
 
   "& .MuiTypography-root": {

@@ -10,7 +10,7 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 // Data
-import { Checkbox, FormControlLabel, Grid, TablePagination } from "@mui/material";
+import { Box, Checkbox, FormControlLabel, Grid, TablePagination } from "@mui/material";
 import DefaultInfoCard from "examples/Cards/InfoCards/DefaultInfoCard";
 
 import { useEffect, useMemo } from "react";
@@ -59,57 +59,36 @@ function Income() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <SoftBox py={3}>
-        <SoftBox mb={3}>
-          <Card>
-            <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-              <SoftTypography variant="h6">Income Table</SoftTypography>
+      <SoftBox py={3} mb={3}>
 
-              <FormControlLabel control={<Checkbox />} label="Paid" />
-              <FormControlLabel control={<Checkbox />} label="Pending" />
 
-              <SoftBox pr={1}>
-                <SoftInput
-                  placeholder="Enter user ID"
-                  icon={{ component: "search", direction: "left" }}
-                />
-              </SoftBox>
+        {income?.length > 0 ? (
+          <Box>
+            <Table columns={usersView.columns} rows={memoizedRows} />
+            <SoftBox color="white" variant="gradient" py={2} width="100%">
+              <Grid item alignItems="flex-end">
+                <SoftTypography>1</SoftTypography>
+              </Grid>
             </SoftBox>
-
-            {income?.length > 0 ? (
-              <>
-                <Table columns={usersView.columns} rows={memoizedRows} />
-                <SoftBox mt={2} display="block" width={90}>
-                  <TablePagination
-                    component="span"
-                    count={100}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    rowsPerPage={rowsPerPage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                  />
-                </SoftBox>
-              </>
-            ) : (
-              <SoftBox mt={4}>
-                <SoftBox mb={1.5}>
-                  <Grid container spacing={3}>
-                    <Grid item lg={12}>
-                      <Grid item container spacing={3}>
-                        <Grid item xs={12} xl={12}>
-                          <DefaultInfoCard
-                            icon="cloud"
-                            title={`You Don't have an active Income yet. Add connection to your portfolio and start earning.`}
-                          />
-                        </Grid>
-                      </Grid>
+          </Box>
+        ) : (
+          <SoftBox mt={4}>
+            <SoftBox mb={1.5}>
+              <Grid container spacing={3}>
+                <Grid item lg={12}>
+                  <Grid item container spacing={3}>
+                    <Grid item xs={12} xl={12}>
+                      <DefaultInfoCard
+                        icon="cloud"
+                        title={`You Don't have an active Income yet. Add connection to your portfolio and start earning.`}
+                      />
                     </Grid>
                   </Grid>
-                </SoftBox>
-              </SoftBox>
-            )}
-          </Card>
-        </SoftBox>
+                </Grid>
+              </Grid>
+            </SoftBox>
+          </SoftBox>
+        )}
       </SoftBox>
       {/* <Footer /> */}
     </DashboardLayout>

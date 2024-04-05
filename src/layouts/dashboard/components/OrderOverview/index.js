@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import Card from "@mui/material/Card";
 import Icon from "@mui/material/Icon";
 import SoftBox from "components/SoftBox";
@@ -19,10 +19,14 @@ function OrdersOverview() {
     startLoading(dispatch, true);
     try {
       const response = await ApiClient.getData(getUserNotification);
-      setNotification(dispatch, response.data);
+      if (response.status == 200) {
+        setNotification(dispatch, response.data);
+      } else {
+        setLoading(dispatch, false);
+      }
     } catch (error) {
       setLoading(dispatch, false)
-      toast.info(error?.response?.data?.message);
+      toast.error(error.toString());
     }
   };
   useEffect(() => {

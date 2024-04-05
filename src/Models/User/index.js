@@ -77,7 +77,7 @@ class UserModel {
       jsonData.storage?.own ?? null,
       jsonData.storage?.member ?? null,
       jsonData.storage?.usable ?? null,
-      jsonData.earning ?? null,
+      jsonData.totalEarn ?? null,
       jsonData.createdAt ?? new Date(),
       jsonData.updatedAt ?? new Date(),
       jsonData.bankName ?? "",

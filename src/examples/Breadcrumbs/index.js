@@ -19,6 +19,7 @@ function Breadcrumbs({ icon, title, route, light }) {
     <SoftBox mr={{ xs: 0, xl: 8 }}>
       <MuiBreadcrumbs
         sx={{
+          whiteSpace: "nowrap",
           "& .MuiBreadcrumbs-separator": {
             color: ({ palette: { white, grey } }) => (light ? white.main : grey[600]),
           },

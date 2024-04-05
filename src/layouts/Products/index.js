@@ -12,15 +12,17 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 // Billing page components
 import { useEffect } from "react";
-import { useState } from "react";
 import { useSoftUIController } from "context";
 import DefaultProductCard from "examples/Cards/InfoCards/DefaultProductCard";
-import { setDialog } from "context";
+
 import ApiClient from "Services/ApiClient";
 import { getPublished } from "Services/endpointes";
 import SoftInput from "components/SoftInput";
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import { setProducts } from "context";
 import { setLoading } from "context";
+import { toast } from "react-toastify";
+import { Box, Divider, Icon, IconButton, InputBase, Paper } from "@mui/material";
 
 function Products() {
   // const [products, setProducts] = useState([]);
@@ -32,12 +34,13 @@ function Products() {
       setLoading(dispatch, true);
       const storageData = await ApiClient.getData(getPublished);
       if (storageData?.status === 200) {
-        // setProducts(storageData?.data);
         setProducts(dispatch, storageData?.data);
-      } else {
-        setDialog(dispatch);
       }
-    } catch (error) { }
+    } catch (error) {
+      toast.error(error.toString());
+    } finally {
+      setLoading(dispatch, false);
+    }
   };
 
   useEffect(() => {
@@ -49,14 +52,27 @@ function Products() {
       <DashboardNavbar />
       <SoftBox mt={4}>
         <SoftBox mb={1.5}>
-          <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-            <SoftBox pr={1}>
-              <SoftInput
-                placeholder="Required TB"
-                icon={{ component: "search", direction: "left" }}
+          <SoftBox display="flex" justifyContent="center" alignItems="center" px={2} pb={1}>
+            <Box
+              component="form"
+              onSubmit={(e) => {
+                e.preventDefault();
+
+
+              }}
+              sx={{ p: '2px 2px', display: 'flex', alignItems: 'center', width: 300 }}
+            >
+              <InputBase
+                sx={{ ml: 1, flex: 1 }}
+                placeholder="Enter Required Tera Byte"
+                inputProps={{ 'aria-label': 'Enter Required TB' }}
               />
-            </SoftBox>
+              <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
+                <Icon>cloud_download</Icon>
+              </IconButton>
+            </Box>
           </SoftBox>
+          <Divider sx={{ width: "100%", m: 0.5, mb: 2 }} orientation="horizontal" />
           <Grid container spacing={3} justifyContent="space-around">
             <Grid item xs={12} lg={10}>
               <Grid container spacing={3}>
