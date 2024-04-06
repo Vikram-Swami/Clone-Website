@@ -57,20 +57,7 @@ function PaymentMethod() {
   };
   return (
     <Card id="delete-account">
-      <SoftBox pt={2} px={2} display="flex" justifyContent="space-between" alignItems="center">
-        <SoftTypography variant="h4" fontWeight="medium">
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Account Details
-        </SoftTypography>
-        <SoftBox>
-          <SoftButton variant="gradient" color="dark" style={{ marginRight: "20px" }} onClick={handleClickOpen} >
-            &nbsp;add Money
-          </SoftButton>
-
-          <SoftButton variant="gradient" color="dark" ml={2} onClick={handleClickOpen}>
-            &nbsp;Withdraw
-          </SoftButton>
-        </SoftBox>
-
+      <SoftBox pt={0} px={0} display="flex" justifyContent="space-between" alignItems="center">
         <Dialog
           open={open}
           onClose={handleClose}
@@ -203,10 +190,10 @@ function PaymentMethod() {
           </DialogActions>
         </Dialog>
       </SoftBox>
-      <SoftBox mt={5} mb={3}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} xl={8} ml={4}>
-            <Card sx={{ height: "100%", boxShadow: "none" }}>
+      <SoftBox mt={2} mb={3}>
+        <Grid container spacing={2} pl={4}>
+        
+            <Card sx={{ height: "100%", boxShadow: "none"}}>
               <SoftBox
                 display="flex"
                 justifyContent="space-between"
@@ -215,19 +202,23 @@ function PaymentMethod() {
                 px={2}
               >
                 <SoftTypography variant="h6" fontWeight="medium" textTransform="capitalize">
-                  {`Holder Name :  ${user?.holder}`}
+                  
+                  {`My Balance:  ${user?.wallet}`}
                   <br></br>
-                  {`Account No :  ${user?.accountNo}`}
+                  {`My Earning :  ${user?.earning}`}
                   <br></br>
-                  {`IFSC :  ${user?.IFSC}`}
+                  {`Total Withdraw :  `}
+                  <br></br>
+                  {`TDS :  `}
+                  <br></br>
+                  {`Monthly Income :  `}
+                  <br></br>
+                  {`Own Storage :  `}
                 </SoftTypography>
               </SoftBox>
-              <SoftBox p={2}>
-                <SoftBox opacity={0.3}></SoftBox>
-                <SoftBox>{`Bank Name : ${user?.bankName}`}</SoftBox>
-              </SoftBox>
+              
             </Card>
-          </Grid>
+       
         </Grid>
       </SoftBox>
     </Card>

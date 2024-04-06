@@ -29,14 +29,14 @@ function Billing() {
           <Grid container spacing={3}>
             <Grid item xs={12} lg={8}>
               <Grid container spacing={3}>
-                <Grid item xs={12} md={6} xl={3}>
+                {/* <Grid item xs={12} md={6} xl={3}>
                   <DefaultInfoCard
                     icon="account_balance_wallet"
                     title="Wallet"
                     value={user?.wallet}
                   />
-                </Grid>
-                <Grid item xs={12} md={6} xl={3}>
+                </Grid> */}
+                {/* <Grid item xs={12} md={6} xl={3}>
                   <DefaultInfoCard
                     icon="currency_rupee"
                     title="Withdraw"
@@ -48,8 +48,8 @@ function Billing() {
                 </Grid>
                 <Grid item xs={12} md={6} xl={3}>
                   <DefaultInfoCard icon="storage" title="Own Storage" value={user?.ownStr} />
-                </Grid>
-                <Grid item xs={12}>
+                </Grid> */}
+                <Grid item xs={6}>
                   <PaymentMethod />
                 </Grid>
               </Grid>
