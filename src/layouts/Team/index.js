@@ -52,7 +52,7 @@ function Team() {
 
   return (
     <DashboardLayout>
-      <DashboardNavbar />
+      <DashboardNavbar call={getMember}/>
       <SoftBox py={3}>
         <SoftBox mb={3}>
           <Card mb={2}>
