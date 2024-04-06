@@ -12,8 +12,7 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 // Data
 import SoftButton from "components/SoftButton";
 import {
-  Grid,
-  Icon
+  Grid
 } from "@mui/material";
 import DefaultInfoCard from "examples/Cards/InfoCards/DefaultInfoCard";
 import { NavLink } from "react-router-dom";
@@ -26,6 +25,7 @@ import { toast } from "react-toastify";
 import { getConnectionByUserID } from "Services/endpointes";
 import { startLoading } from "context";
 import React from "react";
+import { setDialog } from "context";
 
 function Connections() {
   const [controller, dispatch] = useSoftUIController();
@@ -35,10 +35,14 @@ function Connections() {
     startLoading(dispatch, true);
     try {
       const response = await ApiClient.getDataByParam(getConnectionByUserID, user.id);
-      setConnection(dispatch, response.data);
-      toast.success(response?.message);
+      if(response.status == 200){
+        setConnection(dispatch, response.data);
+      }
+      else{
+        setDialog(dispatch, [response]);
+      }
     } catch (error) {
-      toast.info(error.response?.data?.message ?? "Oops! Network Error");
+      toast.error(error.toString());
       setLoading(dispatch, false);
     }
   };

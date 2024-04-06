@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 
 // react-router components
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
@@ -145,7 +145,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
           variant="gradient"
           px={1}
           my={0.5}
-          onClick={() => navigate("/profile")}
+          component={Link}
+          to="/my-profile"
           display="flex"
           sx={{ cursor: "pointer" }}
           alignItems="center"

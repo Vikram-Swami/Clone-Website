@@ -18,7 +18,7 @@ import SoftTypography from "components/SoftTypography";
 import colors from "assets/theme/base/colors";
 import typography from "assets/theme/base/typography";
 
-function ProfileInfoCard({ title, description, info, social, action }) {
+function ProfileInfoCard({ title, id, info, social, action }) {
   const labels = [];
   const values = [];
   const { socialMediaColors } = colors;
@@ -59,7 +59,7 @@ function ProfileInfoCard({ title, description, info, social, action }) {
         <SoftTypography variant="h6" fontWeight="medium" textTransform="capitalize">
           {title}
         </SoftTypography>
-        <SoftTypography component={Link} to={action.route} variant="body2" color="secondary">
+        <SoftTypography component={Link} to={action.route} variant="body2" color="secondary" cursor="ponter">
           <Tooltip title={action.tooltip} placement="top">
             <Icon>edit</Icon>
           </Tooltip>
@@ -68,7 +68,7 @@ function ProfileInfoCard({ title, description, info, social, action }) {
       <SoftBox p={2}>
         <SoftBox mb={2} lineHeight={1}>
           <SoftTypography variant="button" color="text" fontWeight="regular">
-            {description}
+            {id}
           </SoftTypography>
         </SoftBox>
         <SoftBox opacity={0.3}>
@@ -83,7 +83,7 @@ function ProfileInfoCard({ title, description, info, social, action }) {
 // Typechecking props for the ProfileInfoCard
 ProfileInfoCard.propTypes = {
   title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
   info: PropTypes.objectOf(PropTypes.string).isRequired,
   social: PropTypes.arrayOf(PropTypes.object).isRequired,
   action: PropTypes.shape({

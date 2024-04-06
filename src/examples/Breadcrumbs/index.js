@@ -12,7 +12,7 @@ import Icon from "@mui/material/Icon";
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 
-function Breadcrumbs({ icon, title, route, light }) {
+function Breadcrumbs({ icon, title, route, light, call }) {
   const routes = route.slice(0, -1);
 
   return (
@@ -61,15 +61,21 @@ function Breadcrumbs({ icon, title, route, light }) {
           {title.replace("-", " ")}
         </SoftTypography>
       </MuiBreadcrumbs>
+      <SoftBox display="flex" gap={3} justifyContent="space-between">
+
       <SoftTypography
         fontWeight="bold"
         textTransform="capitalize"
         variant="h6"
         color={light ? "white" : "dark"}
         noWrap
-      >
+        >
         {title.replace("-", " ")}
       </SoftTypography>
+      <SoftTypography component="span" cursor="pointer"  onClick={call}>
+        <Icon>refresh</Icon>
+      </SoftTypography>
+        </SoftBox>
     </SoftBox>
   );
 }
@@ -77,11 +83,13 @@ function Breadcrumbs({ icon, title, route, light }) {
 // Setting default values for the props of Breadcrumbs
 Breadcrumbs.defaultProps = {
   light: false,
+  call: ()=>{}
 };
 
 // Typechecking props for the Breadcrumbs
 Breadcrumbs.propTypes = {
   icon: PropTypes.node.isRequired,
+  call: PropTypes.func,
   title: PropTypes.string.isRequired,
   route: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
   light: PropTypes.bool,

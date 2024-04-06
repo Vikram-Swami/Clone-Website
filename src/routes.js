@@ -5,7 +5,6 @@ import RecipeReviewCard from "layouts/verifyAccount";
 // const Dashboard = lazy(() => import("layouts/dashboard"));
 import Dashboard from "layouts/dashboard";
 import ForgetPassword from "layouts/authentication/forget-password";
-import { ToastContainer } from "react-toastify";
 const Team = lazy(() => import("layouts/Team"));
 const Connections = lazy(() => import("layouts/connections"));
 const Billing = lazy(() => import("layouts/billing"));
@@ -45,6 +44,16 @@ const routes = [
     component: <RecipeReviewCard />,
     noCollapse: true,
   },
+
+  {
+    type: "route",
+    name: "My Profile",
+    auth: "user",
+    key: "my-profile",
+    route: "/my-profile",
+    component: <Profile />,
+    noCollapse: true,
+  },
   {
     type: "route",
     name: "SignUp",
@@ -76,17 +85,6 @@ const routes = [
 
   {
     type: "collapse",
-    name: "New Connection",
-    key: "new-connections",
-    auth: "any",
-    route: "/new-connections",
-    icon: <CreditCard size="12px" />,
-    component: <Products />,
-    noCollapse: true,
-  },
-
-  {
-    type: "collapse",
     name: "Create Members",
     key: "create-members",
     auth: "user",
@@ -95,16 +93,18 @@ const routes = [
     component: <CreateMembers />,
     noCollapse: true,
   },
+
   {
     type: "collapse",
-    name: "My Team",
-    auth: "user",
-    key: "my-team",
-    route: "/my-team",
-    icon: <Office size="12px" />,
-    component: <Team />,
+    name: "New Connection",
+    key: "new-connections",
+    auth: "any",
+    route: "/new-connections",
+    icon: <CreditCard size="12px" />,
+    component: <Products />,
     noCollapse: true,
   },
+  
   {
     type: "collapse",
     name: "My Connections",
@@ -115,6 +115,7 @@ const routes = [
     auth: "any",
     noCollapse: true,
   },
+
   {
     type: "collapse",
     name: "My Rents",
@@ -125,9 +126,22 @@ const routes = [
     component: <Rents />,
     noCollapse: true,
   },
+
   {
     type: "collapse",
-    name: "My Earning",
+    name: "My Team",
+    auth: "user",
+    key: "my-team",
+    route: "/my-team",
+    icon: <Office size="12px" />,
+    component: <Team />,
+    noCollapse: true,
+  },
+
+
+  {
+    type: "collapse",
+    name: "Credits",
     key: "my-earnings",
     auth: "any",
     route: "/my-earnings",

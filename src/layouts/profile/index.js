@@ -25,12 +25,12 @@ function Overview() {
               title="profile information"
               info={{
                 fullName: user?.fullName,
-                description: "",
+                ID: user.id ?? "",
                 mobile: user?.phone,
                 email: user?.email,
                 location: user?.city + " " + user?.state + " " + user?.country,
               }}
-              action={{ route: "", tooltip: "Edit Profile" }}
+              action={{ route: "/dashboard", tooltip: "Edit Profile" }}
             />
           </Grid>
           <Grid item xs={12} md={6} xl={4}>
@@ -44,7 +44,7 @@ function Overview() {
                 IFSC: user?.IFSC,
                 nomineeName: user?.nomineeName,
               }}
-              action={{ route: "", tooltip: "Edit Profile" }}
+              action={{ route: "/dashboard", tooltip: "Edit Profile" }}
             />
           </Grid>
           <Grid item xs={12} md={6} xl={4}>
@@ -57,7 +57,7 @@ function Overview() {
                 state: user?.state,
                 country: user?.country,
               }}
-              action={{ route: "", tooltip: "Edit Profile" }}
+              action={{ route: "/dashboard", tooltip: "Edit Profile" }}
             />
           </Grid>
         </Grid>

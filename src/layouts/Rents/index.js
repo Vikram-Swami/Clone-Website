@@ -10,7 +10,7 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 // Data
-import { Grid, TablePagination } from "@mui/material";
+import { Grid } from "@mui/material";
 import DefaultInfoCard from "examples/Cards/InfoCards/DefaultInfoCard";
 
 import { useEffect } from "react";
@@ -23,6 +23,7 @@ import React from "react";
 import RentView from "./data/rents";
 import { setRent } from "context";
 import { getRentByUserId } from "Services/endpointes";
+import { setDialog } from "context";
 
 function Users() {
   const [controller, dispatch] = useSoftUIController();
@@ -32,11 +33,15 @@ function Users() {
     startLoading(dispatch, true);
     try {
       const response = await ApiClient.getData(getRentByUserId);
-      setRent(dispatch, response.data);
-      toast.success(response?.message);
+      if(response.status ==200){
+
+        setRent(dispatch, response.data);
+      }else{
+        setDialog(dispatch, [response]);
+      }
     } catch (error) {
+      toast.info(error.toString());
       setLoading(dispatch, false);
-      toast.info(error.response?.data?.message ?? "Network Error!");
     }
   };
   useEffect(() => {

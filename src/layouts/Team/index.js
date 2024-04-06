@@ -25,6 +25,7 @@ import ApiClient from "Services/ApiClient";
 import { getMembers } from "Services/endpointes";
 import { toast } from "react-toastify";
 import { setMembers } from "context";
+import { setDialog } from "context";
 
 function Team() {
   const [controller, dispatch] = useSoftUIController();
@@ -35,8 +36,8 @@ function Team() {
     startLoading(dispatch, true);
     try {
       const response = await ApiClient.getData(getMembers);
-      setMembers(dispatch, response.data);
-      toast.success(response.message);
+      if(response.status == 200){setMembers(dispatch, response.data);}
+      else{setDialog(dispatch, [response])}
     } catch (error) {
       toast.info(error.message);
       setLoading(dispatch, false);
@@ -54,8 +55,9 @@ function Team() {
       <DashboardNavbar />
       <SoftBox py={3}>
         <SoftBox mb={3}>
-          <Card>
-            <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
+          <Card mb={2}>
+
+        <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
               <SoftTypography variant="h6">My Team</SoftTypography>
 
               <FormControlLabel control={<Checkbox />} label="List" />
@@ -65,9 +67,12 @@ function Team() {
                 <SoftInput
                   placeholder="Enter Connection Id"
                   icon={{ component: "search", direction: "left" }}
-                />
+                  />
               </SoftBox>
             </SoftBox>
+                  </Card>
+          <Card mt={2}>
+            {/*  */}
 
             {member?.length > 0 ? (
               <Table columns={TeamView.columns} rows={memoizedRows} />

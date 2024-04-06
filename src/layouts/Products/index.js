@@ -17,12 +17,11 @@ import DefaultProductCard from "examples/Cards/InfoCards/DefaultProductCard";
 
 import ApiClient from "Services/ApiClient";
 import { getPublished } from "Services/endpointes";
-import SoftInput from "components/SoftInput";
-import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import { setProducts } from "context";
 import { setLoading } from "context";
 import { toast } from "react-toastify";
 import { Box, Divider, Icon, IconButton, InputBase, Paper } from "@mui/material";
+import { setDialog } from "context";
 
 function Products() {
   // const [products, setProducts] = useState([]);
@@ -32,19 +31,21 @@ function Products() {
   const getProducts = async () => {
     try {
       setLoading(dispatch, true);
-      const storageData = await ApiClient.getData(getPublished);
-      if (storageData?.status === 200) {
-        setProducts(dispatch, storageData?.data);
+      const response = await ApiClient.getData(getPublished);
+      if (response?.status === 200) {
+        setProducts(dispatch, response?.data);
+      }
+      else{
+        setDialog(dispatch, [response]);
       }
     } catch (error) {
       toast.error(error.toString());
-    } finally {
       setLoading(dispatch, false);
     }
   };
 
   useEffect(() => {
-    getProducts();
+    !products && getProducts();
   }, []);
 
   return (

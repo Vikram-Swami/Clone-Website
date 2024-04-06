@@ -1,24 +1,20 @@
-// @mui material components
-import Card from "@mui/material/Card";
-
 // Next Work Dashboard React components
 import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
 
 // Next Work Dashboard React examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 // Data
-import { Box, Checkbox, FormControlLabel, Grid, TablePagination } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import DefaultInfoCard from "examples/Cards/InfoCards/DefaultInfoCard";
 
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { startLoading, useSoftUIController, setLoading } from "context";
 import Table from "examples/Tables/Table";
 import ApiClient from "Services/ApiClient";
 import { toast } from "react-toastify";
-import SoftInput from "components/SoftInput";
+
 import React from "react";
 import { setIncome } from "context";
 import usersView from "./data/income";
@@ -45,15 +41,6 @@ function Income() {
     income.length < 1 && getAllusers();
   }, []);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
   let memoizedRows = usersView.rows(income, user.fullName, dispatch);
 
   return (
@@ -65,11 +52,13 @@ function Income() {
         {income?.length > 0 ? (
           <Box>
             <Table columns={usersView.columns} rows={memoizedRows} />
-            <SoftBox color="white" variant="gradient" py={2} width="100%">
+
+            {/* <SoftBox color="white" variant="gradient" py={2} width="100%">
               <Grid item alignItems="flex-end">
                 <SoftTypography>1</SoftTypography>
               </Grid>
-            </SoftBox>
+            </SoftBox> */}
+
           </Box>
         ) : (
           <SoftBox mt={4}>
