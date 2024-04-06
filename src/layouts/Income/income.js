@@ -23,6 +23,8 @@ import React from "react";
 import { setIncome } from "context";
 import usersView from "./data/income";
 import { getIncomeByUserId } from "Services/endpointes";
+import BasicDatePicker from "components/MonthPicker";
+
 
 function Income() {
   const [controller, dispatch] = useSoftUIController();
@@ -64,9 +66,7 @@ function Income() {
           <Card>
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
               <SoftTypography variant="h6">Income Table</SoftTypography>
-
-              <FormControlLabel control={<Checkbox />} label="Paid" />
-              <FormControlLabel control={<Checkbox />} label="Pending" />
+              <BasicDatePicker label="Basic date picker" />
 
               <SoftBox pr={1}>
                 <SoftInput
