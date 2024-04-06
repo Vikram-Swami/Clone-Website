@@ -6,6 +6,7 @@ import RecipeReviewCard from "layouts/verifyAccount";
 import Dashboard from "layouts/dashboard";
 import ForgetPassword from "layouts/authentication/forget-password";
 import { ToastContainer } from "react-toastify";
+import Rewards from "layouts/Rewards";
 const Team = lazy(() => import("layouts/Team"));
 const Connections = lazy(() => import("layouts/connections"));
 const Billing = lazy(() => import("layouts/billing"));
@@ -149,7 +150,7 @@ const routes = [
     noCollapse: true,
   },
 
-  { type: "title", title: "Benefits", key: "benefits_page" },
+  { type: "title", title: "Royality & Rewards", key: "benefits_page" },
   {
     type: "collapse",
     name: "Limit Rewards",
@@ -163,6 +164,8 @@ const routes = [
     name: " Rewards",
     auth: "user",
     key: "rewards",
+    route: "/reward",
+    component:<Rewards/>,
     icon: <CustomerSupport size="12px" />,
     noCollapse: true,
   },

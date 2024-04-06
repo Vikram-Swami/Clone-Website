@@ -17,8 +17,6 @@ import DefaultProductCard from "examples/Cards/InfoCards/DefaultProductCard";
 
 import ApiClient from "Services/ApiClient";
 import { getPublished } from "Services/endpointes";
-import SoftInput from "components/SoftInput";
-import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import { setProducts } from "context";
 import { setLoading } from "context";
 import { toast } from "react-toastify";

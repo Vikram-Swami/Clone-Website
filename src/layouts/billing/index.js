@@ -54,9 +54,7 @@ function Billing() {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item xs={12} lg={4}>
-              <Invoices />
-            </Grid>
+            
           </Grid>
         </SoftBox>
         <SoftBox py={3}>
