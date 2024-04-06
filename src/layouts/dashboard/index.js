@@ -24,10 +24,10 @@ import gradientLineChartData from "layouts/dashboard/data/gradientLineChartData"
 import UserModel from "Models/User";
 
 function Dashboard() {
-  const [controller, dispatch] = useSoftUIController();
-  const { user } = controller;
+  const [controller,] = useSoftUIController();
+  const { user, member } = controller;
   const { size } = typography;
-  const { chart, items } = reportsBarChartData;
+  const { chart, } = reportsBarChartData;
 
   const miniStatisticsData = [
     {
@@ -38,13 +38,13 @@ function Dashboard() {
     },
     {
       title: { text: "My Team size" },
-      count: user?.members ?? 0,
+      count: member.length ?? 0,
       percentage: { color: "success" },
       icon: { color: "info", component: "groups" },
     },
     {
-      title: { text: "My Earning" },
-      count: user?.wallet ?? 0,
+      title: { text: "My Earnings" },
+      count: user?.earning ?? 0,
       percentage: { color: "error" },
       icon: { color: "info", component: "currency_rupee" },
     },
@@ -69,7 +69,7 @@ function Dashboard() {
               <ReportsBarChart chart={chart} items={[]} title="title" />
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
-              <OrderOverview />
+              {/* <OrderOverview /> */}
             </Grid>
             <Grid item xs={12} lg={8}>
               <GradientLineChart

@@ -67,6 +67,7 @@ function SignIn() {
         setCookie("userId", response?.data.userId, 1);
         navigate("/dashboard");
         toast.success(response.message);
+        setLoading(dispatch, false);
       }
       else {
         setDialog(dispatch, [response]);

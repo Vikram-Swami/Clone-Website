@@ -17,19 +17,19 @@ import { menuItem, menuImage } from "examples/Items/NotificationItem/styles";
 const NotificationItem = forwardRef(({ color, image, title, date, ...rest }, ref) => (
   <MenuItem {...rest} ref={ref} sx={(theme) => menuItem(theme)}>
     <SoftBox
-      width="2.25rem"
-      height="2.25rem"
+      // width="2.25rem"
+      // height="2.25rem"
       mt={0.25}
       mr={2}
       mb={0.25}
       borderRadius="lg"
       sx={(theme) => menuImage(theme, { color })}
     >
-      {image}
+      <Icon>{image} </Icon>
     </SoftBox>
     <SoftBox>
       <SoftTypography variant="button" textTransform="capitalize" fontWeight="regular">
-        <strong>{title[0]}</strong> {title[1]}
+        <strong>{title.substring(0, 15)}...</strong>
       </SoftTypography>
       <SoftTypography
         variant="caption"

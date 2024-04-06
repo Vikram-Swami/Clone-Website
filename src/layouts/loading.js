@@ -38,12 +38,15 @@ const Loading = ({ condition }) => {
             justifyContent: "center",
             flexDirection: "column",
             alignItems: "center",
-            height: "100vh",
             width: "100%",
             position: "fixed",
             top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
             background: "#2c298075",
             zIndex: 11111111,
+            padding: 10
           }}
         >
           <div className="book">

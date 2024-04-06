@@ -25,9 +25,9 @@ export default function NewFormDialog({ open, setOpen, data }) {
                 }}
             >
                 <DialogTitle>{data?.title}</DialogTitle>
-                <DialogContent tabIndex={-1}>
+                <DialogContent px={4}>
 
-                    <DialogTitle fontSize={14}>{data?.message}</DialogTitle>
+                    <DialogTitle fontSize={14} whiteSpace={"nowrap"}>{data?.message}</DialogTitle>
                     {data?.children}
                 </DialogContent>
 

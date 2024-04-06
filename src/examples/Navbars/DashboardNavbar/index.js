@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 // react-router components
 import { useLocation, useNavigate } from "react-router-dom";
@@ -16,8 +16,6 @@ import Icon from "@mui/material/Icon";
 // Next Work Dashboard React components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
-import SoftInput from "components/SoftInput";
-
 // Next Work Dashboard React examples
 import Breadcrumbs from "examples/Breadcrumbs";
 
@@ -36,10 +34,10 @@ import {
   setTransparentNavbar,
   setMiniSidenav,
 } from "context";
-import SoftButton from "components/SoftButton";
 import { setDialog } from "context";
-import { Avatar, Box, Divider, Stack } from "@mui/material";
+import { Avatar, Box, Divider, Grid, Stack, Typography } from "@mui/material";
 import NotificationItem from "examples/Items/NotificationItem";
+import SoftBadge from "components/SoftBadge";
 
 function DashboardNavbar({ absolute, light, isMini }) {
   const navigate = useNavigate();
@@ -47,8 +45,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const [controller, dispatch] = useSoftUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar } = controller;
   const [openMenu, setOpenMenu] = useState(false);
+  const [openNotif, setOpenNotif] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
-  const { user } = controller;
+  const { user, notifications } = controller;
   const handleLogout = () => {
     const cookies = document.cookie.split(";");
 
@@ -94,7 +93,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
 
   const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
+  const handleOpenNotif = (event) => setOpenNotif(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
+  const handleCloseNotif = () => setOpenNotif(false);
 
   const generateReferLink = (id) => {
     const referLink = window.location.origin;
@@ -102,18 +103,29 @@ function DashboardNavbar({ absolute, light, isMini }) {
     return `${referLink}/sign-up/1?sponsorId=${id}&placementId=${id}`;
   };
 
+  function generateWhatsAppMessage(referralLink) {
+    const companyName = "Nextwork Technologies Ltd";
+    const message = `👋 Hey there!\n\nLooking to start earning?💰\nClick on this link to get started with ${companyName}.\n\nLink: ${referralLink}\n\nJoin us at ${companyName} and explore exciting opportunities to earn from the comfort of your home.\n\nHappy earning! 🚀\n\nRegards\n${user.fullName}`;
+    return (message);
+  }
+
+  const handleSend = (message) => {
+    // Construct the WhatsApp URL with only the prewritten message
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+
+    // Open WhatsApp in a new window or tab
+    window.open(whatsappUrl, '_blank');
+  };
   const handleCopyLink = (user) => {
     const referLink = generateReferLink(user.id);
 
-    navigator.clipboard.writeText(referLink)
-      .then(() => {
-        setDialog(dispatch, [{ status: 201, message: "Link has been coppied to clipboard. Please share the link with your new Member." }])
-      })
-      .catch((_) => {
-        setDialog(dispatch, [{ status: 400, message: "Unable to copy the Link." }])
-
-      });
+    let message = generateWhatsAppMessage(referLink);
+    setDialog(dispatch, [{
+      status: "form", title: "Here is Your Refer Link", children: <Grid container spacing={1}><Grid item xs={1}><Icon small>link</Icon></Grid><Grid item xs={11}><Typography fontSize={13} whiteSpace={"nowrap"}> {referLink}</Typography></Grid></Grid>, action: "Share", call: () => handleSend(message)
+    }]);
   };
+
+
 
 
   const renderMenu = () => (
@@ -122,7 +134,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
       anchorReference={null}
       anchorOrigin={{
         vertical: "bottom",
-        horizontal: "left",
+        horizontal: "right",
       }}
       open={Boolean(openMenu)}
       onClose={handleCloseMenu}
@@ -157,7 +169,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
         >
           <Divider />
           <Icon fontSize="1rem">share_icon</Icon>
-          <SoftTypography cursor="pointer" fontSize="1rem" pl={1} component="span">Sponsor</SoftTypography>
+          <SoftTypography cursor="pointer" fontSize="1rem" pl={1} component="span">Refer Link</SoftTypography>
 
         </SoftBox>
         <SoftBox
@@ -180,24 +192,24 @@ function DashboardNavbar({ absolute, light, isMini }) {
   );
   const renderNotification = () => (
     <Menu
-      anchorEl={openMenu}
+      anchorEl={openNotif}
       anchorReference={null}
       anchorOrigin={{
         vertical: "bottom",
-        horizontal: "left",
+        horizontal: "right",
       }}
-      open={Boolean(openMenu)}
-      onClose={handleCloseMenu}
+      open={Boolean(openNotif)}
+      onClose={handleCloseNotif}
 
     >
       <Box>
 
-        {/* <NotificationItem
-          image={<img src={team2} alt="person" />}
-          title={["New message", "from Laur"]}
+        {notifications?.length > 0 && notifications?.slice(0, 3)?.map((e) => <NotificationItem
+          key={e._id}
+          image={<Icon size="small">{e.icon}</Icon>}
+          title={e.title}
           date="13 minutes ago"
-          onClick={handleCloseMenu}
-        /> */}
+        />)}
       </Box>
     </Menu>
   );
@@ -209,69 +221,67 @@ function DashboardNavbar({ absolute, light, isMini }) {
       sx={(theme) => navbar(theme, { transparentNavbar, absolute, light })}
     >
       <Toolbar sx={(theme) => navbarContainer(theme)}>
-        <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
-          <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
-        </SoftBox>
 
-        <SoftBox color={light ? "white" : "inherit"} sx={{ display: "none" }}>
-          <SoftButton variant="gradient" color="dark" ml={2} onClick={() => navigate("/account")}>
-            <Icon sx={{ fontWeight: "bold", fontSize: "3rem !important" }}>
-              account_balance_wallet
-            </Icon>
-            &nbsp;{user.wallet}
-          </SoftButton>
+        <SoftBox sx={(theme) => navbarRow(theme, { isMini })}>
+          <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
+            <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
+          </SoftBox>
 
-
-          {renderMenu()}
-        </SoftBox>
-        {(
-          <SoftBox sx={(theme) => navbarRow(theme, { isMini })}>
-
+          <SoftBox color={light ? "white" : "inherit"}>
             <IconButton
-              size="small"
               color="inherit"
+              size="large"
               sx={navbarIconButton}
               aria-controls="notification-menu"
               aria-haspopup="true"
               variant="contained"
-              onClick={handleOpenMenu}
+              onClick={handleOpenNotif}
             >
-              <Icon className={light ? "text-white" : "text-dark"}>notifications</Icon>
-              {renderNotification()}
+              <Icon className={light ? "text-white" : "text-dark"} fontSize="14px">notifications</Icon>
+              <SoftBadge
+                sx={{ position: "absolute", top: 0, left: 10 }}
+                variant="gradient"
+                color={'error'}
+                size="8px"
+                badgeContent={user.unread}
+                circular
+
+              />
 
             </IconButton>
+            {renderNotification()}
+          </SoftBox>
 
 
 
-            <SoftBox color={light ? "white" : "inherit"}>
-              <IconButton
-                size="small"
-                color="inherit"
-                sx={navbarIconButton}
-                aria-controls="notification-menu"
-                aria-haspopup="true"
-                variant="contained"
-                onClick={handleOpenMenu}
-              >
-                <Stack direction="row" spacing={2}>
-                  <Avatar alt="Remy Sharp" src="51365.jpg" />
-                </Stack>
-              </IconButton>
-              {renderMenu()}
-            </SoftBox>
-
+          <SoftBox color={light ? "white" : "inherit"}>
             <IconButton
               size="small"
               color="inherit"
-              sx={navbarMobileMenu}
-              onClick={handleMiniSidenav}
+              sx={navbarIconButton}
+              aria-controls="Profile-menu"
+              aria-haspopup="true"
+              variant="contained"
+              onClick={handleOpenMenu}
             >
-              <Icon className={light ? "text-white" : "text-dark"}>
-                {!miniSidenav ? "menu_open" : "menu"}
-              </Icon>
+              <Stack direction="row" spacing={2}>
+                <Avatar alt="Remy Sharp" width="100%" src="51365.jpg" />
+              </Stack>
             </IconButton>
+            {renderMenu()}
           </SoftBox>
-        )}
+
+          <IconButton
+            size="small"
+            color="inherit"
+            sx={navbarMobileMenu}
+            onClick={handleMiniSidenav}
+          >
+            <Icon className={light ? "text-white" : "text-dark"}>
+              {!miniSidenav ? "menu_open" : "menu"}
+            </Icon>
+          </IconButton>
+        </SoftBox>
       </Toolbar>
     </AppBar>
   );
