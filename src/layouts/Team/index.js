@@ -55,23 +55,7 @@ function Team() {
       <DashboardNavbar call={getMember}/>
       <SoftBox py={3}>
         <SoftBox mb={3}>
-          <Card mb={2}>
-
-        <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-              <SoftTypography variant="h6">My Team</SoftTypography>
-
-              <FormControlLabel control={<Checkbox />} label="List" />
-              <FormControlLabel control={<Checkbox />} label="Tree" />
-
-              <SoftBox pr={1}>
-                <SoftInput
-                  placeholder="Enter Connection Id"
-                  icon={{ component: "search", direction: "left" }}
-                  />
-              </SoftBox>
-            </SoftBox>
-                  </Card>
-          <Card mt={2}>
+          <Card>
             {/*  */}
 
             {member?.length > 0 ? (

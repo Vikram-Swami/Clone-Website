@@ -7,8 +7,10 @@ import { activateAccount } from 'Services/endpointes';
 import { useParams } from 'react-router-dom';
 import { startLoading } from 'context';
 import { useSoftUIController } from 'context';
+import { toast } from "react-toastify";
 import { setDialog } from 'context';
 import CoverLayout from 'layouts/authentication/components/CoverLayout';
+import { setLoading } from 'context';
 
 export default function RecipeReviewCard() {
     const [, dispatch] = useSoftUIController();
@@ -18,13 +20,12 @@ export default function RecipeReviewCard() {
         startLoading(dispatch, true);
         try {
             const response = await ApiClient.getDataByParam(activateAccount, id);
-            setDialog(dispatch, [response]);
             setMessage(response?.message);
+            setDialog(dispatch, [response]);
         } catch (error) {
-            console.log(error);
-            setDialog(dispatch, [error.reponse?.data ?? { message: "Error while Fetching you account details." }])
-            // Set an error message if the API call fails
-        } finally {
+            toast.error(error.toString());
+            setLoading(dispatch, false);
+
         }
     };
     React.useEffect(() => {

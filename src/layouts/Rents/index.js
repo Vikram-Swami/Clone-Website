@@ -34,7 +34,6 @@ function Users() {
     try {
       const response = await ApiClient.getData(getRentByUserId);
       if(response.status ==200){
-
         setRent(dispatch, response.data);
       }else{
         setDialog(dispatch, [response]);

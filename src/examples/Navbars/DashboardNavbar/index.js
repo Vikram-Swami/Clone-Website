@@ -39,8 +39,8 @@ import { Avatar, Box, Divider, Grid, Stack, Typography } from "@mui/material";
 import NotificationItem from "examples/Items/NotificationItem";
 import SoftBadge from "components/SoftBadge";
 
-function DashboardNavbar({ absolute, light, isMini }) {
-  const navigate = useNavigate();
+function DashboardNavbar({ absolute, light, isMini, call }) {
+
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useSoftUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar } = controller;
@@ -225,7 +225,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
 
         <SoftBox sx={(theme) => navbarRow(theme, { isMini })}>
           <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
-            <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
+            <Breadcrumbs icon="home" call={call} title={route[route.length - 1]} route={route} light={light} />
           </SoftBox>
 
           <SoftBox color={light ? "white" : "inherit"}>
@@ -293,6 +293,7 @@ DashboardNavbar.defaultProps = {
   absolute: false,
   light: false,
   isMini: false,
+  call: ()=>{}
 };
 
 // Typechecking props for the DashboardNavbar
@@ -300,6 +301,7 @@ DashboardNavbar.propTypes = {
   absolute: PropTypes.bool,
   light: PropTypes.bool,
   isMini: PropTypes.bool,
+  call:PropTypes.func
 };
 
 export default DashboardNavbar;

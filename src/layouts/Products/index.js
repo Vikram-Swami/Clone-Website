@@ -45,7 +45,7 @@ function Products() {
   };
 
   useEffect(() => {
-    !products && getProducts();
+    products.length < 1 && getProducts();
   }, []);
 
   return (

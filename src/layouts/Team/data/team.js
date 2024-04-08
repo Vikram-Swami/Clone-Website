@@ -25,10 +25,7 @@ function Level({ level, pLevel }) {
     <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
       <SoftBox display="flex" flexDirection="column">
         <SoftTypography variant="button" fontWeight="medium">
-          Level - {level}
-        </SoftTypography>
-        <SoftTypography variant="caption" color="secondary">
-          Placement Level - {pLevel}
+          {level}
         </SoftTypography>
       </SoftBox>
     </SoftBox>
