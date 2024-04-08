@@ -5,7 +5,6 @@ import RecipeReviewCard from "layouts/verifyAccount";
 // const Dashboard = lazy(() => import("layouts/dashboard"));
 import Dashboard from "layouts/dashboard";
 import ForgetPassword from "layouts/authentication/forget-password";
-import { ToastContainer } from "react-toastify";
 import Rewards from "layouts/Rewards";
 const Team = lazy(() => import("layouts/Team"));
 const Connections = lazy(() => import("layouts/connections"));
@@ -46,6 +45,16 @@ const routes = [
     component: <RecipeReviewCard />,
     noCollapse: true,
   },
+
+  {
+    type: "route",
+    name: "My Profile",
+    auth: "user",
+    key: "my-profile",
+    route: "/my-profile",
+    component: <Profile />,
+    noCollapse: true,
+  },
   {
     type: "route",
     name: "SignUp",
@@ -76,6 +85,17 @@ const routes = [
   },
 
   {
+    type: "route",
+    name: "Create Members",
+    key: "create-members",
+    auth: "user",
+    route: "/create-members",
+    icon: <Office size="12px" />,
+    component: <CreateMembers />,
+    noCollapse: true,
+  },
+
+  {
     type: "collapse",
     name: "New Connection",
     key: "new-connections",
@@ -85,27 +105,7 @@ const routes = [
     component: <Products />,
     noCollapse: true,
   },
-
-  {
-    type: "collapse",
-    name: "Create Members",
-    key: "create-members",
-    auth: "user",
-    route: "/create-members",
-    icon: <Office size="12px" />,
-    component: <CreateMembers />,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
-    name: "My Team",
-    auth: "user",
-    key: "my-team",
-    route: "/my-team",
-    icon: <Office size="12px" />,
-    component: <Team />,
-    noCollapse: true,
-  },
+  
   {
     type: "collapse",
     name: "My Connections",
@@ -116,6 +116,7 @@ const routes = [
     auth: "any",
     noCollapse: true,
   },
+
   {
     type: "collapse",
     name: "My Rents",
@@ -126,9 +127,22 @@ const routes = [
     component: <Rents />,
     noCollapse: true,
   },
+
   {
     type: "collapse",
-    name: "My Earning",
+    name: "My Team",
+    auth: "user",
+    key: "my-team",
+    route: "/my-team",
+    icon: <Office size="12px" />,
+    component: <Team />,
+    noCollapse: true,
+  },
+
+
+  {
+    type: "collapse",
+    name: "Credits",
     key: "my-earnings",
     auth: "any",
     route: "/my-earnings",
@@ -150,25 +164,20 @@ const routes = [
     noCollapse: true,
   },
 
-  { type: "title", title: "Royality & Rewards", key: "benefits_page" },
-  {
-    type: "collapse",
-    name: "Limit Rewards",
-    auth: "user",
-    key: "limitRewards",
-    icon: <CustomerSupport size="12px" />,
-    noCollapse: true,
-  },
+  { type: "title", title: "Benefits", key: "benefits_page" },
+
   {
     type: "collapse",
     name: " Rewards",
-    auth: "user",
+    auth: "any",
     key: "rewards",
-    route: "/reward",
-    component:<Rewards/>,
+    route: "/rewards",
+    component: <Rewards />,
     icon: <CustomerSupport size="12px" />,
     noCollapse: true,
   },
+
+
   {
     type: "collapse",
     name: "Royality",
@@ -177,14 +186,7 @@ const routes = [
     icon: <CustomerSupport size="12px" />,
     noCollapse: true,
   },
-  {
-    type: "collapse",
-    name: "Consultation",
-    auth: "user",
-    key: "consultation",
-    icon: <CustomerSupport size="12px" />,
-    noCollapse: true,
-  },
+
 ];
 export default routes;
 

@@ -9,16 +9,11 @@ import SoftButton from "components/SoftButton";
 
 // Next Work Dashboard React base styles
 import borders from "assets/theme/base/borders";
-
+import Divider from '@mui/material/Divider';
 // Images
 
 import { useSoftUIController } from "context";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
+
 import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
 import React, { useEffect, useState } from "react";
 function PaymentMethod() {
@@ -59,7 +54,7 @@ function PaymentMethod() {
     <Card id="delete-account">
       <SoftBox pt={2} px={2} display="flex" justifyContent="space-between" alignItems="center">
 
-        <Dialog
+        {/* <Dialog
           open={open}
           onClose={handleClose}
           PaperProps={{
@@ -147,7 +142,6 @@ function PaymentMethod() {
                 </Dialog>
               </RadioGroup>
             </FormControl>
-            {/* Additional input fields based on payment method */}
             {PaymentMethod === "credit-debit" && (
               <TextField
                 required
@@ -189,11 +183,11 @@ function PaymentMethod() {
             <Button onClick={handleClose}>Cancel</Button>
             <Button type="submit">Submit</Button>
           </DialogActions>
-        </Dialog>
+        </Dialog> */}
       </SoftBox>
-      <SoftBox mt={5} mb={3}>
+      <SoftBox mt={0} mb={3}>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={6} xl={8} ml={4}>
+          <Grid item xs={12} md={6} xl={8} ml={6}>
             <Card sx={{ height: "100%", boxShadow: "none" }}>
               <SoftBox
                 display="flex"
@@ -203,17 +197,24 @@ function PaymentMethod() {
                 px={2}
               >
                 <SoftTypography variant="h6" fontWeight="medium" textTransform="capitalize">
-                  {'My Balance:  ${user?.holder}'}
+                  My Balance:  {user?.wallet}
                   <br></br>
-                  {'Account No : ${user?.accountNo}'}
+                  My Earning : {user?.accountNo}
                   <br></br>
-                  {'IFSC :  ${user?.IFSC}'}
+                  Total Withdraw : {user?.accountNo}
+                  <br></br>
+                  TDS : {user?.accountNo}
+                  <br></br>
+                Monthly Income : {user?.accountNo}
+                  <br></br>
+                Storage: {user?.accountNo}
+                  <br></br>
+                  <Divider variaßnt="middle"  />
+                Bank Name: {user?.bankName}
+                  <br></br>
                 </SoftTypography>
               </SoftBox>
-              <SoftBox p={2}>
-                <SoftBox opacity={0.3}></SoftBox>
-                <SoftBox>{'Bank Name : ${user?.bankName}'}</SoftBox>
-              </SoftBox>
+              
             </Card>
           </Grid>
         </Grid>

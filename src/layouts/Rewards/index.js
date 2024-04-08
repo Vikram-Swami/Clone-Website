@@ -74,6 +74,12 @@ function Rewards() {
             
             </SoftBox>
             <Table columns={usersView.columns} rows={memoizedRows} />
+
+            <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
+              <SoftTypography variant="h5">Rewards & Salary</SoftTypography>
+            
+            </SoftBox>
+            <Table columns={usersView.columns} rows={memoizedRows} />
            
           </Box>
         ) : (

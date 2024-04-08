@@ -3,13 +3,15 @@ import PropTypes from "prop-types";
 
 // @mui material components
 import Icon from "@mui/material/Icon";
-
+import Divider from '@mui/material/Divider';
 // Next Work Dashboard React components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
-import SoftButton from "components/SoftButton";
-
-function Bill({ name, company, email, vat, noGutter }) {
+import { BorderBottom } from "@mui/icons-material";
+import { useSoftUIController } from "context";
+function Bill({ wallet, earning, withdraw, TDS, Income,Storage,bankName}) {
+  const [controller] = useSoftUIController();
+  const { user } = controller;
   return (
     <SoftBox
       component="li"
@@ -19,7 +21,7 @@ function Bill({ name, company, email, vat, noGutter }) {
       bgColor="grey-100"
       borderRadius="lg"
       p={3}
-      mb={noGutter ? 0 : 1}
+      mb={Income ? 0 : 1}
       mt={2}
     >
       <SoftBox width="100%" display="flex" flexDirection="column">
@@ -31,7 +33,7 @@ function Bill({ name, company, email, vat, noGutter }) {
           mb={2}
         >
           <SoftTypography variant="button" fontWeight="medium" textTransform="capitalize">
-            {name}
+            {wallet}
           </SoftTypography>
 
           <SoftBox
@@ -40,33 +42,83 @@ function Bill({ name, company, email, vat, noGutter }) {
             mt={{ xs: 2, sm: 0 }}
             ml={{ xs: -1.5, sm: 0 }}
           >
-            <SoftButton variant="text" color="dark">
-              <Icon>view</Icon>&nbsp;View
-            </SoftButton>
+            
           </SoftBox>
         </SoftBox>
-        <SoftBox mb={1} lineHeight={0}>
-          <SoftTypography variant="caption" color="text">
-            Company Name:&nbsp;&nbsp;&nbsp;
-            <SoftTypography variant="caption" fontWeight="medium" textTransform="capitalize">
-              {company}
-            </SoftTypography>
+        <SoftBox mb={1} lineHeight={0} display={"flex"} justifyContent={"space-between"}>
+          <SoftTypography variant="h6" color="black" fontWeight="medium" >
+            My Balance : 
+           
+          </SoftTypography>
+          <SoftTypography variant="h6" color="black" fontWeight="medium" >
+           {user?.wallet}
+           
           </SoftTypography>
         </SoftBox>
-        <SoftBox mb={1} lineHeight={0}>
-          <SoftTypography variant="caption" color="text">
-            Email Address:&nbsp;&nbsp;&nbsp;
-            <SoftTypography variant="caption" fontWeight="medium">
-              {email}
-            </SoftTypography>
+        <SoftBox mb={1} lineHeight={0} display={"flex"} justifyContent={"space-between"}>
+          <SoftTypography variant="h6" color="black" fontWeight="medium" >
+          My Earning : 
+           
+          </SoftTypography>
+          <SoftTypography variant="h6" color="black" fontWeight="medium" >
+           {/* {user?.wallet} */}
+           0
           </SoftTypography>
         </SoftBox>
-        <SoftTypography variant="caption" color="text">
-          VAT Number:&nbsp;&nbsp;&nbsp;
-          <SoftTypography variant="caption" fontWeight="medium">
-            {vat}
+        <SoftBox mb={1} lineHeight={0} display={"flex"} justifyContent={"space-between"}>
+          <SoftTypography variant="h6" color="black" fontWeight="medium" >
+          Total Withdraw :
+           
           </SoftTypography>
-        </SoftTypography>
+          <SoftTypography variant="h6" color="black" fontWeight="medium" >
+           {/* {user?.wallet} */}
+           0
+          </SoftTypography>
+        </SoftBox>
+        <SoftBox mb={1} lineHeight={0} display={"flex"} justifyContent={"space-between"}>
+          <SoftTypography variant="h6" color="black" fontWeight="medium" >
+          TDS :  
+           
+          </SoftTypography>
+          <SoftTypography variant="h6" color="black" fontWeight="medium" >
+           {/* {user?.wallet} */}
+           0
+          </SoftTypography>
+        </SoftBox>
+        <SoftBox mb={1} lineHeight={0} display={"flex"} justifyContent={"space-between"}>
+          <SoftTypography variant="h6" color="black" fontWeight="medium" >
+          Monthly Income :  
+           
+          </SoftTypography>
+          <SoftTypography variant="h6" color="black" fontWeight="medium" >
+           {/* {user?.wallet} */}
+           0
+          </SoftTypography>
+        </SoftBox>
+        <SoftBox mb={1} lineHeight={0} display={"flex"} justifyContent={"space-between"}>
+          <SoftTypography variant="h6" color="black" fontWeight="medium" >
+          Storage :  
+           
+          </SoftTypography>
+          <SoftTypography variant="h6" color="black" fontWeight="medium" >
+           {user?.ownStr }
+           
+          </SoftTypography>
+        </SoftBox>
+
+        <Divider variaßnt="middle"  />
+        <SoftBox mb={1} lineHeight={0} display={"flex"} justifyContent={"space-between"}>
+          <SoftTypography variant="h6" color="black" fontWeight="medium" >
+          {user?.bankName} 
+           
+          </SoftTypography>
+          <SoftTypography variant="h6" color="black" fontWeight="medium" >
+           
+          <Icon fontSize="small" color="info">
+          account_balance_wallet
+              </Icon>
+          </SoftTypography>
+        </SoftBox>
       </SoftBox>
     </SoftBox>
   );
@@ -74,16 +126,18 @@ function Bill({ name, company, email, vat, noGutter }) {
 
 // Setting default values for the props of Bill
 Bill.defaultProps = {
-  noGutter: false,
+  Income: false,
 };
 
 // Typechecking props for the Bill
 Bill.propTypes = {
-  name: PropTypes.string.isRequired,
-  company: PropTypes.string.isRequired,
-  email: PropTypes.string.isRequired,
-  vat: PropTypes.string.isRequired,
-  noGutter: PropTypes.bool,
+  wallet: PropTypes.string.isRequired,
+  earning: PropTypes.string.isRequired,
+  withdraw: PropTypes.string.isRequired,
+  TDS: PropTypes.string.isRequired,
+  Income: PropTypes.bool,
+  Storage: PropTypes.string.isRequired,
+  bankName: PropTypes.string.isRequired,
 };
 
 export default Bill;

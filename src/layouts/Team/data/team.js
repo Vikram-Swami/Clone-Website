@@ -25,10 +25,7 @@ function Level({ level, pLevel }) {
     <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
       <SoftBox display="flex" flexDirection="column">
         <SoftTypography variant="button" fontWeight="medium">
-          Level - {level}
-        </SoftTypography>
-        <SoftTypography variant="caption" color="secondary">
-          Placement Level - {pLevel}
+          {level}
         </SoftTypography>
       </SoftBox>
     </SoftBox>
@@ -40,7 +37,7 @@ function Status({ verified, status }) {
     return (
       <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
         <SoftBox display="flex" alignItems="center" flexDirection="column" gap="4px">
-          <SoftBadge variant="gradient" badgeContent="Active" color="warning" size="xs" container />
+          <SoftBadge variant="gradient" badgeContent="Active" color="success" size="xs" container />
         </SoftBox>
       </SoftBox>
     );

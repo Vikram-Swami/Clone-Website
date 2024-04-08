@@ -11,26 +11,30 @@ import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
 // Overview page components
 import Header from "layouts/profile/components/Header";
 import { useSoftUIController } from "context";
+import DashboardNavbar from "examples/Navbars/DashboardNavbar";
+import BuildByDevelopers from "layouts/dashboard/components/BuildByDevelopers";
 
 function Overview() {
   const [controller] = useSoftUIController();
   const { user } = controller;
   return (
     <DashboardLayout>
-      <Header />
+      <DashboardNavbar />
       <SoftBox mt={5} mb={3}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6} xl={4}>
+            <BuildByDevelopers />
+            <br></br>
             <ProfileInfoCard
               title="profile information"
               info={{
                 fullName: user?.fullName,
-                description: "",
+                ID: user.id ?? "",
                 mobile: user?.phone,
                 email: user?.email,
                 location: user?.city + " " + user?.state + " " + user?.country,
               }}
-              action={{ route: "", tooltip: "Edit Profile" }}
+              action={{ route: "/dashboard", tooltip: "Edit Profile" }}
             />
           </Grid>
           <Grid item xs={12} md={6} xl={4}>
@@ -44,7 +48,7 @@ function Overview() {
                 IFSC: user?.IFSC,
                 nomineeName: user?.nomineeName,
               }}
-              action={{ route: "", tooltip: "Edit Profile" }}
+              action={{ route: "/dashboard", tooltip: "Edit Profile" }}
             />
           </Grid>
           <Grid item xs={12} md={6} xl={4}>
@@ -57,7 +61,7 @@ function Overview() {
                 state: user?.state,
                 country: user?.country,
               }}
-              action={{ route: "", tooltip: "Edit Profile" }}
+              action={{ route: "/dashboard", tooltip: "Edit Profile" }}
             />
           </Grid>
         </Grid>

@@ -49,23 +49,7 @@ function Header() {
   return (
     <SoftBox position="relative">
       <DashboardNavbar absolute light />
-      <SoftBox
-        display="flex"
-        alignItems="center"
-        position="relative"
-        minHeight="18.75rem"
-        borderRadius="xl"
-        sx={{
-          backgroundImage: ({ functions: { rgba, linearGradient }, palette: { gradients } }) =>
-            `${linearGradient(
-              rgba(gradients.info.main, 0.6),
-              rgba(gradients.info.state, 0.6)
-            )}, url(${curved0})`,
-          backgroundSize: "cover",
-          backgroundPosition: "50%",
-          overflow: "hidden",
-        }}
-      />
+      
       <Card
         sx={{
           backdropFilter: `saturate(200%) blur(30px)`,

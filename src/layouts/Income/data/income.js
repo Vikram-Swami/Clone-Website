@@ -5,7 +5,6 @@ import SoftTypography from "components/SoftTypography";
 import SoftBadge from "components/SoftBadge";
 
 import { Icon } from "@mui/material";
-import { setDialog } from "context";
 import { toast } from "react-toastify";
 
 function Author({ name, id }) {
@@ -23,7 +22,7 @@ function Author({ name, id }) {
   );
 }
 
-function Status({ tnxId, status }) {
+function Status({ status }) {
   if (!status) {
     return (
       <SoftBox display="flex" alignItems="center" px={1} py={0.5}>

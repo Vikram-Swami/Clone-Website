@@ -18,13 +18,13 @@ import { NavLink } from "react-router-dom";
 import { useEffect } from "react";
 import Table from "examples/Tables/Table";
 import { useSoftUIController, startLoading, setLoading } from "context";
-import SoftInput from "components/SoftInput";
 import React from "react";
 import TeamView from "./data/team";
 import ApiClient from "Services/ApiClient";
 import { getMembers } from "Services/endpointes";
 import { toast } from "react-toastify";
 import { setMembers } from "context";
+import { setDialog } from "context";
 
 function Team() {
   const [controller, dispatch] = useSoftUIController();
@@ -35,8 +35,8 @@ function Team() {
     startLoading(dispatch, true);
     try {
       const response = await ApiClient.getData(getMembers);
-      setMembers(dispatch, response.data);
-      toast.success(response.message);
+      if(response.status == 200){setMembers(dispatch, response.data);}
+      else{setDialog(dispatch, [response])}
     } catch (error) {
       toast.info(error.message);
       setLoading(dispatch, false);
@@ -51,23 +51,11 @@ function Team() {
 
   return (
     <DashboardLayout>
-      <DashboardNavbar />
+      <DashboardNavbar call={getMember}/>
       <SoftBox py={3}>
         <SoftBox mb={3}>
           <Card>
-            <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-              <SoftTypography variant="h6">My Team</SoftTypography>
-
-              <FormControlLabel control={<Checkbox />} label="List" />
-              <FormControlLabel control={<Checkbox />} label="Tree" />
-
-              <SoftBox pr={1}>
-                <SoftInput
-                  placeholder="Enter Connection Id"
-                  icon={{ component: "search", direction: "left" }}
-                />
-              </SoftBox>
-            </SoftBox>
+            {/*  */}
 
             {member?.length > 0 ? (
               <Table columns={TeamView.columns} rows={memoizedRows} />

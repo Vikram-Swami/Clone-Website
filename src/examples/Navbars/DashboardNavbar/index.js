@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 
 // react-router components
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
@@ -39,8 +39,8 @@ import { Avatar, Box, Divider, Grid, Stack, Typography } from "@mui/material";
 import NotificationItem from "examples/Items/NotificationItem";
 import SoftBadge from "components/SoftBadge";
 
-function DashboardNavbar({ absolute, light, isMini }) {
-  const navigate = useNavigate();
+function DashboardNavbar({ absolute, light, isMini, call }) {
+
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useSoftUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar } = controller;
@@ -145,7 +145,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
           variant="gradient"
           px={1}
           my={0.5}
-          onClick={() => navigate("/profile")}
+          component={Link}
+          to="/my-profile"
           display="flex"
           sx={{ cursor: "pointer" }}
           alignItems="center"
@@ -154,6 +155,22 @@ function DashboardNavbar({ absolute, light, isMini }) {
           <Divider />
           <Icon fontSize="1rem">account_circle</Icon>
           <SoftTypography cursor="pointer" fontSize="1rem" pl={1} component="span">My Profile</SoftTypography>
+
+        </SoftBox>
+        <SoftBox
+          variant="gradient"
+          px={1}
+          my={0.5}
+          component={Link}
+          to="/create-members"
+          display="flex"
+          sx={{ cursor: "pointer" }}
+          alignItems="center"
+          color="secondary"
+        >
+          <Divider />
+          <Icon fontSize="1rem">group_add</Icon>
+          <SoftTypography cursor="pointer" fontSize="1rem" pl={1} component="span">Add Member</SoftTypography>
 
         </SoftBox>
 
@@ -224,7 +241,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
 
         <SoftBox sx={(theme) => navbarRow(theme, { isMini })}>
           <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
-            <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
+            <Breadcrumbs icon="home" call={call} title={route[route.length - 1]} route={route} light={light} />
           </SoftBox>
 
           <SoftBox color={light ? "white" : "inherit"}>
@@ -292,6 +309,7 @@ DashboardNavbar.defaultProps = {
   absolute: false,
   light: false,
   isMini: false,
+  call: ()=>{}
 };
 
 // Typechecking props for the DashboardNavbar
@@ -299,6 +317,7 @@ DashboardNavbar.propTypes = {
   absolute: PropTypes.bool,
   light: PropTypes.bool,
   isMini: PropTypes.bool,
+  call:PropTypes.func
 };
 
 export default DashboardNavbar;
