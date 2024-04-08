@@ -54,7 +54,6 @@ function Billing() {
                 </Grid>
               </Grid>
             </Grid>
-            
           </Grid>
         </SoftBox>
         <SoftBox py={3}>

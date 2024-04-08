@@ -57,7 +57,8 @@ function PaymentMethod() {
   };
   return (
     <Card id="delete-account">
-      <SoftBox pt={0} px={0} display="flex" justifyContent="space-between" alignItems="center">
+      <SoftBox pt={2} px={2} display="flex" justifyContent="space-between" alignItems="center">
+
         <Dialog
           open={open}
           onClose={handleClose}
@@ -190,10 +191,10 @@ function PaymentMethod() {
           </DialogActions>
         </Dialog>
       </SoftBox>
-      <SoftBox mt={2} mb={3}>
-        <Grid container spacing={2} pl={4}>
-        
-            <Card sx={{ height: "100%", boxShadow: "none"}}>
+      <SoftBox mt={5} mb={3}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={6} xl={8} ml={4}>
+            <Card sx={{ height: "100%", boxShadow: "none" }}>
               <SoftBox
                 display="flex"
                 justifyContent="space-between"
@@ -202,23 +203,19 @@ function PaymentMethod() {
                 px={2}
               >
                 <SoftTypography variant="h6" fontWeight="medium" textTransform="capitalize">
-                  
-                  {`My Balance:  ${user?.wallet}`}
+                  {'My Balance:  ${user?.holder}'}
                   <br></br>
-                  {`My Earning :  ${user?.earning}`}
+                  {'Account No : ${user?.accountNo}'}
                   <br></br>
-                  {`Total Withdraw :  `}
-                  <br></br>
-                  {`TDS :  `}
-                  <br></br>
-                  {`Monthly Income :  `}
-                  <br></br>
-                  {`Own Storage :  `}
+                  {'IFSC :  ${user?.IFSC}'}
                 </SoftTypography>
               </SoftBox>
-              
+              <SoftBox p={2}>
+                <SoftBox opacity={0.3}></SoftBox>
+                <SoftBox>{'Bank Name : ${user?.bankName}'}</SoftBox>
+              </SoftBox>
             </Card>
-       
+          </Grid>
         </Grid>
       </SoftBox>
     </Card>
