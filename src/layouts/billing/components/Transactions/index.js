@@ -18,35 +18,26 @@ import { useEffect } from "react";
 import ApiClient from "Services/ApiClient";
 import { getTransactionsByUserId } from "Services/endpointes";
 function Transactions() {
-
-
-
-
-
   const [controller, dispatch] = useSoftUIController();
   const { transaction } = controller;
 
-  const getAllUsersTransaction = async () =>{
-    try{
-      setLoading(dispatch,true);
+  const getAllUsersTransaction = async () => {
+    try {
+      setLoading(dispatch, true);
       const response = await ApiClient.getData(getTransactionsByUserId);
-      if(response?.status === 200){
-        setTransaction(dispatch,response?.data);
+      if (response?.status === 200) {
+        setTransaction(dispatch, response?.data);
+      } else {
+        setDialog(dispatch, [response]);
       }
-      else{
-        setDialog(dispatch,[response]);
-      }
-    }
-    catch(error){
+    } catch (error) {
       toast.error(error.toString());
-      setLoading(dispatch,false);
+      setLoading(dispatch, false);
     }
   };
   useEffect(() => {
     transaction.length < 1 && getAllUsersTransaction();
   }, []);
-
-
 
   return (
     <Card sx={{ height: "100%" }}>
@@ -84,32 +75,31 @@ function Transactions() {
           m={0}
           sx={{ listStyle: "none" }}
         >
-          {transaction?.length >0 ?
-        transaction.map(e =>
-         { 
-          const date = new Date(e.createdAt);
-          const formattedDate = date.toLocaleString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
-          });
+          {transaction?.length > 0
+            ? transaction.map((e) => {
+                const date = new Date(e.createdAt);
+                const formattedDate = date.toLocaleString("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "2-digit",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                });
 
-          return <Transaction
-          key={e.invoiceNo}
-            color="error"
-            icon="arrow_downward"
-            name={e.type}
-            description={formattedDate}
-            value={"₹"+e.amount}
-          />}
-          
-         )  :""
-        } 
+                return (
+                  <Transaction
+                    key={e.invoiceNo}
+                    color="error"
+                    icon="arrow_downward"
+                    name={e.type}
+                    description={formattedDate}
+                    value={"₹" + e.amount}
+                  />
+                );
+              })
+            : ""}
         </SoftBox>
-        
       </SoftBox>
     </Card>
   );

@@ -29,18 +29,13 @@ import {
 } from "examples/Navbars/DashboardNavbar/styles";
 
 // Next Work Dashboard React context
-import {
-  useSoftUIController,
-  setTransparentNavbar,
-  setMiniSidenav,
-} from "context";
+import { useSoftUIController, setTransparentNavbar, setMiniSidenav } from "context";
 import { setDialog } from "context";
 import { Avatar, Box, Divider, Grid, Stack, Typography } from "@mui/material";
 import NotificationItem from "examples/Items/NotificationItem";
 import SoftBadge from "components/SoftBadge";
 
 function DashboardNavbar({ absolute, light, isMini, call }) {
-
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useSoftUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar } = controller;
@@ -65,7 +60,7 @@ function DashboardNavbar({ absolute, light, isMini, call }) {
         status: "form",
         action: "Logout",
         title: "Are you sure to Logout from your Account.",
-        call: handleLogout
+        call: handleLogout,
       },
     ]);
   };
@@ -106,7 +101,7 @@ function DashboardNavbar({ absolute, light, isMini, call }) {
   function generateWhatsAppMessage(referralLink) {
     const companyName = "Nextwork Technologies Ltd";
     const message = `👋 Hey there!\n\nLooking to start earning?💰\nClick on this link to get started with ${companyName}.\n\nLink: ${referralLink}\n\nJoin us at ${companyName} and explore exciting opportunities to earn from the comfort of your home.\n\nHappy earning! 🚀\n\nRegards\n${user.fullName}`;
-    return (message);
+    return message;
   }
 
   const handleSend = (message) => {
@@ -114,19 +109,34 @@ function DashboardNavbar({ absolute, light, isMini, call }) {
     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
 
     // Open WhatsApp in a new window or tab
-    window.open(whatsappUrl, '_blank');
+    window.open(whatsappUrl, "_blank");
   };
   const handleCopyLink = (user) => {
     const referLink = generateReferLink(user.id);
 
     let message = generateWhatsAppMessage(referLink);
-    setDialog(dispatch, [{
-      status: "form", title: "Here is Your Refer Link", children: <Grid container spacing={1}><Grid item xs={1}><Icon small>link</Icon></Grid><Grid item xs={11}><Typography fontSize={13} whiteSpace={"nowrap"}> {referLink}</Typography></Grid></Grid>, action: "Share", call: () => handleSend(message)
-    }]);
+    setDialog(dispatch, [
+      {
+        status: "form",
+        title: "Here is Your Refer Link",
+        children: (
+          <Grid container spacing={1}>
+            <Grid item xs={1}>
+              <Icon small>link</Icon>
+            </Grid>
+            <Grid item xs={11}>
+              <Typography fontSize={13} whiteSpace={"nowrap"}>
+                {" "}
+                {referLink}
+              </Typography>
+            </Grid>
+          </Grid>
+        ),
+        action: "Share",
+        call: () => handleSend(message),
+      },
+    ]);
   };
-
-
-
 
   const renderMenu = () => (
     <Menu
@@ -138,7 +148,6 @@ function DashboardNavbar({ absolute, light, isMini, call }) {
       }}
       open={Boolean(openMenu)}
       onClose={handleCloseMenu}
-
     >
       <Box>
         <SoftBox
@@ -154,8 +163,9 @@ function DashboardNavbar({ absolute, light, isMini, call }) {
         >
           <Divider />
           <Icon fontSize="1rem">account_circle</Icon>
-          <SoftTypography cursor="pointer" fontSize="1rem" pl={1} component="span">My Profile</SoftTypography>
-
+          <SoftTypography cursor="pointer" fontSize="1rem" pl={1} component="span">
+            My Profile
+          </SoftTypography>
         </SoftBox>
         <SoftBox
           variant="gradient"
@@ -170,8 +180,9 @@ function DashboardNavbar({ absolute, light, isMini, call }) {
         >
           <Divider />
           <Icon fontSize="1rem">group_add</Icon>
-          <SoftTypography cursor="pointer" fontSize="1rem" pl={1} component="span">Add Member</SoftTypography>
-
+          <SoftTypography cursor="pointer" fontSize="1rem" pl={1} component="span">
+            Add Member
+          </SoftTypography>
         </SoftBox>
 
         <SoftBox
@@ -186,8 +197,9 @@ function DashboardNavbar({ absolute, light, isMini, call }) {
         >
           <Divider />
           <Icon fontSize="1rem">share_icon</Icon>
-          <SoftTypography cursor="pointer" fontSize="1rem" pl={1} component="span">Refer Link</SoftTypography>
-
+          <SoftTypography cursor="pointer" fontSize="1rem" pl={1} component="span">
+            Refer Link
+          </SoftTypography>
         </SoftBox>
         <SoftBox
           variant="gradient"
@@ -201,9 +213,10 @@ function DashboardNavbar({ absolute, light, isMini, call }) {
         >
           <Divider />
           <Icon fontSize="1rem">logout_icon</Icon>
-          <SoftTypography cursor="pointer" fontSize="1rem" pl={1} component="span">Log Out</SoftTypography>
+          <SoftTypography cursor="pointer" fontSize="1rem" pl={1} component="span">
+            Log Out
+          </SoftTypography>
         </SoftBox>
-
       </Box>
     </Menu>
   );
@@ -217,16 +230,19 @@ function DashboardNavbar({ absolute, light, isMini, call }) {
       }}
       open={Boolean(openNotif)}
       onClose={handleCloseNotif}
-
     >
       <Box>
-
-        {notifications?.length > 0 && notifications?.slice(0, 3)?.map((e) => <NotificationItem
-          key={e._id}
-          image={<Icon size="small">{e.icon}</Icon>}
-          title={e.title}
-          date="13 minutes ago"
-        />)}
+        {notifications?.length > 0 &&
+          notifications
+            ?.slice(0, 3)
+            ?.map((e) => (
+              <NotificationItem
+                key={e._id}
+                image={<Icon size="small">{e.icon}</Icon>}
+                title={e.title}
+                date="13 minutes ago"
+              />
+            ))}
       </Box>
     </Menu>
   );
@@ -238,10 +254,19 @@ function DashboardNavbar({ absolute, light, isMini, call }) {
       sx={(theme) => navbar(theme, { transparentNavbar, absolute, light })}
     >
       <Toolbar sx={(theme) => navbarContainer(theme)}>
-
         <SoftBox sx={(theme) => navbarRow(theme, { isMini })}>
-          <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
-            <Breadcrumbs icon="home" call={call} title={route[route.length - 1]} route={route} light={light} />
+          <SoftBox
+            color="inherit"
+            mb={{ xs: 1, md: 0 }}
+            sx={(theme) => navbarRow(theme, { isMini })}
+          >
+            <Breadcrumbs
+              icon="home"
+              call={call}
+              title={route[route.length - 1]}
+              route={route}
+              light={light}
+            />
           </SoftBox>
 
           <SoftBox color={light ? "white" : "inherit"}>
@@ -254,22 +279,20 @@ function DashboardNavbar({ absolute, light, isMini, call }) {
               variant="contained"
               onClick={handleOpenNotif}
             >
-              <Icon className={light ? "text-white" : "text-dark"} fontSize="14px">notifications</Icon>
+              <Icon className={light ? "text-white" : "text-dark"} fontSize="14px">
+                notifications
+              </Icon>
               <SoftBadge
                 sx={{ position: "absolute", top: 0, left: 10 }}
                 variant="gradient"
-                color={'error'}
+                color={"error"}
                 size="8px"
                 badgeContent={user.unread}
                 circular
-
               />
-
             </IconButton>
             {renderNotification()}
           </SoftBox>
-
-
 
           <SoftBox color={light ? "white" : "inherit"}>
             <IconButton
@@ -309,7 +332,7 @@ DashboardNavbar.defaultProps = {
   absolute: false,
   light: false,
   isMini: false,
-  call: ()=>{}
+  call: () => {},
 };
 
 // Typechecking props for the DashboardNavbar
@@ -317,7 +340,7 @@ DashboardNavbar.propTypes = {
   absolute: PropTypes.bool,
   light: PropTypes.bool,
   isMini: PropTypes.bool,
-  call:PropTypes.func
+  call: PropTypes.func,
 };
 
 export default DashboardNavbar;

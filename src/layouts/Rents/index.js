@@ -55,7 +55,7 @@ function Users() {
         <SoftBox mb={3}>
           <Card>
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-              <SoftTypography variant="h6">All Users</SoftTypography>
+              <SoftTypography variant="h6">My Rents</SoftTypography>
 
               <SoftBox pr={1}>
                 <SoftInput

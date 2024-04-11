@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import Card from "@mui/material/Card";
 import Icon from "@mui/material/Icon";
 import SoftBox from "components/SoftBox";
@@ -11,28 +11,55 @@ import { useSoftUIController } from "context";
 import { setLoading } from "context";
 import { setNotification } from "context";
 import { toast } from "react-toastify";
+import SoftButton from "components/SoftButton";
 
 function OrdersOverview() {
   const [controller, dispatch] = useSoftUIController();
   const { notifications, user } = controller;
+  const [showAllNotifications, setShowAllNotifications] = useState(false);
+  const [visibleNotifications, setVisibleNotifications] = useState([]);
+  const buttonStyle = {
+    backgroundColor: "#147A5F",
+    color: "white",
+    padding: "4px 12px",
+    borderRadius: "10px",
+    cursor: "pointer",
+    fontSize: "10px",
+    transition: "background-color 0.3s",
+  };
+
   const fetchNotifications = async () => {
     startLoading(dispatch, true);
     try {
       const response = await ApiClient.getData(getUserNotification);
-      if (response.status == 200) {
+      if (response.status === 200) {
         setNotification(dispatch, response.data);
       } else {
         setLoading(dispatch, false);
       }
     } catch (error) {
-      setLoading(dispatch, false)
+      setLoading(dispatch, false);
       toast.error(error.toString());
     }
   };
-  useEffect(() => {
 
-    notifications.length < 1 && fetchNotifications();
+  useEffect(() => {
+    if (notifications.length < 1) {
+      fetchNotifications();
+    }
   }, []);
+
+  useEffect(() => {
+    if (showAllNotifications) {
+      setVisibleNotifications(notifications);
+    } else {
+      setVisibleNotifications(notifications.slice(0, 1));
+    }
+  }, [notifications, showAllNotifications]);
+
+  const handleViewMoreLess = () => {
+    setShowAllNotifications(!showAllNotifications);
+  };
 
   return (
     <Card className="h-100">
@@ -40,7 +67,7 @@ function OrdersOverview() {
         <SoftTypography variant="h6" fontWeight="medium">
           Notifications
         </SoftTypography>
-        <SoftBox mt={1} mb={2}>
+        <SoftBox mt={1} mb={0}>
           <SoftTypography variant="button" color="text" fontWeight="regular">
             <SoftTypography display="inline" variant="body2" verticalAlign="middle">
               <Icon
@@ -61,7 +88,7 @@ function OrdersOverview() {
         </SoftBox>
       </SoftBox>
       <SoftBox p={2}>
-        {notifications?.map((item, index) => (
+        {visibleNotifications.map((item, index) => (
           <TimelineItem
             key={index}
             color={item.color}
@@ -70,6 +97,16 @@ function OrdersOverview() {
             dateTime={item.dateTime}
           />
         ))}
+        {notifications.length > 1 && (
+          <SoftButton
+            variant="contained"
+            style={buttonStyle}
+            className="view-more-less-btn"
+            onClick={handleViewMoreLess}
+          >
+            {showAllNotifications ? "View Less" : "View More"}
+          </SoftButton>
+        )}
       </SoftBox>
     </Card>
   );

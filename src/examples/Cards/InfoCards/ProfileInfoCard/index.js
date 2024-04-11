@@ -1,14 +1,10 @@
 // react-routers components
-import { Link } from "react-router-dom";
 
 // prop-types is library for typechecking of props
 import PropTypes from "prop-types";
 
 // @mui material components
 import Card from "@mui/material/Card";
-import Divider from "@mui/material/Divider";
-import Tooltip from "@mui/material/Tooltip";
-import Icon from "@mui/material/Icon";
 
 // Next Work Dashboard React components
 import SoftBox from "components/SoftBox";
@@ -55,25 +51,12 @@ function ProfileInfoCard({ title, id, info, social, action }) {
 
   return (
     <Card sx={{ height: "100%" }}>
-      <SoftBox display="flex" justifyContent="space-between" alignItems="center" pt={2} px={2}>
-        <SoftTypography variant="h6" fontWeight="medium" textTransform="capitalize">
+      <SoftBox display="flex" justifyContent="space-between" alignItems="center" pt={0} px={2}>
+        <SoftTypography variant="h6" fontWeight="medium" textTransform="capitalize" pt={3}>
           {title}
-        </SoftTypography>
-        <SoftTypography component={Link} to={action.route} variant="body2" color="secondary" cursor="ponter">
-          <Tooltip title={action.tooltip} placement="top">
-            <Icon>edit</Icon>
-          </Tooltip>
         </SoftTypography>
       </SoftBox>
       <SoftBox p={2}>
-        <SoftBox mb={2} lineHeight={1}>
-          <SoftTypography variant="button" color="text" fontWeight="regular">
-            {id}
-          </SoftTypography>
-        </SoftBox>
-        <SoftBox opacity={0.3}>
-          <Divider />
-        </SoftBox>
         <SoftBox>{renderItems}</SoftBox>
       </SoftBox>
     </Card>

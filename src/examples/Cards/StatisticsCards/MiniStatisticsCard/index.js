@@ -1,28 +1,25 @@
-// prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
-
-// @mui material components
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
-import Icon from "@mui/material/Icon";
-
-// Next Work Dashboard React components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
+import CircularProgressWithLabels from "components/Progress";
+import Icon from "@mui/material/Icon";
 function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction }) {
   return (
     <Card>
       <SoftBox bgColor={bgColor} variant="gradient">
         <SoftBox p={2}>
-          <Grid container alignItems="center">
-            {direction === "left" ? (
-              <Grid item>
+          <Grid container alignItems="center" height="3rem" justifyContent={"space-between"}>
+            <Grid item>
+              {direction === "right" && (
                 <SoftBox
                   variant="gradient"
                   bgColor={bgColor === "white" ? icon.color : "white"}
                   color={bgColor === "white" ? "white" : "dark"}
                   width="3rem"
-                  height="10rem"
+                  height="3rem"
+                  marginTop="-11px"
                   borderRadius="md"
                   display="flex"
                   justifyContent="center"
@@ -33,12 +30,12 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
                     {icon.component}
                   </Icon>
                 </SoftBox>
-              </Grid>
-            ) : null}
-            <Grid item xs={8}>
+              )}
+            </Grid>
+            <Grid item xs={8} lg={6} width={"100px"}>
               <SoftBox ml={direction === "left" ? 2 : 0} lineHeight={1}>
                 <SoftTypography
-                  variant="button"
+                  variant="h6"
                   color={bgColor === "white" ? "text" : "white"}
                   opacity={bgColor === "white" ? 1 : 0.7}
                   textTransform="capitalize"
@@ -46,12 +43,14 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
                 >
                   {title.text}
                 </SoftTypography>
-                <SoftTypography
-                  variant="h5"
-                  fontWeight="bold"
-                >
+                <SoftTypography variant="h4" fontWeight="bold">
                   {count}
                 </SoftTypography>
+              </SoftBox>
+            </Grid>
+            <Grid item>
+              <SoftBox>
+                <CircularProgressWithLabels value={50} />
               </SoftBox>
             </Grid>
           </Grid>
@@ -61,7 +60,6 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
   );
 }
 
-// Setting default values for the props of MiniStatisticsCard
 MiniStatisticsCard.defaultProps = {
   bgColor: "white",
   title: {
@@ -74,6 +72,7 @@ MiniStatisticsCard.defaultProps = {
   },
   direction: "right",
 };
+
 MiniStatisticsCard.propTypes = {
   bgColor: PropTypes.oneOf([
     "white",
@@ -103,18 +102,10 @@ MiniStatisticsCard.propTypes = {
     ]),
     text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   }),
-
   icon: PropTypes.shape({
-    color: PropTypes.oneOf([
-      "primary",
-      "secondary",
-      "info",
-      "success",
-      "warning",
-      "error",
-      "dark",
-    ]),
-    component: PropTypes.node.isRequired,
+    color: PropTypes.oneOf(["primary", "secondary", "info", "success", "warning", "error", "dark"]),
+    // Corrected this prop type to specify that it should be a valid MUI icon name
+    component: PropTypes.string.isRequired,
   }).isRequired,
   direction: PropTypes.oneOf(["right", "left"]),
   children: PropTypes.node,
