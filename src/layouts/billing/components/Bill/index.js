@@ -110,7 +110,7 @@ function Bill({ wallet, earning, withdraw, TDS, Income, Storage, bankName }) {
           </SoftTypography>
         </SoftBox>
 
-        <Divider variaßnt="middle" />
+        <Divider variant="middle" />
         <SoftBox mb={1} lineHeight={0} display={"flex"} justifyContent={"space-between"}>
           <SoftTypography variant="h6" color="black" fontWeight="medium">
             {user?.bankName}

@@ -12,6 +12,7 @@ import { setLoading } from "context";
 import { setNotification } from "context";
 import { toast } from "react-toastify";
 import SoftButton from "components/SoftButton";
+import { NavLink } from "react-router-dom";
 
 function OrdersOverview() {
   const [controller, dispatch] = useSoftUIController();
@@ -98,14 +99,12 @@ function OrdersOverview() {
           />
         ))}
         {notifications.length > 1 && (
-          <SoftButton
-            variant="contained"
-            style={buttonStyle}
-            className="view-more-less-btn"
-            onClick={handleViewMoreLess}
-          >
-            {showAllNotifications ? "View Less" : "View More"}
-          </SoftButton>
+          <NavLink to="/notifications">
+            {" "}
+            <SoftButton variant="gradient" color="dark" ml={2}>
+              &nbsp;View More
+            </SoftButton>
+          </NavLink>
         )}
       </SoftBox>
     </Card>

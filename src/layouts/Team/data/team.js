@@ -116,7 +116,9 @@ const TeamView = {
             ),
 
             status: <Status verified={e.isVerified} status={e.status} />,
-            level: <Level level={parseInt(e.level)} pLevel={e.placementLevel} />,
+            level: (
+              <Level level={parseInt(e.level) - parseInt(user.level)} pLevel={e.placementLevel} />
+            ),
             storage: (
               <SoftTypography variant="caption" color="secondary" fontWeight="medium">
                 {e.storage}

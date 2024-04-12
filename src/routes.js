@@ -6,6 +6,7 @@ import RecipeReviewCard from "layouts/verifyAccount";
 import Dashboard from "layouts/dashboard";
 import ForgetPassword from "layouts/authentication/forget-password";
 import Rewards from "layouts/Rewards";
+import Notifications from "layouts/Notification";
 const Team = lazy(() => import("layouts/Team"));
 const Connections = lazy(() => import("layouts/connections"));
 const Billing = lazy(() => import("layouts/billing"));
@@ -94,6 +95,16 @@ const routes = [
     component: <CreateMembers />,
     noCollapse: true,
   },
+  {
+    type: "route",
+    name: "Notifications",
+    key: "notifictions",
+    auth: "user",
+    route: "/notifications",
+    icon: <Office size="12px" />,
+    component: <Notifications />,
+    noCollapse: true,
+  },
 
   {
     type: "collapse",
@@ -105,7 +116,7 @@ const routes = [
     component: <Products />,
     noCollapse: true,
   },
-  
+
   {
     type: "collapse",
     name: "My Connections",
@@ -139,7 +150,6 @@ const routes = [
     noCollapse: true,
   },
 
-
   {
     type: "collapse",
     name: "Credits",
@@ -150,7 +160,6 @@ const routes = [
     component: <Income />,
     noCollapse: true,
   },
-
 
   { type: "title", title: "My Account", key: "account-pages" },
   {
@@ -177,7 +186,6 @@ const routes = [
     noCollapse: true,
   },
 
-
   {
     type: "collapse",
     name: "Royality",
@@ -186,7 +194,6 @@ const routes = [
     icon: <CustomerSupport size="12px" />,
     noCollapse: true,
   },
-
 ];
 export default routes;
 
