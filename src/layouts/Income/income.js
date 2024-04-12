@@ -19,26 +19,30 @@ import React from "react";
 import { setIncome } from "context";
 import usersView from "./data/income";
 import { getIncomeByUserId } from "Services/endpointes";
+import { setDialog } from "context";
 
 function Income() {
   const [controller, dispatch] = useSoftUIController();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const { income, user } = controller;
-  const getAllusers = async () => {
+  
+  const getIncomes = async () => {
     startLoading(dispatch, true);
     try {
       const response = await ApiClient.getData(getIncomeByUserId, 0, 100);
-      setIncome(dispatch, response.data);
-      toast.success(response?.message);
+      if(response.status == 200){
+        setIncome(dispatch, response.data);
+      }else{
+        setDialog(dispatch, [response]);
+      }
     } catch (error) {
+      toast.info(error.toString());
       setLoading(dispatch, false);
-      toast.info(error.response?.data?.message ?? "Oops! Network error occured!");
     }
   };
+
   useEffect(() => {
-    income.length < 1 && getAllusers();
+    income.length < 1 && getIncomes();
   }, []);
 
   let memoizedRows = usersView.rows(income, user.fullName, dispatch);

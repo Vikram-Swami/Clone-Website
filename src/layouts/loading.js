@@ -1,6 +1,5 @@
 import { Box, Typography } from "@mui/material";
 import { PropTypes } from "prop-types";
-import { useState, useEffect } from "react";
 
 const quotes = [
   "There is no friend as loyal as a book.",
