@@ -7,7 +7,7 @@ import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 
 // Images
-import ivancik from "assets/images/ivancik.jpg";
+import ivancik from "assets/ivancik.jpg";
 
 function WorkWithTheRockets() {
   return (
@@ -36,8 +36,8 @@ function WorkWithTheRockets() {
           </SoftBox>
           <SoftBox mb={2}>
             <SoftTypography variant="body2" color="white">
-              Wealth creation is an evolutionarily recent positive-sum game. It is all about who
-              take the opportunity first.
+              Join my team for innovation, success, and impact. Let&apos;s achieve greatness
+              together. Start your exciting career journey now!
             </SoftTypography>
           </SoftBox>
           <SoftTypography
@@ -64,7 +64,7 @@ function WorkWithTheRockets() {
               },
             }}
           >
-            Read More
+            Invite
             <Icon sx={{ fontWeight: "bold" }}>arrow_forward</Icon>
           </SoftTypography>
         </SoftBox>

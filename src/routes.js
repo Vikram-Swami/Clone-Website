@@ -5,6 +5,8 @@ import RecipeReviewCard from "layouts/verifyAccount";
 // const Dashboard = lazy(() => import("layouts/dashboard"));
 import Dashboard from "layouts/dashboard";
 import ForgetPassword from "layouts/authentication/forget-password";
+import Rewards from "layouts/Rewards";
+import Notifications from "layouts/Notification";
 const Team = lazy(() => import("layouts/Team"));
 const Connections = lazy(() => import("layouts/connections"));
 const Billing = lazy(() => import("layouts/billing"));
@@ -84,13 +86,23 @@ const routes = [
   },
 
   {
-    type: "collapse",
+    type: "route",
     name: "Create Members",
     key: "create-members",
     auth: "user",
     route: "/create-members",
     icon: <Office size="12px" />,
     component: <CreateMembers />,
+    noCollapse: true,
+  },
+  {
+    type: "route",
+    name: "Notifications",
+    key: "notifictions",
+    auth: "user",
+    route: "/notifications",
+    icon: <Office size="12px" />,
+    component: <Notifications />,
     noCollapse: true,
   },
 
@@ -104,7 +116,7 @@ const routes = [
     component: <Products />,
     noCollapse: true,
   },
-  
+
   {
     type: "collapse",
     name: "My Connections",
@@ -138,7 +150,6 @@ const routes = [
     noCollapse: true,
   },
 
-
   {
     type: "collapse",
     name: "Credits",
@@ -149,7 +160,6 @@ const routes = [
     component: <Income />,
     noCollapse: true,
   },
-
 
   { type: "title", title: "My Account", key: "account-pages" },
   {
@@ -164,35 +174,23 @@ const routes = [
   },
 
   { type: "title", title: "Benefits", key: "benefits_page" },
-  {
-    type: "collapse",
-    name: "Limit Rewards",
-    auth: "user",
-    key: "limitRewards",
-    icon: <CustomerSupport size="12px" />,
-    noCollapse: true,
-  },
+
   {
     type: "collapse",
     name: " Rewards",
-    auth: "user",
+    auth: "any",
     key: "rewards",
+    route: "/rewards",
+    component: <Rewards />,
     icon: <CustomerSupport size="12px" />,
     noCollapse: true,
   },
+
   {
     type: "collapse",
     name: "Royality",
     auth: "user",
     key: "royality",
-    icon: <CustomerSupport size="12px" />,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
-    name: "Consultation",
-    auth: "user",
-    key: "consultation",
     icon: <CustomerSupport size="12px" />,
     noCollapse: true,
   },

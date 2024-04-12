@@ -9,6 +9,7 @@ import NewFormDialog from "components/NewDialog";
 import RentModel from "Models/Rents";
 import IncomeLog from "Models/Income";
 import Notification from "Models/Notification";
+import Transaction from "Models/Transaction";
 
 const SoftUI = createContext(null);
 
@@ -53,14 +54,25 @@ function reducer(state, action) {
     case "INCOME": {
       return { ...state, loading: false, income: new IncomeLog().fromArray(action.value) };
     }
+    case "TRANSACTION": {
+      return { ...state, loading: false, transaction: new Transaction().fromArray(action.value) };
+    }
     case "LOADING": {
       return { ...state, loading: action.value };
     }
     case "CONNECTION": {
-      return { ...state, loading: false, connection: new ConnectionsModel().fromArray(action.value) };
+      return {
+        ...state,
+        loading: false,
+        connection: new ConnectionsModel().fromArray(action.value),
+      };
     }
     case "NOTIFICATION": {
-      return { ...state, loading: false, notifications: new Notification().fromArray(action.value) };
+      return {
+        ...state,
+        loading: false,
+        notifications: new Notification().fromArray(action.value),
+      };
     }
     case "DIALOG": {
       return { ...state, dialog: action.value, loading: false, accept: false };
@@ -99,6 +111,7 @@ function NextworkControllerProvider({ children }) {
     dialog: [],
     member: [],
     income: [],
+    transaction: [],
     accept: false,
     loading: false,
   };
@@ -111,10 +124,7 @@ function NextworkControllerProvider({ children }) {
       {/* Conditionally render loader */}
 
       <FormDialog
-        open={
-          controller.dialog?.length > 0 &&
-          controller.dialog[0]?.status !== "form"
-        }
+        open={controller.dialog?.length > 0 && controller.dialog[0]?.status !== "form"}
         setOpen={(v) => {
           setDialog(dispatch, []);
         }}
@@ -164,6 +174,7 @@ const setLoading = (dispatch, value) => dispatch({ type: "LOADING", value });
 const setRent = (dispatch, value) => dispatch({ type: "RENT", value });
 const setNotification = (dispatch, value) => dispatch({ type: "NOTIFICATION", value });
 const setIncome = (dispatch, value) => dispatch({ type: "INCOME", value });
+const setTransaction = (dispatch, value) => dispatch({ type: "TRANSACTION", value });
 const setMembers = (dispatch, value) => dispatch({ type: "MEMBER", value });
 const setDialog = (dispatch, value) => dispatch({ type: "DIALOG", value });
 const startLoading = (dispatch, value) => dispatch({ type: "START_LOAD", value });
@@ -182,6 +193,7 @@ export {
   setLayout,
   setUser,
   setIncome,
+  setTransaction,
   setRent,
   setConnection,
   setNotification,

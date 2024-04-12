@@ -16,7 +16,6 @@ import SoftTypography from "components/SoftTypography";
 
 // Next Work Dashboard React examples
 import BarReportsChartItem from "examples/Charts/BarCharts/ReportsBarChart/ReportsBarChartItem";
-
 // ReportsBarChart configurations
 import configs from "examples/Charts/BarCharts/ReportsBarChart/configs";
 
@@ -33,7 +32,6 @@ function ReportsBarChart({ color, title, description, chart, items }) {
   //     />
   //   </Grid>
   // ));
-
   return (
     <Card sx={{ height: "100%" }}>
       <SoftBox padding="1rem">

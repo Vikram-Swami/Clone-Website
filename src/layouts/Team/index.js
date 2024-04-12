@@ -18,7 +18,6 @@ import { NavLink } from "react-router-dom";
 import { useEffect } from "react";
 import Table from "examples/Tables/Table";
 import { useSoftUIController, startLoading, setLoading } from "context";
-import SoftInput from "components/SoftInput";
 import React from "react";
 import TeamView from "./data/team";
 import ApiClient from "Services/ApiClient";

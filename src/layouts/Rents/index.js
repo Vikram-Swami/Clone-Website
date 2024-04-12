@@ -33,9 +33,9 @@ function Users() {
     startLoading(dispatch, true);
     try {
       const response = await ApiClient.getData(getRentByUserId);
-      if(response.status ==200){
+      if (response.status == 200) {
         setRent(dispatch, response.data);
-      }else{
+      } else {
         setDialog(dispatch, [response]);
       }
     } catch (error) {
@@ -55,7 +55,7 @@ function Users() {
         <SoftBox mb={3}>
           <Card>
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-              <SoftTypography variant="h6">All Users</SoftTypography>
+              <SoftTypography variant="h6">My Rents</SoftTypography>
 
               <SoftBox pr={1}>
                 <SoftInput
