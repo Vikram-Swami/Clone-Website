@@ -6,6 +6,8 @@ import SoftBadge from "components/SoftBadge";
 
 import { Icon } from "@mui/material";
 import { toast } from "react-toastify";
+import { setDialog } from "context";
+import HeaderView from "../View";
 
 function Author({ name, id }) {
   return (
@@ -92,8 +94,18 @@ const usersView = {
               color="info"
               fontWeight="medium"
               cursor="pointer"
+              // onClick={() => {
+              //   toast.success("Details will be available soon!");
+              // }}
               onClick={() => {
-                toast.success("Details will be available soon!");
+                setDialog(dispatch, [
+                  {
+                    status: "form",
+                    title: `CONNECTION ID - ${e.id}`,
+                    message: `Invoices and Credential will be available soon.`,
+                    children: <HeaderView />,
+                  },
+                ]);
               }}
             >
               <Icon fontSize="small" color="info">

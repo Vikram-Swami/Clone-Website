@@ -15,11 +15,13 @@ import Table from "examples/Tables/Table";
 
 // Data
 import data from "layouts/dashboard/components/Projects/data";
+import { useSoftUIController } from "context";
 
 function Projects() {
   const { columns, rows } = data();
   const [menu, setMenu] = useState(null);
-
+  const [controller] = useSoftUIController();
+  const { user, member } = controller;
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => setMenu(null);
 
@@ -49,7 +51,7 @@ function Projects() {
       <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
         <SoftBox>
           <SoftTypography variant="h6" gutterBottom>
-            My Team
+            My Direct Team
           </SoftTypography>
           <SoftBox display="flex" alignItems="center" lineHeight={0}>
             <Icon
@@ -62,7 +64,7 @@ function Projects() {
               done
             </Icon>
             <SoftTypography variant="button" fontWeight="regular" color="text">
-              &nbsp;<strong>30 done</strong> this month
+              &nbsp;<strong> {member.length ?? 0} Direct Team</strong>
             </SoftTypography>
           </SoftBox>
         </SoftBox>
