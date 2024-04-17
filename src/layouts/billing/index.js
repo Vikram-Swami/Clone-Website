@@ -35,48 +35,7 @@ function Billing() {
             </Grid>
 
             <Grid item xs={12} lg={5}>
-              {/* <SoftBox py={3} pt={0}>
-              <SoftBox mb={3}>
-                <Card>
-                  <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-                    <SoftTypography variant="h6">All Transactions</SoftTypography> 
-                  </SoftBox>
-  
-                  {Billing?.length > 0 ? (
-                    <>
-                      <Table columns={usersView.columns} rows={memoizedRows} />
-                      <SoftBox mt={2} display="block" width={40}>
-                        <TablePagination
-                          component="span"
-                          count={100}
-                          page={page}
-                          onPageChange={handleChangePage}
-                          rowsPerPage={rowsPerPage}
-                          onRowsPerPageChange={handleChangeRowsPerPage}
-                        />
-                      </SoftBox>
-                    </>
-                  ) : (
-                    <SoftBox mt={4}>
-                      <SoftBox mb={1.5}>
-                        <Grid container spacing={3}>
-                          <Grid item lg={12}>
-                            <Grid item container spacing={3}>
-                              <Grid item xs={12} xl={12}>
-                                <DefaultInfoCard
-                                  icon="cloud"
-                                  title={`You Don't have an active connection yet. Add connection to your portfolio and start earning.`}
-                                />
-                              </Grid>
-                            </Grid>
-                          </Grid>
-                        </Grid>
-                      </SoftBox>
-                    </SoftBox>
-                  )}
-                </Card>
-              </SoftBox>
-            </SoftBox> */}
+
               <Transactions />
             </Grid>
           </Grid>
