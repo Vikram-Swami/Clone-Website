@@ -1,7 +1,7 @@
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Icon from "@mui/material/Icon";
-
+import Card from "@mui/material/Card";
 // Next Work Dashboard React components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
@@ -9,8 +9,6 @@ import SoftTypography from "components/SoftTypography";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import MiniStatisticsCard from "examples/Cards/StatisticsCards/MiniStatisticsCard";
-import ReportsBarChart from "examples/Charts/BarCharts/ReportsBarChart";
-import GradientLineChart from "examples/Charts/LineCharts/GradientLineChart";
 // Next Work Dashboard React base styles
 import typography from "assets/theme/base/typography";
 
@@ -18,15 +16,16 @@ import typography from "assets/theme/base/typography";
 import { useSoftUIController } from "context";
 // Data
 import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
-import gradientLineChartData from "layouts/dashboard/data/gradientLineChartData";
-import BuildByDevelopers from "./components/BuildByDevelopers";
 import WorkWithTheRockets from "./components/WorkWithTheRockets";
-import Projects from "./components/Projects";
 import OrdersOverview from "./components/OrderOverview";
+import Table from "examples/Tables/Table";
+import MyTeamView from "./data/team";
+import { NavLink } from "react-router-dom";
+import SoftButton from "components/SoftButton";
 // import Countdown from "components/Countdown";
 
 function Dashboard() {
-  const [controller] = useSoftUIController();
+  const [controller, dispatch] = useSoftUIController();
   const { user, member } = controller;
   const { size } = typography;
   const { chart } = reportsBarChartData;
@@ -58,10 +57,11 @@ function Dashboard() {
     },
   ];
 
+  let memoizedRows = MyTeamView.rows(member, dispatch, user);
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      {/* <Countdown targetDate={targetDate} /> */}
       <SoftBox py={3}>
         <SoftBox mb={3}>
           <Grid container spacing={2}>
@@ -73,46 +73,41 @@ function Dashboard() {
           </Grid>
         </SoftBox>
         <SoftBox mb={3}>
-          <Grid container spacing={3}>
-            {/* <Grid item xs={12} lg={7}>
-              <BuildByDevelopers />
-            </Grid> */}
-            {/* <Grid item xs={12} md={6} lg={7}>
-              <Projects />
-            </Grid> */}
-          </Grid>
+          <Grid container spacing={3}></Grid>
         </SoftBox>
-        {/* <SoftBox mb={3}>
-          <Grid container spacing={3} style={{ display: "flex" }}>
-            <Grid item xs={12} lg={6}>
-              <ReportsBarChart chart={chart} items={[]} title="title" />
-            </Grid>
 
-            <Grid item xs={12} lg={6}>
-              <GradientLineChart
-                title="Team Expansion"
-                description={
-                  <SoftBox display="flex" alignItems="center">
-                    <SoftBox fontSize={size.lg} color="success" mb={0.3} mr={0.5} lineHeight={0}>
-                      <Icon className="font-bold">arrow_upward</Icon>
-                    </SoftBox>
-                    <SoftTypography variant="button" color="text" fontWeight="medium">
-                      4% more{" "}
-                      <SoftTypography variant="button" color="text" fontWeight="regular">
-                        in {new Date().getFullYear()}
-                      </SoftTypography>
-                    </SoftTypography>
-                  </SoftBox>
-                }
-                height="20.25rem"
-                chart={gradientLineChartData}
-              />
-            </Grid>
-          </Grid>
-        </SoftBox> */}
         <Grid container spacing={3}>
           <Grid item xs={12} md={12} lg={7}>
-            <Projects />
+            <Card>
+              <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
+                <SoftBox>
+                  <SoftTypography variant="h6" gutterBottom>
+                    My Direct Team
+                  </SoftTypography>
+                  <SoftBox display="flex" alignItems="center" lineHeight={0}>
+                    <Icon
+                      sx={{
+                        fontWeight: "bold",
+                        color: ({ palette: { info } }) => info.main,
+                        mt: -0.5,
+                      }}
+                    >
+                      done
+                    </Icon>
+                    <SoftTypography variant="button" fontWeight="regular" color="text">
+                      &nbsp;<strong> {member.length ?? 0} Direct Team</strong>
+                    </SoftTypography>
+                  </SoftBox>
+                </SoftBox>
+                <NavLink to="/my-team">
+                  {" "}
+                  <SoftButton variant="gradient" color="dark" ml={2}>
+                    &nbsp;View More
+                  </SoftButton>
+                </NavLink>
+              </SoftBox>
+              <Table rows={memoizedRows} columns={MyTeamView.columns} />
+            </Card>
           </Grid>
           <Grid item xs={12} lg={5}>
             <Grid item xs={12} lg={12} mb={3}>

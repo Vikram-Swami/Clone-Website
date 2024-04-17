@@ -35,8 +35,11 @@ function Team() {
     startLoading(dispatch, true);
     try {
       const response = await ApiClient.getData(getMembers);
-      if(response.status == 200){setMembers(dispatch, response.data);}
-      else{setDialog(dispatch, [response])}
+      if (response.status == 200) {
+        setMembers(dispatch, response.data);
+      } else {
+        setDialog(dispatch, [response]);
+      }
     } catch (error) {
       toast.info(error.message);
       setLoading(dispatch, false);
@@ -51,7 +54,7 @@ function Team() {
 
   return (
     <DashboardLayout>
-      <DashboardNavbar call={getMember}/>
+      <DashboardNavbar call={getMember} />
       <SoftBox py={3}>
         <SoftBox mb={3}>
           <Card>

@@ -1,78 +1,153 @@
-// react-routers components
-import { Link } from "react-router-dom";
-
-// prop-types is library for typechecking of props
-import PropTypes from "prop-types";
+import { useState, useEffect } from "react";
 
 // @mui material components
 import Card from "@mui/material/Card";
+import Grid from "@mui/material/Grid";
+import AppBar from "@mui/material/AppBar";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
 
 // Next Work Dashboard React components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import SoftAvatar from "components/SoftAvatar";
+
+// Next Work Dashboard React base styles
+import breakpoints from "assets/theme/base/breakpoints";
+
+import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
+import { AccountBalance, AccountCircle, Home } from "@mui/icons-material";
+import { useSoftUIController } from "context";
+import { NavLink } from "react-router-dom";
 import SoftButton from "components/SoftButton";
 
-function ProfilesList({ title, profiles }) {
-  const renderProfiles = profiles.map(({ image, name, description, action }) => (
-    <SoftBox key={name} component="li" display="flex" alignItems="center" py={1} mb={1}>
-      <SoftBox mr={2}>
-        <SoftAvatar src={image} alt="something here" variant="rounded" shadow="md" />
-      </SoftBox>
-      <SoftBox
-        display="flex"
-        flexDirection="column"
-        alignItems="flex-start"
-        justifyContent="center"
-      >
-        <SoftTypography variant="button" fontWeight="medium">
-          {name}
-        </SoftTypography>
-        <SoftTypography variant="caption" color="text">
-          {description}
-        </SoftTypography>
-      </SoftBox>
-      <SoftBox ml="auto">
-        {action.type === "internal" ? (
-          <SoftButton component={Link} to={action.route} variant="text" color="info">
-            {action.label}
-          </SoftButton>
-        ) : (
-          <SoftButton
-            component="a"
-            href={action.route}
-            target="_blank"
-            rel="noreferrer"
-            variant="text"
-            color={action.color}
-          >
-            {action.label}
-          </SoftButton>
-        )}
-      </SoftBox>
-    </SoftBox>
-  ));
+function Header() {
+  const [tabsOrientation, setTabsOrientation] = useState("horizontal");
+  const [tabValue, setTabValue] = useState(0);
+  const [controller] = useSoftUIController();
+  const { user } = controller;
+
+  useEffect(() => {
+    // A function that sets the orientation state of the tabs.
+    function handleTabsOrientation() {
+      return window.innerWidth < breakpoints.values.sm
+        ? setTabsOrientation("vertical")
+        : setTabsOrientation("horizontal");
+    }
+
+    /** 
+     The event listener that's calling the handleTabsOrientation function when resizing the window.
+    */
+    window.addEventListener("resize", handleTabsOrientation);
+
+    // Call the handleTabsOrientation function to set the state with the initial value.
+    handleTabsOrientation();
+
+    // Remove event listener on cleanup
+    return () => window.removeEventListener("resize", handleTabsOrientation);
+  }, [tabsOrientation]);
+
+  const handleSetTabValue = (event, newValue) => setTabValue(newValue);
 
   return (
-    <Card sx={{ height: "100%" }}>
-      <SoftBox pt={2} px={2}>
-        <SoftTypography variant="h6" fontWeight="medium" textTransform="capitalize">
-          {title}
-        </SoftTypography>
-      </SoftBox>
-      <SoftBox p={2}>
-        <SoftBox component="ul" display="flex" flexDirection="column" p={0} m={0}>
-          {renderProfiles}
-        </SoftBox>
-      </SoftBox>
-    </Card>
+    <SoftBox position="relative">
+      <Card>
+        <Grid container spacing={2} alignItems="center" p={2}>
+          {/* Profile Avatar and Info */}
+          <Grid item xs={12} md={6} lg={6}>
+            <Grid container alignItems="center">
+              <Grid item xs={12} md={4} lg={3}>
+                <SoftAvatar
+                  src={user.profileImage}
+                  alt="profile-image"
+                  variant="rounded"
+                  size="xl"
+                  shadow="sm"
+                />
+              </Grid>
+              <Grid item xs={12} md={8} lg={8}>
+                <SoftBox mt={0.5} lineHeight={1}>
+                  <SoftTypography variant="h4" fontWeight="medium">
+                    {user.fullName}
+                  </SoftTypography>
+                  <SoftTypography variant="button" color="text" fontWeight="medium">
+                    {user.role}
+                  </SoftTypography>
+                </SoftBox>
+              </Grid>
+            </Grid>
+          </Grid>
+
+          {/* Tabs for Personal, Address, and KYC */}
+          <Grid item xs={12} md={6} lg={6}>
+            <AppBar position="static">
+              <Tabs
+                value={tabValue}
+                onChange={handleSetTabValue}
+                variant="fullWidth"
+                indicatorColor="primary"
+                textColor="primary"
+                sx={{ background: "transparent" }}
+              >
+                <Tab label="Personal" icon={<AccountCircle />} />
+                <Tab label="Address" icon={<Home />} />
+                <Tab label="KYC" icon={<AccountBalance />} />
+              </Tabs>
+            </AppBar>
+          </Grid>
+
+          {/* Content for each tab */}
+          <Grid item xs={12}>
+            {tabValue === 0 && (
+              <ProfileInfoCard
+                info={{
+                  fullName: <span>{user.fullName}</span>,
+                  ID: user.id ?? "",
+                  mobile: user?.phone,
+                  email: user?.email,
+                  location: user?.city + " " + user?.state + " " + user?.country,
+                  addStorageLink: (
+                    <NavLink to="/new-connections">
+                      <SoftButton variant="gradient" color="dark" ml={2}>
+                        &nbsp;Add Storage
+                      </SoftButton>
+                    </NavLink>
+                  ),
+                }}
+              />
+            )}
+            {tabValue === 1 && (
+              <ProfileInfoCard
+                title="Address information"
+                info={{
+                  street1: user?.street1,
+                  street2: user?.street2,
+                  city: user?.city,
+                  state: user?.state,
+                  country: user?.country,
+                }}
+                action={{ route: "/dashboard", tooltip: "Edit Profile" }}
+              />
+            )}
+            {tabValue === 2 && (
+              <ProfileInfoCard
+                title="KYC information"
+                info={{
+                  aadharNo: user?.aadharNo,
+                  panNo: user?.panNo,
+                  bankName: user?.bankName,
+                  accountNo: user?.accountNo,
+                  IFSC: user?.IFSC,
+                  nomineeName: user?.nomineeName,
+                }}
+                action={{ route: "/dashboard", tooltip: "Edit Profile" }}
+              />
+            )}
+          </Grid>
+        </Grid>
+      </Card>
+    </SoftBox>
   );
 }
 
-// Typechecking props for the ProfilesList
-ProfilesList.propTypes = {
-  title: PropTypes.string.isRequired,
-  profiles: PropTypes.arrayOf(PropTypes.object).isRequired,
-};
-
-export default ProfilesList;
+export default Header;

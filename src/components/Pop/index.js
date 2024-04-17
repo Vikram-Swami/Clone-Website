@@ -7,24 +7,15 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Grid, Slide, TextField } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import ApiClient from "Services/ApiClient";
-import { validateUser } from "Services/endpointes";
-import { toast } from "react-toastify";
-import { setLoading } from "context";
-import { useSoftUIController } from "context";
-import { startLoading } from "context";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 function FormDialog({ open, setOpen, data }) {
-
   const handleClose = () => {
     setOpen(false);
   };
-
 
   return (
     <React.Fragment>
@@ -38,7 +29,9 @@ function FormDialog({ open, setOpen, data }) {
           {data.status === 200 && data?.data?.id && (
             <DialogContent textAlign="center">
               <DialogContentText>Id:{data?.data?.id}</DialogContentText>
-              {data.data?.userId && <DialogContentText>userId:{data?.data?.userId}</DialogContentText>}
+              {data.data?.userId && (
+                <DialogContentText>userId:{data?.data?.userId}</DialogContentText>
+              )}
             </DialogContent>
           )}
 
@@ -53,7 +46,7 @@ function FormDialog({ open, setOpen, data }) {
 
 FormDialog.defaultProps = {
   open: false,
-  setOpen: () => { },
+  setOpen: () => {},
   data: [] ?? "",
 };
 
