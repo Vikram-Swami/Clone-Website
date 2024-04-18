@@ -3,23 +3,21 @@ import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
-import CircularProgressWithLabels from "components/Progress";
 import Icon from "@mui/material/Icon";
 function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction }) {
   return (
     <Card>
       <SoftBox bgColor={bgColor} variant="gradient">
-        <SoftBox p={2}>
-          <Grid container alignItems="center" height="3rem" justifyContent={"space-between"}>
+        <SoftBox py={1}>
+          <Grid container alignItems="center" height="3rem" justifyContent={"space-around"}>
             <Grid item>
               {direction === "right" && (
                 <SoftBox
                   variant="gradient"
                   bgColor={bgColor === "white" ? icon.color : "white"}
                   color={bgColor === "white" ? "white" : "dark"}
-                  width="3rem"
-                  height="3rem"
-                  marginTop="-11px"
+                  width="2.5rem"
+                  height="2.5rem"
                   borderRadius="md"
                   display="flex"
                   justifyContent="center"
@@ -32,25 +30,22 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
                 </SoftBox>
               )}
             </Grid>
-            <Grid item xs={8} lg={6} width={"100px"}>
-              <SoftBox ml={direction === "left" ? 2 : 0} lineHeight={1}>
-                <SoftTypography
-                  variant="h6"
-                  color={bgColor === "white" ? "text" : "white"}
-                  opacity={bgColor === "white" ? 1 : 0.7}
-                  textTransform="capitalize"
-                  fontWeight={title.fontWeight}
-                >
-                  {title.text}
-                </SoftTypography>
-                <SoftTypography variant="h4" fontWeight="bold">
-                  {count}
-                </SoftTypography>
-              </SoftBox>
+            <Grid item xs={4} lg={4} whiteSpace="nowrap">
+              <SoftTypography
+                variant="h6"
+                color={bgColor === "white" ? "text" : "white"}
+                opacity={bgColor === "white" ? 1 : 0.7}
+                textTransform="capitalize"
+                fontWeight={title.fontWeight}
+              >
+                {title.text}
+              </SoftTypography>
             </Grid>
             <Grid item>
               <SoftBox>
-                <CircularProgressWithLabels value={50} />
+                <SoftTypography variant="h4" fontWeight="bold">
+                  {count}
+                </SoftTypography>
               </SoftBox>
             </Grid>
           </Grid>

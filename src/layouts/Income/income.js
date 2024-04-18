@@ -27,14 +27,13 @@ function Income() {
 
   const { income, user } = controller;
 
-  
   const getIncomes = async () => {
     startLoading(dispatch, true);
     try {
       const response = await ApiClient.getData(getIncomeByUserId, 0, 100);
-      if(response.status == 200){
+      if (response.status == 200) {
         setIncome(dispatch, response.data);
-      }else{
+      } else {
         setDialog(dispatch, [response]);
       }
     } catch (error) {
@@ -50,10 +49,8 @@ function Income() {
 
   return (
     <DashboardLayout>
-      <DashboardNavbar />
+      <DashboardNavbar call={getIncomes} />
       <SoftBox py={3} mb={3}>
-
-
         {income?.length > 0 ? (
           <Box>
             <Table columns={usersView.columns} rows={memoizedRows} />
@@ -63,7 +60,6 @@ function Income() {
                 <SoftTypography>1</SoftTypography>
               </Grid>
             </SoftBox> */}
-
           </Box>
         ) : (
           <SoftBox mt={4}>

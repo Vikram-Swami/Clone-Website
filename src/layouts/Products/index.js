@@ -34,8 +34,7 @@ function Products() {
       const response = await ApiClient.getData(getPublished);
       if (response?.status === 200) {
         setProducts(dispatch, response?.data);
-      }
-      else{
+      } else {
         setDialog(dispatch, [response]);
       }
     } catch (error) {
@@ -50,7 +49,7 @@ function Products() {
 
   return (
     <DashboardLayout>
-      <DashboardNavbar />
+      <DashboardNavbar call={getProducts} />
       <SoftBox mt={4}>
         <SoftBox mb={1.5}>
           <SoftBox display="flex" justifyContent="center" alignItems="center" px={2} pb={1}>
@@ -58,17 +57,15 @@ function Products() {
               component="form"
               onSubmit={(e) => {
                 e.preventDefault();
-
-
               }}
-              sx={{ p: '2px 2px', display: 'flex', alignItems: 'center', width: 300 }}
+              sx={{ p: "2px 2px", display: "flex", alignItems: "center", width: 300 }}
             >
               <InputBase
                 sx={{ ml: 1, flex: 1 }}
                 placeholder="Enter Required Tera Byte"
-                inputProps={{ 'aria-label': 'Enter Required TB' }}
+                inputProps={{ "aria-label": "Enter Required TB" }}
               />
-              <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
+              <IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
                 <Icon>cloud_download</Icon>
               </IconButton>
             </Box>
@@ -79,20 +76,22 @@ function Products() {
               <Grid container spacing={3}>
                 {products.map((data, index) => {
                   let multiplier = parseFloat(data.range) < 1 ? 1 : data.range;
-                  return (<Grid key={index} item xs={12} md={6} xl={4}>
-                    <DefaultProductCard
-                      icon="cloud"
-                      range={data.range}
-                      storage={data.space}
-                      rent={data.rent}
-                      basicAmt={data.basicAmt}
-                      tax={data.tax}
-                      totalprice={
-                        parseFloat(multiplier * data.basicAmt) +
-                        parseFloat(multiplier * data.basicAmt * data.tax) / 100
-                      }
-                    />
-                  </Grid>)
+                  return (
+                    <Grid key={index} item xs={12} md={6} xl={4}>
+                      <DefaultProductCard
+                        icon="cloud"
+                        range={data.range}
+                        storage={data.space}
+                        rent={data.rent}
+                        basicAmt={data.basicAmt}
+                        tax={data.tax}
+                        totalprice={
+                          parseFloat(multiplier * data.basicAmt) +
+                          parseFloat(multiplier * data.basicAmt * data.tax) / 100
+                        }
+                      />
+                    </Grid>
+                  );
                 })}
               </Grid>
             </Grid>

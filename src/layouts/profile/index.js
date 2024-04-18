@@ -24,19 +24,6 @@ function Overview() {
           <Grid item xs={12} xl={12}>
             <ProfilesList title="conversations" />
           </Grid>
-          {/* <Grid item xs={12} md={6} xl={8}>
-            <ProfileInfoCard
-              title="Address information"
-              info={{
-                street1: user?.street1,
-                street2: user?.street2,
-                city: user?.city,
-                state: user?.state,
-                country: user?.country,
-              }}
-              action={{ route: "/dashboard", tooltip: "Edit Profile" }}
-            />
-          </Grid> */}
         </Grid>
       </SoftBox>
 
