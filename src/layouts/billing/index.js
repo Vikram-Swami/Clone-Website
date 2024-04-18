@@ -11,15 +11,14 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 // Billing page components
 import { useSoftUIController } from "context";
-import { Card, Checkbox, FormControlLabel, Icon, Table, TablePagination } from "@mui/material";
+import { Card, Table, TablePagination } from "@mui/material";
 import SoftTypography from "components/SoftTypography";
 import usersView from "layouts/Income/data/income";
 import BillingInformation from "./components/BillingInformation";
 import Transactions from "./components/Transactions";
 
 function Billing() {
-  const [controller] = useSoftUIController();
-  const { user } = controller;
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
