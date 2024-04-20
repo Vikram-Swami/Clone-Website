@@ -11,9 +11,7 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 // Data
 import SoftButton from "components/SoftButton";
-import {
-  Grid
-} from "@mui/material";
+import { Grid } from "@mui/material";
 import DefaultInfoCard from "examples/Cards/InfoCards/DefaultInfoCard";
 import { NavLink } from "react-router-dom";
 import { useEffect, useMemo } from "react";
@@ -35,10 +33,9 @@ function Connections() {
     startLoading(dispatch, true);
     try {
       const response = await ApiClient.getDataByParam(getConnectionByUserID, user.id);
-      if(response.status == 200){
+      if (response.status == 200) {
         setConnection(dispatch, response.data);
-      }
-      else{
+      } else {
         setDialog(dispatch, [response]);
       }
     } catch (error) {
@@ -51,15 +48,13 @@ function Connections() {
     [connection, user.fullName]
   );
 
-
   useEffect(() => {
     connection.length < 1 && getConnection();
   }, []);
 
   return (
     <DashboardLayout>
-
-      <DashboardNavbar />
+      <DashboardNavbar call={getConnection} />
       <SoftBox py={3}>
         <SoftBox mb={3}>
           <Card>

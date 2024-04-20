@@ -3,7 +3,6 @@ import Card from "@mui/material/Card";
 
 // Next Work Dashboard React components
 import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
 
 // Next Work Dashboard React examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -13,7 +12,6 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import SoftButton from "components/SoftButton";
 import { Checkbox, FormControlLabel, Grid } from "@mui/material";
 import DefaultInfoCard from "examples/Cards/InfoCards/DefaultInfoCard";
-
 import { NavLink } from "react-router-dom";
 import { useEffect } from "react";
 import Table from "examples/Tables/Table";
@@ -58,8 +56,6 @@ function Team() {
       <SoftBox py={3}>
         <SoftBox mb={3}>
           <Card>
-            {/*  */}
-
             {member?.length > 0 ? (
               <Table columns={TeamView.columns} rows={memoizedRows} />
             ) : (

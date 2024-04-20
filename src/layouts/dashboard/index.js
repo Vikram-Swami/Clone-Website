@@ -2,18 +2,22 @@
 import Grid from "@mui/material/Grid";
 import Icon from "@mui/material/Icon";
 import Card from "@mui/material/Card";
+
 // Next Work Dashboard React components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
+
 // Next Work Dashboard React examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import MiniStatisticsCard from "examples/Cards/StatisticsCards/MiniStatisticsCard";
+
 // Next Work Dashboard React base styles
 import typography from "assets/theme/base/typography";
 
 // Dashboard layout components
 import { useSoftUIController } from "context";
+
 // Data
 import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
 import WorkWithTheRockets from "./components/WorkWithTheRockets";
@@ -22,6 +26,7 @@ import Table from "examples/Tables/Table";
 import MyTeamView from "./data/team";
 import { NavLink } from "react-router-dom";
 import SoftButton from "components/SoftButton";
+
 // import Countdown from "components/Countdown";
 
 function Dashboard() {
@@ -51,7 +56,7 @@ function Dashboard() {
     },
     {
       title: { text: "My Earnings" },
-      count: user?.earning ?? 0,
+      count: user?.length ?? 0,
       percentage: { color: "error" },
       icon: { color: "info", component: "currency_rupee" },
     },

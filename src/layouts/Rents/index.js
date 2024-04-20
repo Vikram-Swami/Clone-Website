@@ -50,7 +50,7 @@ function Users() {
 
   return (
     <DashboardLayout>
-      <DashboardNavbar />
+      <DashboardNavbar call={getAllRents} />
       <SoftBox py={3}>
         <SoftBox mb={3}>
           <Card>
