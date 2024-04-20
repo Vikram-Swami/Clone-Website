@@ -86,7 +86,6 @@ export default function App() {
     }
   }
 
-
   useEffect(() => {
     if (getCookie() && !user.id) {
       getUser();
@@ -110,7 +109,9 @@ export default function App() {
             onMouseLeave={handleOnMouseLeave}
           />
         </>
-      ) : ""}
+      ) : (
+        ""
+      )}
       <Routes>
         {routes?.map((route) => {
           if (getCookie() && user.id) {

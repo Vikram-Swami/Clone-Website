@@ -177,6 +177,7 @@ const setIncome = (dispatch, value) => dispatch({ type: "INCOME", value });
 const setTransaction = (dispatch, value) => dispatch({ type: "TRANSACTION", value });
 const setMembers = (dispatch, value) => dispatch({ type: "MEMBER", value });
 const setDialog = (dispatch, value) => dispatch({ type: "DIALOG", value });
+const setConfirmDialog = (dispatch, value) => dispatch({ type: "CONFIRMDIALOG", value });
 const startLoading = (dispatch, value) => dispatch({ type: "START_LOAD", value });
 const setAccept = (dispatch, value) => dispatch({ type: "ACCEPT", value });
 
@@ -199,6 +200,7 @@ export {
   setNotification,
   setLoading,
   setDialog,
+  setConfirmDialog,
   startLoading,
   setAccept,
   setProducts,

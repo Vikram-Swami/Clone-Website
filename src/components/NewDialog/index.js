@@ -15,7 +15,6 @@ export default function NewFormDialog({ open, setOpen, data }) {
         PaperProps={{
           component: "form",
           onSubmit: (e) => {
-            console.log(data);
             e.preventDefault();
             const formData = new FormData(e.currentTarget);
             data.call(formData);

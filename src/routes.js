@@ -7,6 +7,17 @@ import Dashboard from "layouts/dashboard";
 import ForgetPassword from "layouts/authentication/forget-password";
 import Rewards from "layouts/Rewards";
 import Notifications from "layouts/Notification";
+import RentOnRent from "layouts/ror(rent)";
+import RewardSalary from "layouts/ror(reward)";
+import RentOnRoyality from "layouts/ror(royality)";
+import {
+  AccountBalance,
+  AddCard,
+  AddShoppingCart,
+  EmojiEvents,
+  Groups2,
+  SpaceDashboard,
+} from "@mui/icons-material";
 const Team = lazy(() => import("layouts/Team"));
 const Connections = lazy(() => import("layouts/connections"));
 const Billing = lazy(() => import("layouts/billing"));
@@ -32,7 +43,7 @@ const routes = [
     key: "dashboard",
     auth: "user",
     route: "/dashboard",
-    icon: <Shop size="12px" />,
+    icon: <SpaceDashboard size="12px" />,
     component: <Dashboard />,
     noCollapse: true,
   },
@@ -112,7 +123,7 @@ const routes = [
     key: "new-connections",
     auth: "any",
     route: "/new-connections",
-    icon: <CreditCard size="12px" />,
+    icon: <AddShoppingCart size="12px" />,
     component: <Products />,
     noCollapse: true,
   },
@@ -122,20 +133,9 @@ const routes = [
     name: "My Connections",
     key: "connections",
     route: "/connections",
-    icon: <Office size="12px" />,
+    icon: <AddCard size="12px" />,
     component: <Connections />,
     auth: "any",
-    noCollapse: true,
-  },
-
-  {
-    type: "collapse",
-    name: "My Rents",
-    key: "rents",
-    auth: "any",
-    route: "/rents",
-    icon: <Office size="12px" />,
-    component: <Rents />,
     noCollapse: true,
   },
 
@@ -145,14 +145,14 @@ const routes = [
     auth: "user",
     key: "my-team",
     route: "/my-team",
-    icon: <Office size="12px" />,
+    icon: <Groups2 size="12px" />,
     component: <Team />,
     noCollapse: true,
   },
 
   {
     type: "collapse",
-    name: "Credits",
+    name: "Income",
     key: "my-earnings",
     auth: "any",
     route: "/my-earnings",
@@ -160,7 +160,37 @@ const routes = [
     component: <Income />,
     noCollapse: true,
   },
-
+  { type: "title", title: "My Rents", key: "rent-title" },
+  {
+    type: "collapse",
+    name: "ROR",
+    key: "rents-on-rent",
+    auth: "any",
+    route: "rents-on-rent",
+    icon: <Office size="12px" />,
+    component: <RentOnRent />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Reward Salary",
+    key: "reward-salary",
+    auth: "any",
+    route: "reward-salary",
+    icon: <Office size="12px" />,
+    component: <RewardSalary />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Royality",
+    key: "rent-on-royality",
+    auth: "any",
+    route: "rent-on-royality",
+    icon: <Office size="12px" />,
+    component: <RentOnRoyality />,
+    noCollapse: true,
+  },
   { type: "title", title: "My Account", key: "account-pages" },
   {
     type: "collapse",
@@ -168,7 +198,7 @@ const routes = [
     key: "account",
     route: "/account",
     auth: "any",
-    icon: <CreditCard size="12px" />,
+    icon: <AccountBalance size="12px" />,
     component: <Billing />,
     noCollapse: true,
   },
@@ -182,16 +212,7 @@ const routes = [
     key: "rewards",
     route: "/rewards",
     component: <Rewards />,
-    icon: <CustomerSupport size="12px" />,
-    noCollapse: true,
-  },
-
-  {
-    type: "collapse",
-    name: "Royality",
-    auth: "user",
-    key: "royality",
-    icon: <CustomerSupport size="12px" />,
+    icon: <EmojiEvents size="12px" />,
     noCollapse: true,
   },
 ];

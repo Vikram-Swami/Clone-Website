@@ -9,27 +9,34 @@ import SoftTypography from "components/SoftTypography";
 import { useSoftUIController } from "context";
 import Transaction from "examples/TransactionView";
 import { setDialog } from "context";
+import { toast } from "react-toastify";
+import { setLoading } from "context";
+import { startLoading } from "context";
+import AccountPaymentView from "examples/AccountPaymentView";
+import { setConfirmDialog } from "context";
 
-const payment = (id, amount, dispatch, call) => async (form) => {
-  try {
-    form.append("id", id);
-    form.append("amount", amount);
-    startLoading(dispatch, true);
-    const response = await ApiClient.createData(purchase, form);
-    if (response.status == 200) {
-      setDialog(dispatch, [response]);
-      call();
-    } else {
-      setDialog(dispatch, [response]);
-    }
-  } catch (err) {
-    toast.error(err.response?.data?.message);
-    setLoading(dispatch, false);
-  }
-};
 function Bill({ wallet, earning, withdraw, TDS, Income, Storage, bankName }) {
   const [controller, dispatch] = useSoftUIController();
   const { user, e } = controller;
+  const payment = (id, amount, dispatch, call) => async (form) => {
+    try {
+      form.append("id", id);
+      form.append("amount", amount);
+      startLoading(dispatch, true);
+      const response = await ApiClient.createData(purchase, form);
+      if (response.status == 200) {
+        setDialog(dispatch, [response]);
+        call();
+      } else {
+        setDialog(dispatch, [response]);
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.message);
+      setLoading(dispatch, false);
+    }
+  };
+  const called2 = () => {};
+  const called = () => {};
   return (
     <SoftBox
       component="li"
@@ -123,11 +130,20 @@ function Bill({ wallet, earning, withdraw, TDS, Income, Storage, bankName }) {
                 setDialog(dispatch, [
                   {
                     status: "form",
-                    title: "Please select payment method",
-                    message: `Connection -  TB`,
+                    title: "Please select appropriate option",
                     action: "Pay Now",
-                    children: <Transaction amount={parseFloat(+parseFloat(200))} type="purchase" />,
-                    call: payment("", parseFloat(+parseFloat(200)), dispatch, ""),
+                    children: <AccountPaymentView amount={parseFloat(200)} type="purchase" />,
+                    call: () => {
+                      setDialog(dispatch, [
+                        {
+                          status: "form",
+                          title: "Confirm",
+                          action: "Pay Now",
+                          message: "Are you sure to Proceed",
+                          call: called2,
+                        },
+                      ]);
+                    },
                   },
                 ]);
               }}

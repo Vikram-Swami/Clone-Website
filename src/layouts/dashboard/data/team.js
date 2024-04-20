@@ -79,6 +79,7 @@ Level.propTypes = {
 const MyTeamView = {
   columns: [
     { name: "user", align: "left" },
+    { name: "email", align: "left" },
     { name: "phone", align: "center" },
     { name: "storage", align: "center" },
     { name: "status", align: "center" },
