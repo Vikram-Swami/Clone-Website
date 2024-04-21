@@ -15,7 +15,8 @@ import { purchase } from "Services/endpointes";
 import { setLoading } from "context";
 import { activateConnection } from "Services/endpointes";
 import { startLoading } from "context";
-
+import Transactions from "../form";
+import ConnectionRent from "../form";
 
 function Author({ name, id }) {
   return (
@@ -41,16 +42,14 @@ const payment = (id, amount, dispatch, call) => async (form) => {
     if (response.status == 200) {
       setDialog(dispatch, [response]);
       call();
-
     } else {
       setDialog(dispatch, [response]);
     }
-
   } catch (err) {
     toast.error(err.response?.data?.message);
     setLoading(dispatch, false);
   }
-}
+};
 
 const actConnection = async (id, dispatch, call) => {
   try {
@@ -59,15 +58,14 @@ const actConnection = async (id, dispatch, call) => {
     if (response.status == 200) {
       setDialog(dispatch, [response]);
       call();
-    }
-    else {
+    } else {
       setDialog(dispatch, [response]);
     }
   } catch (err) {
     startLoading(dispatch, false);
     toast.error(err.response?.data?.message ?? "Network Error!");
   }
-}
+};
 
 function Status({ tnxId, status, dispatch, call, e }) {
   if (tnxId === null || !tnxId) {
@@ -96,8 +94,18 @@ function Status({ tnxId, status, dispatch, call, e }) {
                   title: "Please select payment method",
                   message: `Connection - ${e.storage} TB`,
                   action: "Pay Now",
-                  children: (<Transaction amount={parseFloat(e.amount + parseFloat(e.amount * `0.${e.tax}`))} type="purchase" />),
-                  call: payment(e.id, (parseFloat(e.amount + parseFloat(e.amount * `0.${e.tax}`))), dispatch, call)
+                  children: (
+                    <Transaction
+                      amount={parseFloat(e.amount + parseFloat(e.amount * `0.${e.tax}`))}
+                      type="purchase"
+                    />
+                  ),
+                  call: payment(
+                    e.id,
+                    parseFloat(e.amount + parseFloat(e.amount * `0.${e.tax}`)),
+                    dispatch,
+                    call
+                  ),
                 },
               ]);
             }}
@@ -145,8 +153,8 @@ const connectionView = {
     { name: "storage", align: "left" },
     { name: "amount", align: "center" },
     { name: "boughtAt", align: "center" },
-    { name: "credentials", align: "center" },
     { name: "status", align: "center" },
+    { name: "rent", align: "center" },
     { name: "lookup", align: "center" },
   ],
 
@@ -171,10 +179,31 @@ const connectionView = {
             {formattedDate}
           </SoftTypography>
         ),
-        credentials: (
+        rent: (
           <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-            {e.isAlloted ? (
-              <Author name={e.storageId} id={e.password} />
+            {e.status ? (
+              // <Author name={e.storageId} id={e.password} />
+              <SoftTypography
+                component="a"
+                href="#"
+                variant="caption"
+                color="secondary"
+                fontWeight="medium"
+                cursor="pointer"
+                onClick={() => {
+                  setDialog(dispatch, [
+                    {
+                      status: "form",
+                      title: `Rents`,
+                      children: <ConnectionRent />,
+                    },
+                  ]);
+                }}
+              >
+                <Icon fontSize="small" color="green">
+                  visibility
+                </Icon>
+              </SoftTypography>
             ) : (
               <Icon fontSize="small" color="inherit">
                 lock
@@ -182,7 +211,16 @@ const connectionView = {
             )}
           </SoftTypography>
         ),
-        status: <Status tnxId={e.transactionId} status={e.status} dispatch={dispatch} call={getConnection} e={e} />,
+
+        status: (
+          <Status
+            tnxId={e.transactionId}
+            status={e.status}
+            dispatch={dispatch}
+            call={getConnection}
+            e={e}
+          />
+        ),
         lookup: (
           <SoftTypography
             component="a"

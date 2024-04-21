@@ -43,17 +43,15 @@ function SignIn() {
         setCookie("authToken", response?.data.token, 1);
         setCookie("userId", response?.data.userId, 1);
         navigate("/dashboard");
+        console.log(response.message);
         toast.success(response.message);
-      }
-      else {
+      } else {
         setDialog(dispatch, [response]);
       }
     } catch (error) {
       toast.error(error.toString());
-    }
-    finally {
+    } finally {
       setLoading(dispatch, false);
-
     }
   };
 
@@ -68,15 +66,14 @@ function SignIn() {
         navigate("/dashboard");
         toast.success(response.message);
         setLoading(dispatch, false);
-      }
-      else {
+      } else {
         setDialog(dispatch, [response]);
       }
     } catch (err) {
       setLoading(dispatch, false);
       toast.error(err.toString());
     }
-  }
+  };
 
   const handleOtpLogin = async (form) => {
     try {
@@ -85,8 +82,18 @@ function SignIn() {
       if (response.status === 200) {
         response.status = "form";
         response.action = "submit";
-        response.title = "Pleae Enter Your OTP"
-        response.children = <TextField autoFocus name="otp" placeholder="6 digit otp" margin="dense" label="Enter OTP" type="number" fullWidth />;
+        response.title = "Pleae Enter Your OTP";
+        response.children = (
+          <TextField
+            autoFocus
+            name="otp"
+            placeholder="6 digit otp"
+            margin="dense"
+            label="Enter OTP"
+            type="number"
+            fullWidth
+          />
+        );
         response.call = (data) => verifyOtpLogin(response.data?.userId, data);
       }
       setDialog(dispatch, [response]);
@@ -94,10 +101,9 @@ function SignIn() {
       setLoading(dispatch, false);
       toast.error(err?.toString());
     }
-  }
+  };
 
   const completeProfile = async (form) => {
-
     try {
       startLoading(dispatch, true);
       const response = await ApiClient.createData(validateUser, form);
@@ -117,13 +123,27 @@ function SignIn() {
 
   return (
     <>
-      <CoverLayout
-        title="Sign In"
-      >
-        <SoftBox component="form" role="form" textAlign="center" display="flex" flexDirection="column" justifyContent="center" alignItems="center" onSubmit={handleLogin}>
+      <CoverLayout title="Sign In">
+        <SoftBox
+          component="form"
+          role="form"
+          textAlign="center"
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+          onSubmit={handleLogin}
+        >
           <SoftBox mb={1} width="100%">
             <SoftBox ml={0.5} textAlign="left">
-              <SoftTypography component="label" variant="caption" fontWeight="bold" onChange={(e) => { e.target.value = e.target.value.toUpperCase(); }}>
+              <SoftTypography
+                component="label"
+                variant="caption"
+                fontWeight="bold"
+                onChange={(e) => {
+                  e.target.value = e.target.value.toUpperCase();
+                }}
+              >
                 ID
               </SoftTypography>
             </SoftBox>
@@ -147,9 +167,19 @@ function SignIn() {
                   {
                     status: "form",
                     title: "Please Enter Your User Id",
-                    children: <TextField autoFocus name="userId" placeholder="User ID / Email" margin="dense" label="ID" type="text" fullWidth />,
+                    children: (
+                      <TextField
+                        autoFocus
+                        name="userId"
+                        placeholder="User ID / Email"
+                        margin="dense"
+                        label="ID"
+                        type="text"
+                        fullWidth
+                      />
+                    ),
                     action: "Submit",
-                    call: handleOtpLogin
+                    call: handleOtpLogin,
                   },
                 ]);
               }}
@@ -159,14 +189,12 @@ function SignIn() {
               whiteSpace="nowrap"
               ml={1}
               textTransform="uppercase"
-
               cursor="pointer"
             >
               Login with OTP
             </SoftTypography>
           </SoftBox>
           <SoftBox fontSize="0.9rem">
-
             <SoftTypography variant="p" fontWeight="bold" color="text">
               Incomplete Profile?
             </SoftTypography>{" "}
@@ -176,9 +204,19 @@ function SignIn() {
                   {
                     status: "form",
                     title: "Please Enter your UserId",
-                    children: <TextField autoFocus name="userId" placeholder="User ID / Email" margin="dense" label="ID" type="text" fullWidth />,
+                    children: (
+                      <TextField
+                        autoFocus
+                        name="userId"
+                        placeholder="User ID / Email"
+                        margin="dense"
+                        label="ID"
+                        type="text"
+                        fullWidth
+                      />
+                    ),
                     action: "Submit",
-                    call: completeProfile
+                    call: completeProfile,
                   },
                 ]);
               }}

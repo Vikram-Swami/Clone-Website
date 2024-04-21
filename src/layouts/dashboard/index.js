@@ -42,12 +42,7 @@ function Dashboard() {
       percentage: { color: "success" },
       icon: { color: "info", component: "storage" },
     },
-    {
-      title: { text: "My Team size" },
-      count: member.length ?? 0,
-      percentage: { color: "success" },
-      icon: { color: "info", component: "groups" },
-    },
+
     {
       title: { text: "My Earnings" },
       count: user?.earning ?? 0,
@@ -55,10 +50,16 @@ function Dashboard() {
       icon: { color: "info", component: "currency_rupee" },
     },
     {
-      title: { text: "My Earnings" },
-      count: user?.length ?? 0,
+      title: { text: "My Team size" },
+      count: member.length ?? 0,
+      percentage: { color: "success" },
+      icon: { color: "info", component: "groups" },
+    },
+    {
+      title: { text: "Team Storage" },
+      count: user.memStr ?? 0,
       percentage: { color: "error" },
-      icon: { color: "info", component: "currency_rupee" },
+      icon: { color: "info", component: "storage" },
     },
   ];
 

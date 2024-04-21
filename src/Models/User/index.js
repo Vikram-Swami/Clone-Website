@@ -1,6 +1,7 @@
 class UserModel {
   constructor(
     userId,
+    initial,
     fullName,
     email,
     phone,
@@ -32,6 +33,7 @@ class UserModel {
     unread
   ) {
     this.id = userId;
+    this.initial = initial;
     this.fullName = fullName;
     this.email = email;
     this.phone = phone;
@@ -67,46 +69,47 @@ class UserModel {
 
   toJson(jsonData) {
     return new UserModel(
-      jsonData?.userId?.toUpperCase() ?? null,
-      jsonData.fullName ?? "user",
-      jsonData.email ?? "",
-      jsonData.phone ?? "xxx-xxx-xxxx",
-      jsonData.type ?? "",
-      jsonData.wallet ?? null,
-      jsonData.status ?? false,
-      jsonData.storage?.own ?? null,
-      jsonData.storage?.member ?? null,
-      jsonData.storage?.usable ?? null,
-      jsonData.totalEarn ?? null,
-      jsonData.createdAt ?? new Date(),
-      jsonData.updatedAt ?? new Date(),
-      jsonData.bankName ?? "",
-      jsonData.accountNo ?? "",
-      jsonData.IFSC ?? "",
-      jsonData.holder ?? "",
+      jsonData?.user.userId?.toUpperCase() ?? null,
+      jsonData.user.initial ?? "",
+      jsonData.user.fullName ?? "user",
+      jsonData.user.email ?? "",
+      jsonData.user.phone ?? "xxx-xxx-xxxx",
+      jsonData.user.type ?? "",
+      jsonData.user.wallet ?? null,
+      jsonData.user.status ?? false,
+      jsonData.user.storage?.own ?? null,
+      jsonData.user.storage?.member ?? null,
+      jsonData.user.storage?.usable ?? null,
+      jsonData.user.totalEarn ?? null,
+      jsonData.user.createdAt ?? new Date(),
+      jsonData.user.updatedAt ?? new Date(),
+      jsonData.kyc.bankName ?? "",
+      jsonData.kyc.accountNo ?? "",
+      jsonData.kyc.IFSC ?? "",
+      jsonData.kyc.holder ?? "",
       {
-        aadharNo: jsonData.aadhar?.aadharNo ?? "",
-        mimeType: jsonData.aadhar?.mimeType ?? "",
-        file: jsonData.aadhar?.file ?? "",
+        aadharNo: jsonData.kyc.aadhar?.aadharNo ?? "",
+        mimeType: jsonData.kyc.aadhar?.mimeType ?? "",
+        file: jsonData.kyc.aadhar?.file ?? "",
       },
       {
-        panNo: jsonData.pan?.panNo ?? "",
-        mimeType: jsonData.pan?.mimeType ?? "",
-        file: jsonData.pan?.file ?? "",
+        panNo: jsonData.kyc.pan?.panNo ?? "",
+        mimeType: jsonData.kyc.pan?.mimeType ?? "",
+        file: jsonData.kyc.pan?.file ?? "",
       },
-      jsonData.nomineeName ?? "",
+      jsonData.kyc.nomineeName ?? "",
       {
-        mimetype: jsonData.sign?.mimeType ?? "",
-        buffer: jsonData.sign?.file ?? "",
+        mimetype: jsonData.kyc.sign?.mimeType ?? "",
+        buffer: jsonData.kyc.sign?.file ?? "",
       },
-      jsonData.street1 ?? "",
-      jsonData.street2 ?? "",
-      jsonData.city ?? "",
-      jsonData.state ?? "",
-      jsonData.level ?? 0,
-      jsonData.country ?? "",
-      jsonData.postalCode ?? "",
-      jsonData.rentCount ?? 0,
+      jsonData.address.street1 ?? "",
+      jsonData.address.street2 ?? "",
+      jsonData.address.city ?? "",
+      jsonData.address.state ?? "",
+      jsonData.user.level ?? 0,
+      jsonData.address.country ?? "",
+      jsonData.address.postalCode ?? "",
+      jsonData.user.rentCount ?? 0,
       jsonData.unread ?? 0
     );
   }
@@ -114,6 +117,7 @@ class UserModel {
     return json.map((e) => {
       return {
         userId: e?.userId ?? "",
+        initial: e?.initial ?? "",
         name: e?.fullName ?? "",
         email: e?.email ?? "",
         phone: e?.phone ?? "xxx-xxx-xxxx",

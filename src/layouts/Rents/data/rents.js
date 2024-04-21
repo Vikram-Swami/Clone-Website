@@ -4,7 +4,6 @@ import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import SoftBadge from "components/SoftBadge";
 
-
 function Author({ name, id }) {
   return (
     <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
@@ -88,10 +87,8 @@ const RentView = {
     { name: "level", align: "left" },
     { name: "storage", align: "center" },
     { name: "amount", align: "center" },
-    { name: "connectionId", align: "center" },
     { name: "status", align: "center" },
     { name: "endDate", align: "center" },
-
   ],
 
   rows: (data) => {
@@ -110,7 +107,6 @@ const RentView = {
         ),
         storage: <Author name={e.storage} />,
         amount: <Author name={e.amount} />,
-        connectionId: <Author name={e.connectionId} />,
         endDate: <Author name={formattedDate} />,
         status: <Status tnxId={e.transactionId} status={e.status} />,
       };

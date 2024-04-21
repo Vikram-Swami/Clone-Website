@@ -68,6 +68,7 @@ function Header() {
               <Grid item xs={12} md={8} lg={8}>
                 <SoftBox mt={0.5} lineHeight={1}>
                   <SoftTypography variant="h4" fontWeight="medium">
+                    {user.initial}
                     {user.fullName}
                   </SoftTypography>
                   <SoftTypography variant="button" color="text" fontWeight="medium">
@@ -135,10 +136,6 @@ function Header() {
                 info={{
                   aadharNo: user?.aadharNo,
                   panNo: user?.panNo,
-                  bankName: user?.bankName,
-                  accountNo: user?.accountNo,
-                  IFSC: user?.IFSC,
-                  nomineeName: user?.nomineeName,
                 }}
                 action={{ route: "/dashboard", tooltip: "Edit Profile" }}
               />
