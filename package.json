@@ -30,6 +30,7 @@
     "react-scripts": "5.0.1",
     "react-signature-canvas": "^1.0.6",
     "react-toastify": "^10.0.4",
+    "react-webcam": "^7.2.0",
     "reactflow": "^11.11.0",
     "signature_pad": "^4.2.0",
     "stylis": "4.2.0",
