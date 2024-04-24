@@ -22,8 +22,6 @@ import { getIncomeByUserId } from "Services/endpointes";
 
 function Income() {
   const [controller, dispatch] = useSoftUIController();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const { income, user } = controller;
 
