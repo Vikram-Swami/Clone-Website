@@ -17,6 +17,7 @@ export const getKyc = "/get-kyc";
 export const createKyc = "/create-kyc";
 export const getKycById = "/get-kyc-by-id";
 export const getKycByUserId = "/get-kyc-by-user-id";
+export const uploadDoc = "/upload-doc";
 export const updateKyc = "/update-kyc";
 export const deleteKyc = "/delete-kyc";
 
