@@ -94,18 +94,7 @@ function Notifications() {
         <Grid item xs={12} md={12} lg={12}>
           <Card className="h-100">
             <SoftBox px={3}>
-              <SoftBox
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                p={3}
-                pb={0}
-              >
-                <SoftBox>
-                  <SoftTypography variant="h5" gutterBottom>
-                    Notifications
-                  </SoftTypography>
-                </SoftBox>
+              <SoftBox display="flex" justifyContent="right" alignItems="center" p={3} pb={0}>
                 <SoftBox color="text" px={2}>
                   <Icon
                     sx={{ cursor: "pointer", fontWeight: "bold" }}
