@@ -1,17 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import Webcam from "react-webcam";
-import { Button } from "@mui/material";
+import { Button, Icon } from "@mui/material";
 import useImageCapture from "Hooks/useImageCapture/useImageCapture";
 import SoftButton from "components/SoftButton";
+import SoftBox from "components/SoftBox";
+import SoftTypography from "components/SoftTypography";
 
 const LivePictureCapture = () => {
+  const [facingMode, setFacingMode] = useState("user");
   const { webcamRef, imageSrc, cameraOpen, openCamera, capturePhoto, reset } = useImageCapture();
+
+  const switchCamera = () => {
+    const newFacingMode = facingMode === "user" ? "environment" : "user";
+    setFacingMode(newFacingMode);
+  };
 
   return (
     <div>
-      {!cameraOpen && !imageSrc && (
-        <img src={"/user.png"} onClick={openCamera} style={{ width: "50%" }} />
-      )}
+      {!imageSrc && <img src={"/user.png"} onClick={openCamera} style={{ width: "50%" }} />}
 
       {cameraOpen && (
         <>
@@ -30,13 +36,27 @@ const LivePictureCapture = () => {
               screenshotFormat="image/png"
               width={300}
               imageSmoothing
-              mirrored
+              videoConstraints={{ facingMode }} // Set the facing mode based on state
               screenshotQuality={1}
               disablePictureInPicture={true}
+              mirrored={facingMode === "user"}
             />
-            <SoftButton onClick={capturePhoto} variant="outlined" color="info">
-              Capture Photo
-            </SoftButton>
+            <SoftBox style={{ display: "flex", justifyContent: "space-evenly" }}>
+              <SoftTypography
+                onClick={switchCamera}
+                variant="contained"
+                color="info"
+                cursor="pointer"
+                mt={1}
+              >
+                <Icon>cameraswitch</Icon>
+              </SoftTypography>
+              <SoftButton onClick={capturePhoto} variant="outlined" color="info">
+                Capture Photo
+              </SoftButton>
+            </SoftBox>
+
+            {/* Button to switch the camera */}
           </div>
         </>
       )}
@@ -46,7 +66,6 @@ const LivePictureCapture = () => {
             style={{
               border: "2px solid green",
               borderRadius: "50%",
-
               width: "200px",
               height: "200px",
               marginBottom: "20px",

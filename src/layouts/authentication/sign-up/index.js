@@ -5,7 +5,7 @@ import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import SoftInput from "components/SoftInput";
 import SoftButton from "components/SoftButton";
-import { Box, Button, Divider, FormControl, FormLabel, MenuItem, Select } from "@mui/material";
+import { Box, Button, FormControl, FormLabel, Icon, MenuItem, Select } from "@mui/material";
 import ApiClient from "Services/ApiClient";
 import { registerUser, createKyc } from "Services/endpointes";
 import { ifscValidate } from "Services/endpointes";
@@ -22,59 +22,64 @@ import { Typography } from "antd";
 import { setLoading } from "context";
 import { Label } from "@mui/icons-material";
 import LivePictureCapture from "components/LiveImage";
+import Webcam from "react-webcam";
+import useImageCapture from "Hooks/useImageCapture/useImageCapture";
+import { uploadDoc } from "Services/endpointes";
 
 function SignUp() {
   const form = useRef(null);
+  const liveImageRef = useRef(null);
+  const aadharFrontRef = useRef(null);
+  const aadharBackRef = useRef(null);
+  const panRef = useRef(null);
+  const signatureRef = useRef(null);
+  const fileInputRef = useRef(null);
+  const aadharBackInputRef = useRef(null);
+  const panCardInputRef = useRef(null);
+
   const [controller, dispatch] = useSoftUIController();
   const { accept } = controller;
-
   const { step } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
+  const [facingMode, setFacingMode] = useState("user");
+  const [capturedImages, setCapturedImages] = useState({
+    liveImageSrc: null,
+    aadhar: null,
+    aadharBack: null,
+    pan: null,
+  });
+  const [cameraOpen, setCameraOpen] = useState();
 
-  const signatureRef = useRef(null);
+  const handleCapture = (selectedCamera, cameraRef) => {
+    const imageSrc = cameraRef.current.getScreenshot();
 
-  const titles = ["CREATE NEW ACCOUNT", "ADD ADDRESS", "Complete KYC"];
-  const routes = [registerUser, createAddress, createKyc];
+    setCapturedImages((prevImages) => ({
+      ...prevImages,
+      [selectedCamera]: imageSrc,
+    }));
+    setCameraOpen((prev) => !prev);
+  };
 
-  function dataURLtoFile(dataURL) {
-    // Split the data URL into components
+  const switchCamera = () => {
+    const newFacingMode = facingMode === "user" ? "environment" : "user";
+    setFacingMode(newFacingMode);
+  };
+
+  const titles = ["CREATE NEW ACCOUNT", "ADD ADDRESS", "Complete KYC", "Upload Documents"];
+  const routes = [registerUser, createAddress, createKyc, uploadDoc];
+
+  function dataURLtoFile(dataURL, filename) {
     const [, mimeType, data] = dataURL.match(/^data:(.*?);base64,(.*)$/);
 
-    // Convert base64 to binary data
     const binaryData = atob(data);
 
-    // Create a Blob object from the binary data
     const blob = new Blob([binaryData], { type: mimeType });
 
-    // Create a File object from the Blob
-    const file = new File([blob], "sign.png", { type: mimeType });
+    const file = new File([blob], filename, { type: mimeType });
 
     return file;
   }
-
-  const [imagePreviews, setImagePreviews] = useState({
-    "Aadhar Front": null,
-    "Aadhar Back": null,
-    "Pan Card": null,
-  });
-
-  // Function to handle image preview
-  const handleImagePreview = (event, label) => {
-    const selectedImage = event.target.files[0];
-    const reader = new FileReader();
-
-    reader.onloadend = () => {
-      setImagePreviews({
-        ...imagePreviews,
-        [label]: reader.result,
-      });
-    };
-
-    if (selectedImage) {
-      reader.readAsDataURL(selectedImage);
-    }
-  };
 
   // Validate IFSC Codes
   const handleIFSCCodeChange = async (e) => {
@@ -137,12 +142,21 @@ function SignUp() {
       return;
     }
     const formdata = new FormData(e.currentTarget);
-    if (step == 3 && !form.sign) {
+    if (step == 4 && !form.sign) {
       toast.error("Signatures are required!");
       return;
-    } else if (step == 3 && form.sign) {
-      let sign = dataURLtoFile(form.sign);
+    } else if (step == 4 && form.sign) {
+      console.log(capturedImages, "captured Images", form.sign);
+      let sign = dataURLtoFile(form.sign, "sign.png");
+      let aadharF = dataURLtoFile(capturedImages.aadhar, "aadharFront.png");
+      let aadharB = dataURLtoFile(capturedImages.aadharBack, "aadharBack.png");
+      let panF = dataURLtoFile(capturedImages.pan, "panFile.png");
+      let profileF = dataURLtoFile(capturedImages.liveImageSrc, "profile.png");
       formdata.append("sign", sign);
+      formdata.append("aadharFront", aadharF);
+      formdata.append("aadharBack", aadharB);
+      formdata.append("panFile", panF);
+      formdata.append("image", profileF);
     }
     if (step == 3 && !isValidPAN(formdata.get("panNo"))) {
       toast.error("Invalid PAN Number");
@@ -156,7 +170,7 @@ function SignUp() {
         let next = parseInt(step) + 1;
         form.userId = response.data?.userId;
         let route = `/sign-up/${next}?userId=${form.userId}`;
-        if (step == 3) {
+        if (step == 4) {
           route = "/sign-in";
         }
         navigate(route);
@@ -179,7 +193,29 @@ function SignUp() {
     return panRegex.test(pan);
   };
 
+  // Function to handle the upload button click
+  const handleUploadButtonClick = (inputRef) => {
+    console.log(inputRef);
+    if (inputRef && inputRef.current) {
+      inputRef.current.click();
+    }
+  };
+  const handleFileInputChange = (e, key) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+      setCapturedImages((prevImages) => ({
+        ...prevImages,
+        [key]: reader.result,
+      }));
+    };
+    reader.readAsDataURL(file);
+  };
+
+  console.log(capturedImages);
+
   useEffect(() => {
+    console.log(capturedImages, "regergerg");
     const queryParams = new URLSearchParams(location.search);
     if (parseInt(step) > 1 && queryParams.get("userId")) {
       form.userId = queryParams.get("userId");
@@ -189,7 +225,7 @@ function SignUp() {
     } else {
       navigate("/");
     }
-  }, []);
+  }, [, capturedImages]);
   return (
     <CoverLayout title={titles[step - 1]}>
       <SoftBox pt={2} pb={3} px={3}>
@@ -401,162 +437,495 @@ function SignUp() {
               <SoftBox mb={2} width="100%">
                 <SoftInput type="text" placeholder="Nominie age" name="nomineeAge" />
               </SoftBox>
-              <SoftBox mb={2} width="100%">
-                {/* Input for capturing Aadhar Front photo */}
-                <SoftBox display="flex" alignItems="center" justifyContent="space-between">
-                  <SoftTypography
-                    color="text"
-                    fontWeight="medium"
-                    whiteSpace="nowrap"
-                    pr={1}
-                    fontSize="0.9rem"
-                  >
-                    Aadhar Front
-                  </SoftTypography>
-                  <input type="file" accept="image/*" name="aadharFront" />
-                </SoftBox>
-              </SoftBox>
-              <SoftBox mb={2} width="100%">
-                {/* Input for capturing Aadhar Back photo */}
-                <SoftBox display="flex" alignItems="center" justifyContent="space-between">
-                  <SoftTypography
-                    color="text"
-                    fontWeight="medium"
-                    whiteSpace="nowrap"
-                    pr={1}
-                    fontSize="0.9rem"
-                  >
-                    Aadhar Back
-                  </SoftTypography>
-                  <input type="file" accept="image/*" name="aadharBack" />
-                </SoftBox>
-              </SoftBox>
-              <SoftBox mb={2} width="100%">
-                {/* Input for capturing PAN file */}
-                <SoftBox display="flex" alignItems="center" justifyContent="space-between">
-                  <SoftTypography
-                    color="text"
-                    fontWeight="medium"
-                    whiteSpace="nowrap"
-                    pr={1}
-                    fontSize="0.9rem"
-                  >
-                    Upload PAN
-                  </SoftTypography>
-                  <input type="file" accept="image/*" name="panFile" />
-                </SoftBox>
-              </SoftBox>
             </>
           ) : step == 4 ? (
             <>
+              <SoftBox mb={2} width="100%">
+                <SoftInput
+                  placeholder="User ID"
+                  name="userId"
+                  value={form?.userId ?? ""}
+                  disabled={form.userId ? true : false}
+                />
+              </SoftBox>
+              <SoftTypography variant="h6">Upload Live Image</SoftTypography>{" "}
               <SoftBox>
-                <LivePictureCapture />
-              </SoftBox>
-              <SoftBox mb={2} width="100%">
-                <SoftBox
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="space-between"
-                  flexDirection="column"
-                >
-                  <SoftTypography
-                    color="text"
-                    fontWeight="medium"
-                    whiteSpace="nowrap"
-                    pr={1}
-                    fontSize="0.9rem"
-                    width="100%"
-                    textAlign="left"
-                  >
-                    Aadhar Front
-                  </SoftTypography>
-
-                  <SoftBox component="label" p={3}>
+                <SoftBox>
+                  {capturedImages.liveImageSrc == null && cameraOpen !== "LiveImage" ? (
                     <img
-                      src={imagePreviews["Aadhar Front"] || "/aadhar.png"}
-                      alt="Click to Upload"
-                      style={{ width: "100%" }}
+                      src={"/user.png"}
+                      onClick={() => {
+                        setCameraOpen("LiveImage");
+                      }}
+                      style={{ width: "50%" }}
                     />
-                    <input
-                      type="file"
-                      accept="image/*"
-                      name="aadharFront"
-                      id={`${Label}-input`}
-                      onChange={(e) => handleImagePreview(e, "Aadhar Front")}
-                      style={{ display: "none" }}
-                    />
+                  ) : (
+                    ""
+                  )}
+
+                  {cameraOpen === "LiveImage" && (
+                    <>
+                      <SoftBox
+                        style={{
+                          border: "2px solid green",
+                          borderRadius: "50px",
+                          overflow: "hidden",
+                          width: "300px",
+                          height: "300px",
+                        }}
+                      >
+                        <Webcam
+                          audio={false}
+                          ref={liveImageRef}
+                          screenshotFormat="image/png"
+                          width={300}
+                          imageSmoothing
+                          videoConstraints={facingMode}
+                          screenshotQuality={1}
+                          disablePictureInPicture={true}
+                          mirrored={facingMode === "user"}
+                        />
+                        <SoftBox style={{ display: "flex", justifyContent: "space-evenly" }}>
+                          <SoftTypography
+                            onClick={switchCamera}
+                            variant="contained"
+                            color="info"
+                            cursor="pointer"
+                            mt={1}
+                          >
+                            <Icon>cameraswitch</Icon>
+                          </SoftTypography>
+                          <SoftButton
+                            onClick={() => handleCapture("liveImageSrc", liveImageRef)}
+                            variant="outlined"
+                            color="info"
+                          >
+                            Capture Photo
+                          </SoftButton>
+                        </SoftBox>
+                      </SoftBox>
+                    </>
+                  )}
+                  {capturedImages.liveImageSrc && (
+                    <>
+                      <SoftBox
+                        style={{
+                          border: "2px solid green",
+                          borderRadius: "50%",
+                          width: "200px",
+                          height: "200px",
+                          marginBottom: "20px",
+                        }}
+                      >
+                        <img
+                          src={capturedImages.liveImageSrc}
+                          alt="Captured Photo"
+                          style={{
+                            borderRadius: "50%",
+                            height: "100%",
+                            width: "100%",
+                          }}
+                        />
+                      </SoftBox>
+                      <SoftButton
+                        onClick={() =>
+                          setCapturedImages((prevImages) => ({
+                            ...prevImages,
+                            liveImageSrc: null,
+                          }))
+                        }
+                        variant="outlined"
+                        color="info"
+                      >
+                        Retake Photo
+                      </SoftButton>
+                    </>
+                  )}
+                </SoftBox>
+              </SoftBox>
+              <SoftTypography variant="h6" mt={3}>
+                Upload Aadhar Card
+              </SoftTypography>{" "}
+              <SoftBox>
+                <SoftBox mb={2} width="100%">
+                  <SoftBox
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    flexDirection="column"
+                    css={`
+                      &:hover {
+                        opacity: 0.8;
+                      }
+                    `}
+                  >
+                    <SoftBox
+                      className="profile-pic"
+                      onClick={() => {
+                        setDialog(dispatch, [
+                          {
+                            status: "form",
+                            title: "Aadhar ",
+                            message: "Upload Back side of Aadhar",
+                            children: (
+                              <Box style={{ padding: 20 }}>
+                                <Button
+                                  variant="outlined"
+                                  color="info"
+                                  onClick={() => {
+                                    setDialog(dispatch, [
+                                      {
+                                        status: "form",
+                                        title: "Aadhar ",
+                                        message: "Upload Front side of Aadhar",
+                                        children: (
+                                          <Box
+                                            style={{
+                                              border: "2px solid green",
+                                              borderRadius: "50px",
+                                              overflow: "hidden",
+                                              width: "300px",
+                                              height: "300px",
+                                            }}
+                                          >
+                                            <Webcam
+                                              audio={false}
+                                              ref={aadharFrontRef}
+                                              screenshotFormat="image/png"
+                                              width={300}
+                                              imageSmoothing
+                                              videoConstraints={{ facingMode }}
+                                              screenshotQuality={1}
+                                              disablePictureInPicture={true}
+                                              mirrored={facingMode === "user"}
+                                            />
+                                            <Box
+                                              style={{
+                                                display: "flex",
+                                                justifyContent: "space-evenly",
+                                              }}
+                                            >
+                                              <Typography
+                                                onClick={switchCamera}
+                                                variant="contained"
+                                                color="info"
+                                                cursor="pointer"
+                                                mt={1}
+                                              >
+                                                <Icon>cameraswitch</Icon>
+                                              </Typography>
+                                              <Button
+                                                onClick={() =>
+                                                  handleCapture("aadhar", aadharFrontRef)
+                                                }
+                                                variant="outlined"
+                                                color="info"
+                                              >
+                                                Capture Photo
+                                              </Button>
+                                            </Box>
+                                          </Box>
+                                        ),
+                                      },
+                                    ]);
+                                  }}
+                                  fullWidth
+                                >
+                                  Capture
+                                </Button>
+                                <Box className="profile-pic">
+                                  <input
+                                    ref={aadharFrontRef}
+                                    type="file"
+                                    accept="image/*"
+                                    name="aadharFront"
+                                    onChange={(e) => handleFileInputChange(e, "aadhar")}
+                                    style={{ display: "none" }}
+                                    id="aadhar-front-input"
+                                  />
+
+                                  <Button
+                                    variant="outlined"
+                                    color="info"
+                                    onClick={() => handleUploadButtonClick(aadharFrontRef)}
+                                    fullWidth
+                                  >
+                                    Upload
+                                  </Button>
+                                </Box>
+                              </Box>
+                            ),
+                          },
+                        ]);
+                      }}
+                    >
+                      <img
+                        src={capturedImages.aadhar == null ? "/aadhar.png" : capturedImages.aadhar}
+                        width={"100%"}
+                        height={"100%"}
+                      />
+                      <Box className="edit">
+                        <Icon fontSize="medium" color="inherit">
+                          edit
+                        </Icon>
+                      </Box>
+                    </SoftBox>
+                  </SoftBox>
+                </SoftBox>
+                <SoftBox mb={2} width="100%">
+                  <SoftBox
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    flexDirection="column"
+                  >
+                    <SoftBox
+                      className="profile-pic"
+                      onClick={() => {
+                        setDialog(dispatch, [
+                          {
+                            status: "form",
+                            title: "Aadhar ",
+                            message: "Upload Back side of Aadhar",
+                            children: (
+                              <Box style={{ padding: 20 }}>
+                                <Button
+                                  variant="outlined"
+                                  color="info"
+                                  onClick={() => {
+                                    setDialog(dispatch, [
+                                      {
+                                        status: "form",
+                                        title: "Aadhar ",
+                                        message: "Upload Front side of Aadhar",
+                                        children: (
+                                          <Box
+                                            style={{
+                                              border: "2px solid green",
+                                              borderRadius: "50px",
+                                              overflow: "hidden",
+                                              width: "300px",
+                                              height: "300px",
+                                            }}
+                                          >
+                                            <Webcam
+                                              audio={false}
+                                              ref={aadharBackRef}
+                                              screenshotFormat="image/png"
+                                              width={300}
+                                              imageSmoothing
+                                              videoConstraints={{ facingMode }}
+                                              screenshotQuality={1}
+                                              disablePictureInPicture={true}
+                                              mirrored={facingMode === "user"}
+                                            />
+                                            <Box
+                                              style={{
+                                                display: "flex",
+                                                justifyContent: "space-evenly",
+                                              }}
+                                            >
+                                              <Typography
+                                                onClick={switchCamera}
+                                                variant="contained"
+                                                color="info"
+                                                cursor="pointer"
+                                                mt={1}
+                                              >
+                                                <Icon>cameraswitch</Icon>
+                                              </Typography>
+                                              <Button
+                                                onClick={() =>
+                                                  handleCapture("aadharBack", aadharBackRef)
+                                                }
+                                                variant="outlined"
+                                                color="info"
+                                              >
+                                                Capture Photo
+                                              </Button>
+                                            </Box>
+
+                                            {/* Button to switch the camera */}
+                                          </Box>
+                                        ),
+                                      },
+                                    ]);
+                                  }}
+                                  fullWidth
+                                >
+                                  Capture
+                                </Button>
+                                <Box className="profile-pic">
+                                  <input
+                                    type="file"
+                                    accept="image/*"
+                                    ref={aadharBackRef}
+                                    name="aadharBack"
+                                    onChange={(e) => handleFileInputChange(e, "aadharBack")}
+                                    style={{ display: "none" }}
+                                    id="aadhar-back-input"
+                                  />
+
+                                  <Button
+                                    variant="outlined"
+                                    color="info"
+                                    onClick={() => handleUploadButtonClick(aadharBackRef)}
+                                    fullWidth
+                                  >
+                                    Upload
+                                  </Button>
+                                </Box>
+                              </Box>
+                            ),
+                          },
+                        ]);
+                      }}
+                    >
+                      <img
+                        src={
+                          capturedImages.aadharBack !== null
+                            ? capturedImages.aadharBack
+                            : "/aadharback.png"
+                        }
+                        width={"100%"}
+                        height={"100%"}
+                      />
+                      <SoftBox className="edit">
+                        <Icon fontSize="medium" color="inherit">
+                          edit
+                        </Icon>
+                      </SoftBox>
+                    </SoftBox>
                   </SoftBox>
                 </SoftBox>
               </SoftBox>
-              <SoftBox mb={2} width="100%">
-                <SoftBox
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="space-between"
-                  flexDirection="column"
-                >
-                  <SoftTypography
-                    color="text"
-                    fontWeight="medium"
-                    whiteSpace="nowrap"
-                    pr={1}
-                    fontSize="0.9rem"
-                    width="100%"
-                    textAlign="left"
+              <SoftTypography variant="h6" mt={3}>
+                Upload Pan Card
+              </SoftTypography>{" "}
+              <SoftBox>
+                <SoftBox width="100%">
+                  <SoftBox
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    flexDirection="column"
+                    css={`
+                      &:hover {
+                        opacity: 0.8;
+                      }
+                    `}
                   >
-                    Aadhar Back
-                  </SoftTypography>
+                    <SoftBox
+                      className="profile-pic"
+                      onClick={() => {
+                        setDialog(dispatch, [
+                          {
+                            status: "form",
+                            title: "PAN ",
+                            message: "Upload Front side of PAN",
+                            children: (
+                              <Box style={{ padding: 20 }}>
+                                <Button
+                                  variant="outlined"
+                                  color="info"
+                                  onClick={() => {
+                                    setDialog(dispatch, [
+                                      {
+                                        status: "form",
+                                        title: "Aadhar ",
+                                        message: "Upload Front side of PAN",
+                                        children: (
+                                          <Box
+                                            style={{
+                                              border: "2px solid green",
+                                              borderRadius: "50px",
+                                              overflow: "hidden",
+                                              width: "300px",
+                                              height: "300px",
+                                            }}
+                                          >
+                                            <Webcam
+                                              audio={false}
+                                              ref={panRef}
+                                              screenshotFormat="image/png"
+                                              width={300}
+                                              imageSmoothing
+                                              videoConstraints={{ facingMode }}
+                                              screenshotQuality={1}
+                                              disablePictureInPicture={true}
+                                              mirrored={facingMode === "user"}
+                                            />
+                                            <Box
+                                              style={{
+                                                display: "flex",
+                                                justifyContent: "space-evenly",
+                                              }}
+                                            >
+                                              <Typography
+                                                onClick={switchCamera}
+                                                variant="contained"
+                                                color="info"
+                                                cursor="pointer"
+                                                mt={1}
+                                              >
+                                                <Icon>cameraswitch</Icon>
+                                              </Typography>
+                                              <Button
+                                                onClick={() => handleCapture("pan", panRef)}
+                                                variant="outlined"
+                                                color="info"
+                                              >
+                                                Capture Photo
+                                              </Button>
+                                            </Box>
 
-                  <SoftBox component="label" p={3}>
-                    <img
-                      src={imagePreviews["Aadhar Back"] || "/aadharback.png"}
-                      alt="Click to Upload"
-                      style={{ width: "100%" }}
-                    />
-                    <input
-                      type="file"
-                      accept="image/*"
-                      name="aadharBack"
-                      onChange={(e) => handleImagePreview(e, "Aadhar Back")}
-                      style={{ display: "none" }}
-                      id="aadhar-back-input"
-                    />
-                  </SoftBox>
-                </SoftBox>
-              </SoftBox>
-              <SoftBox width="100%">
-                <SoftBox
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="space-between"
-                  flexDirection="column"
-                >
-                  <SoftTypography
-                    color="text"
-                    fontWeight="medium"
-                    whiteSpace="nowrap"
-                    pr={1}
-                    fontSize="0.9rem"
-                    width="100%"
-                    textAlign="left"
-                  >
-                    Upload PAN
-                  </SoftTypography>
+                                            {/* Button to switch the camera */}
+                                          </Box>
+                                        ),
+                                      },
+                                    ]);
+                                  }}
+                                  fullWidth
+                                >
+                                  Capture
+                                </Button>
+                                <Box className="profile-pic">
+                                  <input
+                                    ref={panRef}
+                                    type="file"
+                                    accept="image/*"
+                                    name="aadharBack"
+                                    onChange={(e) => handleFileInputChange(e, "pan")}
+                                    style={{ display: "none" }}
+                                    id="aadhar-back-input"
+                                  />
 
-                  <SoftBox component="label">
-                    <img
-                      src={imagePreviews["Pan Card"] || "/pan.png"}
-                      alt="Click to Upload"
-                      style={{ width: "100%" }}
-                    />
-                    <input
-                      type="file"
-                      accept="image/*"
-                      name="aadharBack"
-                      onChange={(e) => handleImagePreview(e, "Pan Card")}
-                      style={{ display: "none" }}
-                      id="aadhar-back-input"
-                    />
+                                  <Button
+                                    variant="outlined"
+                                    color="info"
+                                    onClick={() => handleUploadButtonClick(panRef)}
+                                    fullWidth
+                                  >
+                                    Upload
+                                  </Button>
+                                </Box>
+                              </Box>
+                            ),
+                          },
+                        ]);
+                      }}
+                    >
+                      <img
+                        src={capturedImages.pan !== null ? capturedImages.pan : "/pan.png"}
+                        width={"100%"}
+                        height={"100%"}
+                      />
+                      <SoftBox className="edit">
+                        <Icon fontSize="medium" color="inherit">
+                          edit
+                        </Icon>
+                      </SoftBox>
+                    </SoftBox>
                   </SoftBox>
                 </SoftBox>
               </SoftBox>

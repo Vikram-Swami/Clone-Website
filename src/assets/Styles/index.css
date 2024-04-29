@@ -56,7 +56,6 @@ body {
   --primary-d: hsl(var(--hue), 90%, 45%);
   --white: hsl(var(--hue), 10%, 100%);
   --white-d: hsl(var(--hue), 10%, 45%);
-
 }
 
 /* ----------------- Loader ---------------------- */
@@ -68,9 +67,7 @@ body {
 
 .book {
   border-radius: 0.25em;
-  box-shadow:
-    0 0.25em 0.5em hsla(0, 0%, 0%, 0.3),
-    0 0 0 0.25em var(--primary) inset;
+  box-shadow: 0 0.25em 0.5em hsla(0, 0%, 0%, 0.3), 0 0 0 0.25em var(--primary) inset;
   padding: 0.25em;
   perspective: 37.5em;
   position: relative;
@@ -100,7 +97,11 @@ body {
 .book__pg {
   animation-name: pg1;
   background-color: var(--white);
-  background-image: linear-gradient(90deg, hsla(var(--hue), 10%, 90%, 0) 87.5%, hsl(var(--hue), 10%, 90%));
+  background-image: linear-gradient(
+    90deg,
+    hsla(var(--hue), 10%, 90%, 0) 87.5%,
+    hsl(var(--hue), 10%, 90%)
+  );
   height: calc(100% - 0.5em);
   transform-origin: 100% 50%;
 }
@@ -108,8 +109,10 @@ body {
 .book__pg--2,
 .book__pg--3,
 .book__pg--4 {
-  background-image:
-    repeating-linear-gradient(hsl(var(--hue), 10%, 10%) 0 0.125em, hsla(var(--hue), 10%, 10%, 0) 0.125em 0.5em),
+  background-image: repeating-linear-gradient(
+      hsl(var(--hue), 10%, 10%) 0 0.125em,
+      hsla(var(--hue), 10%, 10%, 0) 0.125em 0.5em
+    ),
     linear-gradient(90deg, hsla(var(--hue), 10%, 90%, 0) 87.5%, hsl(var(--hue), 10%, 90%));
   background-repeat: no-repeat;
   background-position: center;
@@ -142,7 +145,6 @@ body {
 
 /* Animations */
 @keyframes cover {
-
   from,
   5%,
   45%,
@@ -163,7 +165,6 @@ body {
 }
 
 @keyframes shadow {
-
   from,
   10.01%,
   20.01%,
@@ -217,7 +218,6 @@ body {
 }
 
 @keyframes pg1 {
-
   from,
   to {
     animation-timing-function: ease-in-out;
@@ -248,7 +248,6 @@ body {
 }
 
 @keyframes pg2 {
-
   from,
   to {
     animation-timing-function: ease-in;
@@ -293,7 +292,6 @@ body {
 }
 
 @keyframes pg3 {
-
   from,
   10%,
   90%,
@@ -340,7 +338,6 @@ body {
 }
 
 @keyframes pg4 {
-
   from,
   20%,
   80%,
@@ -386,7 +383,6 @@ body {
 }
 
 @keyframes pg5 {
-
   from,
   30%,
   70%,
@@ -415,4 +411,31 @@ body {
     background-color: var(--white);
     transform: translate3d(0, 0, 1px) rotateY(0);
   }
+}
+
+/* Profile Hover Effect */
+
+.profile-pic {
+  position: relative;
+  transition: all ease-in 0.5s;
+  margin-top: 10px;
+}
+.profile-pic:hover {
+  opacity: 0.5;
+}
+.profile-pic:hover .edit {
+  display: block;
+}
+
+.edit {
+  padding-top: 7px;
+  padding-right: 7px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: none;
+}
+
+.edit a {
+  color: #000;
 }
