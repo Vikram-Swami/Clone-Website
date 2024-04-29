@@ -55,17 +55,6 @@ function RentOnRoyality() {
       <SoftBox py={3}>
         <SoftBox mb={3}>
           <Card>
-            <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-              <SoftTypography variant="h6">Royality</SoftTypography>
-
-              <SoftBox pr={1}>
-                <SoftInput
-                  placeholder="Enter Connection ID"
-                  icon={{ component: "search", direction: "left" }}
-                />
-              </SoftBox>
-            </SoftBox>
-
             {rent?.length > 0 ? (
               <Table columns={RentOnRoyalityView.columns} rows={memoizedRows} />
             ) : (

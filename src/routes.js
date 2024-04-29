@@ -160,7 +160,7 @@ const routes = [
     component: <Income />,
     noCollapse: true,
   },
-  { type: "title", title: "My Rents", key: "rent-title" },
+  { type: "title", title: "My Benefits", key: "rent-title" },
   {
     type: "collapse",
     name: "ROR",
@@ -173,7 +173,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Reward Salary",
+    name: "My Reawrds",
     key: "reward-salary",
     auth: "any",
     route: "reward-salary",
