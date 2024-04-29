@@ -11,6 +11,7 @@ import { Grid, Typography } from "@mui/material";
 import ivancik from "assets/ivancik.jpg";
 import { Link } from "react-router-dom";
 import { useSoftUIController } from "context";
+import { setDialog } from "context";
 
 function WorkWithTheRockets() {
   const generateReferLink = (id) => {
@@ -121,8 +122,6 @@ function WorkWithTheRockets() {
               <Icon sx={{ fontWeight: "bold" }}>add</Icon>
             </SoftTypography>
             <SoftTypography
-              component={Link}
-              to="/create-members"
               variant="button"
               color="white"
               onClick={() => handleCopyLink(user)}

@@ -19,6 +19,7 @@ import React from "react";
 import { setIncome } from "context";
 import usersView from "./data/income";
 import { getIncomeByUserId } from "Services/endpointes";
+import { setDialog } from "context";
 
 function Income() {
   const [controller, dispatch] = useSoftUIController();
@@ -72,8 +73,8 @@ function Income() {
               display="flex"
               justifyContent="center"
               alignItems="center"
-              width="3.5rem"
-              height="3.5rem"
+              width="2.5rem"
+              height="2.5rem"
               bgColor="white"
               shadow="sm"
               borderRadius="50%"
@@ -86,7 +87,7 @@ function Income() {
               onClick={openMenu}
             >
               <Icon fontSize="default" color="inherit">
-                settings
+                tune
               </Icon>
               <Menu
                 id="simple-menu"
@@ -128,11 +129,6 @@ function Income() {
                 </MenuItem>
               </Menu>
             </SoftBox>
-            {/* <SoftBox color="white" variant="gradient" py={2} width="100%">
-              <Grid item alignItems="flex-end">
-                <SoftTypography>1</SoftTypography>
-              </Grid>
-            </SoftBox> */}
           </Box>
         ) : (
           <SoftBox mt={4}>

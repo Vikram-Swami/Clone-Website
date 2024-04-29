@@ -195,7 +195,7 @@ const connectionView = {
                     {
                       status: "form",
                       title: `Rents`,
-                      children: <ConnectionRent />,
+                      children: <ConnectionRent id={e.id} />,
                     },
                   ]);
                 }}

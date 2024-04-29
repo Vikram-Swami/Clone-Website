@@ -5,13 +5,9 @@ import SoftBox from "components/SoftBox";
 import ProfilesList from "examples/Lists/ProfilesList";
 // Next Work Dashboard React examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
-import Card from "@mui/material/Card";
-import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
 // Overview page components
 import { useSoftUIController } from "context";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import { NavLink } from "react-router-dom";
-import SoftButton from "components/SoftButton";
 
 function Overview() {
   const [controller] = useSoftUIController();
@@ -26,7 +22,6 @@ function Overview() {
           </Grid>
         </Grid>
       </SoftBox>
-
       {/* <Footer /> */}
     </DashboardLayout>
   );
