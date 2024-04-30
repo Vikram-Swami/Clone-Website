@@ -13,45 +13,19 @@ import SoftTypography from "components/SoftTypography";
 
 // custom styles for the NotificationItem
 import { menuItem, menuImage } from "examples/Items/NotificationItem/styles";
+import { NavLink } from "react-router-dom";
 
-const NotificationItem = forwardRef(({ color, image, title, date, ...rest }, ref) => (
+const NotificationItem = forwardRef(({ title, ...rest }, ref) => (
   <MenuItem {...rest} ref={ref} sx={(theme) => menuItem(theme)}>
-    <SoftBox
-      // width="2.25rem"
-      // height="2.25rem"
-      mt={0.25}
-      mr={2}
-      mb={0.25}
-      borderRadius="lg"
-      sx={(theme) => menuImage(theme, { color })}
-    >
-      <Icon>{image} </Icon>
+    <SoftBox mt={1} mr={2} mb={0.25} borderRadius="lg">
+      <Icon>notifications_active </Icon>
     </SoftBox>
     <SoftBox>
-      <SoftTypography variant="button" textTransform="capitalize" fontWeight="regular">
-        <strong>{title.substring(0, 15)}...</strong>
-      </SoftTypography>
-      <SoftTypography
-        variant="caption"
-        color="secondary"
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          mt: 0.5,
-        }}
-      >
-        <SoftTypography variant="button" color="secondary">
-          <Icon
-            sx={{
-              lineHeight: 1.2,
-              mr: 0.5,
-            }}
-          >
-            watch_later
-          </Icon>
+      <NavLink to={"/notifications"}>
+        <SoftTypography variant="button" textTransform="capitalize" fontWeight="regular">
+          <strong>{title.substring(0, 20)}...</strong>
         </SoftTypography>
-        {date}
-      </SoftTypography>
+      </NavLink>
     </SoftBox>
   </MenuItem>
 ));

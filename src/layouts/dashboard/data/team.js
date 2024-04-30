@@ -86,7 +86,6 @@ const MyTeamView = {
   ],
 
   rows: (data, dispatch, user) => {
-    console.log(user);
     return data?.map((e, i) => {
       const dateObject = new Date(e.createdAt);
 

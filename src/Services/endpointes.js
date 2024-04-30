@@ -11,6 +11,7 @@ export const getIncomeById = "/get-income-by-id";
 export const getIncomeByUserId = "/get-income-by-user-id";
 export const updateIncome = "/update-income";
 export const deleteIncome = "/delete-income";
+export const generateProduct = "/generate-product";
 export const createIncome = "/create-income";
 
 export const getKyc = "/get-kyc";
@@ -84,6 +85,8 @@ export const updateUser = "/update-user";
 export const ifscValidate = "/ifsc-validate";
 export const changePassword = "/change-password";
 export const updateProfilePhoto = "/update-profile-photo";
+export const markRead = "/mark-read";
+export const deleteAllNotifications = "/delete-notifications";
 
 export const getUserTransactions = "/get-user-transactions";
 export const purchase = "/purchase";

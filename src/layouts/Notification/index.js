@@ -14,9 +14,11 @@ import { toast } from "react-toastify";
 import Grid from "@mui/material/Grid";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-
+import { markRead } from "Services/endpointes";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import { deleteAllNotifications } from "Services/endpointes";
+import { setDialog } from "context";
 
 function Notifications() {
   const [controller, dispatch] = useSoftUIController();
@@ -67,6 +69,35 @@ function Notifications() {
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => setMenu(null);
 
+  const handleMarkAllAsRead = async () => {
+    try {
+      const response = await ApiClient.updateData(markRead);
+      if (response?.status === 200) {
+        console.log("All items marked as read successfully!");
+      } else {
+        console.error("Failed to mark all items as read:", response);
+      }
+    } catch (error) {
+      console.error("An error occurred while marking all items as read:", error);
+    } finally {
+      closeMenu();
+    }
+  };
+  const handleDeleteAll = async () => {
+    try {
+      const response = await ApiClient.deleteData(deleteAllNotifications, "");
+      if (response?.status === 200) {
+        setDialog(dispatch, [response.message]);
+      } else {
+        console.error("Failed to mark all items as read:", response);
+      }
+    } catch (error) {
+      console.error("An error occurred while marking all items as read:", error);
+    } finally {
+      closeMenu();
+    }
+  };
+
   const renderMenu = (
     <Menu
       id="simple-menu"
@@ -82,8 +113,8 @@ function Notifications() {
       open={Boolean(menu)}
       onClose={closeMenu}
     >
-      <MenuItem onClick={closeMenu}>Mark all as read</MenuItem>
-      <MenuItem onClick={closeMenu}>Delete all</MenuItem>
+      <MenuItem onClick={() => handleMarkAllAsRead()}>Mark all as read</MenuItem>
+      <MenuItem onClick={() => handleDeleteAll()}>Delete all</MenuItem>
     </Menu>
   );
 

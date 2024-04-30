@@ -32,7 +32,7 @@ function RewardSalary() {
   const getAllRents = async () => {
     startLoading(dispatch, true);
     try {
-      const response = await ApiClient.getData(getRentByUserId);
+      const response = await ApiClient.getData(getRentByUserId + `/reward`);
       if (response.status == 200) {
         setRent(dispatch, response.data);
       } else {

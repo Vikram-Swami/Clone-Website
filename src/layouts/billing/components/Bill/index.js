@@ -7,13 +7,11 @@ import Divider from "@mui/material/Divider";
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import { useSoftUIController } from "context";
-import Transaction from "examples/TransactionView";
 import { setDialog } from "context";
 import { toast } from "react-toastify";
 import { setLoading } from "context";
 import { startLoading } from "context";
 import AccountPaymentView from "examples/AccountPaymentView";
-import { setConfirmDialog } from "context";
 
 function Bill({ wallet, earning, withdraw, TDS, Income, Storage, bankName }) {
   const [controller, dispatch] = useSoftUIController();
@@ -132,7 +130,7 @@ function Bill({ wallet, earning, withdraw, TDS, Income, Storage, bankName }) {
                     status: "form",
                     title: "Please select appropriate option",
                     action: "Pay Now",
-                    children: <AccountPaymentView amount={parseFloat(200)} type="purchase" />,
+                    children: <AccountPaymentView amount={parseFloat(user?.wallet)} />,
                     call: () => {
                       setDialog(dispatch, [
                         {

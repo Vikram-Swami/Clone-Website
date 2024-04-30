@@ -153,9 +153,9 @@ const routes = [
   {
     type: "collapse",
     name: "Income",
-    key: "my-earnings",
+    key: "incomes",
     auth: "any",
-    route: "/my-earnings",
+    route: "/incomes",
     icon: <Office size="12px" />,
     component: <Income />,
     noCollapse: true,
