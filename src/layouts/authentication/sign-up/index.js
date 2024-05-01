@@ -212,7 +212,6 @@ function SignUp() {
     reader.readAsDataURL(file);
   };
 
-  console.log(capturedImages);
 
   useEffect(() => {
     console.log(capturedImages, "regergerg");
