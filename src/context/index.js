@@ -10,6 +10,7 @@ import RentModel from "Models/Rents";
 import IncomeLog from "Models/Income";
 import Notification from "Models/Notification";
 import Transaction from "Models/Transaction";
+import DirectMember from "Models/DIrectMember";
 
 const SoftUI = createContext(null);
 
@@ -43,7 +44,12 @@ function reducer(state, action) {
       return { ...state, layout: action.value };
     }
     case "USER": {
-      return { ...state, loading: false, user: new UserModel().toJson(action.value) };
+      return {
+        ...state,
+        loading: false,
+        user: new UserModel().toJson(action.value),
+        directMember: new DirectMember().fromArray(action.payload.directMem),
+      };
     }
     case "RENT": {
       return { ...state, loading: false, rent: new RentModel().fromArray(action.value) };
@@ -110,6 +116,7 @@ function NextworkControllerProvider({ children }) {
     notifications: [],
     dialog: [],
     member: [],
+    directMember: [],
     income: [],
     transaction: [],
     accept: false,
