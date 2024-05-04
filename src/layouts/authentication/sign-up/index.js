@@ -20,10 +20,7 @@ import { startLoading } from "context";
 import SignatureCanvas from "react-signature-canvas";
 import { Typography } from "antd";
 import { setLoading } from "context";
-import { Label } from "@mui/icons-material";
-import LivePictureCapture from "components/LiveImage";
 import Webcam from "react-webcam";
-import useImageCapture from "Hooks/useImageCapture/useImageCapture";
 import { uploadDoc } from "Services/endpointes";
 
 function SignUp() {
@@ -33,10 +30,6 @@ function SignUp() {
   const aadharBackRef = useRef(null);
   const panRef = useRef(null);
   const signatureRef = useRef(null);
-  const fileInputRef = useRef(null);
-  const aadharBackInputRef = useRef(null);
-  const panCardInputRef = useRef(null);
-
   const [controller, dispatch] = useSoftUIController();
   const { accept } = controller;
   const { step } = useParams();
@@ -147,11 +140,11 @@ function SignUp() {
       return;
     } else if (step == 4 && form.sign) {
       console.log(capturedImages, "captured Images", form.sign);
-      let sign = dataURLtoFile(form.sign, "sign.png");
-      let aadharF = dataURLtoFile(capturedImages.aadhar, "aadharFront.png");
-      let aadharB = dataURLtoFile(capturedImages.aadharBack, "aadharBack.png");
-      let panF = dataURLtoFile(capturedImages.pan, "panFile.png");
-      let profileF = dataURLtoFile(capturedImages.liveImageSrc, "profile.png");
+      let sign = dataURLtoFile(form.sign, "sign");
+      let aadharF = dataURLtoFile(capturedImages.aadhar, "aadharFront");
+      let aadharB = dataURLtoFile(capturedImages.aadharBack, "aadharBack");
+      let panF = dataURLtoFile(capturedImages.pan, "panFile");
+      let profileF = dataURLtoFile(capturedImages.liveImageSrc, "profile");
       formdata.append("sign", sign);
       formdata.append("aadharFront", aadharF);
       formdata.append("aadharBack", aadharB);

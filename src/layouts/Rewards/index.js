@@ -33,8 +33,11 @@ function Rewards() {
     startLoading(dispatch, true);
     try {
       const response = await ApiClient.getData(getIncomeByUserId, 0, 100);
-      setIncome(dispatch, response.data);
-      toast.success(response?.message);
+      if (response.status == 200) {
+        setIncome(dispatch, response.data);
+        toast.success(response?.message);
+      }
+      setLoading(dispatch, false);
     } catch (error) {
       setLoading(dispatch, false);
       toast.info(error.response?.data?.message ?? "Oops! Network error occured!");
@@ -59,28 +62,22 @@ function Rewards() {
     <DashboardLayout>
       <DashboardNavbar />
       <SoftBox py={3} mb={3}>
-
-
         {income?.length > 0 ? (
           <Box>
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
               <SoftTypography variant="h5">Time Limit Rewards</SoftTypography>
-            
             </SoftBox>
             <Table columns={usersView.columns} rows={memoizedRows} />
-           
+
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
               <SoftTypography variant="h5">Regular Rewards</SoftTypography>
-            
             </SoftBox>
             <Table columns={usersView.columns} rows={memoizedRows} />
 
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
               <SoftTypography variant="h5">Rewards & Salary</SoftTypography>
-            
             </SoftBox>
             <Table columns={usersView.columns} rows={memoizedRows} />
-           
           </Box>
         ) : (
           <SoftBox mt={4}>
@@ -91,7 +88,7 @@ function Rewards() {
                     <Grid item xs={12} xl={12}>
                       <DefaultInfoCard
                         icon="cloud"
-                        title={`You Don't have an active Income yet. Add connection to your portfolio and start earning.`}
+                        title={`You Don't have an active Reward yet. Add connection to your portfolio and start earning.`}
                       />
                     </Grid>
                   </Grid>
