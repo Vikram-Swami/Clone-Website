@@ -60,7 +60,7 @@ const usersView = {
       const formattedDate = dateObject.toLocaleDateString("en-GB", options);
 
       return {
-        user: <Author name={name} id={e.userId} />,
+        user: <Author name={name} id={e.sourceId} />,
 
         type: (
           <SoftTypography variant="caption" color="secondary" fontWeight="medium">
@@ -98,14 +98,14 @@ const usersView = {
               //   toast.success("Details will be available soon!");
               // }}
               onClick={() => {
-                setDialog(dispatch, [
-                  {
-                    status: "form",
-                    title: `CONNECTION ID - ${e.id}`,
-                    message: `Invoices and Credential will be available soon.`,
-                    children: <HeaderView />,
-                  },
-                ]);
+                // setDialog(dispatch, [
+                //   {
+                //     status: "form",
+                //     title: `CONNECTION ID - ${e.id}`,
+                //     message: `Invoices and Credential will be available soon.`,
+                //     children: <HeaderView />,
+                //   },
+                // ]);
               }}
             >
               <Icon fontSize="small" color="info">

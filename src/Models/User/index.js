@@ -88,12 +88,12 @@ class UserModel {
       jsonData.kyc.IFSC ?? "",
       jsonData.kyc.holder ?? "",
       {
-        aadharNo: jsonData.kyc.aadhar?.aadharNo ?? "",
+        aadharNo: jsonData.kyc?.aadharNo ?? "",
         mimeType: jsonData.kyc.aadhar?.mimeType ?? "",
         file: jsonData.kyc.aadhar?.file ?? "",
       },
       {
-        panNo: jsonData.kyc.pan?.panNo ?? "",
+        panNo: jsonData.kyc?.panNo ?? "",
         mimeType: jsonData.kyc.pan?.mimeType ?? "",
         file: jsonData.kyc.pan?.file ?? "",
       },

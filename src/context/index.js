@@ -10,6 +10,8 @@ import RentModel from "Models/Rents";
 import IncomeLog from "Models/Income";
 import Notification from "Models/Notification";
 import Transaction from "Models/Transaction";
+import DirectMember from "Models/DIrectMember";
+import RewardsModel from "Models/Rewards";
 
 const SoftUI = createContext(null);
 
@@ -43,13 +45,21 @@ function reducer(state, action) {
       return { ...state, layout: action.value };
     }
     case "USER": {
-      return { ...state, loading: false, user: new UserModel().toJson(action.value) };
+      return {
+        ...state,
+        loading: false,
+        user: new UserModel().toJson(action.value),
+        directMember: new DirectMember().fromArray(action.value.directMem),
+      };
     }
     case "RENT": {
       return { ...state, loading: false, rent: new RentModel().fromArray(action.value) };
     }
     case "MEMBER": {
       return { ...state, loading: false, member: new UserModel().memberToArray(action.value) };
+    }
+    case "REWARDS": {
+      return { ...state, loading: false, rewards: new RewardsModel().fromArray(action.value) };
     }
     case "INCOME": {
       return { ...state, loading: false, income: new IncomeLog().fromArray(action.value) };
@@ -109,7 +119,9 @@ function NextworkControllerProvider({ children }) {
     rent: [],
     notifications: [],
     dialog: [],
+    rewards: [],
     member: [],
+    directMember: [],
     income: [],
     transaction: [],
     accept: false,
@@ -172,6 +184,7 @@ const setProducts = (dispatch, value) => dispatch({ type: "PRODUCTS", value });
 const setConnection = (dispatch, value) => dispatch({ type: "CONNECTION", value });
 const setLoading = (dispatch, value) => dispatch({ type: "LOADING", value });
 const setRent = (dispatch, value) => dispatch({ type: "RENT", value });
+const setRewards = (dispatch, value) => dispatch({ type: "REWARDS", value });
 const setNotification = (dispatch, value) => dispatch({ type: "NOTIFICATION", value });
 const setIncome = (dispatch, value) => dispatch({ type: "INCOME", value });
 const setTransaction = (dispatch, value) => dispatch({ type: "TRANSACTION", value });
@@ -193,6 +206,7 @@ export {
   setDirection,
   setLayout,
   setUser,
+  setRewards,
   setIncome,
   setTransaction,
   setRent,

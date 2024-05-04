@@ -38,7 +38,6 @@ function DefaultProductCard({ color, icon, storage, range, rent, basicAmt, tax, 
         userId: user.userId,
         storage: storage,
       });
-      console.log(response);
       setDialog(dispatch, [response]);
       setConnection(dispatch, []);
       navigate("/connections");

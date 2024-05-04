@@ -5,6 +5,12 @@ import SoftTypography from "components/SoftTypography";
 import SoftBadge from "components/SoftBadge";
 
 import SoftButton from "components/SoftButton";
+import ApiClient from "Services/ApiClient";
+import { claimReward } from "Services/endpointes";
+import { toast } from "react-toastify";
+import { setDialog } from "context";
+import { startLoading } from "context";
+import { setLoading } from "context";
 
 function Author({ name, id }) {
   return (
@@ -21,76 +27,81 @@ function Author({ name, id }) {
   );
 }
 
-function Status({ tnxId, status }) {
-  if (!status) {
+function Status({ claim, claimed, id, dis }) {
+  if (claimed) {
     return (
       <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
-        <SoftBadge variant="gradient" badgeContent="Unpaid" color="warning" size="xs" container />
+        <SoftButton disabled>claimed</SoftButton>
+      </SoftBox>
+    );
+  } else if (claim) {
+    return (
+      <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
+        <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
+          <SoftButton
+            color="warning"
+            onClick={() => {
+              claimRewards(id, dis);
+            }}
+          >
+            claim
+          </SoftButton>
+        </SoftBox>
       </SoftBox>
     );
   } else {
     return (
       <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
-        <SoftBox display="flex" flexDirection="column">
-          <SoftBadge variant="gradient" badgeContent="paid" color="success" size="xs" container />
-        </SoftBox>
+        <SoftButton disabled>claim</SoftButton>
       </SoftBox>
     );
   }
 }
+const claimRewards = async (id, dis) => {
+  startLoading(dis, true);
+  try {
+    const response = await ApiClient.createData(claimReward + `/${id}`);
 
-const usersView = {
+    setDialog(dis, [response]);
+  } catch (error) {
+    setLoading(dis, false);
+    toast.info(error.response);
+  }
+};
+const rewardView = {
   columns: [
-    { name: "Index", align: "left" },
-    { name: "Rewards", align: "center" },
-    { name: "TB(Required)", align: "center" },
-    { name: "Type", align: "left" },
-    { name: "Alloted", align: "center" },
-    { name: "actions", align: "center" },
+    { name: "required", align: "center" },
+    { name: "rewards", align: "center" },
+    { name: "salary", align: "center" },
+    { name: "claim", align: "center" },
   ],
 
-  rows: (data, name, dispatch) => {
+  rows: (data, dispatch) => {
     return data.map((e) => {
+      console.log(e);
       const dateObject = new Date(e.createdAt);
 
       const options = { day: "2-digit", month: "2-digit", year: "2-digit" };
       const formattedDate = dateObject.toLocaleDateString("en-GB", options);
 
       return {
-        Index: <Author name={name} id={e.index} />,
+        required: <Author name={e.range} id={"TB"} />,
 
-        type: (
+        rewards: (
           <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-            {e.type}
+            {e.reward}
           </SoftTypography>
         ),
-        level: (
+        salary: (
           <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-            {e.level + 1}
+            {e.salary ? e.salary : "NA"}
           </SoftTypography>
         ),
-        amount: (
-          <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-            {e.amount + e.tds + e.conCharge}
-          </SoftTypography>
-        ),
-        status: <Status status={e.status} />,
-        actions: (
-          <SoftButton
-      display="block"
-      color="warning"
-      shadow="md" 
-      height="0.001rem"
-      sx={{ padding: "0 !important" }}
-      borderRadius="md"
-      variant="gradient"
-    >
-      Claim
-    </SoftButton>
-        ),
+
+        claim: <Status claim={e.claim} claimed={e.claimed} id={e.id} dis={dispatch} />,
       };
     });
   },
 };
 
-export default usersView;
+export default rewardView;

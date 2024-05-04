@@ -3,7 +3,6 @@ import Card from "@mui/material/Card";
 
 // Next Work Dashboard React components
 import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
 
 // Next Work Dashboard React examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -18,7 +17,6 @@ import Table from "examples/Tables/Table";
 import ApiClient from "Services/ApiClient";
 import { toast } from "react-toastify";
 import { useSoftUIController, startLoading, setLoading } from "context";
-import SoftInput from "components/SoftInput";
 import React from "react";
 import { setRent } from "context";
 import { getRentByUserId } from "Services/endpointes";
@@ -32,7 +30,7 @@ function RentOnRent() {
   const getAllRents = async () => {
     startLoading(dispatch, true);
     try {
-      const response = await ApiClient.getData(getRentByUserId);
+      const response = await ApiClient.getData(getRentByUserId + `/My Rent`);
       if (response.status == 200) {
         setRent(dispatch, response.data);
       } else {
@@ -54,17 +52,6 @@ function RentOnRent() {
       <SoftBox py={3}>
         <SoftBox mb={3}>
           <Card>
-            <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-              <SoftTypography variant="h6">Rent On Rent</SoftTypography>
-
-              <SoftBox pr={1}>
-                <SoftInput
-                  placeholder="Enter Connection ID"
-                  icon={{ component: "search", direction: "left" }}
-                />
-              </SoftBox>
-            </SoftBox>
-
             {rent?.length > 0 ? (
               <Table columns={RentOnRentView.columns} rows={memoizedRows} />
             ) : (

@@ -15,7 +15,6 @@ import { purchase } from "Services/endpointes";
 import { setLoading } from "context";
 import { activateConnection } from "Services/endpointes";
 import { startLoading } from "context";
-import Transactions from "../form";
 import ConnectionRent from "../form";
 
 function Author({ name, id }) {
@@ -195,7 +194,7 @@ const connectionView = {
                     {
                       status: "form",
                       title: `Rents`,
-                      children: <ConnectionRent />,
+                      children: <ConnectionRent id={e.id} />,
                     },
                   ]);
                 }}

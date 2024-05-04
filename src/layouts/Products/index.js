@@ -11,7 +11,7 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 // Billing page components
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useSoftUIController } from "context";
 import DefaultProductCard from "examples/Cards/InfoCards/DefaultProductCard";
 
@@ -22,12 +22,13 @@ import { setLoading } from "context";
 import { toast } from "react-toastify";
 import { Box, Divider, Icon, IconButton, InputBase, Paper } from "@mui/material";
 import { setDialog } from "context";
+import { generateProduct } from "Services/endpointes";
 
 function Products() {
   // const [products, setProducts] = useState([]);
   const [controller, dispatch] = useSoftUIController();
   const { products } = controller;
-
+  const inputRef = useRef();
   const getProducts = async () => {
     try {
       setLoading(dispatch, true);
@@ -42,7 +43,28 @@ function Products() {
       setLoading(dispatch, false);
     }
   };
-
+  const generate_Product = async () => {
+    try {
+      setLoading(dispatch, true);
+      console.log(inputRef.current.children[0].value);
+      const response = await ApiClient.getData(
+        generateProduct + `/${inputRef.current.children[0].value}`
+      );
+      if (response?.status === 200) {
+        // Update products directly in the controller
+        const updatedProducts = [...products, response.data];
+        setProducts(dispatch, updatedProducts);
+        inputRef.current.value = ""; // Clear input after successful submission
+        toast.success(response.message);
+      } else {
+        setDialog(dispatch, [response]);
+      }
+    } catch (error) {
+      toast.error(error.toString());
+    } finally {
+      setLoading(dispatch, false);
+    }
+  };
   useEffect(() => {
     products.length < 1 && getProducts();
   }, []);
@@ -57,10 +79,12 @@ function Products() {
               component="form"
               onSubmit={(e) => {
                 e.preventDefault();
+                generate_Product();
               }}
               sx={{ p: "2px 2px", display: "flex", alignItems: "center", width: 300 }}
             >
               <InputBase
+                ref={inputRef}
                 sx={{ ml: 1, flex: 1 }}
                 placeholder="Enter Required Tera Byte"
                 inputProps={{ "aria-label": "Enter Required TB" }}

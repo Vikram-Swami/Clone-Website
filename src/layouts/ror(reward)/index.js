@@ -32,7 +32,7 @@ function RewardSalary() {
   const getAllRents = async () => {
     startLoading(dispatch, true);
     try {
-      const response = await ApiClient.getData(getRentByUserId);
+      const response = await ApiClient.getData(getRentByUserId + `/reward`);
       if (response.status == 200) {
         setRent(dispatch, response.data);
       } else {
@@ -54,17 +54,6 @@ function RewardSalary() {
       <SoftBox py={3}>
         <SoftBox mb={3}>
           <Card>
-            <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-              <SoftTypography variant="h6">Reward Salary</SoftTypography>
-
-              <SoftBox pr={1}>
-                <SoftInput
-                  placeholder="Enter Connection ID"
-                  icon={{ component: "search", direction: "left" }}
-                />
-              </SoftBox>
-            </SoftBox>
-
             {rent?.length > 0 ? (
               <Table columns={RewardSalaryView.columns} rows={memoizedRows} />
             ) : (

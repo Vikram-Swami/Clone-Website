@@ -11,13 +11,13 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 // Billing page components
 import { useSoftUIController } from "context";
-import { Card, Checkbox, FormControlLabel, Icon, Table, TablePagination } from "@mui/material";
+import { Card, Table, TablePagination } from "@mui/material";
 import SoftTypography from "components/SoftTypography";
 import usersView from "layouts/Income/data/income";
 import BillingInformation from "./components/BillingInformation";
 import Transactions from "./components/Transactions";
 
-function Billing() {
+function Account() {
   const [controller] = useSoftUIController();
   const { user } = controller;
   return (
@@ -33,7 +33,6 @@ function Billing() {
                 </Grid>
               </Grid>
             </Grid>
-
             <Grid item xs={12} lg={5}>
               {/* <SoftBox py={3} pt={0}>
               <SoftBox mb={3}>
@@ -88,7 +87,7 @@ function Billing() {
                 <SoftTypography variant="h6">My Achievement</SoftTypography>
               </SoftBox>
 
-              {Billing?.length > 0 ? (
+              {user?.length > 0 ? (
                 <>
                   <Table columns={usersView.columns} rows={memoizedRows} />
                   <SoftBox mt={2} display="block" width={40}>
@@ -128,4 +127,4 @@ function Billing() {
   );
 }
 
-export default Billing;
+export default Account;

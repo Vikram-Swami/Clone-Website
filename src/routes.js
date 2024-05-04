@@ -19,8 +19,8 @@ import {
   SpaceDashboard,
 } from "@mui/icons-material";
 const Team = lazy(() => import("layouts/Team"));
+const Account = lazy(() => import("layouts/Account"));
 const Connections = lazy(() => import("layouts/connections"));
-const Billing = lazy(() => import("layouts/billing"));
 const Profile = lazy(() => import("layouts/profile"));
 
 // Lazy-loaded icons
@@ -153,14 +153,14 @@ const routes = [
   {
     type: "collapse",
     name: "Income",
-    key: "my-earnings",
+    key: "incomes",
     auth: "any",
-    route: "/my-earnings",
+    route: "/incomes",
     icon: <Office size="12px" />,
     component: <Income />,
     noCollapse: true,
   },
-  { type: "title", title: "My Rents", key: "rent-title" },
+  { type: "title", title: "My Benefits", key: "rent-title" },
   {
     type: "collapse",
     name: "ROR",
@@ -173,7 +173,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Reward Salary",
+    name: "My Reawrds",
     key: "reward-salary",
     auth: "any",
     route: "reward-salary",
@@ -199,7 +199,7 @@ const routes = [
     route: "/account",
     auth: "any",
     icon: <AccountBalance size="12px" />,
-    component: <Billing />,
+    component: <Account />,
     noCollapse: true,
   },
 
@@ -263,7 +263,7 @@ export const components = {
   account: (
     <Suspense fallback={<Loading condition={true} />}>
       {" "}
-      <Billing />
+      <Account />
     </Suspense>
   ),
   profile: (

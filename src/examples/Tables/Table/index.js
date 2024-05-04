@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 import { v4 as uuidv4 } from "uuid";
 
 // @mui material components
-import { Table as MuiTable } from "@mui/material";
+import { Icon, Table as MuiTable } from "@mui/material";
 import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
