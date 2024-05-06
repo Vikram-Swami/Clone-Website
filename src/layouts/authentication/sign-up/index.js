@@ -187,12 +187,6 @@ function SignUp() {
       toast.error("Signatures are required!");
       return;
     } else if (step == 4 && form.sign) {
-      console.log(capturedImages, "captured Images", form.sign);
-      // let sign = dataURLtoFile(form.sign, "sign");
-      let aadharF = dataURLtoFile(capturedImages.aadhar, "aadharFront");
-      let aadharB = dataURLtoFile(capturedImages.aadharBack, "aadharBack");
-      let panF = dataURLtoFile(capturedImages.pan, "panFile");
-      let profileF = dataURLtoFile(capturedImages.liveImageSrc, "profile");
       let sign = dataURLtoFile(form.sign);
       formdata.append("sign", sign);
     }
