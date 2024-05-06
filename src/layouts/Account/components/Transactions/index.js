@@ -13,10 +13,10 @@ import { setLoading } from "context";
 
 import { toast } from "react-toastify";
 // Billing page components
-import Transaction from "layouts/billing/components/Transaction";
 import { useEffect } from "react";
 import ApiClient from "Services/ApiClient";
 import { getTransactionsByUserId } from "Services/endpointes";
+import Transaction from "examples/TransactionView";
 function Transactions() {
   const [controller, dispatch] = useSoftUIController();
   const { transaction } = controller;
@@ -71,7 +71,7 @@ function Transactions() {
           component="ul"
           display="flex"
           flexDirection="column"
-          p={0}
+          p={2}
           m={0}
           sx={{ listStyle: "none" }}
         >

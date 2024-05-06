@@ -33,7 +33,7 @@ function RentOnRoyality() {
   const getAllRents = async () => {
     startLoading(dispatch, true);
     try {
-      const response = await ApiClient.getData(getRentByUserId);
+      const response = await ApiClient.getData(getRentByUserId + `/royality`);
       if (response.status == 200) {
         setRent(dispatch, response.data);
       } else {

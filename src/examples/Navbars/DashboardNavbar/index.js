@@ -241,7 +241,6 @@ function DashboardNavbar({ absolute, light, isMini, call }) {
                 key={e._id}
                 image={<Icon size="small">{e.icon}</Icon>}
                 title={e.title}
-                date="13 minutes ago"
               />
             ))}
       </Box>

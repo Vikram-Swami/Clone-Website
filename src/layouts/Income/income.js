@@ -20,20 +20,27 @@ import { setIncome } from "context";
 import usersView from "./data/income";
 import { getIncomeByUserId } from "Services/endpointes";
 import { setDialog } from "context";
+import { Link, useLocation, useParams } from "react-router-dom";
 
 function Income() {
   const [controller, dispatch] = useSoftUIController();
 
   const { income, user } = controller;
+  const pathname = useParams();
+  const location = useLocation();
+  console.log(pathname, location);
 
   const getIncomes = async () => {
     startLoading(dispatch, true);
     try {
-      const response = await ApiClient.getData(getIncomeByUserId, 0, 100);
+      let query = new URLSearchParams(location.search);
+      let type = query?.get("type") ?? "incentive";
+      const response = await ApiClient.getData(getIncomeByUserId + `/${type}`, 0, 1000);
       if (response.status == 200) {
         setIncome(dispatch, response.data);
       } else {
         setDialog(dispatch, [response]);
+        setIncome(dispatch, []);
       }
     } catch (error) {
       toast.info(error.toString());
@@ -43,6 +50,10 @@ function Income() {
   useEffect(() => {
     income.length < 1 && getIncomes();
   }, []);
+
+  useEffect(() => {
+    getIncomes();
+  }, [location]);
 
   let memoizedRows = usersView.rows(income, user.fullName, dispatch);
 
@@ -55,78 +66,61 @@ function Income() {
     }
   };
   const closeMenu = () => setMenu(null);
-  const setSelector = (selector) => {
-    setSelector(selector);
-    setUsers(dispatch, []);
-  };
 
   return (
     <DashboardLayout>
       <DashboardNavbar call={getIncomes} />
+      <SoftBox
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        width="2.5rem"
+        height="2.5rem"
+        bgColor="white"
+        shadow="sm"
+        borderRadius="50%"
+        position="fixed"
+        right="2rem"
+        bottom="2rem"
+        zIndex={99}
+        color="dark"
+        sx={{ cursor: "pointer" }}
+        onClick={openMenu}
+      >
+        <Icon fontSize="default" color="inherit">
+          tune
+        </Icon>
+        <Menu
+          id="simple-menu"
+          anchorEl={menu}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "left",
+          }}
+          transformOrigin={{
+            vertical: "top",
+          }}
+          open={Boolean(menu)}
+          onClose={closeMenu}
+        >
+          <SoftBox component={Link} to="/incomes?type=incentive">
+            <MenuItem>Incentive</MenuItem>
+          </SoftBox>
+          <SoftBox component={Link} to="/incomes?type=regular">
+            <MenuItem>Regular</MenuItem>
+          </SoftBox>
+          <SoftBox component={Link} to="/incomes?type=royality">
+            <MenuItem>royality</MenuItem>
+          </SoftBox>
+          <SoftBox component={Link} to="/incomes?type=reward">
+            <MenuItem>reward</MenuItem>
+          </SoftBox>
+        </Menu>
+      </SoftBox>
       <SoftBox py={3} mb={3}>
         {income?.length > 0 ? (
           <Box>
             <Table columns={usersView.columns} rows={memoizedRows} />
-            <SoftBox
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              width="2.5rem"
-              height="2.5rem"
-              bgColor="white"
-              shadow="sm"
-              borderRadius="50%"
-              position="fixed"
-              right="2rem"
-              bottom="2rem"
-              zIndex={99}
-              color="dark"
-              sx={{ cursor: "pointer" }}
-              onClick={openMenu}
-            >
-              <Icon fontSize="default" color="inherit">
-                tune
-              </Icon>
-              <Menu
-                id="simple-menu"
-                anchorEl={menu}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "left",
-                }}
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(menu)}
-                onClose={closeMenu}
-              >
-                <MenuItem
-                  onClick={() => {
-                    closeMenu();
-                    setSelector("incentive");
-                  }}
-                >
-                  Incentive
-                </MenuItem>
-                <MenuItem
-                  onClick={() => {
-                    setSelector("regular");
-                    closeMenu();
-                  }}
-                >
-                  Regular
-                </MenuItem>
-                <MenuItem
-                  onClick={() => {
-                    setSelector("royality");
-                    closeMenu();
-                  }}
-                >
-                  Royality
-                </MenuItem>
-              </Menu>
-            </SoftBox>
           </Box>
         ) : (
           <SoftBox mt={4}>

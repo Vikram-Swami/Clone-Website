@@ -31,10 +31,11 @@ import SoftButton from "components/SoftButton";
 
 function Dashboard() {
   const [controller, dispatch] = useSoftUIController();
-  const { user, member } = controller;
+  const { user, member, directMember } = controller;
   const { size } = typography;
   const { chart } = reportsBarChartData;
   // const targetDate = new Date("2024-12-31T23:59:59");
+
   const miniStatisticsData = [
     {
       title: { text: "My Storage" },
@@ -63,7 +64,7 @@ function Dashboard() {
     },
   ];
 
-  let memoizedRows = MyTeamView.rows(member, dispatch, user);
+  let memoizedRows = MyTeamView.rows(directMember, dispatch, user);
 
   return (
     <DashboardLayout>
@@ -101,7 +102,7 @@ function Dashboard() {
                       done
                     </Icon>
                     <SoftTypography variant="button" fontWeight="regular" color="text">
-                      &nbsp;<strong> {member.length ?? 0} Direct Team</strong>
+                      &nbsp;<strong> {directMember.length ?? 0} Direct Team</strong>
                     </SoftTypography>
                   </SoftBox>
                 </SoftBox>
@@ -112,7 +113,7 @@ function Dashboard() {
                   </SoftButton>
                 </NavLink>
               </SoftBox>
-              <Table rows={memoizedRows} columns={MyTeamView.columns} />
+              <Table columns={MyTeamView.columns} rows={memoizedRows} />
             </Card>
           </Grid>
           <Grid item xs={12} lg={5}>

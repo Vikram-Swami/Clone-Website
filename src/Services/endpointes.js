@@ -11,6 +11,7 @@ export const getIncomeById = "/get-income-by-id";
 export const getIncomeByUserId = "/get-income-by-user-id";
 export const updateIncome = "/update-income";
 export const deleteIncome = "/delete-income";
+export const generateProduct = "/generate-product";
 export const createIncome = "/create-income";
 
 export const getKyc = "/get-kyc";
@@ -26,7 +27,7 @@ export const createLimitReward = "/create-limit-reward";
 export const getLimitRewardById = "/get-limitreward-by-id";
 export const updateLimitReward = "/update-limit-reward";
 export const deleteLimitReward = "/delete-limit-reward";
-
+export const getUserRewards = "get-user-rewards";
 export const getProducts = "/get-products";
 export const createProduct = "/create-product";
 export const getPublished = "/get-published";
@@ -34,6 +35,7 @@ export const getProductByType = "/get-product-by-type";
 export const getProductById = "/get-product-by-id";
 export const updateProduct = "/update-product";
 export const deleteProduct = "/delete-product";
+export const claimReward = "/claim";
 
 export const getRents = "/get-rents";
 export const getActiveRent = "/get-active-rent";
@@ -84,10 +86,12 @@ export const updateUser = "/update-user";
 export const ifscValidate = "/ifsc-validate";
 export const changePassword = "/change-password";
 export const updateProfilePhoto = "/update-profile-photo";
+export const markRead = "/mark-read";
+export const deleteAllNotifications = "/delete-notifications";
 
 export const getUserTransactions = "/get-user-transactions";
 export const purchase = "/purchase";
-export const createTransaction = "/create-transaction";
+export const createTransactions = "/create-transactions";
 export const getTransactionById = "/get-transaction-by-id";
 export const getTransactionsByUserId = "/get-transactions-by-user-id";
 export const updateTransactions = "/update-transactions";
