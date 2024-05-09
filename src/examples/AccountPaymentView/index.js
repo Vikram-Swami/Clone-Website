@@ -6,14 +6,12 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import TextField from "@mui/material/TextField";
 import { useSoftUIController } from "context";
-import { PropTypes } from "prop-types";
-import { setDialog } from "context";
-import { startLoading } from "context";
+import PropTypes from "prop-types";
+import { setDialog, setLoading } from "context";
+import ApiClient from "Services/ApiClient";
 import { createTransactions } from "Services/endpointes";
-import { setLoading } from "context";
-import { toast } from "react-toastify";
 
-export default function AccountPaymentView({ amount }) {
+export default function AccountPaymentView({ amount, id }) {
   const [controller, dispatch] = useSoftUIController();
   const { user } = controller;
   const [tnxId, setTnxId] = useState("");
@@ -22,14 +20,14 @@ export default function AccountPaymentView({ amount }) {
   const handleRadioChange = (event) => {
     const selectedType = event.target.value;
     setType(selectedType);
-    if (selectedType == "wallet") {
+    if (selectedType === "wallet") {
       setDialog(dispatch, [
         {
           status: "form",
           title: "Please select payment method",
           message: `Connection -  TB`,
           action: "Pay Now",
-          call: withDraw,
+          call: () => withDraw(),
 
           children: (
             <TextField
@@ -38,7 +36,7 @@ export default function AccountPaymentView({ amount }) {
               label="Amount"
               type="text"
               fullWidth
-              name="amount"
+              name="withdraw"
               variant="standard"
             />
           ),
@@ -46,17 +44,28 @@ export default function AccountPaymentView({ amount }) {
       ]);
     }
   };
-  const withDraw = async (formData) => {
-    startLoading(dispatch, true);
+
+  const withDraw = async () => {
+    const amountInput = document.getElementById("amountInput");
+    const amount = amountInput.value;
+
+    setLoading(dispatch, true);
+
     try {
-      const response = await ApiClient.getData(createTransactions);
+      const response = await ApiClient.createData(createTransactions, {
+        amount: parseFloat(amount),
+        type: "withdraw",
+        userId: id,
+        paymentMethod: "tnxId",
+      });
 
       setDialog(dispatch, [response]);
     } catch (error) {
       setLoading(dispatch, false);
-      toast.error(error.toString());
+      console.error(error);
     }
   };
+
   return (
     <>
       <FormControl required>
@@ -123,7 +132,8 @@ export default function AccountPaymentView({ amount }) {
     </>
   );
 }
+
 AccountPaymentView.propTypes = {
   amount: PropTypes.number.isRequired,
-  type: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
 };
