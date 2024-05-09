@@ -130,7 +130,7 @@ function Bill({ wallet, earning, withdraw, TDS, Income, Storage, bankName }) {
                     status: "form",
                     title: "Please select appropriate option",
                     action: "Pay Now",
-                    children: <AccountPaymentView amount={parseFloat(user?.wallet)} />,
+                    children: <AccountPaymentView amount={parseFloat(user?.wallet)} id={user.id} />,
                     call: () => {
                       setDialog(dispatch, [
                         {

@@ -28,7 +28,6 @@ function Income() {
   const { income, user } = controller;
   const pathname = useParams();
   const location = useLocation();
-  console.log(pathname, location);
 
   const getIncomes = async () => {
     startLoading(dispatch, true);
