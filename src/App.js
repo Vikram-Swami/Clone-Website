@@ -14,6 +14,7 @@ import { getUserById } from "Services/endpointes";
 import { setLoading } from "context";
 import { getUserNotification } from "Services/endpointes";
 import { setNotification } from "context";
+import { achieve } from "Services/endpointes";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
@@ -71,8 +72,13 @@ export default function App() {
       const data = await ApiClient.getData(getUserById);
       if (data.status == 200) {
         const notifications = await ApiClient.getData(getUserNotification);
+        const royality = await ApiClient.createData(achieve, "");
+
         if (notifications.status == 200) {
           setNotification(dispatch, notifications.data);
+        }
+        if (royality.status == 200) {
+          setDialog(dispatch, [royality]);
         }
         setUser(dispatch, data?.data);
       } else {

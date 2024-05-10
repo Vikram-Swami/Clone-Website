@@ -21,6 +21,7 @@ export const getKycByUserId = "/get-kyc-by-user-id";
 export const uploadDoc = "/upload-doc";
 export const updateKyc = "/update-kyc";
 export const deleteKyc = "/delete-kyc";
+export const achieve = "/daklnoweinow";
 
 export const getLimitReward = "/get-limit-reward";
 export const createLimitReward = "/create-limit-reward";
