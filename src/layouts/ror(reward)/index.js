@@ -32,7 +32,7 @@ function RewardSalary() {
   const getAllRents = async () => {
     startLoading(dispatch, true);
     try {
-      const response = await ApiClient.getData(getRentByUserId + `/reward`);
+      const response = await ApiClient.getData(getRentByUserId);
       if (response.status == 200) {
         setRent(dispatch, response.data);
       } else {
@@ -46,7 +46,7 @@ function RewardSalary() {
   useEffect(() => {
     rent.length < 1 && getAllRents();
   }, []);
-  let memoizedRows = RewardSalaryView.rows(rent);
+  let memoizedRows = RewardSalaryView.rows(rent.filter(e => e.type == "rewards"));
 
   return (
     <DashboardLayout>
@@ -54,7 +54,7 @@ function RewardSalary() {
       <SoftBox py={3}>
         <SoftBox mb={3}>
           <Card>
-            {rent?.length > 0 ? (
+            {rent?.filter(e => e.type == "rewards").length > 0 ? (
               <Table columns={RewardSalaryView.columns} rows={memoizedRows} />
             ) : (
               <SoftBox mt={4}>
@@ -65,7 +65,7 @@ function RewardSalary() {
                         <Grid item xs={12} xl={12}>
                           <DefaultInfoCard
                             icon="cloud"
-                            title={`You Don't have an active Rent yet. Add connection to your portfolio and start getting rent every month.`}
+                            title={`You Don't have an active Rewards yet. Add connection to your portfolio and start getting rent every month.`}
                           />
                         </Grid>
                       </Grid>

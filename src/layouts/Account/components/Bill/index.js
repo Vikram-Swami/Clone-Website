@@ -12,29 +12,41 @@ import { toast } from "react-toastify";
 import { setLoading } from "context";
 import { startLoading } from "context";
 import AccountPaymentView from "examples/AccountPaymentView";
+import { createTransactions } from "Services/endpointes";
+import { setUser } from "context";
+import ApiClient from "Services/ApiClient";
+import { setNotification } from "context";
+import { getUserById } from "Services/endpointes";
 
 function Bill({ wallet, earning, withdraw, TDS, Income, Storage, bankName }) {
   const [controller, dispatch] = useSoftUIController();
   const { user, e } = controller;
-  const payment = (id, amount, dispatch, call) => async (form) => {
+  const payment = async (form) => {
     try {
-      form.append("id", id);
-      form.append("amount", amount);
-      startLoading(dispatch, true);
-      const response = await ApiClient.createData(purchase, form);
-      if (response.status == 200) {
-        setDialog(dispatch, [response]);
-        call();
+      if (form.get("type") == "add") {
+        form.append("paymentMethod", "tnxId");
       } else {
-        setDialog(dispatch, [response]);
+
+        form.append("paymentMethod", "wallet Transaction");
       }
+      startLoading(dispatch, true);
+      const response = await ApiClient.createData(createTransactions, form);
+      if (response.status == 200) {
+        const data = await ApiClient.getData(getUserById);
+        if (data.status == 200) {
+          setUser(dispatch, data?.data);
+        }
+      }
+      setDialog(dispatch, [response]);
+
     } catch (err) {
-      toast.error(err.response?.data?.message);
+      toast.error(err?.toString());
       setLoading(dispatch, false);
     }
   };
-  const called2 = () => {};
-  const called = () => {};
+
+
+
   return (
     <SoftBox
       component="li"
@@ -87,7 +99,7 @@ function Bill({ wallet, earning, withdraw, TDS, Income, Storage, bankName }) {
             Total Withdraw :
           </SoftTypography>
           <SoftTypography variant="h6" color="black" fontWeight="medium">
-            {/* {user?.wallet} */}0
+            {user?.totalWithdraw ?? 0}
           </SoftTypography>
         </SoftBox>
         <SoftBox mb={1} lineHeight={0} display={"flex"} justifyContent={"space-between"}>
@@ -128,17 +140,17 @@ function Bill({ wallet, earning, withdraw, TDS, Income, Storage, bankName }) {
                 setDialog(dispatch, [
                   {
                     status: "form",
-                    title: "Please select appropriate option",
+                    title: "Want to use wallet?",
                     action: "Pay Now",
                     children: <AccountPaymentView amount={parseFloat(user?.wallet)} id={user.id} />,
-                    call: () => {
+                    call: (form) => {
                       setDialog(dispatch, [
                         {
                           status: "form",
                           title: "Confirm",
                           action: "Pay Now",
                           message: "Are you sure to Proceed",
-                          call: called2,
+                          call: () => payment(form),
                         },
                       ]);
                     },

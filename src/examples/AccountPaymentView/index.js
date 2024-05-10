@@ -4,6 +4,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
+import Typography from "@mui/material/Typography"
 import TextField from "@mui/material/TextField";
 import { useSoftUIController } from "context";
 import PropTypes from "prop-types";
@@ -61,41 +62,25 @@ export default function AccountPaymentView({ amount, id }) {
 
       setDialog(dispatch, [response]);
     } catch (error) {
+      console.log("error in payment", error)
       setLoading(dispatch, false);
-      console.error(error);
     }
   };
 
   return (
     <>
       <FormControl required>
-        <FormLabel>
-          <span style={{ fontWeight: "bold" }}>Balance:</span> {amount}
-        </FormLabel>
+        <Typography style={{ fontWeight: "bold", textAlign: "center" }}>Wallet: {amount}</Typography>
         <RadioGroup name="type" required value={type} onChange={handleRadioChange}>
           <>
             <FormControlLabel value="add" control={<Radio />} label="Add" />
-            <FormControlLabel value="wallet" control={<Radio />} label="Withdraw" />
+            <FormControlLabel value="withdraw" control={<Radio />} label="Withdraw" />
             <FormControlLabel value="transfer" control={<Radio />} label="Transfer" />
           </>
         </RadioGroup>
       </FormControl>
 
-      {type === "tnxId" && (
-        <TextField
-          margin="dense"
-          id="tnxIdInput"
-          label="Enter UTI"
-          type="text"
-          fullWidth
-          name="tnxId"
-          variant="standard"
-          value={tnxId}
-          onChange={(e) => setTnxId(e.target.value)}
-        />
-      )}
-
-      {(type === "add" || type === "transfer" || type === "wallet") && (
+      {(type === "add" || type === "transfer" || type === "withdraw") && (
         <TextField
           margin="dense"
           id="amountInput"
@@ -114,7 +99,7 @@ export default function AccountPaymentView({ amount, id }) {
           label="User Id"
           type="text"
           fullWidth
-          name="userId"
+          name="rcId"
           variant="standard"
         />
       )}
@@ -125,7 +110,7 @@ export default function AccountPaymentView({ amount, id }) {
           label="UTI"
           type="text"
           fullWidth
-          name="userId"
+          name="tnxId"
           variant="standard"
         />
       )}

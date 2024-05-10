@@ -16,7 +16,7 @@ import { toast } from "react-toastify";
 import { useEffect } from "react";
 import ApiClient from "Services/ApiClient";
 import { getTransactionsByUserId } from "Services/endpointes";
-import Transaction from "examples/TransactionView";
+import Transaction from "../Transaction";
 function Transactions() {
   const [controller, dispatch] = useSoftUIController();
   const { transaction } = controller;
@@ -77,27 +77,27 @@ function Transactions() {
         >
           {transaction?.length > 0
             ? transaction.map((e) => {
-                const date = new Date(e.createdAt);
-                const formattedDate = date.toLocaleString("en-US", {
-                  year: "numeric",
-                  month: "short",
-                  day: "2-digit",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  second: "2-digit",
-                });
+              const date = new Date(e.createdAt);
+              const formattedDate = date.toLocaleString("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+              });
 
-                return (
-                  <Transaction
-                    key={e.invoiceNo}
-                    color="error"
-                    icon="arrow_downward"
-                    name={e.type}
-                    description={formattedDate}
-                    value={"₹" + e.amount}
-                  />
-                );
-              })
+              return (
+                <Transaction
+                  key={e.invoiceNo}
+                  color="error"
+                  icon="arrow_downward"
+                  name={e.type}
+                  description={formattedDate}
+                  value={"₹" + e.amount}
+                />
+              );
+            })
             : ""}
         </SoftBox>
       </SoftBox>

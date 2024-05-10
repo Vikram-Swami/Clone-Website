@@ -7,6 +7,7 @@ class UserModel {
     phone,
     type,
     wallet,
+    totalWithdraw,
     status,
     ownStr,
     memStr,
@@ -39,6 +40,7 @@ class UserModel {
     this.phone = phone;
     this.type = type;
     this.wallet = wallet;
+    this.totalWithdraw = totalWithdraw;
     this.status = status;
     this.ownStr = ownStr;
     this.memStr = memStr;
@@ -76,6 +78,7 @@ class UserModel {
       jsonData.user.phone ?? "xxx-xxx-xxxx",
       jsonData.user.type ?? "",
       jsonData.user.wallet ?? null,
+      jsonData.user.totalWithdraw,
       jsonData.user.status ?? false,
       jsonData.user.storage?.own ?? null,
       jsonData.user.storage?.member ?? null,

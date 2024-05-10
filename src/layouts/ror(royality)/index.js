@@ -33,7 +33,7 @@ function RentOnRoyality() {
   const getAllRents = async () => {
     startLoading(dispatch, true);
     try {
-      const response = await ApiClient.getData(getRentByUserId + `/royality`);
+      const response = await ApiClient.getData(getRentByUserId);
       if (response.status == 200) {
         setRent(dispatch, response.data);
       } else {
@@ -47,7 +47,7 @@ function RentOnRoyality() {
   useEffect(() => {
     rent.length < 1 && getAllRents();
   }, []);
-  let memoizedRows = RentOnRoyalityView.rows(rent);
+  let memoizedRows = RentOnRoyalityView.rows(rent.filter((r) => r.type === "royality"));
 
   return (
     <DashboardLayout>
@@ -55,7 +55,7 @@ function RentOnRoyality() {
       <SoftBox py={3}>
         <SoftBox mb={3}>
           <Card>
-            {rent?.length > 0 ? (
+            {rent?.filter((e) => e.type == "royality")?.length > 0 ? (
               <Table columns={RentOnRoyalityView.columns} rows={memoizedRows} />
             ) : (
               <SoftBox mt={4}>
@@ -66,7 +66,7 @@ function RentOnRoyality() {
                         <Grid item xs={12} xl={12}>
                           <DefaultInfoCard
                             icon="cloud"
-                            title={`You Don't have an active Rent yet. Add connection to your portfolio and start getting rent every month.`}
+                            title={`You Don't have an active Royalities yet. Add connection to your portfolio and start getting rent every month.`}
                           />
                         </Grid>
                       </Grid>

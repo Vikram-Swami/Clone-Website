@@ -30,7 +30,7 @@ function RentOnRent() {
   const getAllRents = async () => {
     startLoading(dispatch, true);
     try {
-      const response = await ApiClient.getData(getRentByUserId + `/My Rent`);
+      const response = await ApiClient.getData(getRentByUserId);
       if (response.status == 200) {
         setRent(dispatch, response.data);
       } else {
@@ -44,7 +44,7 @@ function RentOnRent() {
   useEffect(() => {
     rent.length < 1 && getAllRents();
   }, []);
-  let memoizedRows = RentOnRentView.rows(rent);
+  let memoizedRows = RentOnRentView.rows(rent.filter(e => e.type == "RoR"));
 
   return (
     <DashboardLayout>
@@ -52,7 +52,7 @@ function RentOnRent() {
       <SoftBox py={3}>
         <SoftBox mb={3}>
           <Card>
-            {rent?.length > 0 ? (
+            {rent?.filter(e => e.type == "RoR")?.length > 0 ? (
               <Table columns={RentOnRentView.columns} rows={memoizedRows} />
             ) : (
               <SoftBox mt={4}>
@@ -63,7 +63,7 @@ function RentOnRent() {
                         <Grid item xs={12} xl={12}>
                           <DefaultInfoCard
                             icon="cloud"
-                            title={`You Don't have an active Rent yet. Add connection to your portfolio and start getting rent every month.`}
+                            title={`You Don't have an active Consultation Benefit yet. Add connection to your portfolio and start getting rent every month.`}
                           />
                         </Grid>
                       </Grid>
