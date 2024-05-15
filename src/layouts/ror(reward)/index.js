@@ -18,21 +18,21 @@ import Table from "examples/Tables/Table";
 import ApiClient from "Services/ApiClient";
 import { toast } from "react-toastify";
 import { useSoftUIController, startLoading, setLoading } from "context";
-import SoftInput from "components/SoftInput";
 import React from "react";
 import { setRent } from "context";
-import { getRentByUserId } from "Services/endpointes";
 import { setDialog } from "context";
 import RewardSalaryView from "./data";
+import { getRewardById } from "Services/endpointes";
 
 function RewardSalary() {
   const [controller, dispatch] = useSoftUIController();
 
-  const { rent } = controller;
+  const { rent, user } = controller;
+  console.log(user);
   const getAllRents = async () => {
     startLoading(dispatch, true);
     try {
-      const response = await ApiClient.getData(getRentByUserId);
+      const response = await ApiClient.getDataByParam(getRewardById, "ntl1557268");
       if (response.status == 200) {
         setRent(dispatch, response.data);
       } else {
@@ -46,7 +46,7 @@ function RewardSalary() {
   useEffect(() => {
     rent.length < 1 && getAllRents();
   }, []);
-  let memoizedRows = RewardSalaryView.rows(rent.filter(e => e.type == "rewards"));
+  let memoizedRows = RewardSalaryView.rows(rent.filter((e) => e.type == "rewards"));
 
   return (
     <DashboardLayout>
@@ -54,7 +54,7 @@ function RewardSalary() {
       <SoftBox py={3}>
         <SoftBox mb={3}>
           <Card>
-            {rent?.filter(e => e.type == "rewards").length > 0 ? (
+            {rent?.filter((e) => e.type == "rewards").length > 0 ? (
               <Table columns={RewardSalaryView.columns} rows={memoizedRows} />
             ) : (
               <SoftBox mt={4}>

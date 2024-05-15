@@ -2,8 +2,10 @@ class RentModel {
   constructor(
     id,
     userId,
+    source,
     level,
     storage,
+    type,
     amount,
     connectionId,
     status,
@@ -14,7 +16,9 @@ class RentModel {
     this.id = id;
     this.userId = userId;
     this.level = level;
+    this.source = source;
     this.storage = storage;
+    this.type = type;
     this.amount = amount;
     this.connectionId = connectionId;
     this.status = status;
@@ -28,7 +32,9 @@ class RentModel {
       jsonData._id ?? null,
       jsonData.userId,
       jsonData.level,
+      jsonData.source,
       jsonData.storage,
+      jsonData.type,
       jsonData.amount,
       jsonData.connectionId,
       jsonData.status,
@@ -46,7 +52,9 @@ class RentModel {
           json._id ?? null,
           json.userId,
           json.level,
+          json.source,
           json.storage,
+          json.type,
           json.amount,
           json.connectionId,
           json.status,

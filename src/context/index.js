@@ -55,6 +55,9 @@ function reducer(state, action) {
     case "RENT": {
       return { ...state, loading: false, rent: new RentModel().fromArray(action.value) };
     }
+    case "RENTONRENT": {
+      return { ...state, loading: false, rentOnRent: new RentModel().fromArray(action.value) };
+    }
     case "MEMBER": {
       return { ...state, loading: false, member: new UserModel().memberToArray(action.value) };
     }
@@ -117,6 +120,7 @@ function NextworkControllerProvider({ children }) {
     connection: [],
     products: [],
     rent: [],
+    rentOnRent: [],
     notifications: [],
     dialog: [],
     rewards: [],
@@ -184,6 +188,7 @@ const setProducts = (dispatch, value) => dispatch({ type: "PRODUCTS", value });
 const setConnection = (dispatch, value) => dispatch({ type: "CONNECTION", value });
 const setLoading = (dispatch, value) => dispatch({ type: "LOADING", value });
 const setRent = (dispatch, value) => dispatch({ type: "RENT", value });
+const setRentOnrRent = (dispatch, value) => dispatch({ type: "RENTONRENT", value });
 const setRewards = (dispatch, value) => dispatch({ type: "REWARDS", value });
 const setNotification = (dispatch, value) => dispatch({ type: "NOTIFICATION", value });
 const setIncome = (dispatch, value) => dispatch({ type: "INCOME", value });
@@ -210,6 +215,7 @@ export {
   setIncome,
   setTransaction,
   setRent,
+  setRentOnrRent,
   setConnection,
   setNotification,
   setLoading,

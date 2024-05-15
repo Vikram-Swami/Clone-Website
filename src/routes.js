@@ -163,7 +163,7 @@ const routes = [
   { type: "title", title: "My Benefits", key: "rent-title" },
   {
     type: "collapse",
-    name: "ROR",
+    name: "Consultation Benifite",
     key: "rents-on-rent",
     auth: "any",
     route: "rents-on-rent",

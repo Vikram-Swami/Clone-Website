@@ -18,21 +18,21 @@ import ApiClient from "Services/ApiClient";
 import { toast } from "react-toastify";
 import { useSoftUIController, startLoading, setLoading } from "context";
 import React from "react";
-import { setRent } from "context";
 import { getRentByUserId } from "Services/endpointes";
 import { setDialog } from "context";
 import RentOnRentView from "./data";
+import { setRentOnrRent } from "context";
 
 function RentOnRent() {
   const [controller, dispatch] = useSoftUIController();
 
-  const { rent } = controller;
+  const { rentOnRent } = controller;
   const getAllRents = async () => {
     startLoading(dispatch, true);
     try {
       const response = await ApiClient.getData(getRentByUserId);
       if (response.status == 200) {
-        setRent(dispatch, response.data);
+        setRentOnrRent(dispatch, response.data);
       } else {
         setDialog(dispatch, [response]);
       }
@@ -42,9 +42,9 @@ function RentOnRent() {
     }
   };
   useEffect(() => {
-    rent.length < 1 && getAllRents();
+    rentOnRent.length < 1 && getAllRents();
   }, []);
-  let memoizedRows = RentOnRentView.rows(rent.filter(e => e.type == "RoR"));
+  let memoizedRows = RentOnRentView.rows(rentOnRent.filter((e) => e.type == "RoR"));
 
   return (
     <DashboardLayout>
@@ -52,7 +52,7 @@ function RentOnRent() {
       <SoftBox py={3}>
         <SoftBox mb={3}>
           <Card>
-            {rent?.filter(e => e.type == "RoR")?.length > 0 ? (
+            {rentOnRent?.filter((e) => e.type == "RoR")?.length > 0 ? (
               <Table columns={RentOnRentView.columns} rows={memoizedRows} />
             ) : (
               <SoftBox mt={4}>

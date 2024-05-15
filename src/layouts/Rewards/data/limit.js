@@ -47,8 +47,18 @@ const limitRewardView = {
   rows: (data, dispatch) => {
     return data.map((e) => {
       return {
-        required: <Author name={e.range} />,
-        time_duration: <Author name={e.rule} />,
+        required: (
+          <>
+            <Author name={e.range} />
+            TB
+          </>
+        ),
+        time_duration: (
+          <>
+            <Author name={e.rule} />
+            Days
+          </>
+        ),
         rewards: <Author name={e.reward} />,
       };
     });

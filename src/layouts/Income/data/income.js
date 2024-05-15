@@ -69,7 +69,7 @@ const usersView = {
         ),
         level: (
           <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-            {e.level + 1}
+            {e.level}
           </SoftTypography>
         ),
         amount: (

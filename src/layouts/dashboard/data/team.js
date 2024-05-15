@@ -79,9 +79,7 @@ Level.propTypes = {
 const MyTeamView = {
   columns: [
     { name: "user", align: "left" },
-    { name: "email", align: "left" },
-    { name: "phone", align: "center" },
-    // { name: "storage", align: "center" },
+
     { name: "status", align: "center" },
   ],
 
@@ -94,16 +92,7 @@ const MyTeamView = {
 
       return {
         user: <Author name={e.fullName} id={e.userId} />,
-        email: (
-          <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-            {e.email}
-          </SoftTypography>
-        ),
-        phone: (
-          <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-            {e.phone}
-          </SoftTypography>
-        ),
+
         joining: (
           <SoftTypography variant="caption" color="secondary" fontWeight="medium">
             {formattedDate}
