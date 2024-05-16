@@ -39,6 +39,7 @@ export const deleteProduct = "/delete-product";
 export const claimReward = "/claim";
 
 export const getRents = "/get-rents";
+export const getUserClaims = "/get-user-claims";
 export const getActiveRent = "/get-active-rent";
 export const filterRent = "/filter-rent";
 export const createRent = "/create-rent";

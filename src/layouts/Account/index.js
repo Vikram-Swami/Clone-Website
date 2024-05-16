@@ -11,15 +11,48 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 // Billing page components
 import { useSoftUIController } from "context";
-import { Card, Table, TablePagination } from "@mui/material";
+import { Box, Card, TablePagination } from "@mui/material";
 import SoftTypography from "components/SoftTypography";
 import usersView from "layouts/Income/data/income";
 import BillingInformation from "./components/BillingInformation";
 import Transactions from "./components/Transactions";
+import { getUserClaims } from "Services/endpointes";
+import ApiClient from "Services/ApiClient";
+import { useEffect } from "react";
+import { startLoading } from "context";
+import { toast } from "react-toastify";
+import { setLoading } from "context";
+import { setAchievement } from "context";
+import { setDialog } from "context";
+import rewardView from "layouts/Rewards/data/reward";
+import limitRewardView from "layouts/Rewards/data/limit";
+import achievementView from "./data/reward";
+import Table from "examples/Tables/Table";
 
 function Account() {
-  const [controller] = useSoftUIController();
-  const { user } = controller;
+  const [controller, dispatch] = useSoftUIController();
+  const { achievement } = controller;
+  const getAchievements = async () => {
+    startLoading(dispatch, true);
+    try {
+      const response = await ApiClient.getData(getUserClaims);
+      if (response.status == 200) {
+        setAchievement(dispatch, response.data);
+        console.log(response);
+        console.log(achievement);
+      } else {
+        setDialog(dispatch, [response]);
+      }
+    } catch (error) {
+      toast.info(error.toString());
+      setLoading(dispatch, false);
+    }
+  };
+  let memoizedRowsReward = achievementView.rows(achievement, dispatch);
+
+  useEffect(() => {
+    getAchievements();
+  }, []);
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -34,7 +67,6 @@ function Account() {
               </Grid>
             </Grid>
             <Grid item xs={12} lg={5}>
-
               <Transactions />
             </Grid>
           </Grid>
@@ -46,20 +78,10 @@ function Account() {
                 <SoftTypography variant="h6">My Achievement</SoftTypography>
               </SoftBox>
 
-              {user?.length > 0 ? (
-                <>
-                  <Table columns={usersView.columns} rows={memoizedRows} />
-                  <SoftBox mt={2} display="block" width={40}>
-                    <TablePagination
-                      component="span"
-                      count={100}
-                      page={page}
-                      onPageChange={handleChangePage}
-                      rowsPerPage={rowsPerPage}
-                      onRowsPerPageChange={handleChangeRowsPerPage}
-                    />
-                  </SoftBox>
-                </>
+              {achievement?.length > 0 ? (
+                <Box>
+                  <Table columns={achievementView.columns} rows={memoizedRowsReward} />
+                </Box>
               ) : (
                 <SoftBox mt={4}>
                   <SoftBox mb={1.5}>
@@ -69,7 +91,7 @@ function Account() {
                           <Grid item xs={12} xl={12}>
                             <DefaultInfoCard
                               icon="cloud"
-                              title={`You Don't have an active connection yet. Add connection to your portfolio and start earning.`}
+                              title={`You Don't have an active achievement yet. Add connection to your portfolio and start earning.`}
                             />
                           </Grid>
                         </Grid>

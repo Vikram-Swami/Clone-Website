@@ -12,6 +12,7 @@ import Notification from "Models/Notification";
 import Transaction from "Models/Transaction";
 import DirectMember from "Models/DIrectMember";
 import RewardsModel from "Models/Rewards";
+import Achievement from "Models/Rewards/achievement";
 
 const SoftUI = createContext(null);
 
@@ -63,6 +64,9 @@ function reducer(state, action) {
     }
     case "REWARDS": {
       return { ...state, loading: false, rewards: new RewardsModel().fromArray(action.value) };
+    }
+    case "ACHIEVEMENT": {
+      return { ...state, loading: false, achievement: new Achievement().fromArray(action.value) };
     }
     case "INCOME": {
       return { ...state, loading: false, income: new IncomeLog().fromArray(action.value) };
@@ -124,6 +128,7 @@ function NextworkControllerProvider({ children }) {
     notifications: [],
     dialog: [],
     rewards: [],
+    achievement: [],
     member: [],
     directMember: [],
     income: [],
@@ -194,6 +199,7 @@ const setNotification = (dispatch, value) => dispatch({ type: "NOTIFICATION", va
 const setIncome = (dispatch, value) => dispatch({ type: "INCOME", value });
 const setTransaction = (dispatch, value) => dispatch({ type: "TRANSACTION", value });
 const setMembers = (dispatch, value) => dispatch({ type: "MEMBER", value });
+const setAchievement = (dispatch, value) => dispatch({ type: "ACHIEVEMENT", value });
 const setDialog = (dispatch, value) => dispatch({ type: "DIALOG", value });
 const setConfirmDialog = (dispatch, value) => dispatch({ type: "CONFIRMDIALOG", value });
 const startLoading = (dispatch, value) => dispatch({ type: "START_LOAD", value });
@@ -214,6 +220,7 @@ export {
   setRewards,
   setIncome,
   setTransaction,
+  setAchievement,
   setRent,
   setRentOnrRent,
   setConnection,
