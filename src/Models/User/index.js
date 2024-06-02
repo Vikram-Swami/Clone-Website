@@ -1,3 +1,5 @@
+import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
+
 class UserModel {
   constructor(
     userId,
@@ -116,10 +118,36 @@ class UserModel {
       jsonData.unread ?? 0
     );
   }
+
+  createLabel({ initial, userId, fullName, email, phone, isVerified, storage, createdAt, status }) {
+    return (<ProfileInfoCard
+      info={{ name: initial + "." + fullName, userId: userId }} />)
+  }
+
   memberToArray(json) {
-    return json.map((e) => {
+    let p = 0;
+
+    return json.map((e, i) => {
+      if (parseInt(json[i - 1]?.level) < parseInt(e.level)) {
+        p = 0;
+      }
+      else if (e.level == 0) {
+        p = parseInt(json.filter(e => e.level == 1).length / 2)
+      }
+      else {
+        p += 1;
+      }
+      const dateObject = new Date(e.createdAt);
+      const options = { day: "2-digit", month: "2-digit", year: "2-digit" };
+      const formattedDate = dateObject.toLocaleDateString("en-GB", options);
+
+
+
       return {
         userId: e?.userId ?? "",
+        id: e.id?.toString() ?? "",
+        data: { label: this.createLabel(e) },
+        position: { x: p * 200, y: parseInt(e.level) * 200 },
         initial: e?.initial ?? "",
         name: e?.fullName ?? "",
         email: e?.email ?? "",
@@ -130,7 +158,8 @@ class UserModel {
         level: e?.level,
         placementLevel: e.placementLevel,
         storage: e.storage,
-        createdAt: new Date(e.createdAt),
+        type: 'output',
+        createdAt: formattedDate,
         updatedAt: e.updatedAt,
       };
     });

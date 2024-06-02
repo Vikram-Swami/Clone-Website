@@ -35,6 +35,7 @@ import { setDialog } from "context";
 import { Avatar, Box, Divider, Grid, Stack, Typography } from "@mui/material";
 import NotificationItem from "examples/Items/NotificationItem";
 import SoftBadge from "components/SoftBadge";
+import routes from "routes";
 
 function DashboardNavbar({ absolute, light, isMini, call }) {
   const [navbarType, setNavbarType] = useState();
@@ -100,8 +101,8 @@ function DashboardNavbar({ absolute, light, isMini, call }) {
   };
 
   function generateWhatsAppMessage(referralLink) {
-    const companyName = "Nextwork Technologies Ltd";
-    const message = `👋 Hey there!\n\nLooking to start earning?💰\nClick on this link to get started with ${companyName}.\n\nLink: ${referralLink}\n\nJoin us at ${companyName} and explore exciting opportunities to earn from the comfort of your home.\n\nHappy earning! 🚀\n\nRegards\n${user.fullName}`;
+    const companyName = "Knocial India Limited";
+    const message = `👋 Hey there!\n\nLooking to start earning?💰\nClick on this link to get started with ${companyName}.\n\nLink: ${referralLink}\n\nJoin us at ${companyName} and explore exciting opportunities to earn from the comfort of your home.\n\nHappy earning! 🚀\n\nRegards\nMastree Networking Team`;
     return message;
   }
 
@@ -119,7 +120,7 @@ function DashboardNavbar({ absolute, light, isMini, call }) {
     setDialog(dispatch, [
       {
         status: "form",
-        title: "Here is Your Refer Link",
+        title: "Please copy the link below or click on share.",
         children: (
           <Grid container spacing={1}>
             <Grid item xs={1}>
@@ -151,40 +152,25 @@ function DashboardNavbar({ absolute, light, isMini, call }) {
       onClose={handleCloseMenu}
     >
       <Box>
-        <SoftBox
-          variant="gradient"
-          px={1}
-          my={0.5}
-          component={Link}
-          to="/my-profile"
-          display="flex"
-          sx={{ cursor: "pointer" }}
-          alignItems="center"
-          color="warning"
-        >
-          <Divider />
-          <Icon fontSize="1rem">account_circle</Icon>
-          <SoftTypography cursor="pointer" fontSize="1rem" pl={1} component="span">
-            My Profile
-          </SoftTypography>
-        </SoftBox>
-        <SoftBox
-          variant="gradient"
-          px={1}
-          my={0.5}
-          component={Link}
-          to="/create-members"
-          display="flex"
-          sx={{ cursor: "pointer" }}
-          alignItems="center"
-          color="secondary"
-        >
-          <Divider />
-          <Icon fontSize="1rem">group_add</Icon>
-          <SoftTypography cursor="pointer" fontSize="1rem" pl={1} component="span">
-            Add Member
-          </SoftTypography>
-        </SoftBox>
+
+        {routes.filter(e => e.type == "menubar").map((route, i) => {
+          return <SoftBox
+            key={i + 1}
+            variant="gradient"
+            px={1}
+            my={0.5}
+            component={Link}
+            to={route.route}
+            display="flex"
+            sx={{ cursor: "pointer" }}
+            alignItems="center"
+            color="warning" >
+            {route.icon}
+            <SoftTypography cursor="pointer" fontSize="1rem" pl={1} component="span">
+              {route.name}
+            </SoftTypography>
+          </SoftBox>
+        })}
 
         <SoftBox
           variant="gradient"
@@ -196,8 +182,7 @@ function DashboardNavbar({ absolute, light, isMini, call }) {
           sx={{ cursor: "pointer" }}
           color="info"
         >
-          <Divider />
-          <Icon fontSize="1rem">share_icon</Icon>
+          <Icon >share_icon</Icon>
           <SoftTypography cursor="pointer" fontSize="1rem" pl={1} component="span">
             Refer Link
           </SoftTypography>
@@ -212,8 +197,7 @@ function DashboardNavbar({ absolute, light, isMini, call }) {
           alignItems="center"
           color="error"
         >
-          <Divider />
-          <Icon fontSize="1rem">logout_icon</Icon>
+          <Icon>logout_icon</Icon>
           <SoftTypography cursor="pointer" fontSize="1rem" pl={1} component="span">
             Log Out
           </SoftTypography>
@@ -233,7 +217,7 @@ function DashboardNavbar({ absolute, light, isMini, call }) {
       onClose={handleCloseNotif}
     >
       <Box>
-        {notifications?.length > 0 &&
+        {notifications?.length > 0 ?
           notifications
             ?.slice(0, 3)
             ?.map((e) => (
@@ -242,7 +226,7 @@ function DashboardNavbar({ absolute, light, isMini, call }) {
                 image={<Icon size="small">{e.icon}</Icon>}
                 title={e.title}
               />
-            ))}
+            )) : "No Notifications Found."}
       </Box>
     </Menu>
   );
@@ -332,7 +316,7 @@ DashboardNavbar.defaultProps = {
   absolute: false,
   light: false,
   isMini: false,
-  call: () => {},
+  call: () => { },
 };
 
 // Typechecking props for the DashboardNavbar

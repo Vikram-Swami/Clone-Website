@@ -134,12 +134,19 @@ function Header() {
               <ProfileInfoCard
                 title="KYC information"
                 info={{
+                  accountType: user?.type == "user" ? "Individual" : "Organisaction",
                   aadharNo: user?.aadharNo,
                   panNo: user?.panNo,
+                  accountNo: user?.accountNo,
+                  IFSC: user?.IFSC,
+                  nomineeName: user?.nomineeName,
+
                 }}
+
                 action={{ route: "/dashboard", tooltip: "Edit Profile" }}
               />
             )}
+            {/* <img src={user?.aadharFile} alt="Aadhar Card" /> */}
           </Grid>
         </Grid>
       </Card>

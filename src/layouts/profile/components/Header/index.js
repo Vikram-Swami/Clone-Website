@@ -15,17 +15,13 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 // Next Work Dashboard React base styles
 import breakpoints from "assets/theme/base/breakpoints";
 
-import curved0 from "assets/images/curved-images/curved0.jpg";
 import { useSoftUIController } from "context";
 
 function Header() {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
-  const [tabValue, setTabValue] = useState(0);
   const [controller] = useSoftUIController();
   const { user } = controller;
   useEffect(() => {
-    // A function that sets the orientation state of the tabs.
-    console.log(user);
 
     function handleTabsOrientation() {
       return window.innerWidth < breakpoints.values.sm
@@ -44,12 +40,11 @@ function Header() {
     return () => window.removeEventListener("resize", handleTabsOrientation);
   }, [tabsOrientation]);
 
-  const handleSetTabValue = (event, newValue) => setTabValue(newValue);
 
   return (
     <SoftBox position="relative">
       <DashboardNavbar absolute light />
-      
+
       <Card
         sx={{
           backdropFilter: `saturate(200%) blur(30px)`,

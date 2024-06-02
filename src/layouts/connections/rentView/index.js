@@ -9,6 +9,8 @@ import ApiClient from "Services/ApiClient";
 import { setRent } from "context";
 import { useEffect } from "react";
 import { getRentByUserId } from "Services/endpointes";
+import { setDialog } from "context";
+import Loading from "layouts/loading";
 
 const ConnectionRent = ({ id }) => {
   const [controller, dispatch] = useSoftUIController();
@@ -17,12 +19,10 @@ const ConnectionRent = ({ id }) => {
   const getRent = async () => {
     try {
       const response = await ApiClient.getData(getRentByUserId);
-      console.log(response);
       if (response.status === 200) {
         setRent(dispatch, response.data);
       } else {
-        toast.warn("Please Activate Your Connection to Get Monthly Rent.");
-        setLoading(dispatch, false);
+        setDialog(dispatch, [response]);
       }
     } catch (err) {
       toast.error(err?.toString());
@@ -31,11 +31,6 @@ const ConnectionRent = ({ id }) => {
   };
   useEffect(() => {
     rent.length < 1 && getRent();
-    console.log(
-      rent,
-      id,
-      rent.find((e) => e.connectionId === id)
-    );
   });
   return (
     <>
@@ -75,21 +70,21 @@ const ConnectionRent = ({ id }) => {
             <Typography variant="button" fontWeight="regular" color="text">
               {rent.find((e) => e.connectionId === id)?.endDate
                 ? (() => {
-                    const endDate = new Date(rent.find((e) => e.connectionId === id)?.endDate);
-                    const datePart = endDate.toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    });
+                  const endDate = new Date(rent.find((e) => e.connectionId === id)?.endDate);
+                  const datePart = endDate.toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  });
 
-                    return <div>{datePart}</div>;
-                  })()
+                  return <div>{datePart}</div>;
+                })()
                 : ""}
             </Typography>
           </Box>
         </Box>
       ) : (
-        <Typography>Looking for Active Rent...</Typography>
+        <Loading condition={true} />
       )}
     </>
   );

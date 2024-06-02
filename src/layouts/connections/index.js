@@ -11,7 +11,7 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 // Data
 import SoftButton from "components/SoftButton";
-import { Grid } from "@mui/material";
+import { Grid, Icon } from "@mui/material";
 import DefaultInfoCard from "examples/Cards/InfoCards/DefaultInfoCard";
 import { NavLink } from "react-router-dom";
 import { useEffect, useMemo } from "react";
@@ -60,11 +60,26 @@ function Connections() {
           <Card>
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
               <SoftTypography variant="h6">My Connections</SoftTypography>
-              <NavLink to="/new-connections">
-                {" "}
-                <SoftButton variant="gradient" color="dark" ml={2}>
-                  &nbsp;Add Storage
-                </SoftButton>
+              <NavLink to="/buy-cloud-storage">
+                <SoftBox
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  width="2.5rem"
+                  height="2.5rem"
+                  bgColor="white"
+                  shadow="sm"
+                  borderRadius="50%"
+                  position="absolute"
+                  right="10px"
+                  top="1.1rem"
+                  zIndex={99}
+                  color="dark"
+                  sx={{ cursor: "pointer" }}>
+                  <Icon fontSize="default" fontWeight="bold" color="inherit">
+                    add
+                  </Icon>
+                </SoftBox>
               </NavLink>
             </SoftBox>
 

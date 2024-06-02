@@ -3,7 +3,6 @@ import Card from "@mui/material/Card";
 
 // Next Work Dashboard React components
 import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
 
 // Next Work Dashboard React examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -22,24 +21,24 @@ import React from "react";
 import { setRent } from "context";
 import { setDialog } from "context";
 import RewardSalaryView from "./data";
-import { getRewardById } from "Services/endpointes";
+import { getRentByUserId } from "Services/endpointes";
 
 function RewardSalary() {
   const [controller, dispatch] = useSoftUIController();
 
-  const { rent, user } = controller;
-  console.log(user);
+  const { rent } = controller;
+
   const getAllRents = async () => {
     startLoading(dispatch, true);
     try {
-      const response = await ApiClient.getDataByParam(getRewardById, "ntl1557268");
+      const response = await ApiClient.getData(getRentByUserId);
       if (response.status == 200) {
         setRent(dispatch, response.data);
       } else {
         setDialog(dispatch, [response]);
       }
     } catch (error) {
-      toast.info(error.toString());
+      toast.error(error.toString());
       setLoading(dispatch, false);
     }
   };

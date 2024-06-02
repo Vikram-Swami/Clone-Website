@@ -50,14 +50,11 @@ function reducer(state, action) {
         ...state,
         loading: false,
         user: new UserModel().toJson(action.value),
-        directMember: new DirectMember().fromArray(action.value.directMem),
+        directMember: new UserModel().memberToArray(action.value.directMem),
       };
     }
     case "RENT": {
       return { ...state, loading: false, rent: new RentModel().fromArray(action.value) };
-    }
-    case "RENTONRENT": {
-      return { ...state, loading: false, rentOnRent: new RentModel().fromArray(action.value) };
     }
     case "MEMBER": {
       return { ...state, loading: false, member: new UserModel().memberToArray(action.value) };
@@ -110,7 +107,7 @@ function reducer(state, action) {
 }
 
 // Next Work Dashboard React context provider
-function NextworkControllerProvider({ children }) {
+function KnocialControllerProvider({ children }) {
   const initialState = {
     miniSidenav: false,
     transparentSidenav: true,
@@ -124,7 +121,6 @@ function NextworkControllerProvider({ children }) {
     connection: [],
     products: [],
     rent: [],
-    rentOnRent: [],
     notifications: [],
     dialog: [],
     rewards: [],
@@ -169,13 +165,13 @@ function useSoftUIController() {
   const context = useContext(SoftUI);
 
   if (!context) {
-    throw new Error("useSoftUIController should be used inside the NextworkControllerProvider.");
+    throw new Error("useSoftUIController should be used inside the KnocialControllerProvider.");
   }
 
   return context;
 }
 
-NextworkControllerProvider.propTypes = {
+KnocialControllerProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
@@ -193,7 +189,6 @@ const setProducts = (dispatch, value) => dispatch({ type: "PRODUCTS", value });
 const setConnection = (dispatch, value) => dispatch({ type: "CONNECTION", value });
 const setLoading = (dispatch, value) => dispatch({ type: "LOADING", value });
 const setRent = (dispatch, value) => dispatch({ type: "RENT", value });
-const setRentOnrRent = (dispatch, value) => dispatch({ type: "RENTONRENT", value });
 const setRewards = (dispatch, value) => dispatch({ type: "REWARDS", value });
 const setNotification = (dispatch, value) => dispatch({ type: "NOTIFICATION", value });
 const setIncome = (dispatch, value) => dispatch({ type: "INCOME", value });
@@ -206,7 +201,7 @@ const startLoading = (dispatch, value) => dispatch({ type: "START_LOAD", value }
 const setAccept = (dispatch, value) => dispatch({ type: "ACCEPT", value });
 
 export {
-  NextworkControllerProvider,
+  KnocialControllerProvider,
   useSoftUIController,
   setMiniSidenav,
   setTransparentSidenav,
@@ -222,7 +217,6 @@ export {
   setTransaction,
   setAchievement,
   setRent,
-  setRentOnrRent,
   setConnection,
   setNotification,
   setLoading,

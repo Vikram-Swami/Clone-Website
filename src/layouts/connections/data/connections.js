@@ -15,7 +15,7 @@ import { purchase } from "Services/endpointes";
 import { setLoading } from "context";
 import { activateConnection } from "Services/endpointes";
 import { startLoading } from "context";
-import ConnectionRent from "../form";
+import ConnectionRent from "../rentView";
 
 function Author({ name, id }) {
   return (
@@ -62,7 +62,7 @@ const actConnection = async (id, dispatch, call) => {
     }
   } catch (err) {
     startLoading(dispatch, false);
-    toast.error(err.response?.data?.message ?? "Network Error!");
+    toast.error(err.toString());
   }
 };
 

@@ -88,7 +88,6 @@ export default function App() {
     } catch (error) {
       deleteData();
       setLoading(dispatch, false);
-      toast.success("Welcome To Nextwork Technologies!");
     }
   }
 
@@ -148,7 +147,7 @@ export default function App() {
         })}
 
         {getCookie() && user.id ? (
-          <Route path="/*" element={<Navigate to="/dashboard" />} />
+          <Route path="/*" element={<Navigate to="/home" />} />
         ) : (
           <Route path="/*" element={<Navigate to="/" />} />
         )}

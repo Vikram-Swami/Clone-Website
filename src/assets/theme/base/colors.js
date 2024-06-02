@@ -4,8 +4,8 @@ const colors = {
   },
 
   text: {
-    main: "#67748e",
-    focus: "#67748e",
+    main: "#2a4a7c",
+    focus: "#2a4a7c",
   },
 
   transparent: {
@@ -24,23 +24,23 @@ const colors = {
   },
 
   primary: {
-    main: "#cb0c9f",
-    focus: "#ad0a87",
+    main: "#2b4b7c",
+    focus: "#2b4b7c",
   },
 
   secondary: {
-    main: "#8392ab",
-    focus: "#96a2b8",
+    main: "#2a4a7c",
+    focus: "#2a4a7c",
   },
 
   info: {
-    main: "#1B9A69",
-    focus: "#3acaeb",
+    main: "#2a4a7c",
+    focus: "#2a4a7c",
   },
 
   success: {
-    main: "#82d616",
-    focus: "#95dc39",
+    main: "#2a4a7c",
+    focus: "#2a4a7c",
   },
 
   warning: {
@@ -82,18 +82,18 @@ const colors = {
     },
 
     secondary: {
-      main: "#627594",
+      main: "#2a4a7c",
       state: "#a8b8d8",
     },
 
     info: {
-      main: "#1B9A69",
-      state: "#11E53F",
+      main: "#2a4a7c",
+      state: "#2a4a7c",
     },
 
     success: {
-      main: "#17ad37",
-      state: "#98ec2d",
+      main: "#2a4a7c",
+      state: "#2a4a7c",
     },
 
     warning: {
@@ -112,8 +112,8 @@ const colors = {
     },
 
     dark: {
-      main: "#141727",
-      state: "#1A9A69",
+      main: "#2a4a7c",
+      state: "#2a4a7c",
     },
   },
 
@@ -181,26 +181,26 @@ const colors = {
 
   alertColors: {
     primary: {
-      main: "#7928ca",
-      state: "#d6006c",
+      main: "#2b4b7c",
+      state: "#2b4b7c",
       border: "#efb6e2",
     },
 
     secondary: {
-      main: "#627594",
-      state: "#8ca1cb",
-      border: "#dadee6",
+      main: "#2a4a7c",
+      state: "#2a4a7c",
+      border: "#2a4a7c",
     },
 
     info: {
-      main: "#2152ff",
-      state: "#02c6f3",
+      main: "#2a4a7c",
+      state: "#2a4a7c",
       border: "#b9ecf8",
     },
 
     success: {
-      main: "#17ad37",
-      state: "#84dc14",
+      main: "##2a4a7c",
+      state: "#2a4a7c",
       border: "#daf3b9",
     },
 
@@ -223,7 +223,7 @@ const colors = {
     },
 
     dark: {
-      main: "#141727",
+      main: "#2a4a7c",
       state: "#2c3154",
       border: "#c2c8d1",
     },
@@ -231,8 +231,8 @@ const colors = {
 
   badgeColors: {
     primary: {
-      background: "#f883dd",
-      text: "#a3017e",
+      background: "#2b4b7c",
+      text: "#5974a2",
     },
 
     secondary: {
@@ -241,7 +241,7 @@ const colors = {
     },
 
     info: {
-      background: "#abe9f7",
+      background: "#2a4a7c",
       text: "#08a1c4",
     },
 

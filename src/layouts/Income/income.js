@@ -20,13 +20,13 @@ import { setIncome } from "context";
 import usersView from "./data/income";
 import { getIncomeByUserId } from "Services/endpointes";
 import { setDialog } from "context";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 function Income() {
   const [controller, dispatch] = useSoftUIController();
 
   const { income, user } = controller;
-  const pathname = useParams();
+
   const location = useLocation();
 
   const getIncomes = async () => {
@@ -46,6 +46,7 @@ function Income() {
       setLoading(dispatch, false);
     }
   };
+
   useEffect(() => {
     income.length < 1 && getIncomes();
   }, []);
@@ -70,51 +71,58 @@ function Income() {
     <DashboardLayout>
       <DashboardNavbar call={getIncomes} />
       <SoftBox
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        width="2.5rem"
-        height="2.5rem"
-        bgColor="white"
-        shadow="sm"
-        borderRadius="50%"
-        position="fixed"
-        right="2rem"
-        bottom="2rem"
-        zIndex={99}
-        color="dark"
-        sx={{ cursor: "pointer" }}
-        onClick={openMenu}
+        component="div"
+        position="relative"
+        display="block"
+        textAlign="right"
       >
-        <Icon fontSize="default" color="inherit">
-          tune
-        </Icon>
-        <Menu
-          id="simple-menu"
-          anchorEl={menu}
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "left",
-          }}
-          transformOrigin={{
-            vertical: "top",
-          }}
-          open={Boolean(menu)}
-          onClose={closeMenu}
+        <SoftBox
+          // display="flex"
+          // justifyContent="center"
+          // alignItems="center"
+          width="2.5rem"
+          height="2.5rem"
+          bgColor="transparent"
+          // shadow="sm"
+          borderRadius="50%"
+          position="absolute"
+          right="2px"
+          top="2rem"
+          zIndex={99}
+          color="dark"
+          sx={{ cursor: "pointer" }}
+          onClick={openMenu}
         >
-          <SoftBox component={Link} to="/incomes?type=incentive">
-            <MenuItem>Incentive</MenuItem>
-          </SoftBox>
-          <SoftBox component={Link} to="/incomes?type=regular">
-            <MenuItem>Regular</MenuItem>
-          </SoftBox>
-          <SoftBox component={Link} to="/incomes?type=royality">
-            <MenuItem>royality</MenuItem>
-          </SoftBox>
-          <SoftBox component={Link} to="/incomes?type=reward">
-            <MenuItem>reward</MenuItem>
-          </SoftBox>
-        </Menu>
+          <Icon fontSize="default" color="inherit">
+            tune
+          </Icon>
+          <Menu
+            id="simple-menu"
+            anchorEl={menu}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+            transformOrigin={{
+              vertical: "top",
+            }}
+            open={Boolean(menu)}
+            onClose={closeMenu}
+          >
+            <SoftBox component={Link} to="/incomes?type=incentive">
+              <MenuItem>Incentive</MenuItem>
+            </SoftBox>
+            <SoftBox component={Link} to="/incomes?type=regular">
+              <MenuItem>Regular</MenuItem>
+            </SoftBox>
+            <SoftBox component={Link} to="/incomes?type=royality">
+              <MenuItem>royality</MenuItem>
+            </SoftBox>
+            <SoftBox component={Link} to="/incomes?type=reward">
+              <MenuItem>reward</MenuItem>
+            </SoftBox>
+          </Menu>
+        </SoftBox>
       </SoftBox>
       <SoftBox py={3} mb={3}>
         {income?.length > 0 ? (

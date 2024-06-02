@@ -5,7 +5,7 @@ import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import SoftInput from "components/SoftInput";
 import SoftButton from "components/SoftButton";
-import { Box, Button, FormControl, FormLabel, Icon, MenuItem, Select } from "@mui/material";
+import { Box, FormControl, FormLabel, MenuItem, Select } from "@mui/material";
 import ApiClient from "Services/ApiClient";
 import { registerUser, createKyc } from "Services/endpointes";
 import { ifscValidate } from "Services/endpointes";
@@ -20,60 +20,39 @@ import { startLoading } from "context";
 import SignatureCanvas from "react-signature-canvas";
 import { Typography } from "antd";
 import { setLoading } from "context";
-import Webcam from "react-webcam";
-import { uploadDoc } from "Services/endpointes";
+import { uploadDocuments } from "Services/endpointes";
 
 function SignUp() {
+
   const form = useRef(null);
-  const liveImageRef = useRef(null);
-  const aadharFrontRef = useRef(null);
-  const aadharBackRef = useRef(null);
-  const panRef = useRef(null);
-  const signatureRef = useRef(null);
   const [controller, dispatch] = useSoftUIController();
   const { accept } = controller;
+
   const { step } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const [facingMode, setFacingMode] = useState("user");
-  const [capturedImages, setCapturedImages] = useState({
-    liveImageSrc: null,
-    aadhar: null,
-    aadharBack: null,
-    pan: null,
-  });
-  const [cameraOpen, setCameraOpen] = useState();
 
-  const handleCapture = (selectedCamera, cameraRef) => {
-    const imageSrc = cameraRef.current.getScreenshot();
+  const signatureRef = useRef(null);
 
-    setCapturedImages((prevImages) => ({
-      ...prevImages,
-      [selectedCamera]: imageSrc,
-    }));
-    setCameraOpen((prev) => !prev);
-  };
-
-  const switchCamera = () => {
-    const newFacingMode = facingMode === "user" ? "environment" : "user";
-    setFacingMode(newFacingMode);
-  };
-
-  const titles = ["CREATE NEW ACCOUNT", "ADD ADDRESS", "Complete KYC", "Upload Documents"];
-  const routes = [registerUser, createAddress, createKyc, uploadDoc];
+  const titles = ["CREATE NEW ACCOUNT", "ADD ADDRESS", "COMPLETE KYC", "UPLOAD DOCUMENTS"]
+  const routes = [registerUser, createAddress, createKyc, uploadDocuments];
 
   function dataURLtoFile(dataURL) {
+    // Split the data URL into components
     const [, mimeType, data] = dataURL.match(/^data:(.*?);base64,(.*)$/);
 
+    // Convert base64 to binary data
     const binaryData = atob(data);
 
+    // Create a Blob object from the binary data
     const blob = new Blob([binaryData], { type: mimeType });
 
+    // Create a File object from the Blob
     const file = new File([blob], "sign.png", { type: mimeType });
-    console.log("file sign file", file, mimeType);
 
     return file;
   }
+
 
   // Validate IFSC Codes
   const handleIFSCCodeChange = async (e) => {
@@ -98,6 +77,7 @@ function SignUp() {
       toast.error(error.toString());
     }
   };
+
 
   // Validate postal code
   const handlePostalCodeChange = async (e) => {
@@ -126,55 +106,8 @@ function SignUp() {
     }
   };
 
-  //
+  // 
   const handleSetAgreement = () => setAccept(dispatch, !accept);
-
-  // const submitHandler = async (e, route) => {
-  //   e.preventDefault();
-  //   if (!accept) {
-  //     toast.error("Please accept our Terms and Policies.");
-  //     return;
-  //   }
-  //   const formdata = new FormData(e.currentTarget);
-  //   if (step == 4 && !form.sign) {
-  //     toast.error("Signatures are required!");
-  //     return;
-  //   } else if (step == 4 && form.sign) {
-  //     console.log(capturedImages, "captured Images", form.sign);
-  //     let sign = dataURLtoFile(form.sign, "sign");
-  //     let aadharF = dataURLtoFile(capturedImages.aadhar, "aadharFront");
-  //     let aadharB = dataURLtoFile(capturedImages.aadharBack, "aadharBack");
-  //     let panF = dataURLtoFile(capturedImages.pan, "panFile");
-  //     let profileF = dataURLtoFile(capturedImages.liveImageSrc, "profile");
-  //     formdata.append("sign", sign);
-  //     formdata.append("aadharFront", aadharF);
-  //     formdata.append("aadharBack", aadharB);
-  //     formdata.append("panFile", panF);
-  //     formdata.append("image", profileF);
-  //   }
-  //   if (step == 3 && !isValidPAN(formdata.get("panNo"))) {
-  //     toast.error("Invalid PAN Number");
-  //     return;
-  //   }
-  //   startLoading(dispatch, true);
-  //   try {
-  //     const response = await ApiClient.createData(route, formdata);
-  //     if (response.status == 200) {
-  //       form.current.reset();
-  //       let next = parseInt(step) + 1;
-  //       form.userId = response.data?.userId;
-  //       let route = `/sign-up/${next}?userId=${form.userId}`;
-  //       if (step == 4) {
-  //         route = "/sign-in";
-  //       }
-  //       navigate(route);
-  //     }
-  //     setDialog(dispatch, [response]);
-  //   } catch (error) {
-  //     setLoading(dispatch, false);
-  //     toast.error(error.toString());
-  //   }
-  // };
 
   const submitHandler = async (e, route) => {
     e.preventDefault();
@@ -186,7 +119,8 @@ function SignUp() {
     if (step == 4 && !form.sign) {
       toast.error("Signatures are required!");
       return;
-    } else if (step == 4 && form.sign) {
+    }
+    else if (step == 4 && form.sign) {
       let sign = dataURLtoFile(form.sign);
       formdata.append("sign", sign);
     }
@@ -200,10 +134,10 @@ function SignUp() {
       if (response.status == 200) {
         form.current.reset();
         let next = parseInt(step) + 1;
-        form.userId = response.data?.userId;
+        form.userId = response.data?.userId
         let route = `/sign-up/${next}?userId=${form.userId}`;
         if (step == 4) {
-          route = "/sign-in";
+          route = '/sign-in';
         }
         navigate(route);
       }
@@ -225,68 +159,31 @@ function SignUp() {
     return panRegex.test(pan);
   };
 
-  // Function to handle the upload button click
-  const handleUploadButtonClick = (inputRef) => {
-    console.log(inputRef);
-    if (inputRef && inputRef.current) {
-      inputRef.current.click();
-    }
-  };
-  const handleFileInputChange = (e, key) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onload = () => {
-      setCapturedImages((prevImages) => ({
-        ...prevImages,
-        [key]: reader.result,
-      }));
-    };
-    reader.readAsDataURL(file);
-  };
-
-
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     if (parseInt(step) > 1 && queryParams.get("userId")) {
       form.userId = queryParams.get("userId");
     } else if (queryParams.get("sponsorId")) {
-      form.sponsorId = queryParams.get("sponsorId");
+      form.sponsorId = queryParams.get("sponsorId")
       form.placementId = queryParams.get("placementId");
-    } else {
-      navigate("/");
     }
-  }, [, capturedImages]);
+    else {
+      navigate("/")
+    }
+  }, []);
   return (
-    <CoverLayout title={titles[step - 1]}>
+    <CoverLayout title={titles[step - 1]} >
       <SoftBox pt={2} pb={3} px={3}>
-        <SoftBox
-          component="form"
-          role="form"
+
+        <SoftBox component="form" role="form"
           onSubmit={(e) => submitHandler(e, routes[parseInt(step - 1)])}
           textAlign="center"
-          display="flex"
-          encType="multipart/form-data"
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
-          ref={form}
-          maxWidth="300px"
-        >
+          display="flex" encType="multipart/form-data" flexDirection="column" justifyContent="center" alignItems="center" ref={form} >
           {step == 1 ? (
             <>
               <SoftBox mb={2} width="100%">
-                <FormControl
-                  sx={{
-                    display: "flex",
-                    gap: 5,
-                    justifyContent: "center",
-                    flexDirection: "row",
-                    alignContent: "center",
-                  }}
-                >
-                  <FormLabel color="primary" sx={{ alignSelf: "center" }}>
-                    Initials
-                  </FormLabel>
+                <FormControl sx={{ display: "flex", gap: 5, justifyContent: "center", flexDirection: "row", alignContent: "center" }} >
+                  <FormLabel color="primary" sx={{ alignSelf: "center" }} >Initials</FormLabel>
                   <Select
                     labelId="initial"
                     id="demo-simple-select"
@@ -294,9 +191,7 @@ function SignUp() {
                     label="Initial"
                     name="initial"
                   >
-                    <MenuItem fullWidth value="Mr.">
-                      Mr.
-                    </MenuItem>
+                    <MenuItem fullWidth value="Mr.">Mr.</MenuItem>
                     <MenuItem value="Mrs.">Mrs.</MenuItem>
                     <MenuItem value="Miss">Miss</MenuItem>
                     <MenuItem value="Ms.">Ms.</MenuItem>
@@ -310,9 +205,6 @@ function SignUp() {
               </SoftBox>
               <SoftBox mb={2} width="100%">
                 <SoftInput name="email" type="email" placeholder="Email" />
-              </SoftBox>
-              <SoftBox mb={2} width="100%">
-                <SoftInput name="dob" type="date" placeholder="DOB" />
               </SoftBox>
               <SoftBox mb={2} width="100%">
                 <SoftInput
@@ -340,27 +232,14 @@ function SignUp() {
               <SoftBox mb={2} width="100%">
                 <SoftInput name="password" type="password" placeholder="Password" />
                 <SoftTypography color="text" fontWeight="light" fontSize="0.8rem">
-                  Password must be Alphanumerical, minimum 8 characters long and must contain
-                  atleast one special charactor.
+                  Password must be Alphanumerical, minimum 8 characters long and must contain atleast one special charactor.
                 </SoftTypography>
               </SoftBox>
               <SoftBox mb={2} width="100%">
-                <SoftInput
-                  name="sponsorId"
-                  value={form.sponsorId}
-                  disabled={form.sponsorId}
-                  type="text"
-                  placeholder="sponsor id"
-                />
+                <SoftInput name="sponsorId" value={form.sponsorId} disabled={form.sponsorId} type="text" placeholder="sponsor id" />
               </SoftBox>
               <SoftBox mb={2} width="100%">
-                <SoftInput
-                  name="placementId"
-                  value={form.placementId ?? form.sponsorId}
-                  disabled={form.placementId ?? form.sponsorId}
-                  type="text"
-                  placeholder="placement id"
-                />
+                <SoftInput name="placementId" value={form.placementId ?? form.sponsorId} disabled={form.placementId ?? form.sponsorId} type="text" placeholder="placement id" />
               </SoftBox>
             </>
           ) : step == 2 ? (
@@ -420,8 +299,7 @@ function SignUp() {
               <SoftBox mb={2} width="100%">
                 <SoftInput placeholder="Account Number" name="accountNo" />
               </SoftBox>
-
-              <SoftBox mb={2} width="100%">
+              <SoftBox mb={2} width='100%'>
                 <SoftInput
                   type="text"
                   placeholder="IFSC"
@@ -453,9 +331,7 @@ function SignUp() {
                   type="text"
                   placeholder="PAN Number"
                   name="panNo"
-                  onChange={(e) => {
-                    handleInputChange(e);
-                  }}
+                  onChange={(e) => { handleInputChange(e); }}
                 />
               </SoftBox>
               <SoftBox mb={2} width="100%">
@@ -467,499 +343,9 @@ function SignUp() {
               <SoftBox mb={2} width="100%">
                 <SoftInput type="text" placeholder="Nominie age" name="nomineeAge" />
               </SoftBox>
+
             </>
           ) : step == 4 ? (
-            // <>
-            //   <SoftBox mb={2} width="100%">
-            //     <SoftInput
-            //       placeholder="User ID"
-            //       name="userId"
-            //       value={form?.userId ?? ""}
-            //       disabled={form.userId ? true : false}
-            //     />
-            //   </SoftBox>
-            //   <SoftTypography variant="h6">Upload Live Image</SoftTypography>{" "}
-            //   <SoftBox>
-            //     <SoftBox>
-            //       {capturedImages.liveImageSrc == null && cameraOpen !== "LiveImage" ? (
-            //         <img
-            //           src={"/user.png"}
-            //           onClick={() => {
-            //             setCameraOpen("LiveImage");
-            //           }}
-            //           style={{ width: "50%" }}
-            //         />
-            //       ) : (
-            //         ""
-            //       )}
-
-            //       {cameraOpen === "LiveImage" && (
-            //         <>
-            //           <SoftBox
-            //             style={{
-            //               border: "2px solid green",
-            //               borderRadius: "50px",
-            //               overflow: "hidden",
-            //               width: "300px",
-            //               height: "300px",
-            //             }}
-            //           >
-            //             <Webcam
-            //               audio={false}
-            //               ref={liveImageRef}
-            //               screenshotFormat="image/png"
-            //               width={300}
-            //               imageSmoothing
-            //               videoConstraints={facingMode}
-            //               screenshotQuality={1}
-            //               disablePictureInPicture={true}
-            //               mirrored={facingMode === "user"}
-            //             />
-            //             <SoftBox style={{ display: "flex", justifyContent: "space-evenly" }}>
-            //               <SoftTypography
-            //                 onClick={switchCamera}
-            //                 variant="contained"
-            //                 color="info"
-            //                 cursor="pointer"
-            //                 mt={1}
-            //               >
-            //                 <Icon>cameraswitch</Icon>
-            //               </SoftTypography>
-            //               <SoftButton
-            //                 onClick={() => handleCapture("liveImageSrc", liveImageRef)}
-            //                 variant="outlined"
-            //                 color="info"
-            //               >
-            //                 Capture Photo
-            //               </SoftButton>
-            //             </SoftBox>
-            //           </SoftBox>
-            //         </>
-            //       )}
-            //       {capturedImages.liveImageSrc && (
-            //         <>
-            //           <SoftBox
-            //             style={{
-            //               border: "2px solid green",
-            //               borderRadius: "50%",
-            //               width: "200px",
-            //               height: "200px",
-            //               marginBottom: "20px",
-            //             }}
-            //           >
-            //             <img
-            //               src={capturedImages.liveImageSrc}
-            //               alt="Captured Photo"
-            //               style={{
-            //                 borderRadius: "50%",
-            //                 height: "100%",
-            //                 width: "100%",
-            //               }}
-            //             />
-            //           </SoftBox>
-            //           <SoftButton
-            //             onClick={() =>
-            //               setCapturedImages((prevImages) => ({
-            //                 ...prevImages,
-            //                 liveImageSrc: null,
-            //               }))
-            //             }
-            //             variant="outlined"
-            //             color="info"
-            //           >
-            //             Retake Photo
-            //           </SoftButton>
-            //         </>
-            //       )}
-            //     </SoftBox>
-            //   </SoftBox>
-            //   <SoftTypography variant="h6" mt={3}>
-            //     Upload Aadhar Card
-            //   </SoftTypography>{" "}
-            //   <SoftBox>
-            //     <SoftBox mb={2} width="100%">
-            //       <SoftBox
-            //         display="flex"
-            //         alignItems="center"
-            //         justifyContent="space-between"
-            //         flexDirection="column"
-            //         css={`
-            //           &:hover {
-            //             opacity: 0.8;
-            //           }
-            //         `}
-            //       >
-            //         <SoftBox
-            //           className="profile-pic"
-            //           onClick={() => {
-            //             setDialog(dispatch, [
-            //               {
-            //                 status: "form",
-            //                 title: "Aadhar ",
-            //                 message: "Upload Back side of Aadhar",
-            //                 children: (
-            //                   <Box style={{ padding: 20 }}>
-            //                     <Button
-            //                       variant="outlined"
-            //                       color="info"
-            //                       onClick={() => {
-            //                         setDialog(dispatch, [
-            //                           {
-            //                             status: "form",
-            //                             title: "Aadhar ",
-            //                             message: "Upload Front side of Aadhar",
-            //                             children: (
-            //                               <Box
-            //                                 style={{
-            //                                   border: "2px solid green",
-            //                                   borderRadius: "50px",
-            //                                   overflow: "hidden",
-            //                                   width: "300px",
-            //                                   height: "300px",
-            //                                 }}
-            //                               >
-            //                                 <Webcam
-            //                                   audio={false}
-            //                                   ref={aadharFrontRef}
-            //                                   screenshotFormat="image/png"
-            //                                   width={300}
-            //                                   imageSmoothing
-            //                                   videoConstraints={{ facingMode }}
-            //                                   screenshotQuality={1}
-            //                                   disablePictureInPicture={true}
-            //                                   mirrored={facingMode === "user"}
-            //                                 />
-            //                                 <Box
-            //                                   style={{
-            //                                     display: "flex",
-            //                                     justifyContent: "space-evenly",
-            //                                   }}
-            //                                 >
-            //                                   <Typography
-            //                                     onClick={switchCamera}
-            //                                     variant="contained"
-            //                                     color="info"
-            //                                     cursor="pointer"
-            //                                     mt={1}
-            //                                   >
-            //                                     <Icon>cameraswitch</Icon>
-            //                                   </Typography>
-            //                                   <Button
-            //                                     onClick={() =>
-            //                                       handleCapture("aadhar", aadharFrontRef)
-            //                                     }
-            //                                     variant="outlined"
-            //                                     color="info"
-            //                                   >
-            //                                     Capture Photo
-            //                                   </Button>
-            //                                 </Box>
-            //                               </Box>
-            //                             ),
-            //                           },
-            //                         ]);
-            //                       }}
-            //                       fullWidth
-            //                     >
-            //                       Capture
-            //                     </Button>
-            //                     <Box className="profile-pic">
-            //                       <input
-            //                         ref={aadharFrontRef}
-            //                         type="file"
-            //                         accept="image/*"
-            //                         name="aadharFront"
-            //                         onChange={(e) => handleFileInputChange(e, "aadhar")}
-            //                         style={{ display: "none" }}
-            //                         id="aadhar-front-input"
-            //                       />
-
-            //                       <Button
-            //                         variant="outlined"
-            //                         color="info"
-            //                         onClick={() => handleUploadButtonClick(aadharFrontRef)}
-            //                         fullWidth
-            //                       >
-            //                         Upload
-            //                       </Button>
-            //                     </Box>
-            //                   </Box>
-            //                 ),
-            //               },
-            //             ]);
-            //           }}
-            //         >
-            //           <img
-            //             src={capturedImages.aadhar == null ? "/aadhar.png" : capturedImages.aadhar}
-            //             width={"100%"}
-            //             height={"100%"}
-            //           />
-            //           <Box className="edit">
-            //             <Icon fontSize="medium" color="inherit">
-            //               edit
-            //             </Icon>
-            //           </Box>
-            //         </SoftBox>
-            //       </SoftBox>
-            //     </SoftBox>
-            //     <SoftBox mb={2} width="100%">
-            //       <SoftBox
-            //         display="flex"
-            //         alignItems="center"
-            //         justifyContent="space-between"
-            //         flexDirection="column"
-            //       >
-            //         <SoftBox
-            //           className="profile-pic"
-            //           onClick={() => {
-            //             setDialog(dispatch, [
-            //               {
-            //                 status: "form",
-            //                 title: "Aadhar ",
-            //                 message: "Upload Back side of Aadhar",
-            //                 children: (
-            //                   <Box style={{ padding: 20 }}>
-            //                     <Button
-            //                       variant="outlined"
-            //                       color="info"
-            //                       onClick={() => {
-            //                         setDialog(dispatch, [
-            //                           {
-            //                             status: "form",
-            //                             title: "Aadhar ",
-            //                             message: "Upload Front side of Aadhar",
-            //                             children: (
-            //                               <Box
-            //                                 style={{
-            //                                   border: "2px solid green",
-            //                                   borderRadius: "50px",
-            //                                   overflow: "hidden",
-            //                                   width: "300px",
-            //                                   height: "300px",
-            //                                 }}
-            //                               >
-            //                                 <Webcam
-            //                                   audio={false}
-            //                                   ref={aadharBackRef}
-            //                                   screenshotFormat="image/png"
-            //                                   width={300}
-            //                                   imageSmoothing
-            //                                   videoConstraints={{ facingMode }}
-            //                                   screenshotQuality={1}
-            //                                   disablePictureInPicture={true}
-            //                                   mirrored={facingMode === "user"}
-            //                                 />
-            //                                 <Box
-            //                                   style={{
-            //                                     display: "flex",
-            //                                     justifyContent: "space-evenly",
-            //                                   }}
-            //                                 >
-            //                                   <Typography
-            //                                     onClick={switchCamera}
-            //                                     variant="contained"
-            //                                     color="info"
-            //                                     cursor="pointer"
-            //                                     mt={1}
-            //                                   >
-            //                                     <Icon>cameraswitch</Icon>
-            //                                   </Typography>
-            //                                   <Button
-            //                                     onClick={() =>
-            //                                       handleCapture("aadharBack", aadharBackRef)
-            //                                     }
-            //                                     variant="outlined"
-            //                                     color="info"
-            //                                   >
-            //                                     Capture Photo
-            //                                   </Button>
-            //                                 </Box>
-
-            //                                 {/* Button to switch the camera */}
-            //                               </Box>
-            //                             ),
-            //                           },
-            //                         ]);
-            //                       }}
-            //                       fullWidth
-            //                     >
-            //                       Capture
-            //                     </Button>
-            //                     <Box className="profile-pic">
-            //                       <input
-            //                         type="file"
-            //                         accept="image/*"
-            //                         ref={aadharBackRef}
-            //                         name="aadharBack"
-            //                         onChange={(e) => handleFileInputChange(e, "aadharBack")}
-            //                         style={{ display: "none" }}
-            //                         id="aadhar-back-input"
-            //                       />
-
-            //                       <Button
-            //                         variant="outlined"
-            //                         color="info"
-            //                         onClick={() => handleUploadButtonClick(aadharBackRef)}
-            //                         fullWidth
-            //                       >
-            //                         Upload
-            //                       </Button>
-            //                     </Box>
-            //                   </Box>
-            //                 ),
-            //               },
-            //             ]);
-            //           }}
-            //         >
-            //           <img
-            //             src={
-            //               capturedImages.aadharBack !== null
-            //                 ? capturedImages.aadharBack
-            //                 : "/aadharback.png"
-            //             }
-            //             width={"100%"}
-            //             height={"100%"}
-            //           />
-            //           <SoftBox className="edit">
-            //             <Icon fontSize="medium" color="inherit">
-            //               edit
-            //             </Icon>
-            //           </SoftBox>
-            //         </SoftBox>
-            //       </SoftBox>
-            //     </SoftBox>
-            //   </SoftBox>
-            //   <SoftTypography variant="h6" mt={3}>
-            //     Upload Pan Card
-            //   </SoftTypography>{" "}
-            //   <SoftBox>
-            //     <SoftBox width="100%">
-            //       <SoftBox
-            //         display="flex"
-            //         alignItems="center"
-            //         justifyContent="space-between"
-            //         flexDirection="column"
-            //         css={`
-            //           &:hover {
-            //             opacity: 0.8;
-            //           }
-            //         `}
-            //       >
-            //         <SoftBox
-            //           className="profile-pic"
-            //           onClick={() => {
-            //             setDialog(dispatch, [
-            //               {
-            //                 status: "form",
-            //                 title: "PAN ",
-            //                 message: "Upload Front side of PAN",
-            //                 children: (
-            //                   <Box style={{ padding: 20 }}>
-            //                     <Button
-            //                       variant="outlined"
-            //                       color="info"
-            //                       onClick={() => {
-            //                         setDialog(dispatch, [
-            //                           {
-            //                             status: "form",
-            //                             title: "Aadhar ",
-            //                             message: "Upload Front side of PAN",
-            //                             children: (
-            //                               <Box
-            //                                 style={{
-            //                                   border: "2px solid green",
-            //                                   borderRadius: "50px",
-            //                                   overflow: "hidden",
-            //                                   width: "300px",
-            //                                   height: "300px",
-            //                                 }}
-            //                               >
-            //                                 <Webcam
-            //                                   audio={false}
-            //                                   ref={panRef}
-            //                                   screenshotFormat="image/png"
-            //                                   width={300}
-            //                                   imageSmoothing
-            //                                   videoConstraints={{ facingMode }}
-            //                                   screenshotQuality={1}
-            //                                   disablePictureInPicture={true}
-            //                                   mirrored={facingMode === "user"}
-            //                                 />
-            //                                 <Box
-            //                                   style={{
-            //                                     display: "flex",
-            //                                     justifyContent: "space-evenly",
-            //                                   }}
-            //                                 >
-            //                                   <Typography
-            //                                     onClick={switchCamera}
-            //                                     variant="contained"
-            //                                     color="info"
-            //                                     cursor="pointer"
-            //                                     mt={1}
-            //                                   >
-            //                                     <Icon>cameraswitch</Icon>
-            //                                   </Typography>
-            //                                   <Button
-            //                                     onClick={() => handleCapture("pan", panRef)}
-            //                                     variant="outlined"
-            //                                     color="info"
-            //                                   >
-            //                                     Capture Photo
-            //                                   </Button>
-            //                                 </Box>
-
-            //                                 {/* Button to switch the camera */}
-            //                               </Box>
-            //                             ),
-            //                           },
-            //                         ]);
-            //                       }}
-            //                       fullWidth
-            //                     >
-            //                       Capture
-            //                     </Button>
-            //                     <Box className="profile-pic">
-            //                       <input
-            //                         ref={panRef}
-            //                         type="file"
-            //                         accept="image/*"
-            //                         name="aadharBack"
-            //                         onChange={(e) => handleFileInputChange(e, "pan")}
-            //                         style={{ display: "none" }}
-            //                         id="aadhar-back-input"
-            //                       />
-
-            //                       <Button
-            //                         variant="outlined"
-            //                         color="info"
-            //                         onClick={() => handleUploadButtonClick(panRef)}
-            //                         fullWidth
-            //                       >
-            //                         Upload
-            //                       </Button>
-            //                     </Box>
-            //                   </Box>
-            //                 ),
-            //               },
-            //             ]);
-            //           }}
-            //         >
-            //           <img
-            //             src={capturedImages.pan !== null ? capturedImages.pan : "/pan.png"}
-            //             width={"100%"}
-            //             height={"100%"}
-            //           />
-            //           <SoftBox className="edit">
-            //             <Icon fontSize="medium" color="inherit">
-            //               edit
-            //             </Icon>
-            //           </SoftBox>
-            //         </SoftBox>
-            //       </SoftBox>
-            //     </SoftBox>
-            //   </SoftBox>
-            // </>
             <>
               <SoftBox mb={2} width="100%">
                 <SoftInput
@@ -971,7 +357,11 @@ function SignUp() {
               </SoftBox>
               <SoftBox mb={2} width="100%">
                 {/* Input for capturing Aadhar Front photo */}
-                <SoftBox display="flex" alignItems="center" justifyContent="space-between">
+                <SoftBox
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
                   <SoftTypography
                     color="text"
                     fontWeight="medium"
@@ -981,12 +371,20 @@ function SignUp() {
                   >
                     Aadhar Front
                   </SoftTypography>
-                  <input type="file" accept="image/*" name="aadharFront" />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    name="aadharFront"
+                  />
                 </SoftBox>
               </SoftBox>
               <SoftBox mb={2} width="100%">
                 {/* Input for capturing Aadhar Back photo */}
-                <SoftBox display="flex" alignItems="center" justifyContent="space-between">
+                <SoftBox
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
                   <SoftTypography
                     color="text"
                     fontWeight="medium"
@@ -996,12 +394,20 @@ function SignUp() {
                   >
                     Aadhar Back
                   </SoftTypography>
-                  <input type="file" accept="image/*" name="aadharBack" />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    name="aadharBack"
+                  />
                 </SoftBox>
               </SoftBox>
               <SoftBox mb={2} width="100%">
                 {/* Input for capturing PAN file */}
-                <SoftBox display="flex" alignItems="center" justifyContent="space-between">
+                <SoftBox
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
                   <SoftTypography
                     color="text"
                     fontWeight="medium"
@@ -1011,7 +417,11 @@ function SignUp() {
                   >
                     Upload PAN
                   </SoftTypography>
-                  <input type="file" accept="image/*" name="panFile" />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    name="panFile"
+                  />
                 </SoftBox>
               </SoftBox>
             </>
@@ -1026,7 +436,7 @@ function SignUp() {
               onClick={handleSetAgreement}
               sx={{ cursor: "poiner", userSelect: "none", whiteSpace: "nowrap" }}
             >
-              &nbsp;&nbsp;I agree with Nextwork&apos;s &nbsp;
+              &nbsp;&nbsp;I agree with Knocial India&apos;s &nbsp;
             </SoftTypography>
             <SoftTypography
               component={Link}
@@ -1040,75 +450,52 @@ function SignUp() {
             </SoftTypography>
           </SoftBox>
           <SoftBox mt={1} mb={1}>
-            {step == 4 && (
+            {
+              step == 4 &&
               <SoftBox mb={2} width="100%">
-                <SoftButton
-                  variant="gradient"
-                  color="info"
-                  onClick={() => {
-                    setDialog(dispatch, [
-                      {
-                        status: "form",
-                        title: "E-SIGN",
-                        message: "Add new signatures",
-                        children: (
-                          <Box display="flex" flexDirection="column" alignItems="center">
-                            <Box
-                              border="1px solid black"
-                              sx={{
-                                width: "100%",
-                                maxWidth: "400px",
-                                height: "30vh",
-                                maxHeight: "400px",
-                              }}
-                            >
-                              <SignatureCanvas
-                                ref={signatureRef}
-                                penColor="blue"
-                                canvasProps={{ style: { width: "100%", height: "100%" } }}
-                              />
-                            </Box>
+                <SoftButton variant="gradient" color="info" onClick={() => {
+                  setDialog(dispatch, [{
+                    status: "form",
+                    title: "E-SIGN",
+                    message: "Add new signatures",
+                    children: <Box display="flex" flexDirection="column" alignItems="center">
+                      <Box border="1px solid black" sx={{ width: "100%", maxWidth: "400px", height: "30vh", maxHeight: "400px" }}>
+                        <SignatureCanvas
+                          ref={signatureRef}
+                          penColor="blue"
+                          canvasProps={{ style: { width: "100%", height: "100%" } }}
+                        />
+                      </Box>
 
-                            <Typography
-                              fontSize="0.9rem"
-                              fontWeight="medium"
-                              style={{ color: "red", marginTop: "5px" }}
-                              color="#00ff00"
-                              textAlign="center"
-                            >
-                              Please make sure the information you provide is correct and best of
-                              your knowledge. Wrong information leads to rejection or suspension of
-                              your account.
-                            </Typography>
-                          </Box>
-                        ),
-                        action: "submit",
-                        call: () => {
-                          if (signatureRef.current.isEmpty()) {
-                            toast.warn("Signatures are required!");
-                          } else {
-                            setDialog(dispatch, []);
-                            form.sign = signatureRef.current.toDataURL();
-                            toast.success("Signatures Captured Successfully!");
-                          }
-                        },
-                      },
-                    ]);
-                  }}
-                >
-                  E-sign
+                      <Typography fontSize="0.9rem" fontWeight="medium" style={{ color: "red", marginTop: "5px" }} color="#00ff00" textAlign="center">Please make sure the information you provide is correct and best of your knowledge. Wrong information leads to rejection or suspension of your account.</Typography>
+                    </Box>
+                    , action: "submit", call: () => {
+                      if (signatureRef.current.isEmpty()) {
+                        toast.warn("Signatures are required!")
+                      } else {
+                        setDialog(dispatch, []);
+                        form.sign = signatureRef.current.toDataURL();
+                        toast.success("Signatures Captured Successfully!");
+                      }
+                    }
+                  }])
+                }}>E-sign
                 </SoftButton>
               </SoftBox>
-            )}
-            <SoftButton variant="gradient" type="submit" color="info">
+            }
+            <SoftButton
+              variant="gradient"
+              type="submit"
+              color="info"
+            >
               Submit
             </SoftButton>
           </SoftBox>
           <SoftBox mt={1} fontSize="0.9rem">
+
             <SoftTypography variant="p" fontWeight="bold" color="text">
               Already a User?
-            </SoftTypography>
-            <br />
+            </SoftTypography><br />
             <SoftTypography
               component={Link}
               to="/"
@@ -1122,7 +509,8 @@ function SignUp() {
           </SoftBox>
         </SoftBox>
       </SoftBox>
-    </CoverLayout>
+    </CoverLayout >
   );
 }
+
 export default SignUp;

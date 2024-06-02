@@ -123,7 +123,7 @@ function SignIn() {
 
   return (
     <>
-      <CoverLayout title="Sign In">
+      <CoverLayout title="Get Into Account!">
         <SoftBox
           component="form"
           role="form"
@@ -144,10 +144,10 @@ function SignIn() {
                   e.target.value = e.target.value.toUpperCase();
                 }}
               >
-                ID
+                Email / User ID
               </SoftTypography>
             </SoftBox>
-            <SoftInput type="text" placeholder="Email / User ID" name="userId" />
+            <SoftInput type="text" placeholder="Please Enter Email or User ID" name="userId" />
           </SoftBox>
           <SoftBox mb={1} width="100%">
             <SoftBox ml={0.5} textAlign="left">
@@ -157,11 +157,11 @@ function SignIn() {
             </SoftBox>
             <SoftInput type="password" placeholder="Password" name="password" />
           </SoftBox>
-          <SoftBox mt={1} mb={1}>
+          <SoftBox mt={1} mb={3} display="flex" justifyContent="space-evenly" gap="10px">
             <SoftButton variant="gradient" color="info" type="submit">
-              Submit
+              Login
             </SoftButton>
-            <SoftTypography
+            <SoftButton
               onClick={() => {
                 setDialog(dispatch, [
                   {
@@ -183,7 +183,7 @@ function SignIn() {
                   },
                 ]);
               }}
-              variant="span"
+              variant="gradient"
               color="info"
               fontSize="0.8rem"
               whiteSpace="nowrap"
@@ -191,8 +191,8 @@ function SignIn() {
               textTransform="uppercase"
               cursor="pointer"
             >
-              Login with OTP
-            </SoftTypography>
+              OTP
+            </SoftButton>
           </SoftBox>
           <SoftBox fontSize="0.9rem">
             <SoftTypography variant="p" fontWeight="bold" color="text">
@@ -208,7 +208,7 @@ function SignIn() {
                       <TextField
                         autoFocus
                         name="userId"
-                        placeholder="User ID / Email"
+                        placeholder="User Id | Email"
                         margin="dense"
                         label="ID"
                         type="text"
@@ -220,7 +220,7 @@ function SignIn() {
                   },
                 ]);
               }}
-              variant="button"
+              variant="a"
               color="info"
               textGradient
               cursor="pointer"
