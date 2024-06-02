@@ -235,6 +235,17 @@ function SignUp() {
                   Password must be Alphanumerical, minimum 8 characters long and must contain atleast one special charactor.
                 </SoftTypography>
               </SoftBox>
+              <FormControl mb={2} sx={{ marginBottom: 2, width: '100%', display: "flex", gap: 5, justifyContent: "center", flexDirection: "row", alignContent: "center" }} >
+                <Select
+                  labelId="accountType"
+                  defaultValue="individual"
+                  name="type"
+                >
+                  <MenuItem fullWidth value="individual">Individual</MenuItem>
+                  <MenuItem value="organization">Organization</MenuItem>
+                  {/* Add more titles as needed */}
+                </Select>
+              </FormControl>
               <SoftBox mb={2} width="100%">
                 <SoftInput name="sponsorId" value={form.sponsorId} disabled={form.sponsorId} type="text" placeholder="sponsor id" />
               </SoftBox>

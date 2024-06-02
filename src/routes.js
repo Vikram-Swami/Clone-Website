@@ -73,7 +73,7 @@ const routes = [
     name: "SignUp",
     Key: "signup",
     auth: null,
-    route: "sign-up/:step",
+    route: "/sign-up/:step",
 
     component: <SignUp />,
     noCollapse: false,
