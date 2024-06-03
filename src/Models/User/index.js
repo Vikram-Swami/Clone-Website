@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
 
 class UserModel {
@@ -120,8 +121,7 @@ class UserModel {
   }
 
   createLabel({ initial, userId, fullName, email, phone, isVerified, storage, createdAt, status }) {
-    return (<ProfileInfoCard
-      info={{ name: initial + "." + fullName, userId: userId }} />)
+    return (<><Typography>{userId}</Typography><Typography>{fullName}</Typography></>)
   }
 
   memberToArray(json) {
@@ -145,7 +145,7 @@ class UserModel {
 
       return {
         userId: e?.userId ?? "",
-        id: e.id?.toString() ?? "",
+        id: e.id ?? "",
         data: { label: this.createLabel(e) },
         position: { x: p * 200, y: parseInt(e.level) * 200 },
         initial: e?.initial ?? "",
