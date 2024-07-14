@@ -41,11 +41,8 @@ function Team() {
       const response = await ApiClient.getData(getMembers);
       if (response.status == 200) {
         let self = JSON.parse(JSON.stringify(user));
-        self.id = 0;
 
-        self.userId = self.id;
-
-        response.data.unshift(user)
+        response.data.unshift(self)
         setMembers(dispatch, response.data);
       } else {
         setDialog(dispatch, [response]);
@@ -57,7 +54,7 @@ function Team() {
   };
 
   const styles = {
-    background: '#2a4a7b',
+    background: 'white',
     borderRadius: 20,
     width: "100%",
     height: "100%",
@@ -74,13 +71,22 @@ function Team() {
   };
   const closeMenu = () => setMenu(null);
 
-  const edges = [{ id: '1-2', source: '1', target: '2' }];
+  let edges = [];
 
   useEffect(() => {
     member?.length < 1 && getMember();
   }, []);
 
   useEffect(() => {
+    if (member.length > 0) {
+      member.forEach(e => {
+        let chain = member.filter((ne, i) => ne.sponsorId == e.id);
+        if (chain.length > 0) {
+          chain.forEach(n => { edges.push({ id: i, source: e.id, target: n.id }) });
+        }
+      })
+    }
+    console.log(edges);
     let query = new URLSearchParams(location.search);
     let type = query.get("view");
     if (type == "placement") {
@@ -148,7 +154,7 @@ function Team() {
       <SoftBox py={3} mb={3} width="100%" height="85dvh">
 
         {member?.length > 0 ? (
-          <ReactFlow nodes={member} edges={edges} style={styles}>
+          <ReactFlow nodes={member} edges={edges} style={styles} fitView>
             <Background />
           </ReactFlow>
         ) : (
@@ -176,7 +182,7 @@ function Team() {
 
                       <NavLink to="/create-member">
                         <SoftButton variant="gradient" color="dark" ml={2}>
-                          &nbsp;Add member
+                          Create Team
                         </SoftButton>
                       </NavLink>
                     </Grid>

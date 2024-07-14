@@ -106,14 +106,7 @@ function Header() {
                   ID: user.id ?? "",
                   mobile: user?.phone,
                   email: user?.email,
-                  location: user?.city + " " + user?.state + " " + user?.country,
-                  addStorageLink: (
-                    <NavLink to="/new-connections">
-                      <SoftButton variant="gradient" color="dark" ml={2}>
-                        &nbsp;Add Storage
-                      </SoftButton>
-                    </NavLink>
-                  ),
+                  location: user?.city + " " + user?.state + " " + user?.country
                 }}
               />
             )}
@@ -134,7 +127,7 @@ function Header() {
               <ProfileInfoCard
                 title="KYC information"
                 info={{
-                  accountType: user?.type == "user" ? "Individual" : "Organisaction",
+                  accountType: user?.type,
                   aadharNo: user?.aadharNo,
                   panNo: user?.panNo,
                   accountNo: user?.accountNo,
@@ -143,7 +136,7 @@ function Header() {
 
                 }}
 
-                action={{ route: "/dashboard", tooltip: "Edit Profile" }}
+                action={{ route: "/home", tooltip: "Modify Info" }}
               />
             )}
             {/* <img src={user?.aadharFile} alt="Aadhar Card" /> */}

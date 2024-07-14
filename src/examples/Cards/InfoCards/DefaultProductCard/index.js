@@ -40,7 +40,7 @@ function DefaultProductCard({ color, icon, storage, range, rent, basicAmt, tax, 
       });
       setDialog(dispatch, [response]);
       setConnection(dispatch, []);
-      navigate("/connections");
+      navigate("/portfolio");
     } catch (error) {
       toast.error(error?.response?.data?.message);
       setLoading(dispatch, false);

@@ -128,10 +128,10 @@ class UserModel {
     let p = 0;
 
     return json.map((e, i) => {
-      if (parseInt(json[i - 1]?.level) < parseInt(e.level)) {
+      if (i > 0 && parseInt(json[i - 1]?.level - json[0].level) < parseInt(e.level - json[0].level)) {
         p = 0;
       }
-      else if (e.level == 0) {
+      else if ((e.level - json[0]?.level) == 0) {
         p = parseInt(json.filter(e => e.level == 1).length / 2)
       }
       else {
@@ -155,10 +155,12 @@ class UserModel {
         status: e.status,
         isVerified: e.isVerified,
         image: e.image ?? {},
+        sponsorId: e.sponsorId,
+        placementId: e.placementId,
         level: e?.level,
         placementLevel: e.placementLevel,
         storage: e.storage,
-        type: 'output',
+        type: 'input',
         createdAt: formattedDate,
         updatedAt: e.updatedAt,
       };
