@@ -59,7 +59,7 @@ function Connections() {
         <SoftBox mb={3}>
           <Card>
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-              <SoftTypography variant="h6">My Connections</SoftTypography>
+              <SoftTypography variant="h6">My Portfolio</SoftTypography>
               <NavLink to="/buy-cloud-storage">
                 <SoftBox
                   display="flex"
@@ -77,7 +77,7 @@ function Connections() {
                   color="dark"
                   sx={{ cursor: "pointer" }}>
                   <Icon fontSize="default" fontWeight="bold" color="inherit">
-                    add
+Buy
                   </Icon>
                 </SoftBox>
               </NavLink>

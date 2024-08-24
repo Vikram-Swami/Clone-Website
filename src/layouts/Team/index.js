@@ -8,7 +8,7 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 // Data
 import SoftButton from "components/SoftButton";
-import { Grid, Icon, Menu, MenuItem } from "@mui/material";
+import { Grid, Icon, Menu, MenuItem, Table } from "@mui/material";
 import DefaultInfoCard from "examples/Cards/InfoCards/DefaultInfoCard";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
@@ -24,6 +24,7 @@ import { setDialog } from "context";
 import ReactFlow, { Background } from "reactflow";
 
 import 'reactflow/dist/style.css';
+import TeamView from "./data/team";
 
 
 function Team() {
@@ -45,20 +46,14 @@ function Team() {
         response.data.unshift(self)
         setMembers(dispatch, response.data);
       } else {
-        setDialog(dispatch, [response]);
+        toast.success(response.message);
       }
     } catch (error) {
-      toast.info(error.message);
+      toast.info(error?.message);
       setLoading(dispatch, false);
     }
   };
 
-  const styles = {
-    background: 'white',
-    borderRadius: 20,
-    width: "100%",
-    height: "100%",
-  };
 
   const [menu, setMenu] = useState(null);
   const openMenu = ({ currentTarget }) => {
@@ -70,8 +65,10 @@ function Team() {
     }
   };
   const closeMenu = () => setMenu(null);
-
-  let edges = [];
+  const memoizedRows = useMemo(
+    () => TeamView.rows(member, dispatch, user),
+    [connection, user.fullName]
+  );
 
   useEffect(() => {
     member?.length < 1 && getMember();
@@ -79,14 +76,13 @@ function Team() {
 
   useEffect(() => {
     if (member.length > 0) {
-      member.forEach(e => {
-        let chain = member.filter((ne, i) => ne.sponsorId == e.id);
-        if (chain.length > 0) {
-          chain.forEach(n => { edges.push({ id: i, source: e.id, target: n.id }) });
-        }
-      })
+      // member.forEach(e => {
+      //   let chain = member.filter((ne, i) => ne.sponsorId == e.id);
+      //   if (chain.length > 0) {
+      //     chain.forEach(n => { edges.push({ id: i, source: e.id, target: n.id }) });
+      //   }
+      // })
     }
-    console.log(edges);
     let query = new URLSearchParams(location.search);
     let type = query.get("view");
     if (type == "placement") {
@@ -154,9 +150,10 @@ function Team() {
       <SoftBox py={3} mb={3} width="100%" height="85dvh">
 
         {member?.length > 0 ? (
-          <ReactFlow nodes={member} edges={edges} style={styles} fitView>
-            <Background />
-          </ReactFlow>
+          // <ReactFlow nodes={member} edges={edges} style={styles} fitView>
+          //   <Background />
+          // </ReactFlow>
+          <Table columns={TeamView.columns} rows={memoizedRows} />
         ) : (
           <SoftBox mt={4}>
             <SoftBox mb={1.5} sx={{ display: "flex", justifyContent: "center" }}>

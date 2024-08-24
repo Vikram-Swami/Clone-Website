@@ -136,7 +136,7 @@ function SignUp() {
         let next = parseInt(step) + 1;
         form.userId = response.data?.userId
         let route = `/sign-up/${next}?userId=${form.userId}`;
-        if (step == 4) {
+        if (step == 4 || step==1) {
           route = '/sign-in';
         }
         navigate(route);
@@ -181,78 +181,89 @@ function SignUp() {
           display="flex" encType="multipart/form-data" flexDirection="column" justifyContent="center" alignItems="center" ref={form} >
           {step == 1 ? (
             <>
-              <SoftBox mb={2} width="100%">
-                <FormControl sx={{ display: "flex", gap: 5, justifyContent: "center", flexDirection: "row", alignContent: "center" }} >
-                  <FormLabel color="primary" sx={{ alignSelf: "center" }} >Initials</FormLabel>
-                  <Select
-                    labelId="initial"
-                    id="demo-simple-select"
-                    defaultValue="Mr."
-                    label="Initial"
-                    name="initial"
-                  >
-                    <MenuItem fullWidth value="Mr.">Mr.</MenuItem>
-                    <MenuItem value="Mrs.">Mrs.</MenuItem>
-                    <MenuItem value="Miss">Miss</MenuItem>
-                    <MenuItem value="Ms.">Ms.</MenuItem>
-                    <MenuItem value="Dr.">Dr.</MenuItem>
-                    {/* Add more titles as needed */}
-                  </Select>
-                </FormControl>
-              </SoftBox>
-              <SoftBox mb={2} width="100%">
-                <SoftInput name="fullName" placeholder="Name" />
-              </SoftBox>
-              <SoftBox mb={2} width="100%">
-                <SoftInput name="email" type="email" placeholder="Email" />
-              </SoftBox>
-              <SoftBox mb={2} width="100%">
-                <SoftInput
-                  name="phone"
-                  type="text"
-                  placeholder="Phone"
-                  onChange={(e) => {
-                    e.target.value.replace();
-                    e.target.value =
-                      e.target.value.length > 10
-                        ? e.target.value.toString().substr(0, 10)
-                        : e.target.value;
-                  }}
-                  max={10}
-                  onKeyPress={(e) => {
-                    if (isNaN(e.key)) {
-                      e.preventDefault();
-                    }
-                  }}
-                />
-                <SoftTypography color="text" fontWeight="light" fontSize="0.8rem">
-                  Please enter the Valid Mobile Number
-                </SoftTypography>
-              </SoftBox>
-              <SoftBox mb={2} width="100%">
-                <SoftInput name="password" type="password" placeholder="Password" />
-                <SoftTypography color="text" fontWeight="light" fontSize="0.8rem">
-                  Password must be Alphanumerical, minimum 8 characters long and must contain atleast one special charactor.
-                </SoftTypography>
-              </SoftBox>
-              <FormControl mb={2} sx={{ marginBottom: 2, width: '100%', display: "flex", gap: 5, justifyContent: "center", flexDirection: "row", alignContent: "center" }} >
-                <Select
-                  labelId="accountType"
-                  defaultValue="individual"
-                  name="type"
-                >
-                  <MenuItem fullWidth value="individual">Individual</MenuItem>
-                  <MenuItem value="organization">Organization</MenuItem>
-                  {/* Add more titles as needed */}
-                </Select>
-              </FormControl>
-              <SoftBox mb={2} width="100%">
-                <SoftInput name="sponsorId" value={form.sponsorId} disabled={form.sponsorId} type="text" placeholder="sponsor id" />
-              </SoftBox>
-              <SoftBox mb={2} width="100%">
-                <SoftInput name="placementId" value={form.placementId ?? form.sponsorId} disabled={form.placementId ?? form.sponsorId} type="text" placeholder="placement id" />
-              </SoftBox>
-            </>
+  <SoftBox mb={2} width="100%">
+    <FormControl sx={{ display: "flex", gap: 5, justifyContent: "center", flexDirection: "row", alignContent: "center" }} >
+      <FormLabel color="primary" sx={{ alignSelf: "center" }}>Initials</FormLabel>
+      <Select
+        labelId="initial"
+        defaultValue="Mr."
+        label="Initial"
+        name="initial"
+      >
+        <MenuItem fullWidth value="Mr.">Mr.</MenuItem>
+        <MenuItem value="Mrs.">Mrs.</MenuItem>
+        <MenuItem value="Miss">Miss</MenuItem>
+        <MenuItem value="Ms.">Ms.</MenuItem>
+        <MenuItem value="Dr.">Dr.</MenuItem>
+        {/* Add more titles as needed */}
+      </Select>
+    </FormControl>
+  </SoftBox>
+  
+  <SoftBox mb={2} width="100%">
+    <SoftInput name="fullName" placeholder="Name" />
+  </SoftBox>
+  
+  <SoftBox mb={2} width="100%">
+    <SoftInput name="dob" type="date" placeholder="Date of Birth" />
+  </SoftBox>
+  
+  <SoftBox mb={2} width="100%">
+    <SoftInput name="email" type="email" placeholder="Email" />
+  </SoftBox>
+  
+  <SoftBox mb={2} width="100%">
+    <SoftInput
+      name="phone"
+      type="text"
+      placeholder="Phone"
+      onChange={(e) => {
+        e.target.value.replace();
+        e.target.value =
+          e.target.value.length > 10
+            ? e.target.value.toString().substr(0, 10)
+            : e.target.value;
+      }}
+      max={10}
+      onKeyPress={(e) => {
+        if (isNaN(e.key)) {
+          e.preventDefault();
+        }
+      }}
+    />
+    <SoftTypography color="text" fontWeight="light" fontSize="0.8rem">
+      Please enter the Valid 10 digit Mobile Number
+    </SoftTypography>
+  </SoftBox>
+  
+  <SoftBox mb={2} width="100%">
+    <SoftInput name="password" type="password" placeholder="Password" />
+    <SoftTypography color="text" fontWeight="light" fontSize="0.8rem">
+      Password must be Alphanumerical, minimum 8 characters long and must contain at least one special character.
+    </SoftTypography>
+  </SoftBox>
+  
+  <FormControl mb={2} sx={{ marginBottom: 2, width: '100%', display: "flex", gap: 5, justifyContent: "center", flexDirection: "row", alignContent: "center" }} >
+    <Select
+      labelId="accountType"
+      defaultValue="individual"
+      name="type"
+    >
+      <MenuItem fullWidth value="individual">Individual</MenuItem>
+      <MenuItem value="organization">Organization</MenuItem>
+      {/* Add more titles as needed */}
+    </Select>
+  </FormControl>
+  
+  <SoftBox mb={2} width="100%">
+    <SoftInput name="sponsorId" value={form.sponsorId} disabled={form.sponsorId} type="text" placeholder="sponsor id" />
+  </SoftBox>
+  
+  <SoftBox mb={2} width="100%">
+    <SoftInput name="placementId" value={form.placementId ?? form.sponsorId} disabled={form.placementId ?? form.sponsorId} type="text" placeholder="placement id" />
+  </SoftBox>
+</>
+
           ) : step == 2 ? (
             <>
               <SoftBox mb={2} width="100%">
@@ -349,10 +360,25 @@ function SignUp() {
                 <SoftInput type="text" placeholder="Nominie Name" name="nomineeName" />
               </SoftBox>
               <SoftBox mb={2} width="100%">
-                <SoftInput type="text" placeholder="Nominie Relation" name="nomineeRel" />
+              <FormControl sx={{ display: "flex", gap: 5, justifyContent: "center", flexDirection: "row", alignContent: "center" }} >
+                  <Select
+                    labelId="nominee"
+                    defaultValue="Select"
+                    label="Nominee Relation"
+                    name="nomineeRel"
+                  >
+                    <MenuItem fullWidth value="Select">Kindly Select Your Relation with Nominee...</MenuItem>
+                    <MenuItem value="Mother">Mother</MenuItem>
+                    <MenuItem value="Father">Father</MenuItem>
+                    <MenuItem value="Siblling">Siblling</MenuItem>
+                    <MenuItem value="Son/Daughter">Son/Daughter</MenuItem>
+                    <MenuItem value="Spouse">Spouse</MenuItem>
+                    <MenuItem value="Friend">Friend</MenuItem>
+                  </Select>
+                </FormControl>
               </SoftBox>
               <SoftBox mb={2} width="100%">
-                <SoftInput type="text" placeholder="Nominie age" name="nomineeAge" />
+                <SoftInput type="number" placeholder="Nominie age" name="nomineeAge" />
               </SoftBox>
 
             </>
