@@ -14,9 +14,8 @@ import { useSoftUIController } from "context";
 import { PropTypes } from "prop-types";
 import { Box, Button } from "@mui/material";
 
-export default function Transaction({ amount, type }) {
+export default function Transaction({ amount }) {
   const [controller, dispatch] = useSoftUIController();
-  const { user } = controller;
 
   const [openDialog, setOpenDialog] = useState(false);
   const [tnxId, setTnxId] = useState("");
@@ -69,47 +68,29 @@ export default function Transaction({ amount, type }) {
             }
             disabled={true}
           />
-          {type === "purchase" && (
-            <>
-              <FormControlLabel
-                value="wallet"
-                control={<Radio />}
-                label={
-                  <Box display="grid" gridTemplateColumns="2fr 1fr">
-                    <span>Wallet - </span>
-                    {parseInt(amount) > parseInt(user.wallet) && (
-                      <Typography variant="caption" color="textSecondary">
-                        (Unsufficient Balance)
-                      </Typography>
-                    )}
-                  </Box>
-                }
-                disabled={parseInt(amount) > parseInt(user.wallet)}
-              />
+   
               <FormControlLabel
                 value="tnxId"
                 control={<Radio />}
                 label={
                   <Box display="grid" gridTemplateColumns="3fr 1fr">
-                    <span>UTI -</span>
+                    <span>TNX ID</span>
                     <Typography variant="caption" color="textSecondary">
-                      {"Enter Token"}
+                      {"Enter Transaction ID"}
                     </Typography>
                   </Box>
                 }
               />
-            </>
-          )}
         </RadioGroup>
       </FormControl>
       {
         <TextField
           margin="dense"
-          id="tnxIdInput"
-          label="UTI"
+          id="transactionId"
+          label="Transaction ID"
           type="text"
           fullWidth
-          name="tnxId"
+          name="transactionId"
           variant="standard"
           value={tnxId}
           onChange={(e) => setTnxId(e.target.value)} // Update tnxId state here
@@ -150,7 +131,6 @@ export default function Transaction({ amount, type }) {
 
 Transaction.defaultProps = {
   amount: 0,
-  type: "purchase",
 };
 
 Transaction.propTypes = {

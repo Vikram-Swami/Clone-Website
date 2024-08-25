@@ -66,55 +66,8 @@ const actConnection = async (id, dispatch, call) => {
   }
 };
 
-function Status({ tnxId, status, dispatch, call, e }) {
-  if (tnxId === null || !tnxId) {
-    return (
-      <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
-        <SoftBox display="flex" alignItems="center" flexDirection="column" gap="4px">
-          <SoftBadge
-            variant="gradient"
-            badgeContent="pending"
-            color="warning"
-            size="xs"
-            container
-          />
-          <SoftButton
-            color="warning"
-            width="3rem"
-            height="2rem"
-            shadow="md"
-            marginRight="2rem"
-            borderRadius="lg"
-            cursor="pointer"
-            onClick={() => {
-              setDialog(dispatch, [
-                {
-                  status: "form",
-                  title: "Please select payment method",
-                  message: `Connection - ${e.storage} TB`,
-                  action: "Pay Now",
-                  children: (
-                    <Transaction
-                      amount={parseFloat(e.amount + parseFloat(e.amount * `0.${e.tax}`))}
-                      type="purchase"
-                    />
-                  ),
-                  call: payment(
-                    e.id,
-                    parseFloat(e.amount + parseFloat(e.amount * `0.${e.tax}`)),
-                    dispatch,
-                    call
-                  ),
-                },
-              ]);
-            }}
-          >
-            Make Payment
-          </SoftButton>
-        </SoftBox>
-      </SoftBox>
-    );
-  } else if (!status) {
+function Status({ status, dispatch, call, e }) {
+if (!status) {
     return (
       <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
         <SoftBox display="flex" flexDirection="column">
@@ -213,7 +166,6 @@ const connectionView = {
 
         status: (
           <Status
-            tnxId={e.transactionId}
             status={e.status}
             dispatch={dispatch}
             call={getConnection}

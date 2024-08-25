@@ -22,27 +22,26 @@ import { getSourceByType } from "Services/endpointes";
 import { useNavigate } from "react-router-dom";
 import { setAccept } from "context";
 import { setConnection } from "context";
-function DefaultProductCard({ color, icon, storage, range, rent, basicAmt, tax, totalprice }) {
+import Transaction from "examples/TransactionView";
+
+function DefaultProductCard({ color, icon, range, rent, basicAmt, tax, totalprice }) {
   const [controller, dispatch] = useSoftUIController();
   const { user, accept } = controller;
   const navigate = useNavigate();
 
-  const createConnection = (storage) => async (accept) => {
+  const createConnection = (storage) => async (form) => {
     try {
-      if (!accept) {
-        toast.error("Please Accept Terms & conditions first.");
-        return;
-      }
+ 
       setLoading(dispatch, true);
-      const response = await ApiClient.createData(createConnections, {
-        userId: user.userId,
-        storage: storage,
-      });
-      setDialog(dispatch, [response]);
-      setConnection(dispatch, []);
-      navigate("/portfolio");
+      form.append("storage", storage);
+      const response = await ApiClient.createData(createConnections, form);
+      if(response.status === 200 ){
+        setConnection(dispatch, []);
+        navigate("/portfolio");
+      }
+        setDialog(dispatch, [response]);
     } catch (error) {
-      toast.error(error?.response?.data?.message);
+      toast.error(error?.message);
       setLoading(dispatch, false);
     }
   };
@@ -51,29 +50,45 @@ function DefaultProductCard({ color, icon, storage, range, rent, basicAmt, tax, 
     try {
       setLoading(dispatch, true);
       const response = await ApiClient.getDataByParam(getSourceByType, "terms-condition");
-      setDialog(dispatch, [
-        {
-          status: "form",
-          title: "Please Accept Terms & Conditions",
-          message: response?.data?.range,
-          children: (
-            <FormControlLabel
-              control={
-                <Checkbox
-                  onChange={(e) => {
-                    setAccept(dispatch, e.target.checked);
-                  }}
-                />
-              }
-              label="I Agree*"
-            />
-          ),
-          action: "Agree & Buy",
-          call: createConnection(storage),
-        },
-      ]);
+      if(response.status === 200 ){
+
+        setDialog(dispatch, [
+          {
+            status: "form",
+            title: "Please Accept Terms & Conditions",
+            message: response?.data?.range,
+            children: (
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    onChange={(e) => {
+                      setAccept(dispatch, e.target.checked);
+                    }}
+                  />
+                }
+                label="I Agree*"
+              />
+            ),
+            action: "Agree & Buy",
+            call: ()=>setDialog(dispatch, [
+              {
+                status: "form",
+                title: "Please select payment method",
+                message: `Connection - ${storage} TB`,
+                action: "Pay Now",
+                children: (
+                  <Transaction
+                    amount={parseFloat(totalprice)}
+                  />
+                ),
+                call: createConnection(storage)
+              },
+            ]),
+          },
+        ]);
+      }else{setDialog(dispatch, response?.message);}
     } catch (err) {
-      toast.warn(err?.response?.data?.message);
+      toast.error(err?.response?.data?.message);
       setLoading(dispatch, false);
     }
   };
@@ -111,8 +126,6 @@ function DefaultProductCard({ color, icon, storage, range, rent, basicAmt, tax, 
           </SoftBox>
 
           <Box>
-            <SoftTypography variant="h6">Free Space : {storage} GB</SoftTypography>
-
             <SoftTypography variant="h6">Rent : {rent}%</SoftTypography>
           </Box>
         </SoftBox>

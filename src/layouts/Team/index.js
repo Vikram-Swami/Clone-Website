@@ -11,7 +11,7 @@ import SoftButton from "components/SoftButton";
 import { Grid, Icon, Menu, MenuItem, Table } from "@mui/material";
 import DefaultInfoCard from "examples/Cards/InfoCards/DefaultInfoCard";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useSoftUIController, startLoading, setLoading } from "context";
 import React from "react";
@@ -20,8 +20,6 @@ import { getMembers } from "Services/endpointes";
 import { toast } from "react-toastify";
 import { setMembers } from "context";
 import { setDialog } from "context";
-
-import ReactFlow, { Background } from "reactflow";
 
 import 'reactflow/dist/style.css';
 import TeamView from "./data/team";
@@ -67,7 +65,7 @@ function Team() {
   const closeMenu = () => setMenu(null);
   const memoizedRows = useMemo(
     () => TeamView.rows(member, dispatch, user),
-    [connection, user.fullName]
+    [member, user]
   );
 
   useEffect(() => {

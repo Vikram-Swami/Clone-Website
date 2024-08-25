@@ -10,7 +10,7 @@ import RentModel from "Models/Rents";
 import IncomeLog from "Models/Income";
 import Notification from "Models/Notification";
 import Transaction from "Models/Transaction";
-import DirectMember from "Models/DIrectMember";
+
 import RewardsModel from "Models/Rewards";
 import Achievement from "Models/Rewards/achievement";
 

@@ -77,7 +77,7 @@ function Connections() {
                   color="dark"
                   sx={{ cursor: "pointer" }}>
                   <Icon fontSize="default" fontWeight="bold" color="inherit">
-Buy
+buy
                   </Icon>
                 </SoftBox>
               </NavLink>

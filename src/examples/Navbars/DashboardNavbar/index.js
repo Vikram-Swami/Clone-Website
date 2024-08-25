@@ -45,6 +45,7 @@ function DashboardNavbar({ absolute, light, isMini, call }) {
   const [openNotif, setOpenNotif] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
   const { user, notifications } = controller;
+
   const handleLogout = () => {
     const cookies = document.cookie.split(";");
 
@@ -54,18 +55,21 @@ function DashboardNavbar({ absolute, light, isMini, call }) {
       const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
       document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
     }
-    window.location.reload();
+    setTimeout(() => {
+      window.location.reload();
+    }, 200);
   };
   const logoutHandler = () => {
     setDialog(dispatch, [
       {
         status: "form",
         action: "Logout",
-        title: "Are you sure to Logout from your Account.",
+        title: "Are you sure to Logout.",
         call: handleLogout,
       },
     ]);
   };
+  
   useEffect(() => {
     // Setting the navbar type
     if (fixedNavbar) {

@@ -79,7 +79,6 @@ Level.propTypes = {
 const TeamView = {
   columns: [
     { name: "user", align: "left" },
-
     { name: "joining", align: "center" },
     { name: "status", align: "center" },
     { name: "level", align: "center" },
@@ -88,7 +87,6 @@ const TeamView = {
   ],
 
   rows: (data, dispatch, user) => {
-    console.log(user);
     return data?.map((e, i) => {
       const dateObject = new Date(e.createdAt);
 

@@ -105,7 +105,6 @@ function Products() {
                       <DefaultProductCard
                         icon="cloud"
                         range={data.range}
-                        storage={data.space}
                         rent={data.rent}
                         basicAmt={data.basicAmt}
                         tax={data.tax}
