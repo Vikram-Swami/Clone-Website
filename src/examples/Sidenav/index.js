@@ -139,7 +139,7 @@ function Sidenav({ color, brand, routes, ...rest }) {
           </SoftTypography>
         </SoftBox>
         <SoftBox component={NavLink} to="/" display="flex" alignItems="center">
-          {brand && <SoftBox component="img" src={brand} alt="Knocial India" width="10rem" />}
+          {brand && <SoftBox component="img" src={brand} alt="Knoone India" width="10rem" />}
         </SoftBox>
       </SoftBox>
       <Divider />

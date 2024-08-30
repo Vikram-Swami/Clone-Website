@@ -26,8 +26,6 @@ function CoverLayout({ header, title, top, children }) {
         minHeight={"100dvh"}
       >
         <Grid item xs={11} sm={12} md={12} xl={12} justifyItems="center">
-
-
           <SoftBox mt={top} minWidth="22dvw" borderRadius="10px">
             <SoftBox pt={3} px={3}>
               {!header ? (
@@ -38,7 +36,7 @@ function CoverLayout({ header, title, top, children }) {
                       component="img"
                       justifyItems="center"
                       src="/logo.png"
-                      alt="Knocial India"
+                      alt="Knoone India"
                       width="100%"
                       maxWidth="2.25rem"
                       pr="5px"

@@ -107,7 +107,7 @@ function reducer(state, action) {
 }
 
 // Next Work Dashboard React context provider
-function KnocialControllerProvider({ children }) {
+function KnooneControllerProvider({ children }) {
   const initialState = {
     miniSidenav: false,
     transparentSidenav: true,
@@ -165,13 +165,13 @@ function useSoftUIController() {
   const context = useContext(SoftUI);
 
   if (!context) {
-    throw new Error("useSoftUIController should be used inside the KnocialControllerProvider.");
+    throw new Error("useSoftUIController should be used inside the KnooneControllerProvider.");
   }
 
   return context;
 }
 
-KnocialControllerProvider.propTypes = {
+KnooneControllerProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
@@ -201,7 +201,7 @@ const startLoading = (dispatch, value) => dispatch({ type: "START_LOAD", value }
 const setAccept = (dispatch, value) => dispatch({ type: "ACCEPT", value });
 
 export {
-  KnocialControllerProvider,
+  KnooneControllerProvider,
   useSoftUIController,
   setMiniSidenav,
   setTransparentSidenav,

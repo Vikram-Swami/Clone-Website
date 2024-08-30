@@ -69,7 +69,7 @@ function DashboardNavbar({ absolute, light, isMini, call }) {
       },
     ]);
   };
-  
+
   useEffect(() => {
     // Setting the navbar type
     if (fixedNavbar) {
@@ -105,8 +105,8 @@ function DashboardNavbar({ absolute, light, isMini, call }) {
   };
 
   function generateWhatsAppMessage(referralLink) {
-    const companyName = "Knocial India Limited";
-    const message = `👋 Hey there!\n\nLooking to start earning?💰\nClick on this link to get started with ${companyName}.\n\nLink: ${referralLink}\n\nJoin us at ${companyName} and explore exciting opportunities to earn from the comfort of your home.\n\nHappy earning! 🚀\n\nRegards\nMastree Networking Team`;
+    const companyName = "Kno-one India Limited";
+    const message = `👋 Hey there!\n\nLooking to start earning?💰\nClick on this link to get started with ${companyName}.\n\nLink: ${referralLink}\n\nJoin us at ${companyName} and explore exciting opportunities to earn from the comfort of your home.\n\nHappy earning! 🚀\n\nRegards\n Kno-one Team`;
     return message;
   }
 

@@ -497,7 +497,7 @@ function SignUp() {
               onClick={handleSetAgreement}
               sx={{ cursor: "poiner", userSelect: "none", whiteSpace: "nowrap" }}
             >
-              &nbsp;&nbsp;I agree with Knocial India&apos;s &nbsp;
+              &nbsp;&nbsp;I agree with Kno-one India&apos;s &nbsp;
             </SoftTypography>
             <SoftTypography
               component={Link}

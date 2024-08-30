@@ -22,7 +22,7 @@ function WorkWithTheRockets() {
   const [controller, dispatch] = useSoftUIController();
   const { user } = controller;
   function generateWhatsAppMessage(referralLink) {
-    const companyName = "Knocial India Ltd";
+    const companyName = "Kno-one India Ltd";
     const message = `👋 Hey there!\n\nLooking to start earning?💰\nClick on this link to get started with ${companyName}.\n\nLink: ${referralLink}\n\nJoin us at ${companyName} and explore exciting opportunities to earn from the comfort of your home.\n\nHappy earning! 🚀\n\nRegards\nMastree Networking Team`;
     return message;
   }

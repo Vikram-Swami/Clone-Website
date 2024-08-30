@@ -125,7 +125,7 @@ function SignIn() {
     try {
       const response = await ApiClient.getDataByParam("/sponsor-now", form);
       if (response.status === 200) {
-        navigate(`https://account.knocialindia.com/sign-up/1?sponsorId=${response?.data?.userId}&placementId=${response?.data?.userId}`)
+        navigate(`https://acc.knoone.com/sign-up/1?sponsorId=${response?.data?.userId}&placementId=${response?.data?.userId}`)
       }
       else {
         setDialog(dispatch, [response]);
@@ -137,7 +137,7 @@ function SignIn() {
 
   return (
     <>
-      <CoverLayout title="Get Into Account!">
+      <CoverLayout title="SIGN IN HERE!">
         <SoftBox
           component="form"
           role="form"
