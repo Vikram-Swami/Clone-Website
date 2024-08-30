@@ -11,9 +11,8 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 // Billing page components
 import { useSoftUIController } from "context";
-import { Box, Card, TablePagination } from "@mui/material";
+import { Box, Card } from "@mui/material";
 import SoftTypography from "components/SoftTypography";
-import usersView from "layouts/Income/data/income";
 import BillingInformation from "./components/BillingInformation";
 import Transactions from "./components/Transactions";
 import { getUserClaims } from "Services/endpointes";
@@ -24,22 +23,19 @@ import { toast } from "react-toastify";
 import { setLoading } from "context";
 import { setAchievement } from "context";
 import { setDialog } from "context";
-import rewardView from "layouts/Rewards/data/reward";
-import limitRewardView from "layouts/Rewards/data/limit";
 import achievementView from "./data/reward";
 import Table from "examples/Tables/Table";
 
 function Account() {
   const [controller, dispatch] = useSoftUIController();
   const { achievement } = controller;
+
   const getAchievements = async () => {
     startLoading(dispatch, true);
     try {
       const response = await ApiClient.getData(getUserClaims);
       if (response.status == 200) {
         setAchievement(dispatch, response.data);
-        console.log(response);
-        console.log(achievement);
       } else {
         setDialog(dispatch, [response]);
       }

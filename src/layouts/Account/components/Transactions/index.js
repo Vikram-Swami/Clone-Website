@@ -27,8 +27,6 @@ function Transactions() {
       const response = await ApiClient.getData(getTransactionsByUserId);
       if (response?.status === 200) {
         setTransaction(dispatch, response?.data);
-      } else {
-        setDialog(dispatch, [response]);
       }
     } catch (error) {
       toast.error(error.toString());
@@ -93,6 +91,7 @@ function Transactions() {
                   color="error"
                   icon="arrow_downward"
                   name={e.type}
+                  id={e.id}
                   description={formattedDate}
                   value={"₹" + e.amount}
                 />

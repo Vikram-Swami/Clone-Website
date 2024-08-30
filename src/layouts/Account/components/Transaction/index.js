@@ -9,7 +9,7 @@ import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import SoftButton from "components/SoftButton";
 
-function Transaction({ color, icon, name, description, value }) {
+function Transaction({ color, icon, name, id, description, value }) {
   return (
     <SoftBox key={name} component="li" py={1} pr={2} mb={1}>
       <SoftBox display="flex" justifyContent="space-between" alignItems="center">
@@ -22,6 +22,9 @@ function Transaction({ color, icon, name, description, value }) {
           <SoftBox display="flex" flexDirection="column">
             <SoftTypography variant="button" fontWeight="medium" gutterBottom>
               {name}
+            </SoftTypography>
+            <SoftTypography variant="caption" color="text">
+              TNX ID: {id}
             </SoftTypography>
             <SoftTypography variant="caption" color="text">
               {description}
@@ -50,6 +53,7 @@ Transaction.propTypes = {
   ]).isRequired,
   icon: PropTypes.node.isRequired,
   name: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
 };

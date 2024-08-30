@@ -32,24 +32,6 @@ function Author({ name, id }) {
   );
 }
 
-const payment = (id, amount, dispatch, call) => async (form) => {
-  try {
-    form.append("id", id);
-    form.append("amount", amount);
-    startLoading(dispatch, true);
-    const response = await ApiClient.createData(purchase, form);
-    if (response.status == 200) {
-      setDialog(dispatch, [response]);
-      call();
-    } else {
-      setDialog(dispatch, [response]);
-    }
-  } catch (err) {
-    toast.error(err.response?.data?.message);
-    setLoading(dispatch, false);
-  }
-};
-
 const actConnection = async (id, dispatch, call) => {
   try {
     startLoading(dispatch, true);
@@ -67,7 +49,7 @@ const actConnection = async (id, dispatch, call) => {
 };
 
 function Status({ status, dispatch, call, e }) {
-if (!status) {
+  if (!status) {
     return (
       <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
         <SoftBox display="flex" flexDirection="column">

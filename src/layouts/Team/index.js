@@ -39,12 +39,12 @@ function Team() {
     try {
       const response = await ApiClient.getData(getMembers);
       if (response.status == 200) {
-        let self = JSON.parse(JSON.stringify(user));
+        // let self = JSON.parse(JSON.stringify(user));
 
-        response.data.unshift(self)
+        // response.data.unshift(self)
         setMembers(dispatch, response.data);
       } else {
-        toast.success(response.message);
+        toast.success(response?.message);
       }
     } catch (error) {
       toast.info(error?.message);
@@ -148,9 +148,6 @@ function Team() {
       <SoftBox py={3} mb={3} width="100%" height="85dvh">
 
         {member?.length > 0 ? (
-          // <ReactFlow nodes={member} edges={edges} style={styles} fitView>
-          //   <Background />
-          // </ReactFlow>
           <Table columns={TeamView.columns} rows={memoizedRows} />
         ) : (
           <SoftBox mt={4}>

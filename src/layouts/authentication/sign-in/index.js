@@ -121,6 +121,20 @@ function SignIn() {
     }
   };
 
+  const register = async (form) => {
+    try {
+      const response = await ApiClient.getDataByParam("/sponsor-now", form);
+      if (response.status === 200) {
+        navigate(`https://account.knocialindia.com/sign-up/1?sponsorId=${response?.data?.userId}&placementId=${response?.data?.userId}`)
+      }
+      else {
+        setDialog(dispatch, [response]);
+      }
+    } catch (err) {
+      setDialog(dispatch, [{ status: 400, message: err?.toString() }])
+    }
+  }
+
   return (
     <>
       <CoverLayout title="Get Into Account!">
@@ -194,6 +208,41 @@ function SignIn() {
               OTP
             </SoftButton>
           </SoftBox>
+          <SoftBox fontSize="0.9rem">
+            <SoftTypography variant="p" fontWeight="bold" color="text">
+              New User?
+            </SoftTypography>{" "}
+            <SoftTypography
+              onClick={() => {
+                setDialog(dispatch, [
+                  {
+                    status: "form",
+                    title: "Please Enter Sponsor User ID or Email",
+                    children: (
+                      <TextField
+                        autoFocus
+                        name="userId"
+                        placeholder="User Id | Email"
+                        margin="dense"
+                        label="ID"
+                        type="text"
+                        fullWidth
+                      />
+                    ),
+                    action: "Submit",
+                    call: register,
+                  },
+                ]);
+              }}
+              variant="a"
+              color="info"
+              textGradient
+              cursor="pointer"
+            >
+              Register Here
+            </SoftTypography>
+          </SoftBox>
+          <Separator />
           <SoftBox fontSize="0.9rem">
             <SoftTypography variant="p" fontWeight="bold" color="text">
               Incomplete Profile?
