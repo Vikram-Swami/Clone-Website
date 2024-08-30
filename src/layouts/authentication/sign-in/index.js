@@ -149,32 +149,28 @@ function SignIn() {
           onSubmit={handleLogin}
         >
           <SoftBox mb={1} width="100%">
+            <SoftTypography
+              component="h5"
+              fontWeight="bold"
+              onChange={(e) => {
+                e.target.value = e.target.value.toUpperCase();
+              }}
+            >Enter Your Credentials Here!</SoftTypography>
             <SoftBox ml={0.5} textAlign="left">
-              <SoftTypography
-                component="label"
-                variant="caption"
-                fontWeight="bold"
-                onChange={(e) => {
-                  e.target.value = e.target.value.toUpperCase();
-                }}
-              >
-                Email / User ID
-              </SoftTypography>
             </SoftBox>
             <SoftInput type="text" placeholder="Please Enter Email or User ID" name="userId" />
           </SoftBox>
           <SoftBox mb={1} width="100%">
             <SoftBox ml={0.5} textAlign="left">
-              <SoftTypography component="label" variant="caption" fontWeight="bold">
-                Password
-              </SoftTypography>
             </SoftBox>
             <SoftInput type="password" placeholder="Password" name="password" />
           </SoftBox>
-          <SoftBox mt={1} mb={3} display="flex" justifyContent="space-evenly" gap="10px">
+          <SoftBox mt={1}>
             <SoftButton variant="gradient" color="info" type="submit">
               Login
             </SoftButton>
+          </SoftBox>
+          <SoftBox mt={1} mb={2}>
             <SoftButton
               onClick={() => {
                 setDialog(dispatch, [
@@ -197,7 +193,7 @@ function SignIn() {
                   },
                 ]);
               }}
-              variant="gradient"
+              variant="info"
               color="info"
               fontSize="0.8rem"
               whiteSpace="nowrap"
@@ -205,7 +201,7 @@ function SignIn() {
               textTransform="uppercase"
               cursor="pointer"
             >
-              OTP
+              Login with OTP
             </SoftButton>
           </SoftBox>
           <SoftBox fontSize="0.9rem">
@@ -240,41 +236,6 @@ function SignIn() {
               cursor="pointer"
             >
               Register Here
-            </SoftTypography>
-          </SoftBox>
-          <Separator />
-          <SoftBox fontSize="0.9rem">
-            <SoftTypography variant="p" fontWeight="bold" color="text">
-              Incomplete Profile?
-            </SoftTypography>{" "}
-            <SoftTypography
-              onClick={() => {
-                setDialog(dispatch, [
-                  {
-                    status: "form",
-                    title: "Please Enter your UserId",
-                    children: (
-                      <TextField
-                        autoFocus
-                        name="userId"
-                        placeholder="User Id | Email"
-                        margin="dense"
-                        label="ID"
-                        type="text"
-                        fullWidth
-                      />
-                    ),
-                    action: "Submit",
-                    call: completeProfile,
-                  },
-                ]);
-              }}
-              variant="a"
-              color="info"
-              textGradient
-              cursor="pointer"
-            >
-              Complete Now
             </SoftTypography>
           </SoftBox>
           <Separator />

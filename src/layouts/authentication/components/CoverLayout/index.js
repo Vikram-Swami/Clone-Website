@@ -16,59 +16,32 @@ import Footer from "layouts/authentication/components/Footer";
 
 function CoverLayout({ header, title, top, children }) {
   return (
-    <PageLayout background="white">
-      <Grid
-        container
-        py={2}
-        justifyContent="center"
-        flexDirection={"column"}
-        alignItems={"center"}
-        minHeight={"100dvh"}
-      >
-        <Grid item xs={11} sm={12} md={12} xl={12} justifyItems="center">
-          <SoftBox mt={top} minWidth="22dvw" borderRadius="10px">
-            <SoftBox pt={3} px={3}>
-              {!header ? (
-                <>
-                  <SoftBox mb={2} textAlign="center">
+    <PageLayout background="white" display="flex" justifyContent="center" alignItems="center" minHeight={"100dvh"}>
+      <SoftBox mt={top} minWidth="22dvw" borderRadius="10px" minHeight={"80dvh"} display="flex" sx={{ flexWrap: "wrap" }} justifyContent="space-evenly" alignItems="center">
+        <SoftBox pt={3} px={3} sx={{ textAlign: "center" }}>
+          {!header ? (
+            <>
+              <SoftBox mb={2} sx={{ textAlign: "center" }}>
 
-                    <SoftBox
-                      component="img"
-                      justifyItems="center"
-                      src="/logo.png"
-                      alt="Knoone India"
-                      width="100%"
-                      maxWidth="2.25rem"
-                      pr="5px"
-                    />
-                    <SoftTypography variant="h5" fontWeight="bold" color={"dark"} textGradient>
-                      {title}
-                    </SoftTypography>
-                  </SoftBox>
-                </>
-              ) : (
-                header
-              )}
-            </SoftBox>
-            <SoftBox pb={3} px={3}>{children}</SoftBox>
-          </SoftBox>
-        </Grid>
-        <Grid item xs={12} md={12}>
-          <SoftBox
-            height="100%"
-            display={{ xs: "none", md: "block" }}
-            position="relative"
-            right={{ md: "-12rem", xl: "-16rem" }}
-            mr={-16}
-            sx={{
-              transform: "skewX(-10deg)",
-              overflow: "hidden",
-              borderBottomLeftRadius: ({ borders: { borderRadius } }) => borderRadius.lg,
-            }}
-          ></SoftBox>
-        </Grid>
-        <Footer />
-      </Grid>
+                <SoftBox
+                  component="img"
+                  src="/logo.png"
+                  alt="Kno-one India Limited"
+                  width="100%"
+                  maxWidth="22rem"
+                />
+              </SoftBox>
+              <SoftTypography variant="h5" fontWeight="bold" textGradient>
+                {title}
+              </SoftTypography>
+            </>
+          ) : (
+            header
+          )}
+        </SoftBox>
+        <SoftBox pb={3} px={3}>{children}</SoftBox>
+      </SoftBox>
+      <Footer />
     </PageLayout>
   );
 }
