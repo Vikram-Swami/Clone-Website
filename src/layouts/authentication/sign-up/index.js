@@ -202,6 +202,7 @@ function SignUp() {
                     <MenuItem value="Miss">Miss</MenuItem>
                     <MenuItem value="Ms.">Ms.</MenuItem>
                     <MenuItem value="Dr.">Dr.</MenuItem>
+                    <MenuItem value="">Organization</MenuItem>
                     {/* Add more titles as needed */}
                   </Select>
                 </FormControl>
@@ -212,7 +213,10 @@ function SignUp() {
               </SoftBox>
 
               <SoftBox mb={2} width="100%">
+                <FormLabel color="primary" sx={{ alignSelf: "center" }}>Initials</FormLabel>
+
                 <SoftInput name="dob" type="date" placeholder="Date of Birth" />
+
               </SoftBox>
 
               <SoftBox mb={2} width="100%">

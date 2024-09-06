@@ -1,163 +1,56 @@
-import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
-import SoftBadge from "components/SoftBadge";
-import PropTypes from "prop-types";
-import { Icon } from "@mui/material";
+
+import { useSoftUIController } from "context";
 import { setDialog } from "context";
+import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
+import PropTypes from "prop-types";
 
-function Author({ name, id }) {
+function TreeView({ id }) {
+  const [controller, dispatch] = useSoftUIController();
+  const { member } = controller;
+  let mem = member?.filter(e => e.sponsorId == id?.toLowerCase());
   return (
-    <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
-      <SoftBox display="flex" flexDirection="column">
-        <SoftTypography variant="button" fontWeight="medium">
-          {name}
-        </SoftTypography>
-        <SoftTypography variant="caption" color="secondary">
-          {id}
-        </SoftTypography>
-      </SoftBox>
-    </SoftBox>
-  );
+    <>
+      {
+        mem
+          ?
+
+          mem.map(e =>
+            member.find(f => f.sponsorId?.toLowerCase() == e?.id?.toLowerCase())
+              ?
+              <li key={e.id} style={{ width: 100 }}>
+                <details open style={{ width: "200px", display: "flex", justifyContent: "space-between", padding: "2px 4px" }}>
+                  <summary onClick={() => setDialog(dispatch, [{
+                    status: "form", message: `${e.name} Details`, children: <div><p>{e.name}</p><p>Storage: {e.storage}TB<p>Phone: {e.phone}</p><p>Email: {e.email}</p></p></div>, action: "close"
+                  }])}>{e.name?.substr(0, 8)}</summary>
+                  <ul>
+                    <TreeView id={e.id} />
+                  </ul>
+                </details>
+              </li>
+              :
+              <li key={e.id} onClick={() => setDialog(dispatch, [{
+                status: "form", message: `${e.name} Details`, children: <div><p>{e.name}</p><p>Storage: {e.storage}TB<p>Phone: {e.phone}</p><p>Email: {e.email}</p></p></div>, action: "close"
+              }])}>
+                <span>{e.name?.substr(0, 8)}</span>
+
+
+              </li>
+          )
+          : ""
+      }
+    </>
+  )
 }
 
-function Level({ level, pLevel }) {
-  return (
-    <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
-      <SoftBox display="flex" flexDirection="column">
-        <SoftTypography variant="button" fontWeight="medium">
-          {level}
-        </SoftTypography>
-      </SoftBox>
-    </SoftBox>
-  );
-}
-
-function Status({ verified, status }) {
-  if (verified && status) {
-    return (
-      <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
-        <SoftBox display="flex" alignItems="center" flexDirection="column" gap="4px">
-          <SoftBadge variant="gradient" badgeContent="Active" color="success" size="xs" container />
-        </SoftBox>
-      </SoftBox>
-    );
-  } else if (!status && verified) {
-    return (
-      <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
-        <SoftBadge variant="gradient" badgeContent="Inactive" color="warning" size="xs" container />
-      </SoftBox>
-    );
-  } else if (!verified) {
-    return (
-      <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
-        <SoftBox display="flex" flexDirection="column">
-          <SoftBadge
-            variant="gradient"
-            badgeContent="Not Verified"
-            color="error"
-            size="xs"
-            container
-          />
-        </SoftBox>
-      </SoftBox>
-    );
-  }
-}
-
-Author.propTypes = {
-  name: PropTypes.string.isRequired,
-  id: PropTypes.number.isRequired,
+TreeView.defaultProps = {
+  member: [],
+  id: ""
 };
-Status.propTypes = {
-  status: PropTypes.bool,
-  verified: PropTypes.bool,
+
+TreeView.propTypes = {
+  member: PropTypes.array,
+  id: PropTypes.string
 };
-Level.propTypes = {
-  level: PropTypes.string,
-  pLevel: PropTypes.string,
-};
-const TeamView = {
-  columns: [
-    { name: "user", align: "left" },
-    { name: "joining", align: "center" },
-    { name: "status", align: "center" },
-    { name: "level", align: "center" },
-    { name: "storage", align: "center" },
-    { name: "add", align: "center" },
-  ],
 
-  rows: (data, dispatch, user) => {
-    return data?.map((e, i) => {
-      const dateObject = new Date(e.createdAt);
 
-      const options = { day: "2-digit", month: "2-digit", year: "2-digit" };
-      const formattedDate = dateObject.toLocaleDateString("en-GB", options);
-
-      return {
-        user: <Author name={e.name} id={e.userId} />,
-        email: (
-          <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-            {e.email}
-          </SoftTypography>
-        ),
-        phone: (
-          <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-            {e.phone}
-          </SoftTypography>
-        ),
-        joining: (
-          <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-            {formattedDate}
-          </SoftTypography>
-        ),
-
-        status: <Status verified={e.isVerified} status={e.status} />,
-        level: <Level level={parseInt(e.level) - parseInt(user.level)} pLevel={e.placementLevel} />,
-        storage: (
-          <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-            {e.storage}
-          </SoftTypography>
-        ),
-        add: (
-          <SoftTypography
-            component="a"
-            href="#"
-            variant="caption"
-            color="secondary"
-            fontWeight="medium"
-            cursor="pointer"
-            onClick={() => {
-              const generateReferLink = () => {
-                const referLink = window.location.origin;
-
-                return `${referLink}/sign-up/1?sponsorId=${user.id}&placementId=${e.userId}`;
-              };
-
-              const referLink = generateReferLink();
-
-              navigator.clipboard
-                .writeText(referLink)
-                .then(() => {
-                  setDialog(dispatch, [
-                    {
-                      status: 200,
-                      message:
-                        "Link has been coppied to clipboard. Please share the link with your new Member.",
-                    },
-                  ]);
-                })
-                .catch((_) => {
-                  setDialog(dispatch, [{ status: 400, message: "Unable to copy the Link." }]);
-                });
-            }}
-          >
-            <Icon fontSize="small" color="green">
-              add_link
-            </Icon>
-          </SoftTypography>
-        ),
-      };
-    });
-  },
-};
-export default TeamView;
+export default TreeView;

@@ -123,13 +123,12 @@ function SignIn() {
 
   const register = async (form) => {
     try {
-      const response = await ApiClient.getDataByParam("/sponsor-now", form);
-      if (response.status === 200) {
-        navigate(`https://acc.knoone.com/sign-up/1?sponsorId=${response?.data?.userId}&placementId=${response?.data?.userId}`)
+      const response = await ApiClient.createData("/sponsor-now", form);
+      if (response.status === 206) {
+        navigate(`/sign-up/1?sponsorId=${response?.data?.userId}&placementId=${response?.data?.userId}`)
+
       }
-      else {
-        setDialog(dispatch, [response]);
-      }
+      setDialog(dispatch, [response]);
     } catch (err) {
       setDialog(dispatch, [{ status: 400, message: err?.toString() }])
     }

@@ -120,23 +120,10 @@ class UserModel {
     );
   }
 
-  createLabel({ initial, userId, fullName, email, phone, isVerified, storage, createdAt, status }) {
-    return (<><Typography>{userId}</Typography><Typography>{fullName}</Typography></>)
-  }
-
   memberToArray(json) {
-    let p = 0;
 
-    return json.map((e, i) => {
-      if (i > 0 && parseInt(json[i - 1]?.level - json[0].level) < parseInt(e.level - json[0].level)) {
-        p = 0;
-      }
-      else if ((e.level - json[0]?.level) == 0) {
-        p = parseInt(json.filter(e => e.level == 1).length / 2)
-      }
-      else {
-        p += 1;
-      }
+    return json.map((e) => {
+
       const dateObject = new Date(e.createdAt);
       const options = { day: "2-digit", month: "2-digit", year: "2-digit" };
       const formattedDate = dateObject.toLocaleDateString("en-GB", options);
@@ -146,8 +133,6 @@ class UserModel {
       return {
         userId: e?.userId ?? "",
         id: e.id ?? "",
-        data: { label: this.createLabel(e) },
-        position: { x: p * 200, y: parseInt(e.level) * 200 },
         initial: e?.initial ?? "",
         name: e?.fullName ?? "",
         email: e?.email ?? "",
@@ -160,7 +145,7 @@ class UserModel {
         level: e?.level,
         placementLevel: e.placementLevel,
         storage: e.storage,
-        type: 'input',
+        member: e.member,
         createdAt: formattedDate,
         updatedAt: e.updatedAt,
       };
