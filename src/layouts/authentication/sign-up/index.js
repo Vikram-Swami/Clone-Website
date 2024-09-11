@@ -212,9 +212,8 @@ function SignUp() {
                 <SoftInput name="fullName" placeholder="Name" />
               </SoftBox>
 
-              <SoftBox mb={2} width="100%">
-                <FormLabel color="primary" sx={{ alignSelf: "center" }}>Initials</FormLabel>
-
+              <SoftBox mb={2} width="100%" sx={{ display: "flex", gap: 5, justifyContent: "center", flexDirection: "row", alignContent: "center" }}>
+                <FormLabel color="primary" sx={{ alignSelf: "center" }}>DOB</FormLabel>
                 <SoftInput name="dob" type="date" placeholder="Date of Birth" />
 
               </SoftBox>

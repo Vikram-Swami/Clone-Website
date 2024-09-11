@@ -11,7 +11,7 @@
 /build
 .env
 /.env
-
+/src/Services/member.js
 # misc
 .DS_Store
 .env.local

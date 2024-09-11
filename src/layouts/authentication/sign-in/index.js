@@ -124,7 +124,7 @@ function SignIn() {
   const register = async (form) => {
     try {
       const response = await ApiClient.createData("/sponsor-now", form);
-      if (response.status === 206) {
+      if (response.status === 200) {
         navigate(`/sign-up/1?sponsorId=${response?.data?.userId}&placementId=${response?.data?.userId}`)
 
       }

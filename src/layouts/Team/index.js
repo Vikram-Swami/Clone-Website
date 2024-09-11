@@ -150,7 +150,7 @@ function Team() {
                 )
               })}
             </SoftBox>
-            <SoftBox component='div' display="flex" justifyContent="center" width="100%">
+            <SoftBox component='div' display="flex" justifyContent="center" width="100%" sx={{ overflowX: "scroll", border: "1px solid", minHeight: "100%", padding: "10px" }}>
               {userId ? member.find(e => e.sponsorId === userId?.toLowerCase()) ? <ul className="tree"><TreeView member={member} id={userId} /></ul> : "No Member Found Here!" : "No User Selected"}
             </SoftBox>
           </>

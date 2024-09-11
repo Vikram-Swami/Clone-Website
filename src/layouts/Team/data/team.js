@@ -29,7 +29,7 @@ function TreeView({ id }) {
               </li>
               :
               <li key={e.id} onClick={() => setDialog(dispatch, [{
-                status: "form", message: `${e.name} Details`, children: <div><p>{e.name}</p><p>Storage: {e.storage}TB<p>Phone: {e.phone}</p><p>Email: {e.email}</p></p></div>, action: "close"
+                status: "form", message: `${e.name} Details (${e.userId})`, children: <div><p>{e.name}</p><p>Storage: {e.storage}TB<p>Phone: {e.phone}</p><p>Email: {e.email}</p></p></div>, action: "close"
               }])}>
                 <span>{e.name?.substr(0, 8)}</span>
 
@@ -39,6 +39,12 @@ function TreeView({ id }) {
           : ""
       }
     </>
+  )
+}
+
+const MemberView = (e) => {
+  return (
+    <div><p>{e.name}</p><p>Storage: {e.storage}TB<p>Phone: {e.phone}</p><p>Email: {e.email}</p></p></div>
   )
 }
 
