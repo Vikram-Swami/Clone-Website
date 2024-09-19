@@ -143,7 +143,7 @@ function Team() {
                 return (
                   e.sponsorId.toLowerCase() == user.id.toLowerCase() ? <div className="legs"><SoftButton component="h5" variant="text" sx={{ cursor: "pointer", gap: "10px" }} px={4} display="flex" justifyContent="space-between" alignItems="center" color="dark"><p>{e.name.substr(0, 4)}</p>
                     <Icon fontSize="1rem" color="green" onClick={() => setDialog(dispatch, [{
-                      status: "form", message: `${e.name} Details`, children: <div><p>{e.name}</p><p>Storage: {e.storage}TB<p>Phone: {e.phone}</p><p>Email: {e.email}</p></p></div>, action: "close"
+                      status: "form", message: `${e.name} - ${e.userId}`, children: <div><p>{e.name}</p><p>Storage: {e.storage}TB<p>Phone: {e.phone}</p><p>Email: {e.email}</p></p></div>, action: "close"
                     }])}>visibility</Icon>
                     <Icon onClick={() => setUserId(e.id)} fontSize="3rem" color="green">groups</Icon>
                   </SoftButton></div> : ""

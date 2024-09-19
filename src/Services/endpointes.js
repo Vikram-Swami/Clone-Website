@@ -94,6 +94,7 @@ export const deleteAllNotifications = "/delete-notifications";
 export const getUserTransactions = "/get-user-transactions";
 export const purchase = "/purchase";
 export const createTransactions = "/create-transactions";
+export const withdraw = "/withdraw";
 export const getTransactionById = "/get-transaction-by-id";
 export const getTransactionsByUserId = "/get-transactions-by-user-id";
 export const updateTransactions = "/update-transactions";

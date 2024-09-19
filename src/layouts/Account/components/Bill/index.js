@@ -11,12 +11,11 @@ import { setDialog } from "context";
 import { toast } from "react-toastify";
 import { setLoading } from "context";
 import { startLoading } from "context";
-import AccountPaymentView from "examples/AccountPaymentView";
 import { createTransactions } from "Services/endpointes";
 import { setUser } from "context";
 import ApiClient from "Services/ApiClient";
-import { setNotification } from "context";
 import { getUserById } from "Services/endpointes";
+import Withdraw from "../Withdraw";
 
 function Bill({ wallet, earning, withdraw, TDS, Income, Storage, bankName }) {
   const [controller, dispatch] = useSoftUIController();
@@ -91,7 +90,7 @@ function Bill({ wallet, earning, withdraw, TDS, Income, Storage, bankName }) {
             My Earning :
           </SoftTypography>
           <SoftTypography variant="h6" color="black" fontWeight="medium">
-            {/* {user?.wallet} */}0
+            {earning}
           </SoftTypography>
         </SoftBox>
         <SoftBox mb={1} lineHeight={0} display={"flex"} justifyContent={"space-between"}>
@@ -107,7 +106,7 @@ function Bill({ wallet, earning, withdraw, TDS, Income, Storage, bankName }) {
             TDS :
           </SoftTypography>
           <SoftTypography variant="h6" color="black" fontWeight="medium">
-            {/* {user?.wallet} */}0
+            {user?.tds??0}
           </SoftTypography>
         </SoftBox>
         <SoftBox mb={1} lineHeight={0} display={"flex"} justifyContent={"space-between"}>
@@ -115,7 +114,7 @@ function Bill({ wallet, earning, withdraw, TDS, Income, Storage, bankName }) {
             Monthly Income :
           </SoftTypography>
           <SoftTypography variant="h6" color="black" fontWeight="medium">
-            {/* {user?.wallet} */}0
+            {0}
           </SoftTypography>
         </SoftBox>
         <SoftBox mb={1} lineHeight={0} display={"flex"} justifyContent={"space-between"}>
@@ -140,15 +139,15 @@ function Bill({ wallet, earning, withdraw, TDS, Income, Storage, bankName }) {
                 setDialog(dispatch, [
                   {
                     status: "form",
-                    title: "Want to use wallet?",
-                    action: "Pay Now",
-                    children: <AccountPaymentView amount={parseFloat(user?.wallet)} id={user.id} />,
+                    title: "Transfer to Self Bank Account",
+                    action: "Confirm",
+                    children: <Withdraw amount={parseFloat(user?.wallet)} />,
                     call: (form) => {
                       setDialog(dispatch, [
                         {
                           status: "form",
-                          title: "Confirm",
-                          action: "Pay Now",
+                          title: "Transfer to Self Bank Account",
+                          action: "Confirm",
                           message: "Are you sure to Proceed",
                           call: () => payment(form),
                         },
