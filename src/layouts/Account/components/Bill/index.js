@@ -1,5 +1,3 @@
-// prop-types is a library for typechecking of props
-import PropTypes from "prop-types";
 // @mui material components
 import Icon from "@mui/material/Icon";
 import Divider from "@mui/material/Divider";
@@ -11,25 +9,21 @@ import { setDialog } from "context";
 import { toast } from "react-toastify";
 import { setLoading } from "context";
 import { startLoading } from "context";
-import { createTransactions } from "Services/endpointes";
 import { setUser } from "context";
 import ApiClient from "Services/ApiClient";
 import { getUserById } from "Services/endpointes";
 import Withdraw from "../Withdraw";
+import { withdraw } from "Services/endpointes";
 
-function Bill({ wallet, earning, withdraw, TDS, Income, Storage, bankName }) {
+function Bill() {
   const [controller, dispatch] = useSoftUIController();
-  const { user, e } = controller;
+  const { user } = controller;
   const payment = async (form) => {
     try {
-      if (form.get("type") == "add") {
-        form.append("paymentMethod", "tnxId");
-      } else {
-
-        form.append("paymentMethod", "wallet Transaction");
-      }
+        form.append("paymentMethod", "Account Transfer");
+        form.append("type", "withdraw")
       startLoading(dispatch, true);
-      const response = await ApiClient.createData(createTransactions, form);
+      const response = await ApiClient.createData(withdraw, form);
       if (response.status == 200) {
         const data = await ApiClient.getData(getUserById);
         if (data.status == 200) {
@@ -55,7 +49,6 @@ function Bill({ wallet, earning, withdraw, TDS, Income, Storage, bankName }) {
       bgColor="grey-100"
       borderRadius="lg"
       p={3}
-      mb={Income ? 0 : 1}
       mt={2}
     >
       <SoftBox width="100%" display="flex" flexDirection="column">
@@ -67,7 +60,7 @@ function Bill({ wallet, earning, withdraw, TDS, Income, Storage, bankName }) {
           mb={2}
         >
           <SoftTypography variant="button" fontWeight="medium" textTransform="capitalize">
-            {wallet}
+            {user?.wallet ?? 0}
           </SoftTypography>
 
           <SoftBox
@@ -82,7 +75,7 @@ function Bill({ wallet, earning, withdraw, TDS, Income, Storage, bankName }) {
             My Balance :
           </SoftTypography>
           <SoftTypography variant="h6" color="black" fontWeight="medium">
-            {user?.wallet}
+            {user?.wallet ?? 0}
           </SoftTypography>
         </SoftBox>
         <SoftBox mb={1} lineHeight={0} display={"flex"} justifyContent={"space-between"}>
@@ -90,7 +83,7 @@ function Bill({ wallet, earning, withdraw, TDS, Income, Storage, bankName }) {
             My Earning :
           </SoftTypography>
           <SoftTypography variant="h6" color="black" fontWeight="medium">
-            {earning}
+            {user?.earning??0}
           </SoftTypography>
         </SoftBox>
         <SoftBox mb={1} lineHeight={0} display={"flex"} justifyContent={"space-between"}>
@@ -165,21 +158,5 @@ function Bill({ wallet, earning, withdraw, TDS, Income, Storage, bankName }) {
     </SoftBox>
   );
 }
-
-// Setting default values for the props of Bill
-Bill.defaultProps = {
-  Income: false,
-};
-
-// Typechecking props for the Bill
-Bill.propTypes = {
-  wallet: PropTypes.string.isRequired,
-  earning: PropTypes.string.isRequired,
-  withdraw: PropTypes.string.isRequired,
-  TDS: PropTypes.string.isRequired,
-  Income: PropTypes.bool,
-  Storage: PropTypes.string.isRequired,
-  bankName: PropTypes.string.isRequired,
-};
 
 export default Bill;

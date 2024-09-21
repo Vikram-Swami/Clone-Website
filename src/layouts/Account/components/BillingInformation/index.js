@@ -18,12 +18,7 @@ function BillingInformation() {
       </SoftBox>
       <SoftBox pt={1} pb={2} px={2}>
         <SoftBox component="ul" display="flex" flexDirection="column" p={0} m={0}>
-          <Bill
-            name="oliver liam"
-            company="viking burrito"
-            email="oliver@burrito.com"
-            vat="FRB1235476"
-          />
+          <Bill/>
         </SoftBox>
       </SoftBox>
     </Card>
