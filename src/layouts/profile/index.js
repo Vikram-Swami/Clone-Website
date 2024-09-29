@@ -19,10 +19,10 @@ function Overview() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user.isVerfied && !user.accountNo && user.aadharNo) {
+    if (!user.isVerified) {
       setDialog(dispatch, [{
         status: "form",
-        title: "Your Account is Not Verified!",
+        title: "KYC Required!",
         message: "Kindly complete your KYC to access more features!",
         action: "Complete KYC",
         call: () => { completeProfile(dispatch, navigate) }

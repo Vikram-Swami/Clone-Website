@@ -13,11 +13,13 @@ import { generateSlab } from "api/users";
 import { PaymentMode, TnxId } from "./Form";
 import { buyConnection } from "api/users";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 function Products() {
   // const [products, setProducts] = useState([]);
   const [controller, dispatch] = useSoftUIController();
   const { products } = controller;
+  const navigate = useNavigate();
 
 
   function formatIndianCurrency(num) {
@@ -46,7 +48,7 @@ function Products() {
 
   const handlePayment = (form, storage, amount) => {
     if (form?.get("paymentMethod") == "TnxId") {
-      setDialog(dispatch, [{ status: "form", title: "Kindly Enter Transaction Number", children: <TnxId amount={amount} />, action: "Confirm", call: (newForm) => { buyConnection(newForm, storage, form.get("paymentMethod"), dispatch) } }])
+      setDialog(dispatch, [{ status: "form", title: "Kindly Enter Transaction Number", children: <TnxId amount={amount} />, action: "Confirm", call: (newForm) => { buyConnection(newForm, storage, form.get("paymentMethod"), dispatch, navigate) } }])
     } else {
       toast.error("Selcted payment method is not Available currently")
     }

@@ -18,8 +18,8 @@ function Team() {
   const [view, setView] = useState("table");
 
   const fetchMember = async () => {
-    await getMember(dispatch, user);
-    setMember(member.filter(e => e.sponsorId?.toLowerCase() != user?.id?.toLowerCase() && e?.userId?.toLowerCase() != user?.id?.toLowerCase()));
+    let newMember = await getMember(dispatch, user);
+    setMember(newMember.filter(e => e.sponsorId?.toLowerCase() != user?.id?.toLowerCase()));
   }
 
   const memberSearch = () => {

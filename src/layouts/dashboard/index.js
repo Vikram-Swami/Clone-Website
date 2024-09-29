@@ -30,7 +30,7 @@ function Dashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user.isVerfied && !user.accountNo && !user.aadharNo) {
+    if (!user.isVerified) {
       setDialog(dispatch, [{
         status: "form",
         title: "Account Verification Required",

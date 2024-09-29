@@ -206,12 +206,15 @@ export const getMember = async (dispatch, user) => {
       const memberWithSelf = [self, ...response.data];
       // setEdges(createEdges(member));
       setMembers(dispatch, memberWithSelf);
+      return response.data;
     } else {
       setDialog(dispatch, [response]);
+      return [];
     }
   } catch (error) {
     toast.info(error?.message ?? "Network Error!");
     setLoading(dispatch, false);
+    return [];
   }
 };
 
@@ -303,7 +306,7 @@ export const claimRewards = async (id, dispatch) => {
 };
 
 // Buy Connection
-export const buyConnection = async (form, storage, method, dispatch) => {
+export const buyConnection = async (form, storage, method, dispatch, navigate) => {
   try {
 
     startLoading(dispatch, true);

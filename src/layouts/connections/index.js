@@ -16,7 +16,7 @@ function Connections() {
 
 
   useEffect(() => {
-    if (!user.isVerfied && !user.accountNo && !user.aadharNo) {
+    if (!user.isVerified) {
       setDialog(dispatch, [{
         status: "form",
         title: "Account Verification Required",
@@ -24,9 +24,8 @@ function Connections() {
         action: "Complete KYC",
         call: () => { completeProfile(dispatch, navigate) }
       }])
-    } else {
-      connection.length < 1 && getConnection(dispatch);
     }
+    connection.length < 1 && getConnection(dispatch);
   }, []);
 
   return (

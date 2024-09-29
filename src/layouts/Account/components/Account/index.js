@@ -96,6 +96,21 @@ function AccountInfo() {
 
                 </div>
                 <div className="d-flex j-between mb10" >
+
+                    <div className="d-flex" style={{ flexDirection: "row" }}>
+                        <div className="icon">
+                            <Icon color="success">trending_up_icon</Icon>
+                        </div>
+                        <div className="desc-small">
+                            <p>Levels</p>
+                        </div>
+                    </div>
+                    <div className="desc-small">
+                        <h4 >{user?.leader ? "LEADER" : "₹" + user?.avail ?? 0}</h4>
+                    </div>
+
+                </div>
+                <div className="d-flex j-between mb10" >
                     <div className="d-flex" style={{ flexDirection: "row" }}>
                         <div className="icon">
                             <Icon color="success">payments</Icon>

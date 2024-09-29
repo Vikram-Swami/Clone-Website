@@ -30,6 +30,8 @@ class UserModel {
     city,
     state,
     level,
+    leader,
+    avail,
     country,
     postalCode,
     unread
@@ -66,6 +68,8 @@ class UserModel {
     this.city = city;
     this.state = state;
     this.level = level;
+    this.leader = leader;
+    this.avail = avail;
     this.country = country;
     this.postalCode = postalCode;
     this.unread = unread;
@@ -126,6 +130,8 @@ class UserModel {
       jsonData?.address?.city ?? "",
       jsonData?.address?.state ?? "",
       jsonData?.user?.level ?? 0,
+      jsonData?.user?.leader ?? false,
+      jsonData?.avail ?? 0,
       jsonData?.address?.country ?? "",
       jsonData?.address?.postalCode ?? "",
       jsonData?.unread ?? 0

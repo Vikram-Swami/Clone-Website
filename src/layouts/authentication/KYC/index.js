@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "@mui/material";
 import ApiClient from "Services/ApiClient";
@@ -24,13 +24,17 @@ function CompleteKYC() {
   const [controller, dispatch] = useSoftUIController();
   const { accept, user, step } = controller;
   const navigate = useNavigate();
-
+  const [photoCaptured, setPhotoCaptured] = useState(false); // State to check if photo is captured
+  const [livePhoto, setLivePhoto] = useState(null); // Store the captured image
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
   const signatureRef = useRef(null);
+  form.image = false;
 
   const titles = ["ADD ADDRESS", "COMPLETE KYC", "UPLOAD REQUIRED DOCUMENTS"]
   const routes = [createAddress, createKyc, uploadDocuments];
 
-  function dataURLtoFile(dataURL) {
+  function dataURLtoFile(dataURL, fileName) {
     // Split the data URL into components
     const [header, base64Data] = dataURL.split(',');
     const mimeType = header.match(/:(.*?);/)[1]; // Extract MIME type
@@ -41,12 +45,13 @@ function CompleteKYC() {
       arrayBuffer[i] = binaryData.charCodeAt(i); // Convert to binary
     }
 
-    return new File([arrayBuffer], "sign.png", { type: mimeType }); // Create a File object
+    return new File([arrayBuffer], fileName, { type: mimeType }); // Create a File object
   }
 
   // Validate IFSC Codes
   const handleIFSCCodeChange = async (e) => {
     const ifsc = e.target.value;
+    startLoading(dispatch, true);
     try {
       if (ifsc.length === 11) {
         const response = await ApiClient.getDataByParam(ifscValidate, ifsc);
@@ -64,7 +69,9 @@ function CompleteKYC() {
       }
     } catch (error) {
       form.current.IFSC.parentNode.style.border = "2px solid red";
-      toast.error(error.toString());
+      toast.error(error.message ?? "Network Error1");
+    } finally {
+      setLoading(dispatch, false);
     }
   };
 
@@ -92,8 +99,40 @@ function CompleteKYC() {
         form.current.country.value = "Country";
       }
     } catch (error) {
-      toast.error(error.toString());
+      toast.error(error?.message ?? "Network Error!");
+    } finally {
+      setLoading(dispatch, false);
     }
+  };
+
+
+
+  // Function to start the camera
+  const startCamera = () => {
+    setPhotoCaptured(false);
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then((stream) => {
+        videoRef.current.srcObject = stream;
+      })
+      .catch((err) => {
+        console.error("Error accessing camera: ", err);
+      });
+  };
+
+  // Function to capture the photo
+  const capturePhoto = () => {
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
+
+    // Draw the video frame to the canvas
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    // Convert the canvas content to a data URL
+    const dataURL = canvas.toDataURL("image/png");
+    setLivePhoto(dataURL);
+    setPhotoCaptured(true);
+    video.srcObject.getTracks().forEach(track => track.stop()); // Stop the camera stream
   };
 
   const submitHandler = async (e, route) => {
@@ -106,13 +145,20 @@ function CompleteKYC() {
     const formdata = new FormData(e.currentTarget);
 
     if (step === 3) {
+      if (!photoCaptured) {
+        toast.error("Live photo is required!");
+        return;
+      }
       if (!form.sign) {
         toast.error("Signatures are required!");
         return;
       }
       const signDataURL = form.sign;
-      const signFile = dataURLtoFile(signDataURL);
+      const signFile = dataURLtoFile(signDataURL, "sign.png");
       formdata.append("sign", signFile);
+
+      const photoFile = dataURLtoFile(livePhoto, "profile.png");
+      formdata.append("image", photoFile);
     }
 
     // Continue with other formdata appending...
@@ -122,8 +168,8 @@ function CompleteKYC() {
     try {
       const response = await ApiClient.createData(route, formdata);
       form.current.reset();
-      completeProfile(dispatch, navigate);
       setDialog(dispatch, [response]);
+      completeProfile(dispatch, navigate);
     } catch (error) {
       toast.error(error?.message ?? "Network Error!");
       setLoading(dispatch, false);
@@ -181,10 +227,10 @@ function CompleteKYC() {
                 <input type="text" name="city" placeholder="City" readOnly />
               </div>
               <div className="mb10">
-                <input type="text" name="state" disabled placeholder="State" />
+                <input type="text" name="state" readOnly placeholder="State" />
               </div>
               <div className="mb10">
-                <input type="text" name="country" disabled placeholder="Country" />
+                <input type="text" name="country" readOnly placeholder="Country" />
               </div>
             </>
           ) : step == 2 ? (
@@ -306,6 +352,29 @@ function CompleteKYC() {
                     <Icon style={{ verticalAlign: "middle" }}>upload</Icon>
                     <span className="file-name">No file chosen</span>
                   </label>
+                </div>
+                <div className="custom-form-control" style={{ maxHeight: "100%" }}>
+                  {photoCaptured ? <>
+                    <label style={{ width: "40%" }} className="custom-label">CAPTURED IMAGE</label>
+                    <img src={livePhoto} alt="Captured" style={{ maxWidth: "200px", borderRadius: "50%" }} />
+                  </> :
+                    <>
+                      <label style={{ width: "20%" }} className="custom-label">LIVE PHOTO</label>
+                      <video ref={videoRef} style={{ maxWidth: "200px", borderRadius: "50%" }} autoPlay />
+                      <canvas ref={canvasRef} style={{ display: "none" }} ></canvas>
+                    </>
+
+                  }
+                  {/* Camera section */}
+                </div>
+                <div className="d-flex column g8 mb20" >
+
+                  <button type="button" className="btn btn-prime" onClick={startCamera}>
+                    Take live photo
+                  </button>
+                  <button type="button" className="btn" onClick={capturePhoto} disabled={!videoRef.current?.srcObject}>
+                    Capture
+                  </button>
                 </div>
               </div>
 
