@@ -1,6 +1,3 @@
-import { Typography } from "@mui/material";
-import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
-
 class UserModel {
   constructor(
     userId,
@@ -12,12 +9,15 @@ class UserModel {
     wallet,
     totalWithdraw,
     status,
+    isVerified,
     ownStr,
     memStr,
     usable,
     earning,
+    mIncome,
     createdAt,
     updatedAt,
+    tds,
     bankName,
     accountNo,
     IFSC,
@@ -26,14 +26,12 @@ class UserModel {
     pan,
     nomineeName,
     sign,
-    street1,
-    street2,
+    street,
     city,
     state,
     level,
     country,
     postalCode,
-    rentCount,
     unread
   ) {
     this.id = userId;
@@ -45,12 +43,15 @@ class UserModel {
     this.wallet = wallet;
     this.totalWithdraw = totalWithdraw;
     this.status = status;
+    this.isVerified = isVerified;
     this.ownStr = ownStr;
     this.memStr = memStr;
     this.usable = usable;
     this.earning = earning;
+    this.mIncome = mIncome;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
+    this.tds = tds;
     this.bankName = bankName;
     this.accountNo = accountNo;
     this.IFSC = IFSC;
@@ -61,18 +62,28 @@ class UserModel {
     this.panFile = "data:" + pan?.mimeType + ";base64," + pan?.file ?? "";
     this.nomineeName = nomineeName;
     this.signFile = "data:" + sign?.mimeType + ";base64," + sign?.buffer ?? "";
-    this.street1 = street1;
-    this.street2 = street2;
+    this.street = street;
     this.city = city;
     this.state = state;
     this.level = level;
     this.country = country;
     this.postalCode = postalCode;
-    this.rentCount = rentCount;
     this.unread = unread;
   }
 
   toJson(jsonData) {
+
+    const date = new Date(jsonData?.user?.createdAt);
+    const formattedDate = date.toLocaleString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+
+
     return new UserModel(
       jsonData?.user.userId?.toUpperCase() ?? null,
       jsonData?.user?.initial ?? "",
@@ -83,12 +94,15 @@ class UserModel {
       jsonData?.user?.wallet ?? null,
       jsonData?.user?.totalWithdraw,
       jsonData?.user?.status ?? false,
+      jsonData?.user.isVerified ?? false,
       jsonData?.user?.storage?.own ?? null,
       jsonData?.user?.storage?.member ?? null,
       jsonData?.user?.storage?.usable ?? null,
       jsonData?.user?.totalEarn ?? null,
-      jsonData?.user?.createdAt ?? new Date(),
+      jsonData?.mIncome ?? 0,
+      formattedDate ?? new Date(),
       jsonData?.user?.updatedAt ?? new Date(),
+      jsonData?.tds ?? 0,
       jsonData?.kyc?.bankName ?? "",
       jsonData?.kyc?.accountNo ?? "",
       jsonData?.kyc?.IFSC ?? "",
@@ -108,14 +122,12 @@ class UserModel {
         mimetype: jsonData?.kyc?.sign?.mimeType ?? "",
         buffer: jsonData?.kyc?.sign?.file ?? "",
       },
-      jsonData?.address?.street1 ?? "",
-      jsonData?.address?.street2 ?? "",
+      jsonData?.address?.street ?? "",
       jsonData?.address?.city ?? "",
       jsonData?.address?.state ?? "",
       jsonData?.user?.level ?? 0,
       jsonData?.address?.country ?? "",
       jsonData?.address?.postalCode ?? "",
-      jsonData?.user?.rentCount ?? 0,
       jsonData?.unread ?? 0
     );
   }

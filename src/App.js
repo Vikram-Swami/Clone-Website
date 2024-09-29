@@ -5,16 +5,11 @@ import CssBaseline from "@mui/material/CssBaseline";
 import themeRTL from "assets/theme/theme-rtl";
 import routes from "routes";
 import brand from "assets/images/logo-ct.png";
-import { useSoftUIController, setUser, setMiniSidenav, startLoading, setDialog } from "context";
+import { useSoftUIController, setMiniSidenav } from "context";
 import Sidenav from "examples/Sidenav";
-import Loading from "layouts/loading";
-import ApiClient from "Services/ApiClient";
-import { ToastContainer, toast } from "react-toastify";
-import { getUserById } from "Services/endpointes";
-import { setLoading } from "context";
-import { getUserNotification } from "Services/endpointes";
-import { setNotification } from "context";
-import { achieve } from "Services/endpointes";
+import { getUser } from "api/users";
+import { ToastContainer } from "react-toastify";
+import CircularWithValueLabel from "components/Progress";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
@@ -54,55 +49,23 @@ export default function App() {
     }
   }
 
-  const deleteData = () => {
-    const cookies = document.cookie.split(";");
 
-    for (let i = 0; i < cookies.length; i++) {
-      const cookie = cookies[i];
-      const eqPos = cookie.indexOf("=");
-      const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-      document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-    }
-    window.location.reload();
-  };
 
-  async function getUser() {
-    try {
-      startLoading(dispatch, true);
-      const data = await ApiClient.getData(getUserById);
-      if (data.status == 200) {
-        const notifications = await ApiClient.getData(getUserNotification);
-        const royality = await ApiClient.createData(achieve, "");
 
-        if (notifications.status == 200) {
-          setNotification(dispatch, notifications.data);
-        }
-        if (royality.status == 200) {
-          setDialog(dispatch, [royality]);
-        }
-        setUser(dispatch, data?.data);
-      } else {
-        deleteData();
-        setDialog(dispatch, [data]);
-      }
-    } catch (error) {
-      deleteData();
-      setLoading(dispatch, false);
-    }
-  }
 
   useEffect(() => {
     if (getCookie() && !user.id) {
-      getUser();
+      getUser(dispatch);
     }
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
+
   return (
     <ThemeProvider theme={themeRTL}>
       <ToastContainer />
       <CssBaseline />
-      <Loading condition={loading} />
+      <CircularWithValueLabel condition={loading} />
       {getCookie() && user.id ? (
         <>
           {/* Render Sidenav and Configurator */}
@@ -126,7 +89,7 @@ export default function App() {
                   exact
                   path={route.route}
                   element={
-                    <Suspense fallback={<Loading condition={true} />}>{route.component} </Suspense>
+                    <Suspense fallback={<CircularWithValueLabel condition={true} />}>{route.component} </Suspense>
                   }
                   key={`${route.key}-${route.route}`}
                 />
@@ -138,7 +101,7 @@ export default function App() {
                 exact
                 path={route.route}
                 element={
-                  <Suspense fallback={<Loading condition={true} />}>{route.component} </Suspense>
+                  <Suspense fallback={<CircularWithValueLabel condition={true} />}>{route.component} </Suspense>
                 }
                 key={`${route.key}-${route.route}`}
               />

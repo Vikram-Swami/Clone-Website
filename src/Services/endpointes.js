@@ -51,7 +51,7 @@ export const deleteRent = "/delete-rent";
 export const getRewards = "/get-rewards";
 export const createReward = "/create-reward";
 export const getRewardById = "/get-reward-by-id";
-export const updateReward = "/update-reward";
+export const updateReward = "/received";
 export const deleteReward = "/delete-reward";
 
 export const getRoyalty = "/get-Royalty";
@@ -59,13 +59,6 @@ export const createRoyalty = "/create-Royalty";
 export const getRoyaltyById = "/get-Royalty-by-id";
 export const updateRoyalty = "/update-Royalty";
 export const deleteRoyalty = "/delete-Royalty";
-
-export const getSources = "/get-sources";
-export const createSource = "/create-source";
-export const getSourceById = "/get-source-by-id";
-export const getSourceByType = "/get-source-by-type";
-export const updateSource = "/update-source";
-export const deleteSource = "/delete-source";
 
 export const getTds = "/get-tds";
 export const getTdsById = "/get-tds-by-id";
@@ -93,6 +86,7 @@ export const deleteAllNotifications = "/delete-notifications";
 
 export const getUserTransactions = "/get-user-transactions";
 export const purchase = "/purchase";
+export const verifyTransaction = "/verify-transaction";
 export const createTransactions = "/create-transactions";
 export const withdraw = "/withdraw";
 export const getTransactionById = "/get-transaction-by-id";

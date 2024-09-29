@@ -25,15 +25,6 @@ function Notifications() {
   const { notifications, user } = controller;
   const [showAllNotifications, setShowAllNotifications] = useState(false);
   const [visibleNotifications, setVisibleNotifications] = useState([]);
-  const buttonStyle = {
-    backgroundColor: "#147A5F",
-    color: "white",
-    padding: "4px 12px",
-    borderRadius: "10px",
-    cursor: "pointer",
-    fontSize: "10px",
-    transition: "background-color 0.3s",
-  };
 
   const fetchNotifications = async () => {
     startLoading(dispatch, true);
@@ -70,29 +61,25 @@ function Notifications() {
   const closeMenu = () => setMenu(null);
 
   const handleMarkAllAsRead = async () => {
+    startLoading(dispatch, true);
     try {
       const response = await ApiClient.updateData(markRead);
-      if (response?.status === 200) {
-        console.log("All items marked as read successfully!");
-      } else {
-        console.error("Failed to mark all items as read:", response);
-      }
+      setDialog(dispatch, [response]);
     } catch (error) {
-      console.error("An error occurred while marking all items as read:", error);
+      toast.error(error.message);
+      setLoading(dispatch, false);
     } finally {
       closeMenu();
     }
   };
   const handleDeleteAll = async () => {
     try {
+      startLoading(dispatch, true);
       const response = await ApiClient.deleteData(deleteAllNotifications, "");
-      if (response?.status === 200) {
-        setDialog(dispatch, [response.message]);
-      } else {
-        console.error("Failed to mark all items as read:", response);
-      }
+        setDialog(dispatch, [response]);
     } catch (error) {
-      console.error("An error occurred while marking all items as read:", error);
+      toast.error(error?.message ?? "Network Error");
+      setLoading(dispatch, false);
     } finally {
       closeMenu();
     }

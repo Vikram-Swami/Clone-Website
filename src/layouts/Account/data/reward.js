@@ -1,67 +1,8 @@
 /* eslint-disable react/prop-types */
-// Next Work Dashboard React components
-import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
-import SoftBadge from "components/SoftBadge";
+import { receiveReward } from "api/users";
 
-import SoftButton from "components/SoftButton";
-import ApiClient from "Services/ApiClient";
-import { claimReward } from "Services/endpointes";
-import { toast } from "react-toastify";
-import { setDialog } from "context";
-import { startLoading } from "context";
-import { setLoading } from "context";
-
-function Author({ name, id }) {
-  return (
-    <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
-      <SoftBox display="flex" flexDirection="column">
-        <SoftTypography variant="button" fontWeight="medium">
-          {name}
-        </SoftTypography>
-        <SoftTypography variant="caption" color="secondary">
-          {id}
-        </SoftTypography>
-      </SoftBox>
-    </SoftBox>
-  );
-}
-
-function Status({ status }) {
-  if (!status) {
-    return (
-      <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
-        <SoftBadge variant="gradient" badgeContent="Pending" color="warning" size="xs" container />
-      </SoftBox>
-    );
-  } else {
-    return (
-      <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
-        <SoftBox display="flex" flexDirection="column">
-          <SoftBadge
-            variant="gradient"
-            badgeContent="Claimed"
-            color="success"
-            size="xs"
-            container
-          />
-        </SoftBox>
-      </SoftBox>
-    );
-  }
-}
-const claimRewards = async (id, dis) => {
-  startLoading(dis, true);
-  try {
-    const response = await ApiClient.createData(claimReward + `/${id}`);
-
-    setDialog(dis, [response]);
-  } catch (error) {
-    setLoading(dis, false);
-    toast.info(error.response);
-  }
-};
-const achievementView = {
+const ClaimView = {
   columns: [
     { name: "reward", align: "center" },
     { name: "type", align: "center" },
@@ -71,19 +12,16 @@ const achievementView = {
 
   rows: (data, dispatch) => {
     return data.map((e) => {
-      console.log(e);
       const dateObject = new Date(e.createdAt);
 
       const options = { day: "2-digit", month: "2-digit", year: "2-digit" };
       const formattedDate = dateObject.toLocaleDateString("en-GB", options);
 
       return {
-        reward: <Author name={e.reward} id={e.rewardId} />,
+        reward: <h5 className="help-text">{e.reward}</h5>,
 
         type: (
-          <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-            {e.type}
-          </SoftTypography>
+          <span >{e.type?.toUpperCase()} REWARD</span>
         ),
         claimedDate: (
           <SoftTypography variant="caption" color="secondary" fontWeight="medium">
@@ -91,10 +29,19 @@ const achievementView = {
           </SoftTypography>
         ),
 
-        status: <Status status={e.status} />,
+        status: <>{!e.status ?
+
+          <div className="d-flex">
+            <button className="btn btn-prime" onClick={() => receiveReward(e.id, dispatch)}>Received</button>
+          </div>
+          :
+          <div className="d-flex">
+            <p className="badge success">Received</p>
+          </div>
+        }</>,
       };
     });
   },
 };
 
-export default achievementView;
+export default ClaimView;

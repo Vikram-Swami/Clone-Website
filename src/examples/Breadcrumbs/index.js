@@ -5,18 +5,17 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
 // @mui material components
-import { Breadcrumbs as MuiBreadcrumbs } from "@mui/material";
+import { Box, Breadcrumbs as MuiBreadcrumbs } from "@mui/material";
 import Icon from "@mui/material/Icon";
 
 // Next Work Dashboard React components
-import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 
 function Breadcrumbs({ icon, title, route, light, call }) {
   const routes = route.slice(0, -1);
 
   return (
-    <SoftBox mr={{ xs: 0, xl: 8 }}>
+    <Box display="flex" alignItems="center" gap={3} mr={{ xs: 0, xl: 8 }}>
       <MuiBreadcrumbs
         sx={{
           whiteSpace: "nowrap",
@@ -26,15 +25,13 @@ function Breadcrumbs({ icon, title, route, light, call }) {
         }}
       >
         <Link to="/">
-          <SoftTypography
-            component="span"
-            variant="body2"
-            color={light ? "white" : "dark"}
+          <span
+            style={{ color: light ? "white" : "black", opacity: light ? 0.8 : 0.5 }}
+
             opacity={light ? 0.8 : 0.5}
-            sx={{ lineHeight: 0 }}
           >
-            <Icon>{icon}</Icon>
-          </SoftTypography>
+            <Icon className="c-point">{icon}</Icon>
+          </span>
         </Link>
         {routes.map((el) => (
           <Link to={`/${el}`} key={el}>
@@ -61,29 +58,17 @@ function Breadcrumbs({ icon, title, route, light, call }) {
           {title.replace("-", " ")}
         </SoftTypography>
       </MuiBreadcrumbs>
-      <SoftBox display="flex" gap={3} justifyContent="space-between">
-
-      <SoftTypography
-        fontWeight="bold"
-        textTransform="capitalize"
-        variant="h6"
-        color={light ? "white" : "dark"}
-        noWrap
-        >
-        {title.replace("-", " ")}
-      </SoftTypography>
-      <SoftTypography component="span" cursor="pointer"  onClick={call}>
-        <Icon>refresh</Icon>
-      </SoftTypography>
-        </SoftBox>
-    </SoftBox>
+      <p className="c-point" onClick={call}>
+        <Icon style={{ verticalAlign: "middle" }}>refresh</Icon>
+      </p>
+    </Box>
   );
 }
 
 // Setting default values for the props of Breadcrumbs
 Breadcrumbs.defaultProps = {
   light: false,
-  call: ()=>{}
+  call: () => { }
 };
 
 // Typechecking props for the Breadcrumbs

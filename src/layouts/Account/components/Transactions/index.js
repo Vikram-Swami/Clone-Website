@@ -1,106 +1,90 @@
-// @mui material components
-import Card from "@mui/material/Card";
 // import Divider from "@mui/material/Divider";
 import Icon from "@mui/material/Icon";
-
-// Next Work Dashboard React components
-import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
-import { setDialog } from "context";
 import { useSoftUIController } from "context";
-import { setTransaction } from "context";
-import { setLoading } from "context";
 
-import { toast } from "react-toastify";
 // Billing page components
-import { useEffect } from "react";
-import ApiClient from "Services/ApiClient";
-import { getTransactionsByUserId } from "Services/endpointes";
-import Transaction from "../Transaction";
+import { useEffect, useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { getAllUsersTransaction } from "api/users";
+
+
 function Transactions() {
   const [controller, dispatch] = useSoftUIController();
   const { transaction } = controller;
 
-  const getAllUsersTransaction = async () => {
-    try {
-      setLoading(dispatch, true);
-      const response = await ApiClient.getData(getTransactionsByUserId);
-      if (response?.status === 200) {
-        setTransaction(dispatch, response?.data);
-      }
-    } catch (error) {
-      toast.error(error.toString());
-      setLoading(dispatch, false);
-    }
+  const [startDate, setStartDate] = useState(new Date());
+
+  const handleChange = (date) => {
+    setStartDate(date);
+    getAllUsersTransaction(dispatch, { month: date.getMonth() + 1, year: date.getFullYear() });
   };
+
+
   useEffect(() => {
-    transaction.length < 1 && getAllUsersTransaction();
+    transaction.length < 1 && getAllUsersTransaction(dispatch, { month: startDate.getMonth() + 1, year: startDate.getFullYear() });
   }, []);
 
   return (
-    <Card sx={{ height: "100%" }}>
-      <SoftBox display="flex" justifyContent="space-between" alignItems="center" pt={3} px={2}>
-        <SoftTypography variant="h6" fontWeight="medium" textTransform="capitalize">
-          Your Transaction&apos;s
-        </SoftTypography>
-        <SoftBox display="flex" alignItems="flex-start">
-          <SoftBox color="text" mr={0.5} lineHeight={0}>
-            <Icon color="inherit" fontSize="small">
-              date_range
-            </Icon>
-          </SoftBox>
-          <SoftTypography variant="button" color="text" fontWeight="regular">
-            2024
-          </SoftTypography>
-        </SoftBox>
-      </SoftBox>
-      <SoftBox pt={3} pb={2} px={2}>
-        <SoftBox mb={2}>
-          <SoftTypography
-            variant="caption"
-            color="text"
-            fontWeight="bold"
-            textTransform="uppercase"
-          >
-            newest
-          </SoftTypography>
-        </SoftBox>
-        <SoftBox
-          component="ul"
-          display="flex"
-          flexDirection="column"
-          p={2}
-          m={0}
-          sx={{ listStyle: "none" }}
-        >
-          {transaction?.length > 0
-            ? transaction.map((e) => {
-              const date = new Date(e.createdAt);
-              const formattedDate = date.toLocaleString("en-US", {
-                year: "numeric",
-                month: "short",
-                day: "2-digit",
-                hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit",
-              });
+    <div className="card transactions">
+      <div className="d-flex j-between">
+        <h5>Transactions</h5>
+        <DatePicker
+          selected={startDate}
+          onChange={handleChange}
+          dateFormat="MMMM yyyy"
+          showMonthYearPicker
+          showFullMonthYearPicker
+        />
+      </div>
 
-              return (
-                <Transaction
-                  key={e.invoiceNo}
-                  color="error"
-                  icon="arrow_downward"
-                  name={e.type}
-                  id={e.id}
-                  description={formattedDate}
-                  value={"₹" + e.amount}
-                />
-              );
-            })
-            : ""}
-        </SoftBox>
-      </SoftBox>
-    </Card>
+      <div className="card-body">
+
+        {transaction?.length > 0
+          ? transaction.map((e) => {
+            const date = new Date(e.createdAt);
+            const formattedDate = date.toLocaleString("en-US", {
+              year: "numeric",
+              month: "short",
+              day: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+            });
+
+            return (
+              <div key={e.invoice} className="d-flex j-between mb20" >
+
+                <div className="d-flex" style={{ flexDirection: "row", justifyContent: "start" }}>
+                  <div className="icon">
+                    <Icon color={e?.type?.toLowerCase().includes("new") ? "success" : "error"}>receipt</Icon>
+                  </div>
+                  <div className="desc-small">
+                    <p >{e.type}</p>
+                    <span>TNX ID: {e.id}</span><br />
+                    <span>{formattedDate}</span>
+                  </div>
+                </div>
+
+
+                <div className="desc-small">
+                  <h5 style={{ color: "green" }} className="mb10">₹{e.amount}</h5>
+                  <div className="textCenter c-point" style={{ fontSize: 13, lineHeight: "normal" }}>
+                    <Icon className="textCenter">download</Icon>
+                    <p>Invoice</p>
+                  </div>
+                </div>
+
+              </div>
+            );
+          })
+          :
+          <div className="d-flex">
+            <h6 className="help-text">No Transaction is found for selected Month.</h6>
+          </div>
+        }
+      </div>
+    </div>
   );
 }
 

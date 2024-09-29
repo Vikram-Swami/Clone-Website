@@ -4,7 +4,7 @@ import { createContext, useContext, useReducer, useMemo } from "react";
 import PropTypes from "prop-types";
 import UserModel from "Models/User";
 import ConnectionsModel from "Models/Connection";
-import FormDialog from "components/Pop";
+
 import NewFormDialog from "components/NewDialog";
 import RentModel from "Models/Rents";
 import IncomeLog from "Models/Income";
@@ -12,7 +12,8 @@ import Notification from "Models/Notification";
 import Transaction from "Models/Transaction";
 
 import RewardsModel from "Models/Rewards";
-import Achievement from "Models/Rewards/achievement";
+import Claims from "Models/Rewards/claims";
+import Products from "Models/Products";
 
 const SoftUI = createContext(null);
 
@@ -50,7 +51,7 @@ function reducer(state, action) {
         ...state,
         loading: false,
         user: new UserModel().toJson(action.value),
-        directMember: new UserModel().memberToArray(action.value.directMem),
+        otp: {}
       };
     }
     case "RENT": {
@@ -62,8 +63,8 @@ function reducer(state, action) {
     case "REWARDS": {
       return { ...state, loading: false, rewards: new RewardsModel().fromArray(action.value) };
     }
-    case "ACHIEVEMENT": {
-      return { ...state, loading: false, achievement: new Achievement().fromArray(action.value) };
+    case "CLAIMS": {
+      return { ...state, loading: false, claims: new Claims().fromArray(action.value) };
     }
     case "INCOME": {
       return { ...state, loading: false, income: new IncomeLog().fromArray(action.value) };
@@ -73,6 +74,9 @@ function reducer(state, action) {
     }
     case "LOADING": {
       return { ...state, loading: action.value };
+    }
+    case "STEP": {
+      return { ...state, loading: false, step: action.value };
     }
     case "CONNECTION": {
       return {
@@ -91,8 +95,11 @@ function reducer(state, action) {
     case "DIALOG": {
       return { ...state, dialog: action.value, loading: false, accept: false };
     }
+    case "OTP": {
+      return { ...state, otp: action.value, loading: false };
+    }
     case "PRODUCTS": {
-      return { ...state, products: action.value, loading: false };
+      return { ...state, products: new Products().fromArray(action.value), loading: false, dialog: [] };
     }
     case "ACCEPT": {
       return { ...state, accept: action.value };
@@ -124,12 +131,14 @@ function KnooneControllerProvider({ children }) {
     notifications: [],
     dialog: [],
     rewards: [],
-    achievement: [],
+    claims: [],
     member: [],
     directMember: [],
     income: [],
     transaction: [],
     accept: false,
+    step: 0,
+    otp: {},
     loading: false,
   };
   const [controller, dispatch] = useReducer(reducer, initialState);
@@ -140,15 +149,9 @@ function KnooneControllerProvider({ children }) {
     <SoftUI.Provider value={value}>
       {/* Conditionally render loader */}
 
-      <FormDialog
-        open={controller.dialog?.length > 0 && controller.dialog[0]?.status !== "form"}
-        setOpen={(v) => {
-          setDialog(dispatch, []);
-        }}
-        data={controller.dialog[0]}
-      />
+
       <NewFormDialog
-        open={controller.dialog.length > 0 && controller.dialog[0]?.status === "form"}
+        open={controller.dialog.length > 0}
         setOpen={(v) => {
           setDialog(dispatch, []);
         }}
@@ -194,11 +197,13 @@ const setNotification = (dispatch, value) => dispatch({ type: "NOTIFICATION", va
 const setIncome = (dispatch, value) => dispatch({ type: "INCOME", value });
 const setTransaction = (dispatch, value) => dispatch({ type: "TRANSACTION", value });
 const setMembers = (dispatch, value) => dispatch({ type: "MEMBER", value });
-const setAchievement = (dispatch, value) => dispatch({ type: "ACHIEVEMENT", value });
+const setClaims = (dispatch, value) => dispatch({ type: "CLAIMS", value });
 const setDialog = (dispatch, value) => dispatch({ type: "DIALOG", value });
 const setConfirmDialog = (dispatch, value) => dispatch({ type: "CONFIRMDIALOG", value });
 const startLoading = (dispatch, value) => dispatch({ type: "START_LOAD", value });
 const setAccept = (dispatch, value) => dispatch({ type: "ACCEPT", value });
+const setStep = (dispatch, value) => dispatch({ type: "STEP", value });
+const setOtp = (dispatch, value) => dispatch({ type: "OTP", value });
 
 export {
   KnooneControllerProvider,
@@ -215,7 +220,7 @@ export {
   setRewards,
   setIncome,
   setTransaction,
-  setAchievement,
+  setClaims,
   setRent,
   setConnection,
   setNotification,
@@ -224,6 +229,8 @@ export {
   setConfirmDialog,
   startLoading,
   setAccept,
+  setStep,
   setProducts,
   setMembers,
+  setOtp
 };

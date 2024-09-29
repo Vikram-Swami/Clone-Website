@@ -5,9 +5,27 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 
 function CircularProgressWithLabel(props) {
+
+  let style = {
+    display: "flex",
+    justifyContent: "center",
+    flexDirection: "column",
+    alignItems: "center",
+    width: "100dvw",
+    height: "100dvh",
+    position: "fixed",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    background: "#2c298075",
+    zIndex: 11111111,
+  }
+
+
   return (
-    <Box sx={{ position: "relative", display: "inline-flex" }}>
-      <CircularProgress variant="determinate" sx={{ color: "#14D747" }} {...props} />
+    <Box sx={style}>
+      <CircularProgress variant="determinate" sx={{ color: "#713d6a" }} {...props} />
       <Box
         sx={{
           top: 0,
@@ -37,7 +55,7 @@ CircularProgressWithLabel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-export default function CircularWithValueLabel() {
+export default function CircularWithValueLabel({ condition }) {
   const [progress, setProgress] = React.useState(10);
 
   React.useEffect(() => {
@@ -49,5 +67,9 @@ export default function CircularWithValueLabel() {
     };
   }, []);
 
-  return <CircularProgressWithLabel value={50} />;
+  return condition && <CircularProgressWithLabel value={progress} />;
+}
+
+CircularWithValueLabel.propTypes = {
+  condition: PropTypes.bool
 }

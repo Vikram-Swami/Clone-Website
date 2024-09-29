@@ -23,14 +23,14 @@ export default function NewFormDialog({ open, setOpen, data }) {
       >
         <DialogTitle>{data?.title}</DialogTitle>
         <DialogContent px={4}>
-          <DialogTitle fontSize={14} whiteSpace={"nowrap"}>
+          <DialogTitle fontSize={14}>
             {data?.message}
           </DialogTitle>
           {data?.children}
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleClose}>Close</Button>
           {data.action && <Button type="submit">{data?.action}</Button>}
         </DialogActions>
       </Dialog>
@@ -40,7 +40,7 @@ export default function NewFormDialog({ open, setOpen, data }) {
 
 NewFormDialog.defaultProps = {
   open: false,
-  setOpen: () => {},
+  setOpen: () => { },
   data: [] ?? "",
 };
 

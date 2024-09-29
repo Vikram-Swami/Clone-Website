@@ -1,112 +1,116 @@
-// @mui material components
-import Card from "@mui/material/Card";
-
-// Next Work Dashboard React components
-import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
-
 // Next Work Dashboard React examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-
-// Data
-import SoftButton from "components/SoftButton";
-import { Grid, Icon } from "@mui/material";
-import DefaultInfoCard from "examples/Cards/InfoCards/DefaultInfoCard";
-import { NavLink } from "react-router-dom";
-import { useEffect, useMemo } from "react";
-import { useSoftUIController, setConnection, setLoading } from "context";
-import Table from "examples/Tables/Table";
-import connectionView from "layouts/connections/data/connections";
-import ApiClient from "Services/ApiClient";
-import { toast } from "react-toastify";
-import { getConnectionByUserID } from "Services/endpointes";
-import { startLoading } from "context";
-import React from "react";
+import React, { useEffect } from "react";
+import { Avatar, Icon } from "@mui/material";
+import { getConnection } from "api/users";
+import { useSoftUIController } from "context";
+import { completeProfile } from "api/users";
+import { useNavigate } from "react-router-dom";
 import { setDialog } from "context";
 
 function Connections() {
   const [controller, dispatch] = useSoftUIController();
   const { connection, user } = controller;
+  const navigate = useNavigate();
 
-  const getConnection = async () => {
-    startLoading(dispatch, true);
-    try {
-      const response = await ApiClient.getDataByParam(getConnectionByUserID, user.id);
-      if (response.status == 200) {
-        setConnection(dispatch, response.data);
-      } else {
-        setDialog(dispatch, [response]);
-      }
-    } catch (error) {
-      toast.error(error.toString());
-      setLoading(dispatch, false);
-    }
-  };
-  const memoizedRows = useMemo(
-    () => connectionView.rows(connection, user.fullName, dispatch, getConnection),
-    [connection, user.fullName]
-  );
 
   useEffect(() => {
-    connection.length < 1 && getConnection();
+    if (!user.isVerfied && !user.accountNo && !user.aadharNo) {
+      setDialog(dispatch, [{
+        status: "form",
+        title: "Account Verification Required",
+        message: "Complete your KYC to access your portfolio and activate your rent.",
+        action: "Complete KYC",
+        call: () => { completeProfile(dispatch, navigate) }
+      }])
+    } else {
+      connection.length < 1 && getConnection(dispatch);
+    }
   }, []);
 
   return (
     <DashboardLayout>
-      <DashboardNavbar call={getConnection} />
-      <SoftBox py={3}>
-        <SoftBox mb={3}>
-          <Card>
-            <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-              <SoftTypography variant="h6">My Portfolio</SoftTypography>
-              <NavLink to="/buy-cloud-storage">
-                <SoftBox
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  width="2.5rem"
-                  height="2.5rem"
-                  bgColor="white"
-                  shadow="sm"
-                  borderRadius="50%"
-                  position="absolute"
-                  right="10px"
-                  top="1.1rem"
-                  zIndex={99}
-                  color="dark"
-                  sx={{ cursor: "pointer" }}>
-                  <Icon fontSize="default" fontWeight="bold" color="inherit">
-buy
-                  </Icon>
-                </SoftBox>
-              </NavLink>
-            </SoftBox>
+      <DashboardNavbar call={() => getConnection(dispatch)} />
 
-            {connection.length > 0 ? (
-              <Table columns={connectionView.columns} rows={memoizedRows} />
-            ) : (
-              <SoftBox mt={4}>
-                <SoftBox mb={1.5}>
-                  <Grid container spacing={3}>
-                    <Grid item lg={12}>
-                      <Grid item container spacing={3}>
-                        <Grid item xs={12} xl={12}>
-                          <DefaultInfoCard
-                            icon="cloud"
-                            title={`You Don't have a connection yet. Add connection to your portfolio and start earning.`}
-                          />
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </SoftBox>
-              </SoftBox>
-            )}
-          </Card>
-        </SoftBox>
-      </SoftBox>
-      {/* <Footer /> */}
+      <div className="d-flex mb20">
+
+        {
+          connection?.length > 0 ?
+            connection?.map(e =>
+              <div key={e.id} className="br-card">
+                <div className="content-card">
+                  <div className="d-flex j-start g8 mb20">
+                    <div className="card-icon-space">
+                      <Avatar sx={{ width: 37, height: 37 }} alt={user.fullName} fontSize="medium" src="51365.jpg" />
+                    </div>
+                    <h5 className="help-text" style={{ minWidth: "90px" }}>Hi, {user.fullName}</h5>
+                    <span className="help-text" style={{ whiteSpace: "nowrap", textTransform: "uppercase" }}>(Connection ID : {e.id})</span>
+
+                  </div>
+                  <div className="d-flex j-between mb20">
+                    <div className="d-flex j-start g8">
+                      <div className="card-icon-space">
+                        <Icon fontSize="large" color="primary" sx={{ verticalAlign: "middle" }}>cloud</Icon>
+                      </div>
+                      <h4 className="textCenter">{e?.storage ?? 0} TB</h4>
+                    </div>
+                    <div className="d-flex j-end">
+                      <p className={e.status ? "badge success" : "badge"}>{e.status ? "Active" : "Inactive"}</p>
+                    </div>
+                  </div>
+                  <div className="card-group-content j-center">
+
+                    <div className="card-group-content j-start">
+                      <div className="d-flex j-start g8" style={{ maxWidth: "170px" }}>
+                        <div className="card-icon-space">
+                          <Icon fontSize="large" color="primary" sx={{ verticalAlign: "middle" }}>insights</Icon>
+                        </div>
+                        <div className="mx5">
+                          <h5>Monthly Rent</h5>
+                          <p className="help-text">{e.status ? "₹" + e?.rent : "N/A"}</p>
+                        </div>
+                      </div>
+                      <div className="d-flex j-start g8" style={{ maxWidth: "170px" }}>
+                        <div className="card-icon-space">
+                          <Icon fontSize="large" color="primary" sx={{ verticalAlign: "middle" }}>insights</Icon>
+                        </div>
+                        <div className="mx5">
+                          <h5>Bought At</h5>
+                          <p className="help-text">{e.createdAt}</p>
+                        </div>
+                      </div>
+                      <div className="d-flex j-start g8" style={{ maxWidth: "170px" }}>
+                        <div className="card-icon-space">
+                          <Icon fontSize="large" color="primary" sx={{ verticalAlign: "middle" }}>insights</Icon>
+                        </div>
+                        <div className="mx5">
+                          <h5>Valid Thru</h5>
+                          <p className="help-text">{e.status ? e.endDate : "N/A"}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="d-flex j-between g8" style={{ width: "fit-content" }}>
+                      <div className="d-flex column desc-small" style={{ width: "50px" }}>
+                        <Icon>visibility</Icon>
+                        <span>Agreements</span>
+                      </div>
+                      <div className="d-flex column desc-small" style={{ width: "50px" }}>
+                        <Icon>download</Icon>
+                        <span>Invoice</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )
+            : <div className="d-flex j-center" style={{ width: "100%" }}>
+              <h6 className="help-text">OH! You have not purchased a connection. Purchase Connection to Earn.</h6>
+            </div>
+        }
+      </div>
+
+
     </DashboardLayout>
   );
 }

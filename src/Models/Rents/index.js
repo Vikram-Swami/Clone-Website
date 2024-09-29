@@ -3,6 +3,7 @@ class RentModel {
     id,
     userId,
     source,
+    sourceName,
     level,
     storage,
     type,
@@ -15,8 +16,9 @@ class RentModel {
   ) {
     this.id = id;
     this.userId = userId;
-    this.level = level;
     this.source = source;
+    this.sourceName = sourceName;
+    this.level = level;
     this.storage = storage;
     this.type = type;
     this.amount = amount;
@@ -31,8 +33,9 @@ class RentModel {
     return new RentModel(
       jsonData._id ?? null,
       jsonData.userId,
-      jsonData.level,
       jsonData.source,
+      jsonData.sourceName,
+      jsonData.level,
       jsonData.storage,
       jsonData.type,
       jsonData.amount,
@@ -51,8 +54,9 @@ class RentModel {
         new RentModel(
           json._id ?? null,
           json.userId,
-          json.level,
           json.source,
+          json.sourceName,
+          json.level,
           json.storage,
           json.type,
           json.amount,

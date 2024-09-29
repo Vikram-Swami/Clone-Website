@@ -26,7 +26,7 @@ function CoverLayout({ header, title, top, children }) {
                 <SoftBox
                   component="img"
                   src="/logo.png"
-                  alt="Kno-one India Limited"
+                  alt="TRIWAVES INDIA LIMTED"
                   width="100%"
                   maxWidth="22rem"
                 />

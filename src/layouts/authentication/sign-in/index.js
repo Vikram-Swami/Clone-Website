@@ -1,12 +1,5 @@
 // react-router-dom components
-import { Link, useNavigate } from "react-router-dom";
-
-// Next Work Dashboard React components
-import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
-import SoftInput from "components/SoftInput";
-import SoftButton from "components/SoftButton";
-
+import { NavLink, useNavigate } from "react-router-dom";
 // Authentication layout components
 import CoverLayout from "layouts/authentication/components/CoverLayout";
 
@@ -18,105 +11,26 @@ import { toast } from "react-toastify";
 import { setLoading } from "context";
 import { startLoading } from "context";
 import Separator from "../components/Separator";
-import { TextField } from "@mui/material";
 import { sendOtp } from "Services/endpointes";
 import { verifyOtp } from "Services/endpointes";
-import { validateUser } from "Services/endpointes";
+import { setAccept } from "context";
+import { handleLogin } from "api/users";
+import { setOtp } from "context";
 
 function SignIn() {
-  const [, dispatch] = useSoftUIController();
+  const [controller, dispatch] = useSoftUIController();
+  const { accept, otp } = controller;
   const navigate = useNavigate();
 
-  const setCookie = (name, value, days) => {
-    const expires = new Date();
-    expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
-    document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
-  };
-
-  const handleLogin = async (e) => {
+  const handleOtpLogin = async (e) => {
     try {
       e.preventDefault();
       startLoading(dispatch, true);
-      const formDetails = new FormData(e.currentTarget);
-      const response = await ApiClient.createData(login, formDetails);
-      if (response?.status == 200) {
-        setCookie("authToken", response?.data.token, 1);
-        setCookie("userId", response?.data.userId, 1);
-        navigate("/dashboard");
-        console.log(response.message);
-        toast.success(response.message);
-      } else {
-        setDialog(dispatch, [response]);
-      }
-    } catch (error) {
-      toast.error(error.toString());
-    } finally {
-      setLoading(dispatch, false);
-    }
-  };
-
-  const verifyOtpLogin = async (id, form) => {
-    try {
-      form.append("userId", id);
-      startLoading(dispatch, false);
-      const response = await ApiClient.createData(verifyOtp, form);
-      if (response.status === 200) {
-        setCookie("authToken", response?.data.token, 1);
-        setCookie("userId", response?.data.userId, 1);
-        navigate("/dashboard");
-        toast.success(response.message);
-        setLoading(dispatch, false);
-      } else {
-        setDialog(dispatch, [response]);
-      }
-    } catch (err) {
-      setLoading(dispatch, false);
-      toast.error(err.toString());
-    }
-  };
-
-  const handleOtpLogin = async (form) => {
-    try {
-      startLoading(dispatch, true);
+      const form = new FormData(e.currentTarget);
       const response = await ApiClient.createData(sendOtp, form);
-      if (response.status === 200) {
-        response.status = "form";
-        response.action = "submit";
-        response.title = "Pleae Enter Your OTP";
-        response.children = (
-          <TextField
-            autoFocus
-            name="otp"
-            placeholder="6 digit otp"
-            margin="dense"
-            label="Enter OTP"
-            type="number"
-            fullWidth
-          />
-        );
-        response.call = (data) => verifyOtpLogin(response.data?.userId, data);
-      }
-      setDialog(dispatch, [response]);
+      setOtp(dispatch, response);
     } catch (err) {
-      setLoading(dispatch, false);
-      toast.error(err?.toString());
-    }
-  };
-
-  const completeProfile = async (form) => {
-    try {
-      startLoading(dispatch, true);
-      const response = await ApiClient.createData(validateUser, form);
-      if (response.status === 200) {
-        let step = response.data?.step;
-        let userId = response.data?.userId;
-        navigate(`/sign-up/${step}?userId=${userId}`);
-        setLoading(dispatch, false);
-      } else {
-        setDialog(dispatch, [response]);
-      }
-    } catch (error) {
-      toast.error(error.toString());
+      toast.error(err?.message);
       setLoading(dispatch, false);
     }
   };
@@ -125,7 +39,7 @@ function SignIn() {
     try {
       const response = await ApiClient.createData("/sponsor-now", form);
       if (response.status === 200) {
-        navigate(`/sign-up/1?sponsorId=${response?.data?.userId}&placementId=${response?.data?.userId}`)
+        navigate(`/sign-up?sponsorId=${response?.data?.userId}`)
 
       }
       setDialog(dispatch, [response]);
@@ -136,92 +50,47 @@ function SignIn() {
 
   return (
     <>
-      <CoverLayout title="SIGN IN HERE!">
-        <SoftBox
-          component="form"
+      <CoverLayout title="SIGN IN!">
+        <form
+          className="d-flex column"
           role="form"
-          textAlign="center"
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
-          onSubmit={handleLogin}
+          encType="multipart/form-data"
+          onSubmit={(e) => { accept && otp?.status != 200 ? handleOtpLogin(e) : handleLogin(e, (accept && otp?.status) == 200 ? verifyOtp : login, dispatch, navigate); }}
         >
-          <SoftBox mb={1} width="100%">
-            <SoftTypography
-              component="h5"
-              fontWeight="bold"
-              onChange={(e) => {
-                e.target.value = e.target.value.toUpperCase();
-              }}
-            >Enter Your Credentials Here!</SoftTypography>
-            <SoftBox ml={0.5} textAlign="left">
-            </SoftBox>
-            <SoftInput type="text" placeholder="Please Enter Email or User ID" name="userId" />
-          </SoftBox>
-          <SoftBox mb={1} width="100%">
-            <SoftBox ml={0.5} textAlign="left">
-            </SoftBox>
-            <SoftInput type="password" placeholder="Password" name="password" />
-          </SoftBox>
-          <SoftBox mt={1}>
-            <SoftButton variant="gradient" color="info" type="submit">
-              Login
-            </SoftButton>
-          </SoftBox>
-          <SoftBox mt={1} mb={2}>
-            <SoftButton
-              onClick={() => {
-                setDialog(dispatch, [
-                  {
-                    status: "form",
-                    title: "Please Enter Your User Id",
-                    children: (
-                      <TextField
-                        autoFocus
-                        name="userId"
-                        placeholder="User ID / Email"
-                        margin="dense"
-                        label="ID"
-                        type="text"
-                        fullWidth
-                      />
-                    ),
-                    action: "Submit",
-                    call: handleOtpLogin,
-                  },
-                ]);
-              }}
-              variant="info"
-              color="info"
-              fontSize="0.8rem"
-              whiteSpace="nowrap"
-              ml={1}
-              textTransform="uppercase"
-              cursor="pointer"
-            >
+          <div className="mb10">
+            <h4 className="mb10">Enter Your Credentials Here!</h4>
+          </div>
+          <div className="mb10">
+            <input type="text" placeholder="Please Enter Email or User ID" name="userId" />
+          </div>
+          {!accept || otp?.status == 200 ? <div className="mb10">
+            <input type={otp?.status == 200 ? "text" : "password"} placeholder={otp?.status == 200 ? "Enter OTP" : "Enter Password"} name={otp?.status == 200 ? "otp" : "password"} />
+          </div> : ""}
+          <div className="mb10">
+            <input type="checkbox" onChange={(e) => { setAccept(dispatch, e.target.checked); setOtp(dispatch, {}); }} checked={accept} />
+            <span onClick={() => { setAccept(dispatch, !accept); setOtp(dispatch, {}); }} className="c-point help-text" style={{ userSelect: "none", marginLeft: 10 }}>
               Login with OTP
-            </SoftButton>
-          </SoftBox>
-          <SoftBox fontSize="0.9rem">
-            <SoftTypography variant="p" fontWeight="bold" color="text">
+            </span>
+          </div>
+          {otp?.status && <p style={{ width: "300px", color: otp?.status == 200 ? "green" : "red" }} className="help-text mb20">{otp?.message}</p>}
+          <button type="submit" className="btn">Submit</button>
+
+          <div className="mt5">
+            <h6 className="help-text">
               New User?
-            </SoftTypography>{" "}
-            <SoftTypography
+            </h6>{" "}
+            <a className="help-text"
               onClick={() => {
                 setDialog(dispatch, [
                   {
                     status: "form",
                     title: "Please Enter Sponsor User ID or Email",
                     children: (
-                      <TextField
+                      <input
                         autoFocus
                         name="userId"
                         placeholder="User Id | Email"
-                        margin="dense"
-                        label="ID"
                         type="text"
-                        fullWidth
                       />
                     ),
                     action: "Submit",
@@ -229,31 +98,23 @@ function SignIn() {
                   },
                 ]);
               }}
-              variant="a"
-              color="info"
-              textGradient
-              cursor="pointer"
             >
               Register Here
-            </SoftTypography>
-          </SoftBox>
+            </a>
+          </div>
           <Separator />
-          <SoftBox fontSize="0.9rem">
-            <SoftTypography variant="p" fontWeight="bold" color="text">
+          <div>
+            <h6 className="help-text">
               Forget Password?{" "}
-            </SoftTypography>
-            <SoftTypography
-              component={Link}
+            </h6>
+            <NavLink
+              className="help-text"
               to="/reset-password"
-              variant="a"
-              color="info"
-              textGradient
-              cursor="pointer"
             >
               Reset Now
-            </SoftTypography>
-          </SoftBox>
-        </SoftBox>
+            </NavLink>
+          </div>
+        </form>
       </CoverLayout>
     </>
   );

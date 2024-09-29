@@ -18,8 +18,6 @@ import breakpoints from "assets/theme/base/breakpoints";
 import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
 import { AccountBalance, AccountCircle, Home } from "@mui/icons-material";
 import { useSoftUIController } from "context";
-import { NavLink } from "react-router-dom";
-import SoftButton from "components/SoftButton";
 
 function Header() {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
@@ -106,6 +104,7 @@ function Header() {
                   ID: user.id ?? "",
                   mobile: user?.phone,
                   email: user?.email,
+                  joined: user?.createdAt,
                   location: user?.city + " " + user?.state + " " + user?.country
                 }}
               />
@@ -114,8 +113,7 @@ function Header() {
               <ProfileInfoCard
                 title="Address information"
                 info={{
-                  street1: user?.street1,
-                  street2: user?.street2,
+                  street: user?.street,
                   city: user?.city,
                   state: user?.state,
                   country: user?.country,

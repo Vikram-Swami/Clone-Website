@@ -1,23 +1,21 @@
 import React, { lazy, Suspense } from "react";
-import Loading from "layouts/loading";
 import RecipeReviewCard from "layouts/verifyAccount";
 // NextWork Dashboard React layouts
 // const Dashboard = lazy(() => import("layouts/dashboard"));
 import Dashboard from "layouts/dashboard";
 import ForgetPassword from "layouts/authentication/forget-password";
-import Rewards from "layouts/Rewards";
 import Notifications from "layouts/Notification";
-import RentOnRent from "layouts/ror(rent)";
+import RentOnRent from "layouts/Incomes";
 import {
   AccountBalance,
   AccountCircle,
   AddCard,
   AddShoppingCart,
-  EmojiEvents,
-  GroupAdd,
   Groups2,
   SpaceDashboard,
 } from "@mui/icons-material";
+import CompleteKYC from "layouts/authentication/KYC";
+import CircularWithValueLabel from "components/Progress";
 const Team = lazy(() => import("layouts/Team"));
 const Account = lazy(() => import("layouts/Account"));
 const Connections = lazy(() => import("layouts/connections"));
@@ -29,16 +27,13 @@ const Shop = lazy(() => import("examples/Icons/Shop"));
 const Office = lazy(() => import("examples/Icons/Office"));
 const CustomerSupport = lazy(() => import("examples/Icons/CustomerSupport"));
 const CreditCard = lazy(() => import("examples/Icons/CreditCard"));
-const Income = lazy(() => import("layouts/Income/income"));
-const Rents = lazy(() => import("layouts/Rents"));
 const Products = lazy(() => import("layouts/Products"));
-const CreateMembers = lazy(() => import("layouts/CreateMember"));
 const SignUp = lazy(() => import("layouts/authentication/sign-up"));
 const SignIn = lazy(() => import("layouts/authentication/sign-in"));
 
 const routes = [
   {
-    type: "collapse",
+    type: "route",
     name: "Home",
     key: "home",
     auth: "user",
@@ -60,10 +55,10 @@ const routes = [
 
   {
     type: "menubar",
-    name: "My Profile",
+    name: "Profile",
     auth: "user",
-    key: "my-profile",
-    route: "/my-profile",
+    key: "profile",
+    route: "/profile",
     component: <Profile />,
     icon: <AccountCircle fontSize="2rem" />,
     noCollapse: true,
@@ -73,7 +68,7 @@ const routes = [
     name: "SignUp",
     Key: "signup",
     auth: null,
-    route: "/sign-up/:step",
+    route: "/sign-up",
 
     component: <SignUp />,
     noCollapse: false,
@@ -96,17 +91,6 @@ const routes = [
     component: <ForgetPassword />,
     noCollapse: false,
   },
-
-  {
-    type: "menubar",
-    name: "Add Member",
-    key: "add-member",
-    auth: "user",
-    route: "/add-member",
-    icon: <GroupAdd fontSize="1rem" />,
-    component: <CreateMembers />,
-    noCollapse: true,
-  },
   {
     type: "route",
     name: "Notifications",
@@ -117,13 +101,23 @@ const routes = [
     component: <Notifications />,
     noCollapse: true,
   },
+  {
+    type: "route",
+    name: "KYC",
+    key: "kyc",
+    auth: "user",
+    route: "/complete-KYC",
+    icon: <Office size="12px" />,
+    component: <CompleteKYC />,
+    noCollapse: true,
+  },
 
   {
     type: "collapse",
-    name: "Buy & Earn",
-    key: "buy-cloud-storage",
+    name: "Inventory",
+    key: "inventory",
     auth: "any",
-    route: "/buy-cloud-storage",
+    route: "/inventory",
     icon: <AddShoppingCart size="12px" />,
     component: <Products />,
     noCollapse: true,
@@ -131,7 +125,7 @@ const routes = [
 
   {
     type: "collapse",
-    name: "My Portfolio",
+    name: "Portfolio",
     key: "portfolio",
     route: "/portfolio",
     icon: <AddCard size="12px" />,
@@ -142,40 +136,40 @@ const routes = [
 
   {
     type: "collapse",
-    name: "My Team",
+    name: "Team",
     auth: "user",
-    key: "my-team",
-    route: "/my-team",
+    key: "team",
+    route: "/team",
     icon: <Groups2 size="12px" />,
     component: <Team />,
     noCollapse: true,
   },
 
-  {
-    type: "collapse",
-    name: "My Incomes",
-    key: "my-incomes",
-    auth: "any",
-    route: "/my-incomes",
-    icon: <Office size="12px" />,
-    component: <Income />,
-    noCollapse: true,
-  },
+  // {
+  //   type: "route",
+  //   name: "My Incomes",
+  //   key: "my-incomes",
+  //   auth: "any",
+  //   route: "/my-incomes",
+  //   icon: <Office size="12px" />,
+  //   component: <Income />,
+  //   noCollapse: true,
+  // },
 
   {
     type: "collapse",
-    name: "My Benefits",
-    key: "my-benefits",
+    name: "Incomes",
+    key: "incomes",
     auth: "any",
-    route: "/my-benefits",
+    route: "/incomes",
     icon: <Office size="12px" />,
     component: <RentOnRent />,
     noCollapse: true,
   },
-  { type: "title", title: "Claim & Win", key: "rewards" },
+  { type: "title", title: "WALLET & TRANSACTIONS" },
   {
-    type: "menubar",
-    name: "My Account",
+    type: "collapse",
+    name: "Account Info",
     key: "account",
     route: "/account",
     auth: "any",
@@ -183,69 +177,59 @@ const routes = [
     component: <Account />,
     noCollapse: true,
   },
-  {
-    type: "collapse",
-    name: "Rewards",
-    auth: "any",
-    key: "claim-new-reward",
-    route: "/claim-new-reward",
-    component: <Rewards />,
-    icon: <EmojiEvents size="12px" />,
-    noCollapse: true,
-  },
+  // {
+  //   type: "collapse",
+  //   name: "Rewards",
+  //   auth: "any",
+  //   key: "claim-new-reward",
+  //   route: "/claim-new-reward",
+  //   component: <Rewards />,
+  //   icon: <EmojiEvents size="12px" />,
+  //   noCollapse: true,
+  // },
 ];
 export default routes;
 
 export const components = {
   dashboard: (
-    <Suspense fallback={<Loading condition={true} />}>
+    <Suspense fallback={<CircularWithValueLabel condition={true} />}>
       <Dashboard />
     </Suspense>
   ),
   VerifyAccount: (
-    <Suspense fallback={<Loading condition={true} />}>
+    <Suspense fallback={<CircularWithValueLabel condition={true} />}>
       <RecipeReviewCard />
     </Suspense>
   ),
-  createMembers: (
-    <Suspense fallback={<Loading condition={true} />}>
-      <CreateMembers />
-    </Suspense>
-  ),
   myTeam: (
-    <Suspense fallback={<Loading condition={true} />}>
+    <Suspense fallback={<CircularWithValueLabel condition={true} />}>
       <Team />
     </Suspense>
   ),
   connections: (
-    <Suspense fallback={<Loading condition={true} />}>
+    <Suspense fallback={<CircularWithValueLabel condition={true} />}>
       <Connections />
     </Suspense>
   ),
-  income: (
-    <Suspense fallback={<Loading condition={true} />}>
-      <Income />
-    </Suspense>
-  ),
   rents: (
-    <Suspense fallback={<Loading condition={true} />}>
+    <Suspense fallback={<CircularWithValueLabel condition={true} />}>
       {" "}
-      <Rents />
+      <RentOnRent />
     </Suspense>
   ),
   products: (
-    <Suspense fallback={<Loading condition={true} />}>
+    <Suspense fallback={<CircularWithValueLabel condition={true} />}>
       <Products />
     </Suspense>
   ),
   account: (
-    <Suspense fallback={<Loading condition={true} />}>
+    <Suspense fallback={<CircularWithValueLabel condition={true} />}>
       {" "}
       <Account />
     </Suspense>
   ),
   profile: (
-    <Suspense fallback={<Loading condition={true} />}>
+    <Suspense fallback={<CircularWithValueLabel condition={true} />}>
       <Profile />
     </Suspense>
   ),
@@ -253,7 +237,6 @@ export const components = {
 
 export const icons = {
   dashboard: <Shop size="12px" />,
-  createMembers: <Office size="12px" />,
   myTeam: <Office size="12px" />,
   connections: <Office size="12px" />,
   income: <Office size="12px" />,

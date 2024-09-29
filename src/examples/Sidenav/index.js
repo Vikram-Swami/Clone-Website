@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 // react-router-dom components
-import { useLocation, NavLink } from "react-router-dom";
+import { useLocation, NavLink, useNavigate } from "react-router-dom";
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
@@ -24,11 +24,15 @@ import SidenavRoot from "examples/Sidenav/SidenavRoot";
 
 // Next Work Dashboard React context
 import { useSoftUIController, setMiniSidenav } from "context";
+import SidenavCard from "./SidenavCard";
+import { setDialog } from "context";
+import { deleteData } from "api/users";
 
 function Sidenav({ color, brand, routes, ...rest }) {
   const [controller, dispatch] = useSoftUIController();
-  const { miniSidenav, transparentSidenav } = controller;
+  const { miniSidenav, transparentSidenav, user } = controller;
   const location = useLocation();
+  const navigate = useNavigate();
   const { pathname } = location;
   const collapseName = pathname.split("/").slice(1)[0];
 
@@ -51,6 +55,8 @@ function Sidenav({ color, brand, routes, ...rest }) {
     // Remove event listener on cleanup
     return () => window.removeEventListener("resize", handleMiniSidenav);
   }, [dispatch, location]);
+
+
 
   // Render all the routes from the routes.js (All the visible items on the Sidenav)
   const renderRoutes = routes.map(
@@ -122,6 +128,28 @@ function Sidenav({ color, brand, routes, ...rest }) {
     }
   );
 
+
+  const logoutHandler = (add) => {
+    const logoutNavigate = () => {
+      let referLink = window.location.origin;
+      referLink += `/sign-up?sponsorId=${user.id}`;
+      if (add) {
+        navigate("/");
+      } else {
+        window.location.replace(referLink);
+      }
+      setDialog(dispatch, []);
+    }
+    setDialog(dispatch, [
+      {
+        status: "form",
+        action: "Logout",
+        title: add ? "Are you sure to Logout." : "Kindly Logout for New Registration!",
+        call: () => setTimeout(() => deleteData(logoutNavigate), 200)
+      },
+    ]);
+  };
+
   return (
     <SidenavRoot {...rest} variant="permanent" ownerState={{ transparentSidenav, miniSidenav }}>
       <SoftBox pt={3} pb={1} px={4} textAlign="center">
@@ -139,27 +167,26 @@ function Sidenav({ color, brand, routes, ...rest }) {
           </SoftTypography>
         </SoftBox>
         <SoftBox component={NavLink} to="/" display="flex" alignItems="center">
-          {brand && <SoftBox component="img" src={brand} alt="Knoone India" width="10rem" />}
+          {brand && <SoftBox component="img" src={brand} alt="TRIWAVES INDIA LIMITED" width="10rem" />}
         </SoftBox>
       </SoftBox>
       <Divider />
       <List>{renderRoutes}</List>
-      {/* <SoftBox pt={2} my={2} mx={2} mt="auto">
+      <SoftBox pt={2} my={2} mx={2} mt="auto">
         <SidenavCard />
-        <SoftBox mt={2}>
-          <SoftButton
-            component="a"
-            href="https://creative-tim.com/product/soft-ui-dashboard-pro-react"
-            target="_blank"
-            rel="noreferrer"
-            variant="gradient"
-            color={color}
-            fullWidth
+        <div className="mt5">
+          <button className="btn btn-prime" style={{ width: "100%" }} onClick={() => logoutHandler(false)}
           >
-            upgrade to pro
-          </SoftButton>
-        </SoftBox>
-      </SoftBox> */}
+            Add Member
+          </button>
+        </div>
+        <div className="mt5">
+          <button className="btn " style={{ width: "100%" }} onClick={() => logoutHandler(true)}
+          >
+            LOGOUT
+          </button>
+        </div>
+      </SoftBox>
     </SidenavRoot>
   );
 }

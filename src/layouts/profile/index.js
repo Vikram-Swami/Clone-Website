@@ -8,10 +8,27 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 // Overview page components
 import { useSoftUIController } from "context";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
+import { useEffect } from "react";
+import { setDialog } from "context";
+import { completeProfile } from "api/users";
+import { useNavigate } from "react-router-dom";
 
 function Overview() {
-  const [controller] = useSoftUIController();
+  const [controller, dispatch] = useSoftUIController();
   const { user } = controller;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user.isVerfied && !user.accountNo && user.aadharNo) {
+      setDialog(dispatch, [{
+        status: "form",
+        title: "Your Account is Not Verified!",
+        message: "Kindly complete your KYC to access more features!",
+        action: "Complete KYC",
+        call: () => { completeProfile(dispatch, navigate) }
+      }])
+    }
+  }, [user])
   return (
     <DashboardLayout>
       <DashboardNavbar />
