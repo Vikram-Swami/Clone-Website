@@ -1,15 +1,9 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import Icon from "@mui/material/Icon";
-import ApiClient from "Services/ApiClient";
-import { startLoading } from "context";
 import { useSoftUIController } from "context";
-import { setLoading } from "context";
-import { toast } from "react-toastify";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import { markRead } from "Services/endpointes";
 
-import { deleteAllNotifications } from "Services/endpointes";
 import { setDialog } from "context";
 import { fetchNotifications } from "api/users";
 import { markReadNotif } from "api/users";
@@ -17,7 +11,7 @@ import { deleteAllNotif } from "api/users";
 
 function Notifications() {
   const [controller, dispatch] = useSoftUIController();
-  const { notifications, user } = controller;
+  const { notifications } = controller;
 
 
 
