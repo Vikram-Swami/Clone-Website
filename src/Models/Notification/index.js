@@ -23,6 +23,14 @@ class Notification {
     fromArray(jsonData) {
         let data = [];
         for (let json of jsonData) {
+
+            const dateObject = new Date(json.createdAt);
+            const options = { day: "2-digit", month: "2-digit", year: "2-digit" };
+            const formattedDate = dateObject.toLocaleDateString("en-GB", options);
+
+
+
+
             data.push(new Notification(
                 json._id ?? null,
                 json.userId,
@@ -30,7 +38,7 @@ class Notification {
                 json.sourceId,
                 json.sourceType,
                 json.status,
-                json.createdAt ?? new Date(),
+                formattedDate ?? new Date(),
             ))
         }
         return data;

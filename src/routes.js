@@ -1,11 +1,10 @@
 import React, { lazy, Suspense } from "react";
-import RecipeReviewCard from "layouts/verifyAccount";
 // NextWork Dashboard React layouts
 // const Dashboard = lazy(() => import("layouts/dashboard"));
-import Dashboard from "layouts/dashboard";
-import ForgetPassword from "layouts/authentication/forget-password";
-import Notifications from "layouts/Notification";
-import RentOnRent from "layouts/Incomes";
+const Dashboard = lazy(() => import("layouts/dashboard"));
+const ForgetPassword = lazy(() => import("layouts/authentication/forget-password"));
+const Notifications = lazy(() => import("layouts/Notification"));
+const RentOnRent = lazy(() => import("layouts/Incomes"));
 import {
   AccountBalance,
   AccountCircle,
@@ -40,16 +39,6 @@ const routes = [
     route: "/home",
     icon: <SpaceDashboard size="12px" />,
     component: <Dashboard />,
-    noCollapse: true,
-  },
-  {
-    type: "route",
-    name: "VerifyAccount",
-    key: "VerifyAccount",
-    auth: null,
-    route: "/verify-account/:id",
-    icon: <Shop size="12px" />,
-    component: <RecipeReviewCard />,
     noCollapse: true,
   },
 
@@ -145,17 +134,6 @@ const routes = [
     noCollapse: true,
   },
 
-  // {
-  //   type: "route",
-  //   name: "My Incomes",
-  //   key: "my-incomes",
-  //   auth: "any",
-  //   route: "/my-incomes",
-  //   icon: <Office size="12px" />,
-  //   component: <Income />,
-  //   noCollapse: true,
-  // },
-
   {
     type: "collapse",
     name: "Incomes",
@@ -176,17 +154,7 @@ const routes = [
     icon: <AccountBalance fontSize="1rem" />,
     component: <Account />,
     noCollapse: true,
-  },
-  // {
-  //   type: "collapse",
-  //   name: "Rewards",
-  //   auth: "any",
-  //   key: "claim-new-reward",
-  //   route: "/claim-new-reward",
-  //   component: <Rewards />,
-  //   icon: <EmojiEvents size="12px" />,
-  //   noCollapse: true,
-  // },
+  }
 ];
 export default routes;
 
@@ -194,11 +162,6 @@ export const components = {
   dashboard: (
     <Suspense fallback={<CircularWithValueLabel condition={true} />}>
       <Dashboard />
-    </Suspense>
-  ),
-  VerifyAccount: (
-    <Suspense fallback={<CircularWithValueLabel condition={true} />}>
-      <RecipeReviewCard />
     </Suspense>
   ),
   myTeam: (

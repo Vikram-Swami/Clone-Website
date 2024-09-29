@@ -5,6 +5,7 @@ import { setClaims } from "context";
 import { setConnection } from "context";
 import { setProducts } from "context";
 import { setRewards } from "context";
+import { setNotification } from "context";
 import { setTransaction } from "context";
 import { setIncome } from "context";
 import { startLoading, setUser, setDialog, setLoading } from "context";
@@ -12,6 +13,9 @@ import { toast } from "react-toastify";
 import ApiClient from "Services/ApiClient";
 import { generateProduct } from "Services/endpointes";
 import { verifyTransaction } from "Services/endpointes";
+import { markRead } from "Services/endpointes";
+import { deleteAllNotifications } from "Services/endpointes";
+import { getUserNotification } from "Services/endpointes";
 import { claimReward } from "Services/endpointes";
 import { getUserRewards } from "Services/endpointes";
 import { createConnections } from "Services/endpointes";
@@ -337,6 +341,23 @@ export const fetchTransaction = async (dispatch, amount) => {
   }
 }
 
+// FETCH ALL NOTIFICATIONS.
+
+export const fetchNotifications = async (dispatch) => {
+  startLoading(dispatch, true);
+  try {
+    const response = await ApiClient.getData(getUserNotification);
+    if (response.status === 200) {
+      setNotification(dispatch, response.data);
+    } else {
+      setLoading(dispatch, false);
+    }
+  } catch (error) {
+    setLoading(dispatch, false);
+    toast.error(error.message ?? "Network Error!");
+  }
+};
+
 // ACTIVATE RENT
 const activateRent = async (id, dispatch) => {
   try {
@@ -388,6 +409,37 @@ export const receiveReward = async (id, dispatch) => {
   } catch (error) {
     setLoading(dispatch, false);
     toast.error(error.message ?? "Network Error!");
+  }
+};
+
+// READ ALL NOTIFICATION
+export const markReadNotif = async (dispatch) => {
+  startLoading(dispatch, true);
+  try {
+    const response = await ApiClient.updateData(markRead);
+    if (response.status == 200) {
+      setNotification(dispatch, [])
+
+    }
+    setDialog(dispatch, [response]);
+  } catch (error) {
+    toast.error(error.message ?? "Network Error!");
+    setLoading(dispatch, false);
+  }
+};
+
+// DELETE ALL NOTIFICATIONS
+export const deleteAllNotif = async (dispatch) => {
+  try {
+    startLoading(dispatch, true);
+    const response = await ApiClient.deleteData(deleteAllNotifications, "");
+    if (response.status == 200) {
+      fetchNotifications(dispatch);
+    }
+    setDialog(dispatch, [response]);
+  } catch (error) {
+    toast.error(error?.message ?? "Network Error");
+    setLoading(dispatch, false);
   }
 };
 

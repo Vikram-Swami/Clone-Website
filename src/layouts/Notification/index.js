@@ -1,164 +1,85 @@
 import { useState, useEffect } from "react";
-import Card from "@mui/material/Card";
 import Icon from "@mui/material/Icon";
-import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
-import TimelineItem from "examples/Timeline/TimelineItem";
 import ApiClient from "Services/ApiClient";
-import { getUserNotification } from "Services/endpointes";
 import { startLoading } from "context";
 import { useSoftUIController } from "context";
 import { setLoading } from "context";
-import { setNotification } from "context";
 import { toast } from "react-toastify";
-import Grid from "@mui/material/Grid";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import { markRead } from "Services/endpointes";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
+
 import { deleteAllNotifications } from "Services/endpointes";
 import { setDialog } from "context";
+import { fetchNotifications } from "api/users";
+import { markReadNotif } from "api/users";
+import { deleteAllNotif } from "api/users";
 
 function Notifications() {
   const [controller, dispatch] = useSoftUIController();
   const { notifications, user } = controller;
-  const [showAllNotifications, setShowAllNotifications] = useState(false);
-  const [visibleNotifications, setVisibleNotifications] = useState([]);
 
-  const fetchNotifications = async () => {
-    startLoading(dispatch, true);
-    try {
-      const response = await ApiClient.getData(getUserNotification);
-      if (response.status === 200) {
-        setNotification(dispatch, response.data);
-      } else {
-        setLoading(dispatch, false);
-      }
-    } catch (error) {
-      setLoading(dispatch, false);
-      toast.error(error.toString());
-    }
-  };
+
+
+  // useEffect(() => {
+  // if (showAllNotifications) {
+  //   setVisibleNotifications(notifications);
+  // } else {
+  //   setVisibleNotifications(notifications);
+  // }
+  // }, [notifications, showAllNotifications]);
+
+
+
+
 
   useEffect(() => {
     if (notifications.length < 1) {
-      fetchNotifications();
+      fetchNotifications(dispatch);
     }
   }, []);
-
-  useEffect(() => {
-    if (showAllNotifications) {
-      setVisibleNotifications(notifications);
-    } else {
-      setVisibleNotifications(notifications);
-    }
-  }, [notifications, showAllNotifications]);
-
-  const [menu, setMenu] = useState(null);
-
-  const openMenu = ({ currentTarget }) => setMenu(currentTarget);
-  const closeMenu = () => setMenu(null);
-
-  const handleMarkAllAsRead = async () => {
-    startLoading(dispatch, true);
-    try {
-      const response = await ApiClient.updateData(markRead);
-      setDialog(dispatch, [response]);
-    } catch (error) {
-      toast.error(error.message);
-      setLoading(dispatch, false);
-    } finally {
-      closeMenu();
-    }
-  };
-  const handleDeleteAll = async () => {
-    try {
-      startLoading(dispatch, true);
-      const response = await ApiClient.deleteData(deleteAllNotifications, "");
-        setDialog(dispatch, [response]);
-    } catch (error) {
-      toast.error(error?.message ?? "Network Error");
-      setLoading(dispatch, false);
-    } finally {
-      closeMenu();
-    }
-  };
-
-  const renderMenu = (
-    <Menu
-      id="simple-menu"
-      anchorEl={menu}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "left",
-      }}
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      open={Boolean(menu)}
-      onClose={closeMenu}
-    >
-      <MenuItem onClick={() => handleMarkAllAsRead()}>Mark all as read</MenuItem>
-      <MenuItem onClick={() => handleDeleteAll()}>Delete all</MenuItem>
-    </Menu>
-  );
-
   return (
     <DashboardLayout>
-      <DashboardNavbar />
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={12} lg={12}>
-          <Card className="h-100">
-            <SoftBox px={3}>
-              <SoftBox display="flex" justifyContent="right" alignItems="center" p={3} pb={0}>
-                <SoftBox color="text" px={2}>
-                  <Icon
-                    sx={{ cursor: "pointer", fontWeight: "bold" }}
-                    fontSize="small"
-                    onClick={openMenu}
-                  >
-                    more_vert
-                  </Icon>
-                </SoftBox>
-                {renderMenu}
-              </SoftBox>
+      <DashboardNavbar call={() => fetchNotifications(dispatch)} />
+      <div className="card transactions" style={{ minHeight: "100%", lineHeight: "20px" }}>
+        <div className="d-flex j-between">
+          <h5 style={{ textTransform: "uppercase" }}>Notifications</h5>
+          <div className="d-flex j-end g8">
+            <Icon color="error" sx={{ cursor: "pointer" }} onClick={() => { setDialog(dispatch, [{ status: "form", title: "Confirmation Requried!", message: "All Notification wil be deleted after this action.", action: "Confirm", call: () => { deleteAllNotif(dispatch) } }]) }}>delete</Icon>
+            <span className="help-text mx5 c-point" onClick={() => { setDialog(dispatch, [{ status: "form", title: "Confirmation Requried!", message: "All Notification wil be marked as read after this action.", action: "Confirm", call: () => { markReadNotif(dispatch) } }]) }}>Mark All<Icon>done_all</Icon></span>
+          </div>
+        </div>
 
-              <SoftBox mb={0}>
-                <SoftTypography variant="button" color="text" fontWeight="regular">
-                  <SoftTypography display="inline" variant="body2" verticalAlign="middle">
-                    <Icon
-                      sx={{
-                        fontWeight: "bold",
-                        color: ({ palette: { success } }) => success.main,
-                      }}
-                    >
-                      arrow_upward
-                    </Icon>
-                  </SoftTypography>
-                  &nbsp;
-                  <SoftTypography variant="button" color="text" fontWeight="medium">
-                    {user.unread} Unread Notifications
-                  </SoftTypography>{" "}
-                  this month
-                </SoftTypography>
-              </SoftBox>
-            </SoftBox>
-            <SoftBox p={2}>
-              {visibleNotifications.map((item, index) => (
-                <TimelineItem
-                  key={index}
-                  color={item.color}
-                  icon={item.icon}
-                  title={item.title}
-                  dateTime={item.dateTime}
-                />
-              ))}
-            </SoftBox>
-          </Card>
-        </Grid>
-      </Grid>
+        <div className="card-body">
+
+          {notifications?.length > 0 ?
+            notifications.map(e =>
+              <div key={e.id} className="d-flex j-center mb20" style={{ paddingBottom: "20px", flexWrap: "wrap", borderBottom: '1px solid grey', lineHeight: '1' }} >
+                <div className="d-flex j-center mb10">
+                  <div className="d-flex g8 mb10" style={{ flexDirection: "row", justifyContent: "start" }}>
+                    <Icon fontSize="large">notifications</Icon>
+                    <p className="help-text" style={{ textTransform: "uppercase" }}>{e.title ?? ""} </p>
+
+
+                  </div>
+                  {e.status ? <Icon className="badge success">done_all</Icon> : <Icon className="badge error">mark_chat_unread</Icon>}
+                </div>
+                <div className="desc-small mb20" >
+                  <p className="help-text">Reference : ( {e.sourceId} )</p>
+                </div>
+                <div className="g8 mb10 d-flex j-start " style={{ flexDirection: "row", justifyContent: "start", fontSize: "0.8rem" }}>
+                  <Icon fontSize="medium" >watch_later</Icon>
+                  <span>{e.createdAt}</span>
+                </div>
+
+              </div>)
+            :
+            <div className="d-flex">
+              <h6 className="help-text">No Notifications Found.</h6>
+            </div>
+          }
+        </div>
+      </div>
     </DashboardLayout>
   );
 }

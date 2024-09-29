@@ -123,13 +123,12 @@ img{
   font-weight: 600;
   background: rgb(170, 30, 30);
   box-shadow: 2px 2px 5px 0px #b9a2a2;
-  width: max-content;
-  height: 100%;
+  width: max-content !important;
+  height: 100% !important;
 }
 
 .success{
   background: #16b965 !important;
-
 }
 
 
