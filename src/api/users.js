@@ -103,7 +103,7 @@ export const completeProfile = async (dispatch, navigate) => {
     const response = await ApiClient.getData(validateUser);
     console.log("complete Profile", response);
     if (response.status === 200) {
-      navigate(`/complete-kyc`);
+      navigate(`/kyc`);
       setStep(dispatch, response?.data?.step ?? 0);
       getUser(dispatch);
     } else {

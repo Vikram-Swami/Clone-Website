@@ -143,9 +143,11 @@ function CompleteKYC() {
 
     try {
       const response = await ApiClient.createData(route, formdata);
-      form.current.reset();
+      if (response.status == 200) {
+        form.current.reset();
+        completeProfile(dispatch, navigate);
+      }
       setDialog(dispatch, [response]);
-      completeProfile(dispatch, navigate);
     } catch (error) {
       toast.error(error?.message ?? "Network Error!");
       setLoading(dispatch, false);

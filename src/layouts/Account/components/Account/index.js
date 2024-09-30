@@ -126,7 +126,7 @@ function AccountInfo() {
                     </div>
 
                 </div>
-                {parseFloat(user?.wallet) < 500 ? <div className="d-flex j-end mb10 g8">
+                {parseFloat(user?.wallet) > 500 ? <div className="d-flex j-end mb10 g8">
                     <h6>Transfer to Bank</h6>
                     <div style={{ fontSize: "35px", lineHeight: 0, cursor: "pointer" }} onClick={() => {
                         setDialog(dispatch, [
