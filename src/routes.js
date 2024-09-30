@@ -95,7 +95,7 @@ const routes = [
     name: "KYC",
     key: "kyc",
     auth: "user",
-    route: "/complete-KYC",
+    route: "/kyc",
     icon: <Office size="12px" />,
     component: <CompleteKYC />,
     noCollapse: true,

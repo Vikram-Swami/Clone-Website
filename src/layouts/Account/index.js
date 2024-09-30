@@ -19,16 +19,16 @@ function Account() {
       <DashboardNavbar call={() => getUser(dispatch)} />
       <div className="mt20">
         <Grid container gap={1} justifyContent={"space-between"}>
-          <Grid item xs={12} lg={5.7}>
+          <Grid item xs={12} lg={5.7} mb={2}>
             <AccountInfo />
           </Grid>
-          <Grid item xs={12} lg={6}>
+          <Grid item xs={12} lg={6} mb={2}>
             <Transactions />
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} mb={2}>
             <Income />
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} mb={2}>
             <Claims />
           </Grid>
         </Grid>

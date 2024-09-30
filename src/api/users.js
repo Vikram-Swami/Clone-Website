@@ -72,6 +72,7 @@ export const deleteData = (navigate) => {
     const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
     document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
   }
+  navigate();
 };
 
 // Get User
@@ -490,3 +491,17 @@ export const handleCopyLink = (user, pId, dispatch) => {
     },
   ]);
 };
+
+export function formatIndianCurrency(num) {
+  const numStr = num.toString();
+
+  // Match last 3 digits first, then continue matching groups of 2 digits for Indian numbering
+  const lastThree = numStr.substring(numStr.length - 3);
+  const otherNumbers = numStr.substring(0, numStr.length - 3);
+
+  if (otherNumbers !== '') {
+    return otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + "," + lastThree;
+  } else {
+    return lastThree;  // No formatting needed for numbers less than 1,000
+  }
+}

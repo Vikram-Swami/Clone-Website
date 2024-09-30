@@ -4,27 +4,13 @@ import { useSoftUIController } from "context";
 import { getAllRewards } from "api/users";
 import { claimRewards } from "api/users";
 import { Icon } from "@mui/material";
+import { formatIndianCurrency } from "api/users";
 
 const Rewards = () => {
 
     const [controller, dispatch] = useSoftUIController();
 
     const { rewards } = controller;
-
-
-    function formatIndianCurrency(num) {
-        const numStr = num.toString();
-
-        // Match last 3 digits first, then continue matching groups of 2 digits for Indian numbering
-        const lastThree = numStr.substring(numStr.length - 3);
-        const otherNumbers = numStr.substring(0, numStr.length - 3);
-
-        if (otherNumbers !== '') {
-            return otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + "," + lastThree;
-        } else {
-            return lastThree;  // No formatting needed for numbers less than 1,000
-        }
-    }
 
 
     useEffect(() => {

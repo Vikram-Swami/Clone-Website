@@ -1,3 +1,4 @@
+import { formatIndianCurrency } from 'api/users';
 import { getIncomes } from 'api/users';
 import { useSoftUIController } from 'context';
 import * as React from 'react';
@@ -79,20 +80,20 @@ const Income = () => {
                             </tr>
                             <tr style={{ fontWeight: 600 }}>
                                 <td colSpan="2" >Subtotal</td>
-                                <td className="right-text">{subtotal(income, "amount")}</td>
+                                <td className="right-text">{subtotal(income, "amount").toFixed(2)}</td>
                             </tr>
                             <tr>
                                 <td colSpan="2">Convenience Charge</td>
-                                <td className="right-text">{subtotal(income, "conCharge")}</td>
+                                <td className="right-text">{subtotal(income, "conCharge").toFixed(2)}</td>
                             </tr>
                             <tr>
                                 <td>TDS</td>
                                 <td className="right-text">5% on Incomes &<br />2% on Rent</td>
-                                <td className="right-text">{subtotal(income, "tds")}</td>
+                                <td className="right-text">{subtotal(income, "tds").toFixed(2)}</td>
                             </tr>
                             <tr style={{ fontWeight: 600 }}>
                                 <td colSpan="2">Total</td>
-                                <td className="right-text">{total(income)}</td>
+                                <td className="right-text">{total(income).toFixed(2)}</td>
                             </tr>
                         </tbody>
                     </table>

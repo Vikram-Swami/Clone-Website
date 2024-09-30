@@ -9,6 +9,7 @@ import Table from "examples/Tables/Table";
 import TreeComponent from "./TreeView";
 import { getMember } from "api/users";
 import { setDialog } from "context";
+import UserModel from "Models/User";
 
 function Team() {
   const [controller, dispatch] = useSoftUIController();
@@ -19,7 +20,8 @@ function Team() {
 
   const fetchMember = async () => {
     let newMember = await getMember(dispatch, user);
-    setMember(newMember.filter(e => e.sponsorId?.toLowerCase() != user?.id?.toLowerCase()));
+    let newModel = new UserModel().memberToArray(newMember.filter(e => e.sponsorId?.toLowerCase() != user?.id?.toLowerCase()));
+    setMember(newModel);
   }
 
   const memberSearch = () => {

@@ -4,6 +4,7 @@ import { useSoftUIController } from "context";
 
 import { setDialog } from "context";
 import { payment } from "api/users";
+import { formatIndianCurrency } from "api/users";
 
 
 function AccountInfo() {
@@ -20,7 +21,7 @@ function AccountInfo() {
             <div className="card-body">
 
 
-                <div className="d-flex j-between mb10" >
+                <div className="d-flex j-between mb10 info" >
 
                     <div className="d-flex" style={{ flexDirection: "row" }}>
                         <div className="icon">
@@ -31,12 +32,12 @@ function AccountInfo() {
                         </div>
                     </div>
                     <div className="desc-small" >
-                        {parseFloat(user?.ownStr) > 0 ? <h4>₹{user?.ownStr}</h4> : <h4 style={{ color: "red" }}>Inactive</h4>}
+                        {parseFloat(user?.ownStr) > 0 ? <h4>{user?.ownStr}</h4> : <h4 style={{ color: "red" }}>Inactive</h4>}
                     </div>
 
                 </div>
 
-                <div className="d-flex j-between mb10" >
+                <div className="d-flex j-between mb10 info" >
                     <div className="d-flex" style={{ flexDirection: "row" }}>
                         <div className="icon">
                             <Icon color="success">currency_rupee</Icon>
@@ -46,26 +47,26 @@ function AccountInfo() {
                         </div>
                     </div>
                     <div className="desc-small">
-                        <h4 >₹{user?.earning?.toFixed(0) ?? 0}</h4>
+                        <h4 >₹{formatIndianCurrency(user?.earning?.toFixed(0)) ?? 0}</h4>
                     </div>
                 </div>
 
-                <div className="d-flex j-between mb10" >
+                <div className="d-flex j-between mb10 info" >
 
                     <div className="d-flex" style={{ flexDirection: "row" }}>
                         <div className="icon">
                             <Icon color="success">receipt</Icon>
                         </div>
                         <div className="desc-small">
-                            <p >Monthly Income</p>
+                            <p>Monthly Income</p>
                         </div>
                     </div>
                     <div className="desc-small">
-                        <h4 >₹{user?.mIncome?.toFixed(0) ?? 0}</h4>
+                        <h4 >₹{formatIndianCurrency(user?.mIncome?.toFixed(0)) ?? 0}</h4>
                     </div>
 
                 </div>
-                <div className="d-flex j-between mb10" >
+                <div className="d-flex j-between mb10 info" >
 
                     <div className="d-flex" style={{ flexDirection: "row" }}>
                         <div className="icon">
@@ -76,11 +77,11 @@ function AccountInfo() {
                         </div>
                     </div>
                     <div className="desc-small">
-                        <h4 >₹{user?.tds?.toFixed(0) ?? 0}</h4>
+                        <h4 >₹{formatIndianCurrency(user?.tds?.toFixed(0)) ?? 0}</h4>
                     </div>
 
                 </div>
-                <div className="d-flex j-between mb10" >
+                <div className="d-flex j-between mb10 info" >
 
                     <div className="d-flex" style={{ flexDirection: "row" }}>
                         <div className="icon">
@@ -91,11 +92,11 @@ function AccountInfo() {
                         </div>
                     </div>
                     <div className="desc-small">
-                        <h4 >₹{user?.totalWithdraw ?? 0}</h4>
+                        <h4 >₹{formatIndianCurrency(user?.totalWithdraw) ?? 0}</h4>
                     </div>
 
                 </div>
-                <div className="d-flex j-between mb10" >
+                <div className="d-flex j-between mb10 info" >
 
                     <div className="d-flex" style={{ flexDirection: "row" }}>
                         <div className="icon">
@@ -106,11 +107,11 @@ function AccountInfo() {
                         </div>
                     </div>
                     <div className="desc-small">
-                        <h4 >{user?.leader ? "LEADER" : "₹" + user?.avail ?? 0}</h4>
+                        <h4 >{user?.leader ? "LEADER" : user?.avail}</h4>
                     </div>
 
                 </div>
-                <div className="d-flex j-between mb10" >
+                <div className="d-flex j-between mb10 info" >
                     <div className="d-flex" style={{ flexDirection: "row" }}>
                         <div className="icon">
                             <Icon color="success">payments</Icon>
@@ -121,7 +122,7 @@ function AccountInfo() {
                         </div>
                     </div>
                     <div className="desc-small">
-                        <h4 style={{ color: user.wallet > 0 ? "green" : "red" }} >₹{(user.wallet)?.toFixed(0)}</h4>
+                        <h4 style={{ color: user.wallet > 0 ? "green" : "red" }} >₹{formatIndianCurrency((user.wallet)?.toFixed(0))}</h4>
                     </div>
 
                 </div>
@@ -132,7 +133,7 @@ function AccountInfo() {
                             {
                                 status: "form",
                                 title: "Transfer to Self Bank Account",
-                                message: `Enter Amount to Withdraw (Current Balance: ${user?.wallet?.toFixed(2)})`,
+                                message: `Enter Amount to Withdraw (Current Balance: ${formatIndianCurrency(user?.wallet?.toFixed(2))})`,
                                 action: "Confirm",
                                 children: <input type="number" min={0} step="any" placeholder="Enter Amount ₹" defaultValue={user?.wallet?.toFixed(0)} name="amount" />,
                                 call: (form) =>

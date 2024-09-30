@@ -39,12 +39,12 @@ function Connections() {
             connection?.map(e =>
               <div key={e.id} className="br-card">
                 <div className="content-card">
-                  <div className="d-flex j-start g8 mb20">
+                  <div className="d-flex j-start g8 mb20" style={{ flexWrap: "wrap" }}>
                     <div className="card-icon-space">
                       <Avatar sx={{ width: 37, height: 37 }} alt={user.fullName} fontSize="medium" src="51365.jpg" />
                     </div>
                     <h5 className="help-text" style={{ minWidth: "90px" }}>Hi, {user.fullName}</h5>
-                    <span className="help-text" style={{ whiteSpace: "nowrap", textTransform: "uppercase" }}>(Connection ID : {e.id})</span>
+                    <span className="help-text" style={{ textTransform: "uppercase" }}>(Connection ID : {e.id})</span>
 
                   </div>
                   <div className="d-flex j-between mb20">

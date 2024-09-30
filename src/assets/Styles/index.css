@@ -115,6 +115,10 @@ img{
   cursor: pointer;
 }
 
+.m-auto{
+  margin: auto;
+}
+
 .badge {
   font-size: 0.85rem;
   padding: 3px 9px;
@@ -142,14 +146,21 @@ img{
   display: inline;
   font-size: 0.95rem;
 }
-.card{
-  background: white;
-max-height: 430px;
-width: 100%;
-  padding: 10px;
-  border-radius: 10px;
-  box-shadow:0rem 1.25rem 1.6875rem 0rem rgba(0, 0, 0, 0.05);
+.info {
+  box-shadow: inset -2px -2px 7px 0 grey;
+  border-radius: 16px;
+  padding: 0 10px;
 }
+
+ .card {
+     background: #fff;
+     border-radius: 10px;
+   max-height: 430px;
+   padding: 10px;
+     width: 100%;
+     overflow: hidden;
+  }
+
 .card.transactions{
   min-height: 430px;
   overflow: scroll;
@@ -196,14 +207,16 @@ width: 100%;
   font-size: 0.6rem;
 }
 
-.icon {
-  font-size: 35px;
-  display: block;
-  width: 50px;
-  border-right: 2px solid black;
-  height: 100%;
-  margin-right:10px
-}
+
+
+ .icon {
+     display: block;
+     font-size: 35px;
+     height: 100%;
+     width: 45px;
+   }
+
+
 .icon span {
   margin: auto;
   vertical-align: middle;
@@ -227,7 +240,7 @@ width: 100%;
 }
 .reward-icon {
   margin-left: 50px;
-  width: 20% !important;
+  width: 17% !important;
   z-index: 11;
 }
 
@@ -505,9 +518,7 @@ input[type=checkbox]:checked{
   background: #fff;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   color: #333;
-  max-width: 940px;
-  padding: 20px;
-  overflow: hidden;
+  padding: 15px;
   border-radius: 10px;
 }
 
@@ -565,12 +576,9 @@ input[type=checkbox]:checked{
   z-index: 0;
   border-radius: 10px;
 }
-.face-card .content-card{
-overflow: visible;
-}
 .content-card {
   display: flex;
-  column-gap: 20px;
+  gap: 20px;
   padding: 0 5px;
   flex-wrap: wrap;
   overflow: scroll;
@@ -584,12 +592,8 @@ overflow: visible;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  width: 100%;
+  min-width: 85%;
 }
-.card-group-content div{
-  margin:auto;
-}
-
 .card .image {
   overflow: hidden;
   margin: 0;

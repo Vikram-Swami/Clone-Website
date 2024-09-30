@@ -17,19 +17,19 @@ import { uploadDocuments } from "Services/endpointes";
 import { completeProfile } from "api/users";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
+import Webcam from "react-webcam";
 
 function CompleteKYC() {
 
   const form = useRef(null);
   const [controller, dispatch] = useSoftUIController();
   const { accept, user, step } = controller;
+
+  const [capturedImage, setCapturedImage] = React.useState(null); // Store the captured image
+  const webcamRef = useRef(null);
   const navigate = useNavigate();
-  const [photoCaptured, setPhotoCaptured] = useState(false); // State to check if photo is captured
-  const [livePhoto, setLivePhoto] = useState(null); // Store the captured image
-  const videoRef = useRef(null);
-  const canvasRef = useRef(null);
+
   const signatureRef = useRef(null);
-  form.image = false;
 
   const titles = ["ADD ADDRESS", "COMPLETE KYC", "UPLOAD REQUIRED DOCUMENTS"]
   const routes = [createAddress, createKyc, uploadDocuments];
@@ -105,34 +105,10 @@ function CompleteKYC() {
     }
   };
 
-
-
-  // Function to start the camera
-  const startCamera = () => {
-    setPhotoCaptured(false);
-    navigator.mediaDevices.getUserMedia({ video: true })
-      .then((stream) => {
-        videoRef.current.srcObject = stream;
-      })
-      .catch((err) => {
-        console.error("Error accessing camera: ", err);
-      });
-  };
-
-  // Function to capture the photo
   const capturePhoto = () => {
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
-    const context = canvas.getContext("2d");
-
-    // Draw the video frame to the canvas
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-    // Convert the canvas content to a data URL
-    const dataURL = canvas.toDataURL("image/png");
-    setLivePhoto(dataURL);
-    setPhotoCaptured(true);
-    video.srcObject.getTracks().forEach(track => track.stop()); // Stop the camera stream
+    const imageSrc = webcamRef.current.getScreenshot(); // Capture image from webcam
+    setCapturedImage(imageSrc); // Store the captured image
+    form.image = imageSrc; // Append the captured image
   };
 
   const submitHandler = async (e, route) => {
@@ -145,7 +121,7 @@ function CompleteKYC() {
     const formdata = new FormData(e.currentTarget);
 
     if (step === 3) {
-      if (!photoCaptured) {
+      if (!capturedImage) {
         toast.error("Live photo is required!");
         return;
       }
@@ -156,8 +132,8 @@ function CompleteKYC() {
       const signDataURL = form.sign;
       const signFile = dataURLtoFile(signDataURL, "sign.png");
       formdata.append("sign", signFile);
-
-      const photoFile = dataURLtoFile(livePhoto, "profile.png");
+      let imageURL = form.image;
+      const photoFile = dataURLtoFile(imageURL, "profile.png");
       formdata.append("image", photoFile);
     }
 
@@ -354,27 +330,25 @@ function CompleteKYC() {
                   </label>
                 </div>
                 <div className="custom-form-control" style={{ maxHeight: "100%" }}>
-                  {photoCaptured ? <>
-                    <label style={{ width: "40%" }} className="custom-label">CAPTURED IMAGE</label>
-                    <img src={livePhoto} alt="Captured" style={{ maxWidth: "200px", borderRadius: "50%" }} />
-                  </> :
-                    <>
-                      <label style={{ width: "20%" }} className="custom-label">LIVE PHOTO</label>
-                      <video ref={videoRef} style={{ maxWidth: "200px", borderRadius: "50%" }} autoPlay />
-                      <canvas ref={canvasRef} style={{ display: "none" }} ></canvas>
-                    </>
-
+                  <label style={{ width: "40%" }} className="custom-label">LIVE PHOTO</label>
+                  {capturedImage === true ? (
+                    <div className="d-flex j-center" style={{ borderRadius: "50%" }}>
+                      <Webcam
+                        audio={false}
+                        ref={webcamRef}
+                        screenshotFormat="image/png"
+                        width="200px"
+                        height="auto"
+                        borderRadius="50%"
+                      />
+                    </div>
+                  ) : capturedImage && <img src={capturedImage} alt="Captured" style={{ borderRadius: "50%", maxWidth: "200px" }} />
                   }
-                  {/* Camera section */}
                 </div>
-                <div className="d-flex column g8 mb20" >
+                <div className="d-flex column mb20 g8" >
 
-                  <button type="button" className="btn btn-prime" onClick={startCamera}>
-                    Take live photo
-                  </button>
-                  <button type="button" className="btn" onClick={capturePhoto} disabled={!videoRef.current?.srcObject}>
-                    Capture
-                  </button>
+                  <button type="button" className="btn btn-prime" onClick={() => setCapturedImage(!Boolean(capturedImage))}>{capturedImage ? "cancel" : "capture photo"}</button>
+                  {capturedImage === true && <button type="button" className="btn" onClick={capturePhoto}>Capture</button>}
                 </div>
               </div>
 
