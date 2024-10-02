@@ -89,7 +89,7 @@ function reducer(state, action) {
       return {
         ...state,
         loading: false,
-        notifications: new Notification().fromArray(action.value),
+        notifications: new Notification().fromArray(action.value?.reverse()),
       };
     }
     case "DIALOG": {
