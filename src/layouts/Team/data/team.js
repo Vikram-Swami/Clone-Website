@@ -1,6 +1,5 @@
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
-import SoftBadge from "components/SoftBadge";
 import PropTypes from "prop-types";
 import { Icon } from "@mui/material";
 import { handleCopyLink } from "api/users";
@@ -21,31 +20,21 @@ function Level({ level }) {
 function Status({ verified, status }) {
   if (verified && status) {
     return (
-      <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
-        <SoftBox display="flex" alignItems="center" flexDirection="column" gap="4px">
-          <SoftBadge variant="gradient" badgeContent="Active" color="success" size="xs" container />
-        </SoftBox>
-      </SoftBox>
+      <div className="d-flex column g8">
+        <p className="badge success">Active</p>
+      </div>
     );
   } else if (!status && verified) {
     return (
-      <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
-        <SoftBadge variant="gradient" badgeContent="Inactive" color="warning" size="xs" container />
-      </SoftBox>
+      <div className="d-flex column g8">
+        <p className="badge error">Inactive</p>
+      </div>
     );
   } else if (!verified) {
     return (
-      <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
-        <SoftBox display="flex" flexDirection="column">
-          <SoftBadge
-            variant="gradient"
-            badgeContent="Not Verified"
-            color="error"
-            size="xs"
-            container
-          />
-        </SoftBox>
-      </SoftBox>
+      <div className="d-flex column g8">
+        <p className="badge error">Not-Verified</p>
+      </div>
     );
   }
 }

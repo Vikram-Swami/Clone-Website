@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import Tree from "react-d3-tree";
 import BuildTree from "./data/data";
-import SoftButton from "components/SoftButton";
 import { Box } from "@mui/system";
+import { Visibility } from "@mui/icons-material";
 
 const CustomNode = ({ nodeDatum, toggleNode }) => {
   const boxWidth = 170;
@@ -91,6 +91,7 @@ const TreeComponent = ({ data }) => {
     width: "100%",
     height: "80dvh",
     padding: "24px",
+    textAlign: "right"
   };
 
   // Calculate initial translate values
@@ -104,14 +105,12 @@ const TreeComponent = ({ data }) => {
   return (
     <>
       <Box style={containerStyle}>
-        <SoftButton
-          variant="gradient"
-          sx={{ float: "right" }}
-          color="dark"
+        <button className="btn btn-prime"
+          style={{ textTransform: "capitalize" }}
           onClick={() => setView(view === "sponsor" ? "placement" : "sponsor")}
         >
-          {view.charAt(0).toUpperCase() + view.slice(1)}s View
-        </SoftButton>
+          {view} <Visibility style={{ verticalAlign: "middle" }} />
+        </button>
         {treeData.length > 0 && (
           <Tree
             data={filterTreeData(treeData)}

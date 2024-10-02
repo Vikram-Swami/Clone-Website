@@ -29,9 +29,7 @@ import {
 
 // Next Work Dashboard React context
 import { useSoftUIController, setTransparentNavbar, setMiniSidenav } from "context";
-import { Avatar, Stack } from "@mui/material";
-import SoftBadge from "components/SoftBadge";
-
+import { Avatar, Badge } from "@mui/material";
 function DashboardNavbar({ absolute, light, isMini, call }) {
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useSoftUIController();
@@ -96,7 +94,7 @@ function DashboardNavbar({ absolute, light, isMini, call }) {
                 <Icon className={light ? "text-white" : "text-dark"} fontSize="100px">
                   notifications
                 </Icon>
-                <SoftBadge
+                <Badge
                   sx={{ position: "absolute", top: -1, left: 10 }}
                   variant="gradient"
                   color={user.unread > 0 ? "error" : "info"}
@@ -110,7 +108,7 @@ function DashboardNavbar({ absolute, light, isMini, call }) {
 
           <div className="mx5 c-point" style={{ color: light ? "white" : "inherit" }}>
             <NavLink to={"/profile"}>
-              <Avatar sx={{ width: 35, height: 35 }} alt={user.fullName} src="51365.jpg" />
+              <Avatar sx={{ width: 35, height: 35 }} alt={user.fullName} src={user?.image ? user.image : "51365.jpg"} />
             </NavLink>
           </div>
 

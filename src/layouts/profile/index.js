@@ -28,6 +28,7 @@ function Overview() {
         call: () => { completeProfile(dispatch, navigate) }
       }])
     }
+    console.log(user);
   }, [user])
   return (
     <DashboardLayout>

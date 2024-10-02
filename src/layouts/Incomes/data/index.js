@@ -2,7 +2,6 @@
 // Next Work Dashboard React components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
-import SoftBadge from "components/SoftBadge";
 
 function Author({ name, id }) {
   return (
@@ -19,34 +18,18 @@ function Author({ name, id }) {
   );
 }
 
-function Status({ tnxId, status }) {
-  if (tnxId === null) {
+function Status({ status }) {
+  if (!status) {
     return (
-      <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
-        <SoftBox display="flex" alignItems="center" flexDirection="column" gap="4px">
-          <SoftBadge
-            variant="gradient"
-            badgeContent="payment pending"
-            color="warning"
-            size="xs"
-            container
-          />
-        </SoftBox>
-      </SoftBox>
-    );
-  } else if (!status) {
-    return (
-      <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
-        <SoftBadge variant="gradient" badgeContent="Inactive" color="warning" size="xs" container />
-      </SoftBox>
+      <div className="d-flex column g8">
+        <p className="badge error">Inactive</p>
+      </div>
     );
   } else {
     return (
-      <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
-        <SoftBox display="flex" flexDirection="column">
-          <SoftBadge variant="gradient" badgeContent="Active" color="success" size="xs" container />
-        </SoftBox>
-      </SoftBox>
+      <div className="d-flex column g8">
+        <p className="badge success">Active</p>
+      </div>
     );
   }
 }

@@ -24,6 +24,7 @@ class UserModel {
     holder,
     aadhar,
     pan,
+    image,
     nomineeName,
     sign,
     street,
@@ -59,9 +60,10 @@ class UserModel {
     this.IFSC = IFSC;
     this.holder = holder;
     this.aadharNo = aadhar?.aadharNo ?? "";
-    this.aadharFile = "data:" + aadhar?.mimeType + ";base64," + aadhar?.file ?? "";
+    this.aadharFile = "data:" + aadhar?.mimeType + ";base64," + aadhar?.buffer ?? "";
     this.panNo = pan?.panNo ?? "";
-    this.panFile = "data:" + pan?.mimeType + ";base64," + pan?.file ?? "";
+    this.panFile = "data:" + pan?.mimeType + ";base64," + pan?.buffer ?? "";
+    this.image = image?.buffer ? "data:" + image?.mimeType + ";base64," + image?.buffer ?? "" : null;
     this.nomineeName = nomineeName;
     this.signFile = "data:" + sign?.mimeType + ";base64," + sign?.buffer ?? "";
     this.street = street;
@@ -121,9 +123,13 @@ class UserModel {
         mimeType: jsonData?.kyc?.pan?.mimeType ?? "",
         file: jsonData?.kyc?.pan?.file ?? "",
       },
+      {
+        mimeType: jsonData?.user?.image?.mimeType ?? "",
+        buffer: jsonData?.user?.image?.file ?? "",
+      },
       jsonData?.kyc?.nomineeName ?? "",
       {
-        mimetype: jsonData?.kyc?.sign?.mimeType ?? "",
+        mimeType: jsonData?.kyc?.sign?.mimeType ?? "",
         buffer: jsonData?.kyc?.sign?.file ?? "",
       },
       jsonData?.address?.street ?? "",

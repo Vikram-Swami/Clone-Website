@@ -56,7 +56,8 @@ function Header() {
             <Grid container alignItems="center">
               <Grid item xs={12} md={4} lg={3}>
                 <SoftAvatar
-                  src={user.profileImage}
+                  src={user?.image ? user.image : "51365.jpg"}
+
                   alt="profile-image"
                   variant="rounded"
                   size="xl"
