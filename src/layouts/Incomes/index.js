@@ -44,7 +44,7 @@ function RentOnRent() {
   return (
     <DashboardLayout>
       <DashboardNavbar call={getAllRents} />
-      <div className='card'>
+      <div className='card transactions' style={{ maxHeight: "100%" }}>
         <div className="d-flex j-between" >
           <h5 style={{ whiteSpace: "nowrap" }}>Monthly Benefits</h5>
           <div className="d-flex j-end">

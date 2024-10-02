@@ -91,8 +91,6 @@ function Header() {
               </Tabs>
             </AppBar>
           </Grid>
-
-          {/* <img src={user?.aadharFile} alt="Aadhar Card" /> */}
         </Grid>
 
 
@@ -173,20 +171,6 @@ function Header() {
               </div>
             </div>
           </div>
-          // <ProfileInfoCard
-          //   title="KYC information"
-          //   info={{
-          //     accountType: user?.type,
-          //     aadharNo: user?.aadharNo,
-          //     panNo: user?.panNo,
-          //     accountNo: user?.accountNo,
-          //     IFSC: user?.IFSC,
-          //     nomineeName: user?.nomineeName,
-
-          //   }}
-
-          //   action={{ route: "/home", tooltip: "Modify Info" }}
-          // />
         )}
 
       </Card>
