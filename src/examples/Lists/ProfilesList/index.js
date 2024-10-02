@@ -57,19 +57,17 @@ function Header() {
               <Grid item xs={12} md={4} lg={3}>
                 <SoftAvatar
                   src={user?.image ? user.image : "51365.jpg"}
-
                   alt="profile-image"
                   variant="rounded"
-                  size="xl"
+                  size="xxl"
                   shadow="sm"
                 />
               </Grid>
               <Grid item xs={12} md={8} lg={8}>
                 <SoftBox mt={0.5} lineHeight={1}>
-                  <SoftTypography variant="h4" fontWeight="medium">
-                    {user.initial}
-                    {user.fullName}
-                  </SoftTypography>
+                  <h5>
+                    {user.initial} {user.fullName}
+                  </h5>
                   <SoftTypography variant="button" color="text" fontWeight="medium">
                     {user.role}
                   </SoftTypography>
