@@ -104,11 +104,11 @@ export async function getUser(dispatch) {
       }
       setUser(dispatch, data?.data);
     } else {
-      deleteData();
+      deleteData(() => { });
       setDialog(dispatch, [data]);
     }
   } catch (error) {
-    deleteData();
+    deleteData(() => { });
     setLoading(dispatch, false);
   }
 }
