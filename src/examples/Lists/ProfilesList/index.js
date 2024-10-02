@@ -15,7 +15,7 @@ import SoftAvatar from "components/SoftAvatar";
 // Next Work Dashboard React base styles
 import breakpoints from "assets/theme/base/breakpoints";
 
-import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
+import ProfileInfoCard from "examples/Cards/ProfileInfoCard";
 import { AccountBalance, AccountCircle, Home } from "@mui/icons-material";
 import { useSoftUIController } from "context";
 
