@@ -32,7 +32,7 @@ function Connections() {
     <DashboardLayout>
       <DashboardNavbar call={() => getConnection(dispatch)} />
 
-      <div className="d-flex mb20">
+      <div className="d-flex column mb20">
 
         {
           connection?.length > 0 ?
