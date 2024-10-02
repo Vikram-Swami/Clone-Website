@@ -134,7 +134,7 @@ function Sidenav({ color, brand, routes, ...rest }) {
       let referLink = window.location.origin;
       referLink += `/sign-up?sponsorId=${user.id}`;
       if (add) {
-        navigate("/");
+        window.location.reload();
       } else {
         window.location.replace(referLink);
       }

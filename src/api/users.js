@@ -47,7 +47,6 @@ const setCookie = (name, value, days) => {
 // Login
 export const handleLogin = async (form, route, dispatch, navigate) => {
   try {
-    deleteData(() => { });
     startLoading(dispatch, true);
     const response = await ApiClient.createData(route, form);
     if (response?.status == 200) {
