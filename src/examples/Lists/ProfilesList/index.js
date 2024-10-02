@@ -14,8 +14,6 @@ import SoftAvatar from "components/SoftAvatar";
 
 // Next Work Dashboard React base styles
 import breakpoints from "assets/theme/base/breakpoints";
-
-import ProfileInfoCard from "examples/Cards/ProfileInfoCard";
 import { AccountBalance, AccountCircle, Home } from "@mui/icons-material";
 import { useSoftUIController } from "context";
 
@@ -94,51 +92,103 @@ function Header() {
             </AppBar>
           </Grid>
 
-          {/* Content for each tab */}
-          <Grid item xs={12}>
-            {tabValue === 0 && (
-              <ProfileInfoCard
-                info={{
-                  fullName: <span>{user.fullName}</span>,
-                  ID: user.id ?? "",
-                  mobile: user?.phone,
-                  email: user?.email,
-                  joined: user?.createdAt,
-                  location: user?.city + " " + user?.state + " " + user?.country
-                }}
-              />
-            )}
-            {tabValue === 1 && (
-              <ProfileInfoCard
-                title="Address information"
-                info={{
-                  street: user?.street,
-                  city: user?.city,
-                  state: user?.state,
-                  country: user?.country,
-                }}
-                action={{ route: "/dashboard", tooltip: "Edit Profile" }}
-              />
-            )}
-            {tabValue === 2 && (
-              <ProfileInfoCard
-                title="KYC information"
-                info={{
-                  accountType: user?.type,
-                  aadharNo: user?.aadharNo,
-                  panNo: user?.panNo,
-                  accountNo: user?.accountNo,
-                  IFSC: user?.IFSC,
-                  nomineeName: user?.nomineeName,
-
-                }}
-
-                action={{ route: "/home", tooltip: "Modify Info" }}
-              />
-            )}
-            {/* <img src={user?.aadharFile} alt="Aadhar Card" /> */}
-          </Grid>
+          {/* <img src={user?.aadharFile} alt="Aadhar Card" /> */}
         </Grid>
+
+
+        {/* Content for each tab */}
+
+        {tabValue === 0 && (
+          <div className="br-card">
+            <div className="d-flex j-start column">
+              <div className="d-flex j-between g8 desc-small" style={{ whiteSpace: "pre-line", width: "fit-content" }}>
+
+                <h4>FullName</h4> : <p>{user.fullName}</p>
+              </div>
+              <div className="d-flex j-between g8 desc-small" style={{ whiteSpace: "pre-line", width: "fit-content" }}>
+                <h4>User ID</h4> : <p>{user?.id}</p>
+              </div>
+              <div className="d-flex j-between g8 desc-small" style={{ whiteSpace: "pre-line", width: "fit-content" }}>
+                <h4>Email</h4> : <p>{user?.email}</p>
+              </div>
+              <div className="d-flex j-between g8 desc-small" style={{ whiteSpace: "pre-line", width: "fit-content" }}>
+
+                <h4>Phone</h4> : <p>{user.phone}</p>
+              </div>
+              <div className="d-flex j-between g8 desc-small" style={{ whiteSpace: "pre-line", width: "fit-content" }}>
+
+                <h4>Joined On</h4> : <p>{user?.createdAt}</p>
+              </div>
+            </div>
+          </div>
+        )}
+        {tabValue === 1 && (
+          <div className="br-card">
+            <div className="d-flex column">
+              <div className="d-flex j-between g8 desc-small" style={{ whiteSpace: "pre-line", width: "fit-content" }}>
+
+                <h4>Street</h4> : <p>{user.street}</p>
+              </div>
+              <div className="d-flex j-between g8 desc-small" style={{ whiteSpace: "pre-line", width: "fit-content" }}>
+
+                <h4>City</h4> : <p>{user?.city}</p>
+              </div>
+              <div className="d-flex j-between g8 desc-small" style={{ whiteSpace: "pre-line", width: "fit-content" }}>
+
+                <h4>State</h4> : <p>{user?.state}</p>
+              </div>
+              <div className="d-flex j-between g8 desc-small" style={{ whiteSpace: "pre-line", width: "fit-content" }}>
+
+                <h4>Country</h4> : <p>{user.country}</p>
+              </div>
+            </div>
+          </div>
+        )}
+        {tabValue === 2 && (
+          <div className="br-card">
+            <div className="d-flex column" style={{ whiteSpace: "wrap" }}>
+              <div className="d-flex j-between g8 desc-small" style={{ whiteSpace: "pre-line", width: "fit-content" }}>
+
+                <h4>Account Type</h4> : <p>{user.type}</p>
+              </div>
+              <div className="d-flex j-between g8 desc-small" style={{ whiteSpace: "pre-line", width: "fit-content" }}>
+
+                <h4>Aadhar Number</h4> : <p>{user?.aadharNo}</p>
+              </div>
+              <div className="d-flex j-between g8 desc-small" style={{ whiteSpace: "pre-line", width: "fit-content" }}>
+
+                <h4>Pan No</h4> : <p>*******{user?.panNo.substr(-4)}</p>
+              </div>
+              <div className="d-flex j-between g8 desc-small" style={{ whiteSpace: "pre-line", width: "fit-content" }}>
+
+                <h4>Bank Account No</h4> : <p>{user.accountNo}</p>
+              </div>
+              <div className="d-flex j-between g8 desc-small" style={{ whiteSpace: "pre-line", width: "fit-content" }}>
+
+                <h4>IFSC</h4> : <p>{user?.IFSC}</p>
+              </div>
+              <div className="d-flex j-between g8 desc-small" style={{ whiteSpace: "pre-line", width: "fit-content" }}>
+
+                <h4>Nominee</h4> : <p>{user?.nomineeName}</p>
+              </div>
+            </div>
+          </div>
+          // <ProfileInfoCard
+          //   title="KYC information"
+          //   info={{
+          //     accountType: user?.type,
+          //     aadharNo: user?.aadharNo,
+          //     panNo: user?.panNo,
+          //     accountNo: user?.accountNo,
+          //     IFSC: user?.IFSC,
+          //     nomineeName: user?.nomineeName,
+
+          //   }}
+
+          //   action={{ route: "/home", tooltip: "Modify Info" }}
+          // />
+        )}
+
       </Card>
     </SoftBox>
   );
