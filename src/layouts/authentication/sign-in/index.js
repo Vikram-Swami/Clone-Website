@@ -1,52 +1,36 @@
 // react-router-dom components
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 // Authentication layout components
 import CoverLayout from "layouts/authentication/components/CoverLayout";
 
 import { useSoftUIController } from "context";
-import ApiClient from "Services/ApiClient";
 import { login } from "Services/endpointes";
 import { setDialog } from "context";
-import { toast } from "react-toastify";
-import { setLoading } from "context";
-import { startLoading } from "context";
-import Separator from "../components/Separator";
-import { sendOtp } from "Services/endpointes";
 import { verifyOtp } from "Services/endpointes";
 import { setAccept } from "context";
 import { handleLogin } from "api/users";
 import { setOtp } from "context";
+import { handleOtp } from "api/users";
+import { forget } from "api/users";
+import { register } from "api/users";
 
 function SignIn() {
   const [controller, dispatch] = useSoftUIController();
   const { accept, otp } = controller;
   const navigate = useNavigate();
 
-  const handleOtpLogin = async (e) => {
-    try {
-      e.preventDefault();
-      startLoading(dispatch, true);
-      const form = new FormData(e.currentTarget);
-      const response = await ApiClient.createData(sendOtp, form);
-      setOtp(dispatch, response);
-    } catch (err) {
-      toast.error(err?.message);
-      setLoading(dispatch, false);
+  const handleSendOtp = async (form) => {
+    let response = await handleOtp(form, dispatch);
+    if (response.status == 200) {
+      response.title = "Enter OTP";
+      response.children = <input type="number" placeholder="6 Digit OTP" name="otp" />;
+      response.action = "Submit"
+      response.call = (f) => { f.append("userId", response.data?.userId); forget(f, dispatch) };
     }
-  };
-
-  const register = async (form) => {
-    try {
-      const response = await ApiClient.createData("/sponsor-now", form);
-      if (response.status === 200) {
-        navigate(`/sign-up?sponsorId=${response?.data?.userId}`)
-
-      }
-      setDialog(dispatch, [response]);
-    } catch (err) {
-      setDialog(dispatch, [{ status: 400, message: err?.toString() }])
-    }
+    setDialog(dispatch, [response]);
   }
+
+
 
   return (
     <>
@@ -55,7 +39,7 @@ function SignIn() {
           className="d-flex column"
           role="form"
           encType="multipart/form-data"
-          onSubmit={(e) => { accept && otp?.status != 200 ? handleOtpLogin(e) : handleLogin(e, (accept && otp?.status) == 200 ? verifyOtp : login, dispatch, navigate); }}
+          onSubmit={(e) => { e.preventDefault(); let form = new FormData(e.currentTarget); accept && otp?.status != 200 ? handleOtp(form, dispatch) : handleLogin(form, (accept && otp?.status) == 200 ? verifyOtp : login, dispatch, navigate); }}
         >
           <div className="mb10">
             <h4 className="mb10">Enter Your Credentials Here!</h4>
@@ -73,46 +57,70 @@ function SignIn() {
             </span>
           </div>
           {otp?.status && <p style={{ width: "300px", color: otp?.status == 200 ? "green" : "red" }} className="help-text mb20">{otp?.message}</p>}
-          <button type="submit" className="btn">Submit</button>
+          <div className="mb20 textCenter">
 
-          <div className="mt5">
-            <h6 className="help-text">
-              New User?
-            </h6>{" "}
-            <a className="help-text"
-              onClick={() => {
-                setDialog(dispatch, [
-                  {
-                    status: "form",
-                    title: "Please Enter Sponsor User ID or Email",
-                    children: (
-                      <input
-                        autoFocus
-                        name="userId"
-                        placeholder="User Id | Email"
-                        type="text"
-                      />
-                    ),
-                    action: "Submit",
-                    call: register,
-                  },
-                ]);
-              }}
-            >
-              Register Here
-            </a>
+            <button type="submit" className="btn">Submit</button>
           </div>
-          <Separator />
-          <div>
-            <h6 className="help-text">
-              Forget Password?{" "}
-            </h6>
-            <NavLink
-              className="help-text"
-              to="/reset-password"
-            >
-              Reset Now
-            </NavLink>
+
+          <div className="d-flex j-between textCenter mt5">
+            <div className="desc-small">
+
+              <h6 className="help-text">
+                New User?
+              </h6><br />
+              <p className="help-text c-point" style={{ color: "blue" }}
+                onClick={() => {
+                  setDialog(dispatch, [
+                    {
+                      status: "form",
+                      title: "New Registration? Welcome!",
+                      message: "Enter Sponsor ID",
+                      children: (
+                        <input
+                          autoFocus
+                          name="userId"
+                          placeholder="User Id | Email"
+                          type="text"
+                        />
+                      ),
+                      action: "Submit",
+                      call: (form) => register(form, dispatch, navigate),
+                    },
+                  ]);
+                }}
+              >
+                Register Here
+              </p>
+            </div>
+            <div style={{ borderRight: "2px solid #a5a5a5", height: "40px" }}></div>
+            <div className="desc-small">
+              <h6 className="help-text">
+                Forget Password?
+              </h6><br />
+              <p className="help-text c-point" style={{ color: "blue" }}
+                onClick={() => {
+                  setDialog(dispatch, [
+                    {
+                      status: "form",
+                      title: "Forget Password?",
+                      message: "Enter Your User ID or Email ID",
+                      children: (
+                        <input
+                          autoFocus
+                          name="userId"
+                          placeholder="User Id | Email"
+                          type="text"
+                        />
+                      ),
+                      action: "Submit",
+                      call: (form) => handleSendOtp(form),
+                    },
+                  ]);
+                }}
+              >
+                Reset Now
+              </p>
+            </div>
           </div>
         </form>
       </CoverLayout>

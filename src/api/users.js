@@ -9,11 +9,15 @@ import { setNotification } from "context";
 import { setTransaction } from "context";
 import { setIncome } from "context";
 import { startLoading, setUser, setDialog, setLoading } from "context";
+import ForgetPassword from "layouts/authentication/ForgetPassword";
 import { toast } from "react-toastify";
 import ApiClient from "Services/ApiClient";
 import { generateProduct } from "Services/endpointes";
 import { verifyTransaction } from "Services/endpointes";
 import { markRead } from "Services/endpointes";
+import { forgetPassword } from "Services/endpointes";
+import { sendOtp } from "Services/endpointes";
+import { changePassword } from "Services/endpointes";
 import { deleteAllNotifications } from "Services/endpointes";
 import { getUserNotification } from "Services/endpointes";
 import { claimReward } from "Services/endpointes";
@@ -41,12 +45,10 @@ const setCookie = (name, value, days) => {
 };
 
 // Login
-export const handleLogin = async (e, route, dispatch, navigate) => {
+export const handleLogin = async (form, route, dispatch, navigate) => {
   try {
-    e.preventDefault();
     startLoading(dispatch, true);
-    const formDetails = new FormData(e.currentTarget);
-    const response = await ApiClient.createData(route, formDetails);
+    const response = await ApiClient.createData(route, form);
     if (response?.status == 200) {
       setCookie("authToken", response?.data.token, 1);
       setCookie("userId", response?.data.userId, 1);
@@ -59,6 +61,21 @@ export const handleLogin = async (e, route, dispatch, navigate) => {
     toast.error(error.toString());
   } finally {
     setLoading(dispatch, false);
+  }
+};
+
+// SEND OTP
+export const handleOtp = async (form, dispatch) => {
+  try {
+    setLoading(dispatch, true);
+    const response = await ApiClient.createData(sendOtp, form);
+    setOtp(dispatch, response);
+    setTimeout(() => setOtp(dispatch, []), 30000)
+    return response;
+  } catch (err) {
+    toast.error(err?.message);
+    setLoading(dispatch, false);
+    return [];
   }
 };
 
@@ -139,6 +156,56 @@ export const submitHandler = async (e, dispatch, accept, form, navigate) => {
     toast.error(error?.message ?? "Network Error!");
   }
 };
+
+// FORGET PASSWORD
+
+export const forget = async (form, dispatch) => {
+  try {
+    startLoading(dispatch, true);
+    let userId = form.get("userId");
+    const response = await ApiClient.createData(forgetPassword, form);
+    if (response.status == 200) {
+      response.title = "Enter Your new Password";
+      response.children = <ForgetPassword />
+      response.action = "Submit"
+      response.call = (form) => changePass(form, userId, dispatch);
+    }
+    setDialog(dispatch, [response]);
+  } catch (err) {
+    toast.error(err.toString());
+    setLoading(dispatch, false);
+  }
+};
+
+// CHANGE PASSWORD
+export const changePass = async (form, id, dispatch) => {
+  try {
+    form.append("userId", id);
+    startLoading(dispatch, true);
+    const response = await ApiClient.updateData(changePassword, form);
+    setDialog(dispatch, [response]);
+
+  } catch (err) {
+    toast.error(err.message ?? "Network Error!");
+    setLoading(dispatch, false);
+  }
+}
+
+//  SPONSOR NOW
+export const register = async (form, dispatch, navigate) => {
+  try {
+    const response = await ApiClient.createData("/sponsor-now", form);
+    if (response.status === 200) {
+      navigate(`/sign-up?sponsorId=${response?.data?.userId}`)
+
+    }
+    setDialog(dispatch, [response]);
+  } catch (err) {
+    setDialog(dispatch, [{ status: 400, title: "Oops!", message: err?.message }])
+  }
+}
+
+
 
 // BANK TRANSFER
 export const payment = async (amount, dispatch) => {

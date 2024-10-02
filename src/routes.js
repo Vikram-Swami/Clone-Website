@@ -1,8 +1,5 @@
 import React, { lazy, Suspense } from "react";
-// NextWork Dashboard React layouts
-// const Dashboard = lazy(() => import("layouts/dashboard"));
 const Dashboard = lazy(() => import("layouts/dashboard"));
-const ForgetPassword = lazy(() => import("layouts/authentication/forget-password"));
 const Notifications = lazy(() => import("layouts/Notification"));
 const RentOnRent = lazy(() => import("layouts/Incomes"));
 import {
@@ -13,8 +10,8 @@ import {
   Groups2,
   SpaceDashboard,
 } from "@mui/icons-material";
-import CompleteKYC from "layouts/authentication/KYC";
-import CircularWithValueLabel from "components/Progress";
+const CompleteKYC = lazy(() => import("layouts/authentication/KYC"));
+const CircularWithValueLabel = lazy(() => import("components/Progress"));
 const Team = lazy(() => import("layouts/Team"));
 const Account = lazy(() => import("layouts/Account"));
 const Connections = lazy(() => import("layouts/connections"));
@@ -69,15 +66,6 @@ const routes = [
     auth: null,
     route: "/",
     component: <SignIn />,
-    noCollapse: false,
-  },
-  {
-    type: "route",
-    name: "ForgetPass",
-    Key: "reset-password",
-    auth: null,
-    route: "/reset-password",
-    component: <ForgetPassword />,
     noCollapse: false,
   },
   {
