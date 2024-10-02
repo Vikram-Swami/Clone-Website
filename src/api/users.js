@@ -184,7 +184,6 @@ export const changePass = async (form, id, dispatch) => {
     startLoading(dispatch, true);
     const response = await ApiClient.updateData(changePassword, form);
     setDialog(dispatch, [response]);
-
   } catch (err) {
     toast.error(err.message ?? "Network Error!");
     setLoading(dispatch, false);

@@ -23,14 +23,12 @@ function SignIn() {
     let response = await handleOtp(form, dispatch);
     if (response.status == 200) {
       response.title = "Enter OTP";
-      response.children = <input type="number" placeholder="6 Digit OTP" name="otp" />;
+      response.children = <input type="number" placeholder="Enter 6 digit OTP" name="otp" />;
       response.action = "Submit"
       response.call = (f) => { f.append("userId", response.data?.userId); forget(f, dispatch) };
     }
     setDialog(dispatch, [response]);
   }
-
-
 
   return (
     <>
