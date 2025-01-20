@@ -31,7 +31,7 @@ export default function NewFormDialog({ open, setOpen, data }) {
 
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>
-          {data.action && <Button type="submit">{data?.action}</Button>}
+          {data?.action && <Button type="submit">{data?.action}</Button>}
         </DialogActions>
       </Dialog>
     </React.Fragment>
