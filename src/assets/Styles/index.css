@@ -39,22 +39,22 @@ html::-webkit-scrollbar {
   display: none;
 }
 
-.mb10{
-  margin-bottom:10px;
+.mb10 {
+  margin-bottom: 10px;
   width: 100%;
 }
-.mb20{
+.mb20 {
   margin-bottom: 20px;
   width: 100%;
 }
 
-.mt5{
+.mt5 {
   margin-top: 5px;
 }
-.mt20{
+.mt20 {
   margin-top: 20px;
 }
-.textCenter{
+.textCenter {
   text-align: center;
 }
 
@@ -65,7 +65,7 @@ html {
 body {
   background: black;
 }
-.mx5{
+.mx5 {
   margin-inline: 5px;
 }
 
@@ -80,42 +80,42 @@ body {
   --white-d: hsl(var(--hue), 10%, 45%);
 }
 
-.d-flex{
+.d-flex {
   display: flex;
   align-items: center;
   width: 100%;
   position: relative;
 }
 
-.column{
+.column {
   flex-direction: column;
 }
-.g8{
-  gap:8px;
+.g8 {
+  gap: 8px;
 }
-img{
+img {
   object-fit: cover;
   width: 100%;
   height: 100%;
 }
 
-.j-end{
+.j-end {
   justify-content: end;
 }
-.j-between{
+.j-between {
   justify-content: space-between;
 }
-.j-center{
+.j-center {
   justify-content: center;
 }
-.j-evenly{
+.j-evenly {
   justify-content: space-evenly;
 }
-.c-point{
+.c-point {
   cursor: pointer;
 }
 
-.m-auto{
+.m-auto {
   margin: auto;
 }
 
@@ -131,18 +131,17 @@ img{
   height: 100% !important;
 }
 
-.success{
+.success {
   background: #16b965 !important;
 }
 
-
 /* ----------------- Loader ---------------------- */
 
-.relative{
+.relative {
   position: relative;
 }
 
-.help-text{
+.help-text {
   display: inline;
   font-size: 0.95rem;
 }
@@ -152,19 +151,18 @@ img{
   padding: 1px 10px;
 }
 
- .card {
-     background: #fff;
-     border-radius: 10px;
-   max-height: 430px;
-   padding: 10px;
-     width: 100%;
-     overflow: hidden;
-  }
+.card {
+  background: #fff;
+  border-radius: 10px;
+  max-height: 430px;
+  padding: 10px;
+  width: 100%;
+  overflow: hidden;
+}
 
-.card.transactions{
+.card.transactions {
   min-height: 430px;
   overflow: scroll;
-
 }
 
 .card-body {
@@ -180,49 +178,44 @@ img{
   flex-direction: column;
   overflow: scroll;
 }
-.card-image{
-  background-image: linear-gradient(rgba(34, 34, 34, 0.8), rgba(34, 34, 34, 0.8)), url('/src/assets/ivancik.jpg');
+.card-image {
+  background-image: linear-gradient(rgba(34, 34, 34, 0.8), rgba(34, 34, 34, 0.8)),
+    url("/src/assets/ivancik.jpg");
   background-size: cover;
   color: white;
 }
-.desc-small{
+.desc-small {
   font-weight: 600;
-  font-size:1rem;
-  
+  font-size: 1rem;
 }
-  .tag {
-    width: 100%;
-    text-transform: uppercase;
-    padding: 8px 4px;
-    border-radius: 4px;
-    color: white;
-    background: #614500;
-    font-size: 15px;
-    line-height: 20px;
+.tag {
+  width: 100%;
+  text-transform: uppercase;
+  padding: 8px 4px;
+  border-radius: 4px;
+  color: white;
+  background: #614500;
+  font-size: 15px;
+  line-height: 20px;
 }
 
-
-.desc-small span{
-  font-weight:400;
+.desc-small span {
+  font-weight: 400;
   font-size: 0.6rem;
 }
 
-
-
- .icon {
-     display: block;
-     font-size: 35px;
-     height: 100%;
-     width: 45px;
-   }
-
+.icon {
+  display: block;
+  font-size: 35px;
+  height: 100%;
+  width: 45px;
+}
 
 .icon span {
   margin: auto;
   vertical-align: middle;
 }
 /* ----------------- form STYLE ---------------------- */
-
 
 /* ----------------- button STYLE ---------------------- */
 .btn {
@@ -232,9 +225,9 @@ img{
   text-align: center;
   border: none;
   border-radius: 4px;
-  font-size:0.98rem;
-  color:white;
-  text-transform:uppercase;
+  font-size: 0.98rem;
+  color: white;
+  text-transform: uppercase;
   font-weight: 550;
   box-shadow: 3px 3px 10px 1px rgba(6, 6, 6, 0.761);
 }
@@ -253,22 +246,22 @@ img{
   font-weight: 600;
 }
 
-.btn:hover{
-  zoom:0.98;
+.btn:hover {
+  zoom: 0.98;
   box-shadow: 3px 3px 10px 5px rgba(6, 6, 6, 0.761);
 }
 
-.btn-prime{
+.btn-prime {
   background: #713d6a;
 }
-.btn-reward{
+.btn-reward {
   background: goldenrod;
   color: rgb(255, 255, 255);
   border-radius: 30px;
   padding: 8px 20px;
   text-transform: uppercase;
 }
-.btn-round{
+.btn-round {
   background: white;
   color: black;
   border-radius: 50%;
@@ -285,30 +278,31 @@ img{
 }
 
 /* ----------------- INPUT STYLE ---------------------- */
-input{
+input {
   width: 100%;
   border: 0.5px solid rgb(142, 136, 136);
-  border-radius:4px;
+  border-radius: 4px;
   padding: 10px 10px;
   font-size: 0.98rem;
   outline: none;
 }
 
-input:focus{
-  border:2px solid #713d6a;
+input:focus {
+  border: 2px solid #713d6a;
 }
 
-input[type=checkbox], input[type=radio]{
-width: 20px;
-height: 20px;
-background:#ccc;
-border: none;
-outline: none;
-cursor: pointer;
+input[type="checkbox"],
+input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  background: #ccc;
+  border: none;
+  outline: none;
+  cursor: pointer;
   padding: 10px;
   vertical-align: middle;
 }
-input[type=checkbox]:checked{
+input[type="checkbox"]:checked {
   outline: none;
   border: none;
   background-color: #1976d2;
@@ -400,7 +394,7 @@ input[type=checkbox]:checked{
   text-align: left;
   border-bottom: 1px solid #ddd; /* Only bottom border */
   font-size: 16px;
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
 }
 
 .custom-table th {
@@ -427,24 +421,24 @@ input[type=checkbox]:checked{
   font-size: 15px;
 }
 
-.custom-table th:first-child, 
+.custom-table th:first-child,
 .custom-table td:first-child {
   padding-left: 0; /* Align first column closer to the edge for a clean look */
 }
 
-.custom-table th:last-child, 
+.custom-table th:last-child,
 .custom-table td:last-child {
   padding-right: 0; /* Align last column closer to the edge for balance */
 }
 
 /* PRODUCT CARD */
-.card-container{
+.card-container {
   width: 100%;
   overflow: scroll;
   height: 100%;
 }
 .custom-card {
-  background-color: #1976d2;
+  background-color: #2b4b7c;
   color: #fff;
   border-radius: 8px;
   white-space: nowrap;
@@ -470,15 +464,19 @@ input[type=checkbox]:checked{
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  top:0;
+  top: 0;
   border: 5px solid rgba(255, 255, 255, 0.2);
   clip: rect(0, 60px, 60px, 30px);
   animation: progressAnimation 1s forwards infinite;
 }
 
 @keyframes progressAnimation {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(calc(90 * 3.6deg)); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(calc(90 * 3.6deg));
+  }
 }
 
 .progress-icon {
@@ -511,7 +509,6 @@ input[type=checkbox]:checked{
   margin-top: 20px;
 }
 
-
 /* PORTFOLIO CARD STYLE */
 .br-card {
   position: relative; /* Ensure the pseudo-element is positioned relative to the .br-card */
@@ -522,7 +519,9 @@ input[type=checkbox]:checked{
   border-radius: 10px;
 }
 
-.span1, .span2, .span3{
+.span1,
+.span2,
+.span3 {
   font-size: 1rem;
   color: black;
   font-weight: 800;
@@ -530,19 +529,19 @@ input[type=checkbox]:checked{
   margin: 3px 1px;
   border-radius: 30px;
   white-space: nowrap;
-  max-width: fit-content ;
+  max-width: fit-content;
 }
-.span1{
-  background:#b9a2a2;
+.span1 {
+  background: #b9a2a2;
 }
-.span2{
-  background:#344767;
+.span2 {
+  background: #344767;
   color: white;
 }
-.span3{
+.span3 {
   color: white;
 
-  background:#713d6a;
+  background: #713d6a;
 }
 
 .br-card::before {
@@ -560,7 +559,7 @@ input[type=checkbox]:checked{
 }
 .card-icon-space {
   margin-right: 10px;
-  font-size: 30px
+  font-size: 30px;
 }
 .face-card::before {
   content: "";
@@ -582,9 +581,7 @@ input[type=checkbox]:checked{
   padding: 0 5px;
   flex-wrap: wrap;
   overflow: scroll;
-
 }
-
 
 .card-group-content {
   display: flex;
@@ -604,15 +601,15 @@ input[type=checkbox]:checked{
   align-items: center;
   position: relative;
 }
-.image img{
-width: 70%;
+.image img {
+  width: 70%;
 }
 
-.card-badge{
+.card-badge {
   width: 100%;
   text-align: center;
   font-size: 0.88rem;
-  background:#344767;
+  background: #344767;
   text-transform: uppercase;
   padding: 2px 0;
   font-weight: 600;

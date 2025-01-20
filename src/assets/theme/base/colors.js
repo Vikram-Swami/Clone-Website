@@ -29,13 +29,13 @@ const colors = {
   },
 
   secondary: {
-    main: "#2a4a7c",
-    focus: "#2a4a7c",
+    main: "#000000",
+    focus: "#000000",
   },
 
   info: {
-    main: "#2a4a7c",
-    focus: "#2a4a7c",
+    main: "#000000",
+    focus: "#000000",
   },
 
   success: {

@@ -27,6 +27,7 @@ import { useSoftUIController, setMiniSidenav } from "context";
 import SidenavCard from "./SidenavCard";
 import { setDialog } from "context";
 import { deleteData } from "api/users";
+import Logo from "../../assets/images/logo.jpeg";
 
 function Sidenav({ color, brand, routes, ...rest }) {
   const [controller, dispatch] = useSoftUIController();
@@ -55,8 +56,6 @@ function Sidenav({ color, brand, routes, ...rest }) {
     // Remove event listener on cleanup
     return () => window.removeEventListener("resize", handleMiniSidenav);
   }, [dispatch, location]);
-
-
 
   // Render all the routes from the routes.js (All the visible items on the Sidenav)
   const renderRoutes = routes.map(
@@ -128,7 +127,6 @@ function Sidenav({ color, brand, routes, ...rest }) {
     }
   );
 
-
   const logoutHandler = (add) => {
     const logoutNavigate = () => {
       let referLink = window.location.origin;
@@ -139,13 +137,13 @@ function Sidenav({ color, brand, routes, ...rest }) {
         window.location.replace(referLink);
       }
       setDialog(dispatch, []);
-    }
+    };
     setDialog(dispatch, [
       {
         status: "form",
         action: "Logout",
         title: add ? "Are you sure to Logout." : "Kindly Logout for New Registration!",
-        call: () => setTimeout(() => deleteData(logoutNavigate), 200)
+        call: () => setTimeout(() => deleteData(logoutNavigate), 200),
       },
     ]);
   };
@@ -166,8 +164,14 @@ function Sidenav({ color, brand, routes, ...rest }) {
             <Icon sx={{ fontWeight: "bold" }}>close</Icon>
           </SoftTypography>
         </SoftBox>
-        <SoftBox component={NavLink} to="/" display="flex" alignItems="center">
-          {brand && <SoftBox component="img" src={brand} alt="TRIWAVES INDIA LIMITED" width="10rem" />}
+        <SoftBox
+          component={NavLink}
+          to="/"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          {brand && <SoftBox component="img" src={Logo} alt="KNOCIAL INDIA LIMITED" width="5rem" />}
         </SoftBox>
       </SoftBox>
       <Divider />
@@ -175,14 +179,16 @@ function Sidenav({ color, brand, routes, ...rest }) {
       <SoftBox pt={2} my={2} mx={2} mt="auto">
         <SidenavCard />
         <div className="mt5">
-          <button className="btn btn-prime" style={{ width: "100%" }} onClick={() => logoutHandler(false)}
+          <button
+            className="btn btn-prime"
+            style={{ width: "100%" }}
+            onClick={() => logoutHandler(false)}
           >
             Add Member
           </button>
         </div>
         <div className="mt5">
-          <button className="btn " style={{ width: "100%" }} onClick={() => logoutHandler(true)}
-          >
+          <button className="btn " style={{ width: "100%" }} onClick={() => logoutHandler(true)}>
             LOGOUT
           </button>
         </div>
